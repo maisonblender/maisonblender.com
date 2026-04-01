@@ -8,6 +8,7 @@ export default function Nav() {
         <nav className="hidden gap-8 text-sm font-medium text-[#8892a4] md:flex">
           <a href="#diensten" className="transition-colors hover:text-[#f0f4ff]">Diensten</a>
           <a href="#aanpak" className="transition-colors hover:text-[#f0f4ff]">Aanpak</a>
+          <a href="#demo" className="transition-colors hover:text-[#4af0c4]">Demo</a>
           <a href="#over-ons" className="transition-colors hover:text-[#f0f4ff]">Over ons</a>
           <a href="#contact" className="transition-colors hover:text-[#f0f4ff]">Contact</a>
         </nav>
