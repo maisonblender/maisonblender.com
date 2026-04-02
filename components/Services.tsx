@@ -1,55 +1,6 @@
+import Link from "next/link";
 import SiteImage from "@/components/SiteImage";
-
-const services = [
-  {
-    id: "01",
-    title: "AI Chatbots & Klantenservice",
-    subtitle: "24/7 geautomatiseerde klantinteractie",
-    description:
-      "Automatiseer tot 90% van uw klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren - via web, WhatsApp, e-mail en meer.",
-    tags: ["Conversational AI", "WhatsApp & web chat", "Lead generatie", "Omnichannel"],
-  },
-  {
-    id: "02",
-    title: "AI Agents & Procesautomatisering",
-    subtitle: "Intelligente agents die voor u werken",
-    description:
-      "Custom AI-agents die taken uitvoeren: documenten verwerken, e-mails interpreteren, acties uitvoeren in uw CRM of ERP. 24/7 operationeel, zonder menselijke tussenkomst.",
-    tags: ["Multi-agent orkestratie", "Documentverwerking", "CRM/ERP-koppelingen", "Taakuitvoering"],
-  },
-  {
-    id: "03",
-    title: "RPA & Workflow-integraties",
-    subtitle: "Robotic Process Automation zonder zorgen",
-    description:
-      "Automatiseer repetitieve schermtaken en verbind uw systemen via robuuste API-koppelingen. Van factuurverwerking tot contractbeheer - wij beheren het volledig voor u.",
-    tags: ["Robotic Process Automation", "API-integraties", "Factuurverwerking", "Schermautomatisering"],
-  },
-  {
-    id: "04",
-    title: "Custom AI Software & Portalen",
-    subtitle: "Maatwerksoftware aangedreven door AI",
-    description:
-      "Bespoke AI-applicaties, klant- en leveranciersportalen, mobiele apps en webapplicaties - volledig op maat gebouwd voor uw processen en data.",
-    tags: ["Klantportalen", "Web & mobiele apps", "AI-applicaties", "Documentbeheer"],
-  },
-  {
-    id: "05",
-    title: "Data-intelligentie & Rapportages",
-    subtitle: "Van ruwe data naar bruikbare inzichten",
-    description:
-      "RAG-systemen die uw interne kennisbase ontsluiten, automatische rapportages en dashboards die uw team dagelijks sturen op de juiste KPI's.",
-    tags: ["RAG-systemen", "Kennismanagement", "Dashboards", "Automatische rapportages"],
-  },
-  {
-    id: "06",
-    title: "AI Strategie & Quickscan",
-    subtitle: "Van strategie naar uitvoering",
-    description:
-      "Wij beginnen met een gratis automatiseringsquickscan van uw processen. U krijgt een concreet implementatieplan inclusief business case - zodat u weet wat het oplevert vóór u investeert.",
-    tags: ["Gratis quickscan", "Implementatieroadmap", "Business case", "Team training"],
-  },
-];
+import { services } from "@/lib/services";
 
 export default function Services() {
   return (
@@ -80,8 +31,9 @@ export default function Services() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
-            <div
+            <Link
               key={service.id}
+              href={`/diensten/${service.slug}`}
               className="group flex flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#ecedf0] sm:p-8"
             >
               <div className="flex items-start justify-between">
@@ -103,7 +55,7 @@ export default function Services() {
                   </span>
                 ))}
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </div>
