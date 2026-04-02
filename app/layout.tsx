@@ -43,6 +43,7 @@ export const metadata: Metadata = {
     siteName: "Maison Blender",
     locale: "nl_NL",
     type: "website",
+    images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
@@ -68,7 +69,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#organization",
       name: "Maison Blender",
       url: "https://maisonblender.com",
-      logo: "https://maisonblender.com/favicon.ico",
+      logo: "https://maisonblender.com/maison-blender-logo-black.svg",
       description:
         "Maison Blender is het toonaangevende AI-bureau in Zuid-Limburg. Wij bouwen custom AI-agents, workflow-automatisering en intelligente software voor ambitieuze bedrijven. Gespecialiseerd in AI-chatbots, procesautomatisering, RPA en maatwerksoftware.",
       foundingDate: "2024",
@@ -85,8 +86,8 @@ const jsonLd = {
       },
       geo: {
         "@type": "GeoCoordinates",
-        latitude: 51.0,
-        longitude: 5.87,
+        latitude: 51.0043,
+        longitude: 5.8727,
       },
       areaServed: [
         {
@@ -94,22 +95,42 @@ const jsonLd = {
           name: "Limburg",
           sameAs: "https://en.wikipedia.org/wiki/Limburg_(Netherlands)",
         },
+        { "@type": "Country", name: "Nederland" },
+        { "@type": "City", name: "Sittard" },
+        { "@type": "City", name: "Geleen" },
+        { "@type": "City", name: "Maastricht" },
+        { "@type": "City", name: "Heerlen" },
+        { "@type": "City", name: "Roermond" },
+        { "@type": "City", name: "Venlo" },
+        { "@type": "City", name: "Beek" },
+        { "@type": "City", name: "Stein" },
+      ],
+      openingHoursSpecification: [
         {
-          "@type": "Country",
-          name: "Nederland",
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          opens: "09:00",
+          closes: "17:30",
         },
       ],
       knowsAbout: [
         "Artificial Intelligence",
+        "Kunstmatige intelligentie",
         "Machine Learning",
         "AI Agents",
+        "AI-agenten",
         "Process Automation",
+        "Procesautomatisering",
         "Robotic Process Automation",
         "Large Language Models",
+        "Taalmodellen",
         "Workflow Orchestration",
+        "Workflowautomatisering",
         "Conversational AI",
+        "Conversationele AI",
         "RAG Systems",
         "Business Intelligence",
+        "Bedrijfsintelligentie",
       ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
@@ -125,6 +146,8 @@ const jsonLd = {
       },
       sameAs: [
         "https://maisonblender.com",
+        "https://www.linkedin.com/company/maisonblender",
+        "https://g.co/kgs/maisonblender",
       ],
     },
     {
