@@ -11,21 +11,18 @@ export default function Hero() {
           backgroundSize: "32px 32px",
         }}
       />
-      {/* Soft teal glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#4af0c4]/10 blur-3xl" />
 
       <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16 lg:text-left">
         {/* Text column */}
         <div className="flex flex-1 flex-col items-center gap-8 lg:items-start">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#0a7a5c]/20 bg-[#0a7a5c]/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
-            <span className="h-1.5 w-1.5 rounded-full bg-[#4af0c4] animate-pulse" />
+          <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
             AI-frontrunner · Zuid-Limburg
           </div>
 
           <h1 className="text-5xl font-black leading-[1.05] tracking-tight text-[#1f1f1f] sm:text-6xl" style={{ letterSpacing: "-0.95px" }}>
             Intelligente groei.
             <br />
-            <span className="font-exposure text-[#4af0c4]">Gedreven door AI.</span>
+            <span className="font-exposure">Gedreven door AI.</span>
           </h1>
 
           <p className="max-w-xl text-lg leading-relaxed text-[#575760]">
@@ -56,7 +53,7 @@ export default function Hero() {
               { value: "#1", label: "AI-bureau in Z-Limburg" },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col gap-1">
-                <span className="font-exposure text-3xl font-black text-[#0a7a5c]">{stat.value}</span>
+                <span className="font-exposure text-3xl font-black text-[#1f1f1f]">{stat.value}</span>
                 <span className="text-xs text-[#575760]">{stat.label}</span>
               </div>
             ))}
@@ -64,21 +61,12 @@ export default function Hero() {
         </div>
 
         {/* Visual column */}
-        <div className="hidden lg:block lg:w-[420px] lg:shrink-0">
-          <div className="relative rounded-3xl border border-black/[0.06] bg-white p-2 shadow-sm">
-            <SiteImage
-              src="/images/hero-visual.png"
-              alt="AI agent netwerk illustratie"
-              className="rounded-2xl object-cover w-full"
-            />
-            {/* Fallback placeholder shown when image not yet generated */}
-            <div className="absolute inset-2 rounded-2xl bg-gradient-to-br from-[#f2f3f5] to-white flex items-center justify-center -z-10">
-              <div className="text-center text-[#b2b2be] text-xs">
-                <div className="font-exposure text-4xl text-[#4af0c4]/30 mb-2">∆</div>
-                AI visualisatie
-              </div>
-            </div>
-          </div>
+        <div className="w-full lg:w-[420px] lg:shrink-0">
+          <SiteImage
+            src="/images/hero-visual.png"
+            alt="AI agent netwerk illustratie"
+            className="object-cover w-full"
+          />
         </div>
       </div>
 

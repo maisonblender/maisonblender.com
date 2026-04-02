@@ -31,13 +31,13 @@ export default function Process() {
           {/* Steps column */}
           <div>
             <div className="mb-16 flex flex-col gap-4">
-              <span className="text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
+              <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
                 Aanpak
               </span>
               <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
                 Van idee naar impact
                 <br />
-                <span className="font-exposure text-[#4af0c4]">in drie stappen.</span>
+                <span className="font-exposure">in drie stappen.</span>
               </h2>
             </div>
 
@@ -45,10 +45,10 @@ export default function Process() {
               {steps.map((step, i) => (
                 <div key={step.step} className="group relative flex gap-8 pb-16 last:pb-0">
                   {i < steps.length - 1 && (
-                    <div className="absolute left-[19px] top-10 h-full w-px bg-gradient-to-b from-[#4af0c4]/40 to-transparent" />
+                    <div className="absolute left-[19px] top-10 h-full w-px bg-gradient-to-b from-black/20 to-transparent" />
                   )}
-                  <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[#4af0c4]/30 bg-white shadow-sm">
-                    <span className="font-mono text-xs font-bold text-[#0a7a5c]">{step.step}</span>
+                  <div className="relative z-10 flex h-10 w-10 shrink-0 items-center justify-center border border-black/10 bg-white shadow-sm">
+                    <span className="font-mono text-xs font-bold text-[#1f1f1f]">{step.step}</span>
                   </div>
                   <div className="flex flex-col gap-3 pt-1.5">
                     <h3 className="text-xl font-bold text-[#1f1f1f]">{step.title}</h3>
@@ -60,12 +60,12 @@ export default function Process() {
           </div>
 
           {/* Visual column */}
-          <div className="hidden lg:flex items-center">
-            <div className="relative w-full rounded-3xl border border-black/[0.06] bg-white p-2 shadow-sm">
+          <div className="flex items-center">
+            <div className="w-full">
               <SiteImage
                 src="/images/process-steps.png"
                 alt="Aanpak diagram"
-                className="rounded-2xl object-cover w-full"
+                className="object-cover w-full"
               />
             </div>
           </div>

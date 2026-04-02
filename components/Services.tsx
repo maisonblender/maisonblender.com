@@ -56,13 +56,13 @@ export default function Services() {
     <section id="diensten" className="relative px-6 py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 flex flex-col gap-4">
-          <span className="text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
+          <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
             Diensten
           </span>
           <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
             Alles wat u nodig heeft.
             <br />
-            <span className="font-exposure text-[#4af0c4]">Onder één dak.</span>
+            <span className="font-exposure">Onder één dak.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
             Van AI-chatbots en procesautomatisering tot maatwerksoftware en dataplatformen —
@@ -70,11 +70,11 @@ export default function Services() {
           </p>
         </div>
 
-        <div className="mb-12 hidden lg:block rounded-3xl border border-black/[0.06] bg-white p-2 shadow-sm overflow-hidden">
+        <div className="mb-12 overflow-hidden">
           <SiteImage
             src="/images/services-flow.png"
             alt="Diensten overzicht flow"
-            className="rounded-2xl object-cover w-full max-h-64"
+            className="object-cover w-full max-h-64"
           />
         </div>
 
@@ -85,19 +85,19 @@ export default function Services() {
               className="group flex flex-col gap-6 bg-[#f2f3f5] p-8 transition-colors hover:bg-white"
             >
               <div className="flex items-start justify-between">
-                <span className="font-mono text-xs text-[#0a7a5c]/60">{service.id}</span>
-                <div className="h-px w-8 bg-[#4af0c4]/40 transition-all group-hover:w-16 group-hover:bg-[#4af0c4]" />
+                <span className="font-mono text-xs text-[#575760]/60">{service.id}</span>
+                <div className="h-px w-8 bg-black/20 transition-all group-hover:w-16 group-hover:bg-black/40" />
               </div>
               <div className="flex flex-col gap-2">
                 <h3 className="text-xl font-bold text-[#1f1f1f]">{service.title}</h3>
-                <p className="text-sm font-medium text-[#0a7a5c]">{service.subtitle}</p>
+                <p className="text-sm font-medium text-[#575760]">{service.subtitle}</p>
               </div>
               <p className="flex-1 text-sm leading-relaxed text-[#575760]">{service.description}</p>
               <div className="flex flex-wrap gap-2">
                 {service.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760]"
+                    className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760]"
                   >
                     {tag}
                   </span>

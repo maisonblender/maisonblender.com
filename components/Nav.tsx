@@ -3,7 +3,7 @@ export default function Nav() {
     <header className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.06] bg-white/90 backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="#" className="text-lg font-bold tracking-widest text-[#1f1f1f]">
-          M<span className="font-exposure text-[#4af0c4]">∆</span>ISON BLNDR
+          M<span className="font-exposure">∆</span>ISON BLNDR
         </a>
         <nav className="hidden gap-8 text-sm font-medium text-[#575760] md:flex">
           <a href="#diensten" className="transition-colors hover:text-[#1f1f1f]">Diensten</a>

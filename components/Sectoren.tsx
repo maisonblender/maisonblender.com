@@ -68,13 +68,13 @@ export default function Sectoren() {
 
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 flex flex-col gap-4">
-          <span className="text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
+          <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
             Sectoren
           </span>
           <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
             Wij kennen uw branche.
             <br />
-            <span className="font-exposure text-[#4af0c4]">En uw uitdagingen.</span>
+            <span className="font-exposure">En uw uitdagingen.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
             AI-automatisering is geen one-size-fits-all. Wij passen elke oplossing aan op de
@@ -86,7 +86,7 @@ export default function Sectoren() {
           {sectoren.map((item) => (
             <div
               key={item.sector}
-              className="group rounded-2xl border border-black/[0.06] bg-[#f2f3f5] p-8 transition-all hover:border-[#4af0c4]/30 hover:bg-white hover:shadow-sm"
+              className="group bg-[#f2f3f5] p-8 transition-all hover:bg-white"
             >
               <div className="mb-6 flex items-center gap-3">
                 <span className="text-2xl" aria-hidden="true">{item.icon}</span>
@@ -95,7 +95,7 @@ export default function Sectoren() {
               <ul className="flex flex-col gap-2.5">
                 {item.usecases.map((uc) => (
                   <li key={uc} className="flex items-start gap-2.5 text-sm text-[#575760]">
-                    <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#4af0c4]" />
+                    <span className="mt-1.5 h-1 w-1 shrink-0 bg-black/30" />
                     {uc}
                   </li>
                 ))}
@@ -105,7 +105,7 @@ export default function Sectoren() {
         </div>
 
         {/* CTA strip */}
-        <div className="mt-16 flex flex-col items-center gap-4 rounded-2xl border border-black/[0.06] bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="mt-16 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-2">
             <p className="text-lg font-bold text-[#1f1f1f]">Staat uw branche er niet bij?</p>
             <p className="text-sm text-[#575760]">

@@ -10,13 +10,13 @@ export default function About() {
           {/* Left: text */}
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
-              <span className="text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
+              <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
                 Over ons
               </span>
               <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
                 De AI-autoriteit
                 <br />
-                <span className="font-exposure text-[#4af0c4]">van Zuid-Limburg.</span>
+                <span className="font-exposure">van Zuid-Limburg.</span>
               </h2>
             </div>
 
@@ -43,7 +43,7 @@ export default function About() {
                 { label: "Specialisatie", value: "Custom AI-agents" },
                 { label: "Doelgroep", value: "MKB & Scale-ups" },
               ].map((item) => (
-                <div key={item.label} className="flex flex-col gap-1 border-l-2 border-[#4af0c4] pl-4">
+                <div key={item.label} className="flex flex-col gap-1 border-l-2 border-black/20 pl-4">
                   <span className="text-xs text-[#b2b2be] uppercase tracking-widest">{item.label}</span>
                   <span className="text-sm font-medium text-[#1f1f1f]">{item.value}</span>
                 </div>
@@ -53,28 +53,22 @@ export default function About() {
 
           {/* Right: visual + manifesto card */}
           <div className="flex flex-col gap-6">
-            <div className="relative w-full rounded-3xl border border-black/[0.06] bg-white p-2 shadow-sm">
+            <div className="w-full">
               <SiteImage
                 src="/images/about-visual.png"
                 alt="Maison Blender team"
-                className="rounded-2xl object-cover w-full"
+                className="object-cover w-full"
               />
             </div>
-            <div className="relative w-full rounded-2xl border border-black/[0.06] bg-[#f2f3f5] p-10 shadow-sm">
-              {/* Corner accent */}
-              <div className="absolute right-0 top-0 h-24 w-24 overflow-hidden rounded-tr-2xl">
-                <div className="absolute right-0 top-0 h-px w-24 bg-[#4af0c4]/60" />
-                <div className="absolute right-0 top-0 h-24 w-px bg-[#4af0c4]/60" />
-              </div>
-
+            <div className="w-full bg-[#f2f3f5] p-10">
               <div className="flex flex-col gap-6">
-                <div className="h-px w-8 bg-[#4af0c4]" />
+                <div className="h-px w-8 bg-black/30" />
                 <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
                   &ldquo;AI is geen toekomstmuziek meer. Het is de infrastructuur van nu. Wij
                   helpen u die infrastructuur bouwen.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-[#0a7a5c]">Maison Blender</span>
+                  <span className="text-sm font-medium text-[#575760]">Maison Blender</span>
                   <span className="text-xs text-[#b2b2be]">Sittard, Zuid-Limburg</span>
                 </div>
               </div>
