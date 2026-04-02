@@ -53,13 +53,13 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="diensten" className="relative px-6 py-32">
+    <section id="diensten" className="relative px-6 py-20 lg:py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 flex flex-col gap-4">
           <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
             Diensten
           </span>
-          <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
+          <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
             Alles wat u nodig heeft.
             <br />
             <span className="font-exposure">Onder één dak.</span>

@@ -2,7 +2,7 @@ import SiteImage from "@/components/SiteImage";
 
 export default function About() {
   return (
-    <section id="over-ons" className="relative bg-white px-6 py-32">
+    <section id="over-ons" className="relative bg-white px-6 py-20 lg:py-32">
       <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
 
       <div className="mx-auto max-w-6xl">
@@ -13,7 +13,7 @@ export default function About() {
               <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
                 Over ons
               </span>
-              <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
+              <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
                 De AI-autoriteit
                 <br />
                 <span className="font-exposure">van Zuid-Limburg.</span>
