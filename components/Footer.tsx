@@ -12,6 +12,7 @@ export default function Footer() {
         </p>
         <nav className="flex gap-6 text-xs text-[#8892a4]">
           <a href="#diensten" className="hover:text-[#f0f4ff] transition-colors">Diensten</a>
+          <a href="#sectoren" className="hover:text-[#f0f4ff] transition-colors">Sectoren</a>
           <a href="#aanpak" className="hover:text-[#f0f4ff] transition-colors">Aanpak</a>
           <a href="#contact" className="hover:text-[#f0f4ff] transition-colors">Contact</a>
         </nav>

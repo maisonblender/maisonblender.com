@@ -1,27 +1,51 @@
 const services = [
   {
     id: "01",
-    title: "Het Brein",
-    subtitle: "Large Language Models & AI-logica",
+    title: "AI Chatbots & Klantenservice",
+    subtitle: "24/7 geautomatiseerde klantinteractie",
     description:
-      "Wij integreren en fine-tunen LLMs voor uw specifieke domein. Van RAG-systemen die uw interne kennisbank ontsluiten tot function calling die uw bestaande software aanstuurt.",
-    tags: ["LLMs & Fine-tuning", "RAG-systemen", "Function calling", "Prompt engineering"],
+      "Automatiseer tot 90% van uw klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren — via web, WhatsApp, e-mail en meer.",
+    tags: ["Conversational AI", "WhatsApp & web chat", "Lead generatie", "Omnichannel"],
   },
   {
     id: "02",
-    title: "Het Zenuwstelsel",
-    subtitle: "Workflow-orchestratie & Infrastructuur",
+    title: "AI Agents & Procesautomatisering",
+    subtitle: "Intelligente agents die voor u werken",
     description:
-      "Intelligente pipelines die uw processen met elkaar verbinden. MCP-servers, vector databases en event-driven architecturen die uw AI-agents laten samenwerken als één organisme.",
-    tags: ["Workflow-orchestratie", "MCP-servers", "Vector databases", "Event-driven AI"],
+      "Custom AI-agents die taken uitvoeren: documenten verwerken, e-mails interpreteren, acties uitvoeren in uw CRM of ERP. 24/7 operationeel, zonder menselijke tussenkomst.",
+    tags: ["Multi-agent orkestratie", "Documentverwerking", "CRM/ERP-koppelingen", "Taakuitvoering"],
   },
   {
     id: "03",
-    title: "De Zintuigen & Handen",
-    subtitle: "Integraties & Data-pipelines",
+    title: "RPA & Workflow-integraties",
+    subtitle: "Robotic Process Automation zonder zorgen",
     description:
-      "Uw AI ziet, hoort en handelt. Wij koppelen uw bestaande tech-stack aan AI via robuuste API-integraties, data-pipelines en strategisch technisch advies.",
-    tags: ["API-integraties", "Data-pipelines", "Tech-stack advies", "Automatisering"],
+      "Automatiseer repetitieve schermtaken en verbind uw systemen via robuuste API-koppelingen. Van factuurverwerking tot contractbeheer — wij beheren het volledig voor u.",
+    tags: ["Robotic Process Automation", "API-integraties", "Factuurverwerking", "Schermautomatisering"],
+  },
+  {
+    id: "04",
+    title: "Custom AI Software & Portalen",
+    subtitle: "Maatwerksoftware aangedreven door AI",
+    description:
+      "Bespoke AI-applicaties, klant- en leveranciersportalen, mobiele apps en webapplicaties — volledig op maat gebouwd voor uw processen en data.",
+    tags: ["Klantportalen", "Web & mobiele apps", "AI-applicaties", "Documentbeheer"],
+  },
+  {
+    id: "05",
+    title: "Data-intelligentie & Rapportages",
+    subtitle: "Van ruwe data naar bruikbare inzichten",
+    description:
+      "RAG-systemen die uw interne kennisbase ontsluiten, automatische rapportages en dashboards die uw team dagelijks sturen op de juiste KPI's.",
+    tags: ["RAG-systemen", "Kennismanagement", "Dashboards", "Automatische rapportages"],
+  },
+  {
+    id: "06",
+    title: "AI Strategie & Quickscan",
+    subtitle: "Van strategie naar uitvoering",
+    description:
+      "Wij beginnen met een gratis automatiseringsquickscan van uw processen. U krijgt een concreet implementatieplan inclusief business case — zodat u weet wat het oplevert vóór u investeert.",
+    tags: ["Gratis quickscan", "Implementatieroadmap", "Business case", "Team training"],
   },
 ];
 
@@ -34,17 +58,17 @@ export default function Services() {
             Diensten
           </span>
           <h2 className="text-4xl font-black tracking-tight text-[#f0f4ff] sm:text-5xl">
-            Gebouwd voor impact.
+            Alles wat u nodig heeft.
             <br />
-            <span className="text-[#8892a4]">Elke laag van AI.</span>
+            <span className="text-[#8892a4]">Onder één dak.</span>
           </h2>
           <p className="max-w-xl text-[#8892a4]">
-            Wij werken van strategie tot implementatie — van het intelligente brein tot de handen
-            die de uitvoering doen.
+            Van AI-chatbots en procesautomatisering tot maatwerksoftware en dataplatformen —
+            wij leveren de volledige AI-stack voor uw organisatie.
           </p>
         </div>
 
-        <div className="grid gap-px bg-white/5 sm:grid-cols-3">
+        <div className="grid gap-px bg-white/5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <div
               key={service.id}

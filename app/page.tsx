@@ -1,9 +1,9 @@
 import Nav from "@/components/Nav";
 import Hero from "@/components/Hero";
 import Services from "@/components/Services";
+import Sectoren from "@/components/Sectoren";
 import Process from "@/components/Process";
 import About from "@/components/About";
-import AIDemo from "@/components/AIDemo";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -13,9 +13,9 @@ export default function Home() {
       <Nav />
       <Hero />
       <Services />
+      <Sectoren />
       <Process />
       <About />
-      <AIDemo />
       <Contact />
       <Footer />
     </main>
