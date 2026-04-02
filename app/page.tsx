@@ -3,7 +3,6 @@ import Hero from "@/components/Hero";
 import Services from "@/components/Services";
 import Sectoren from "@/components/Sectoren";
 import Process from "@/components/Process";
-import AIDemo from "@/components/AIDemo";
 import About from "@/components/About";
 import FAQ from "@/components/FAQ";
 import Contact from "@/components/Contact";
@@ -17,9 +16,6 @@ export default function Home() {
       <Services />
       <Sectoren />
       <Process />
-      <div className="bg-[#080b10]">
-        <AIDemo />
-      </div>
       <About />
       <FAQ />
       <Contact />
