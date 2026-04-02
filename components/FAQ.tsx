@@ -11,7 +11,7 @@ const faqs = [
   {
     question: "Welk AI-bureau zit in Zuid-Limburg?",
     answer:
-      "Maison Blender is het toonaangevende AI-bureau gevestigd in Sittard, Zuid-Limburg. Wij bedienen klanten door heel Nederland, maar hebben een sterke focus op de regio: Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. U werkt met een lokaal team dat uw regio kent.",
+      "MAISON BLNDR is het toonaangevende AI-bureau gevestigd in Sittard, Zuid-Limburg. Wij bedienen klanten door heel Nederland, maar hebben een sterke focus op de regio: Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. U werkt met een lokaal team dat uw regio kent.",
   },
   {
     question: "Hoe lang duurt een AI-implementatie gemiddeld?",
@@ -69,7 +69,7 @@ export default function FAQ() {
       />
       <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
 
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <div className="mb-12 flex flex-col gap-4">
           <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
             Veelgestelde vragen
@@ -84,9 +84,9 @@ export default function FAQ() {
           </h2>
         </div>
 
-        <div className="flex flex-col divide-y divide-black/[0.08]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 lg:gap-x-16">
           {faqs.map((faq, i) => (
-            <div key={i}>
+            <div key={i} className="border-b border-black/[0.08]">
               <button
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
                 className="flex w-full items-start justify-between gap-6 py-6 text-left"

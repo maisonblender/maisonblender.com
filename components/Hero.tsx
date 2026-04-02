@@ -27,7 +27,7 @@ export default function Hero() {
           </h1>
 
           <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-            Maison Blender bouwt custom AI-agents en intelligente automatisering voor ambitieuze
+            MAISON BLNDR bouwt custom AI-agents en intelligente automatisering voor ambitieuze
             bedrijven in Zuid-Limburg en daarbuiten. Bespaar 40+ uur per week en schaal zonder
             proportionele groei in headcount.
           </p>
@@ -71,11 +71,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll indicator - hidden on mobile */}
-      <div className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 text-xs text-[#b2b2be] lg:flex">
-        <span>Scroll</span>
-        <div className="h-8 w-px bg-gradient-to-b from-[#b2b2be] to-transparent" />
-      </div>
+
     </section>
   );
 }

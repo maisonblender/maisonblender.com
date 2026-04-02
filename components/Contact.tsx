@@ -5,7 +5,7 @@ export default function Contact() {
     <section id="contact" className="relative bg-[#2c3e50] px-6 py-20 lg:py-32">
       <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-6xl">
         <div className="mb-12 flex flex-col gap-4">
           <span className="text-xs font-medium uppercase tracking-widest text-white/50">
             Contact

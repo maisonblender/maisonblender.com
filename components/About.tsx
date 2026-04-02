@@ -22,7 +22,7 @@ export default function About() {
 
             <div id="about-description" className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
-                Maison Blender bouwt AI-oplossingen voor bedrijven die willen groeien.
+                MAISON BLNDR bouwt AI-oplossingen voor bedrijven die willen groeien.
                 Geen loze strategiedocumenten - wij leveren werkende software die uw mensen
                 dagelijks gebruiken.
               </p>
@@ -73,7 +73,7 @@ export default function About() {
                   Daarom bouwen wij altijd op maat - en blijven wij betrokken na de lancering.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-[#575760]">Maison Blender</span>
+                  <span className="text-sm font-medium text-[#575760]">MAISON BLNDR</span>
                   <span className="text-xs text-[#b2b2be]">Sittard, Zuid-Limburg</span>
                 </div>
               </div>

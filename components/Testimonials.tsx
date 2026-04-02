@@ -1,7 +1,7 @@
 const testimonials = [
   {
     quote:
-      "Dankzij Maison Blender verwerken we inkoopfacturen nu volledig automatisch. Wat vroeger een halve dag kostte, doet de AI in minuten. Indrukwekkend.",
+      "Dankzij MAISON BLNDR verwerken we inkoopfacturen nu volledig automatisch. Wat vroeger een halve dag kostte, doet de AI in minuten. Indrukwekkend.",
     name: "Marco van den Berg",
     title: "Directeur Operations",
     company: "Van den Berg Logistics, Sittard",
@@ -9,7 +9,7 @@ const testimonials = [
   },
   {
     quote:
-      "We hadden geen idee waar te beginnen met AI. Het team van Maison Blender maakte in één gesprek duidelijk welke processen het meeste zouden opleveren. Aanrader voor elk MKB-bedrijf in Limburg.",
+      "We hadden geen idee waar te beginnen met AI. Het team van MAISON BLNDR maakte in één gesprek duidelijk welke processen het meeste zouden opleveren. Aanrader voor elk MKB-bedrijf in Limburg.",
     name: "Ilse Hermans",
     title: "Eigenaar",
     company: "Hermans Accountancy, Geleen",
