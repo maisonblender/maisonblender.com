@@ -23,7 +23,7 @@ export default function About() {
             <div className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
                 Maison Blender bouwt AI-oplossingen voor bedrijven die willen groeien.
-                Geen loze strategiedocumenten — wij leveren werkende software die uw mensen
+                Geen loze strategiedocumenten - wij leveren werkende software die uw mensen
                 dagelijks gebruiken.
               </p>
               <p>
@@ -63,8 +63,8 @@ export default function About() {
               <div className="flex flex-col gap-6">
                 <div className="h-px w-8 bg-black/30" />
                 <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
-                  &ldquo;We brengen geen PowerPoints. We bouwen dingen die uw mensen dagelijks
-                  gebruiken en waar uw klanten beter van worden.&rdquo;
+                  &ldquo;Automatisering werkt pas als het past bij uw mensen en uw processen.
+                  Daarom bouwen wij altijd op maat - en blijven wij betrokken na de lancering.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
                   <span className="text-sm font-medium text-[#575760]">Maison Blender</span>

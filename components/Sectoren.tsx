@@ -118,7 +118,7 @@ export default function Sectoren() {
           <div className="flex flex-col gap-2">
             <p className="text-lg font-bold text-[#1f1f1f]">Staat uw branche er niet bij?</p>
             <p className="text-sm text-[#575760]">
-              Wij werken voor elke sector. Plan een quickscan — gratis en vrijblijvend.
+              Wij werken voor elke sector. Plan een quickscan - gratis en vrijblijvend.
             </p>
           </div>
           <a

@@ -17,7 +17,7 @@ const steps = [
     step: "03",
     title: "Implementatie & Schaling",
     description:
-      "Na validatie schalen wij de oplossing naar productie. Robuust, veilig en onderhoudbaar — gebouwd om jaren mee te gaan en mee te groeien.",
+      "Na validatie schalen wij de oplossing naar productie. Robuust, veilig en onderhoudbaar - gebouwd om jaren mee te gaan en mee te groeien.",
   },
 ];
 

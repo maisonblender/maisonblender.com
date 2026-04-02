@@ -6,7 +6,7 @@ const services = [
     title: "AI Chatbots & Klantenservice",
     subtitle: "24/7 geautomatiseerde klantinteractie",
     description:
-      "Automatiseer tot 90% van uw klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren — via web, WhatsApp, e-mail en meer.",
+      "Automatiseer tot 90% van uw klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren - via web, WhatsApp, e-mail en meer.",
     tags: ["Conversational AI", "WhatsApp & web chat", "Lead generatie", "Omnichannel"],
   },
   {
@@ -22,7 +22,7 @@ const services = [
     title: "RPA & Workflow-integraties",
     subtitle: "Robotic Process Automation zonder zorgen",
     description:
-      "Automatiseer repetitieve schermtaken en verbind uw systemen via robuuste API-koppelingen. Van factuurverwerking tot contractbeheer — wij beheren het volledig voor u.",
+      "Automatiseer repetitieve schermtaken en verbind uw systemen via robuuste API-koppelingen. Van factuurverwerking tot contractbeheer - wij beheren het volledig voor u.",
     tags: ["Robotic Process Automation", "API-integraties", "Factuurverwerking", "Schermautomatisering"],
   },
   {
@@ -30,7 +30,7 @@ const services = [
     title: "Custom AI Software & Portalen",
     subtitle: "Maatwerksoftware aangedreven door AI",
     description:
-      "Bespoke AI-applicaties, klant- en leveranciersportalen, mobiele apps en webapplicaties — volledig op maat gebouwd voor uw processen en data.",
+      "Bespoke AI-applicaties, klant- en leveranciersportalen, mobiele apps en webapplicaties - volledig op maat gebouwd voor uw processen en data.",
     tags: ["Klantportalen", "Web & mobiele apps", "AI-applicaties", "Documentbeheer"],
   },
   {
@@ -46,7 +46,7 @@ const services = [
     title: "AI Strategie & Quickscan",
     subtitle: "Van strategie naar uitvoering",
     description:
-      "Wij beginnen met een gratis automatiseringsquickscan van uw processen. U krijgt een concreet implementatieplan inclusief business case — zodat u weet wat het oplevert vóór u investeert.",
+      "Wij beginnen met een gratis automatiseringsquickscan van uw processen. U krijgt een concreet implementatieplan inclusief business case - zodat u weet wat het oplevert vóór u investeert.",
     tags: ["Gratis quickscan", "Implementatieroadmap", "Business case", "Team training"],
   },
 ];
@@ -65,7 +65,7 @@ export default function Services() {
             <span className="font-exposure">Onder één dak.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Van AI-chatbots en procesautomatisering tot maatwerksoftware en dataplatformen —
+            Van AI-chatbots en procesautomatisering tot maatwerksoftware en dataplatformen -
             wij leveren de volledige AI-stack voor uw organisatie.
           </p>
         </div>
@@ -82,7 +82,7 @@ export default function Services() {
           {services.map((service) => (
             <div
               key={service.id}
-              className="group flex flex-col gap-6 bg-[#f2f3f5] p-6 transition-colors hover:bg-white sm:p-8"
+              className="group flex flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#ecedf0] sm:p-8"
             >
               <div className="flex items-start justify-between">
                 <span className="font-mono text-xs text-[#575760]/60">{service.id}</span>
