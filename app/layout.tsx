@@ -154,7 +154,6 @@ const jsonLd = {
       sameAs: [
         "https://maisonblender.com",
         "https://www.linkedin.com/company/maisonblender",
-        "https://g.co/kgs/maisonblender",
       ],
     },
     {
