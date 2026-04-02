@@ -4,10 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/generate-images.mjs && next build",
     "start": "next start",
     "lint": "eslint",
-    "generate-images": "node scripts/generate-images.mjs"
+    "generate-images": "node --env-file=.env.local scripts/generate-images.mjs"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.81.0",

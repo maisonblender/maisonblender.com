@@ -2,40 +2,28 @@
  * Maison Blender — AI Image Generator
  *
  * Generates site visuals using Google Gemini image generation API.
- * Saves PNG files to public/images/ — commit them to git so Vercel
- * can serve them statically without needing a runtime API key.
+ * Saves PNG files to public/images/ — Next.js serves them statically.
  *
- * Usage:
- *   1. Add GEMINI_API_KEY=your_key to .env.local
- *   2. npm run generate-images
- *   3. git add public/images && git commit -m "Update generated images"
- *   4. git push
+ * Runs automatically during `next build` when GEMINI_API_KEY is set.
+ * To regenerate images, set REGENERATE_IMAGES=true alongside the API key.
+ *
+ * Local usage:
+ *   GEMINI_API_KEY=xxx node scripts/generate-images.mjs
  */
 
-import { writeFileSync, mkdirSync } from "fs";
+import { writeFileSync, mkdirSync, existsSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const OUT_DIR = resolve(__dirname, "../public/images");
 
-// Load .env.local
-const envPath = resolve(__dirname, "../.env.local");
-try {
-  const { readFileSync } = await import("fs");
-  const env = readFileSync(envPath, "utf-8");
-  for (const line of env.split("\n")) {
-    const [key, ...rest] = line.split("=");
-    if (key && rest.length) process.env[key.trim()] = rest.join("=").trim();
-  }
-} catch {
-  // .env.local may not exist in CI; rely on environment variables
-}
-
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const REGENERATE = process.env.REGENERATE_IMAGES === "true";
+
 if (!GEMINI_API_KEY) {
-  console.error("❌  GEMINI_API_KEY not set. Add it to .env.local");
-  process.exit(1);
+  console.log("ℹ️  GEMINI_API_KEY not set — skipping image generation.");
+  process.exit(0);
 }
 
 mkdirSync(OUT_DIR, { recursive: true });
@@ -44,7 +32,14 @@ const ENDPOINT =
   "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent";
 
 async function generateImage(name, prompt, aspectRatio = "16:9") {
-  console.log(`\n⏳  Generating: ${name}`);
+  const outPath = resolve(OUT_DIR, `${name}.png`);
+
+  if (!REGENERATE && existsSync(outPath)) {
+    console.log(`⏭️  Skipping ${name}.png (already exists, set REGENERATE_IMAGES=true to force)`);
+    return;
+  }
+
+  console.log(`⏳  Generating: ${name}.png …`);
 
   const res = await fetch(ENDPOINT, {
     method: "POST",
@@ -63,7 +58,8 @@ async function generateImage(name, prompt, aspectRatio = "16:9") {
 
   if (!res.ok) {
     const err = await res.text();
-    throw new Error(`Gemini API error ${res.status}: ${err}`);
+    console.error(`❌  Gemini API error ${res.status} for "${name}":\n${err}`);
+    return;
   }
 
   const json = await res.json();
@@ -71,13 +67,13 @@ async function generateImage(name, prompt, aspectRatio = "16:9") {
   const imgPart = parts.find((p) => p.inline_data?.data);
 
   if (!imgPart) {
-    throw new Error(`No image in response for "${name}": ${JSON.stringify(json)}`);
+    console.error(`❌  No image returned for "${name}". Response: ${JSON.stringify(json).slice(0, 200)}`);
+    return;
   }
 
   const buf = Buffer.from(imgPart.inline_data.data, "base64");
-  const outPath = resolve(OUT_DIR, `${name}.png`);
   writeFileSync(outPath, buf);
-  console.log(`✅  Saved: public/images/${name}.png (${Math.round(buf.length / 1024)}KB)`);
+  console.log(`✅  ${name}.png saved (${Math.round(buf.length / 1024)} KB)`);
 }
 
 const images = [
@@ -85,45 +81,34 @@ const images = [
     name: "hero-visual",
     aspectRatio: "4:3",
     prompt:
-      "Minimalist isometric illustration of an AI agent network — interconnected nodes with glowing teal (#4af0c4) lines on a clean white/light gray background. Abstract data flows between stylized server icons and brain-like clusters. Professional Dutch B2B tech aesthetic. No text, no labels. Soft shadows, lots of white space. Suitable as hero section visual for an AI automation agency website.",
+      "Minimalist isometric illustration of an AI agent network — interconnected glowing teal nodes on a clean light gray (#f2f3f5) background. Abstract data flows between stylized server and brain icons. Professional Dutch B2B tech aesthetic. No text. Soft shadows, lots of white space. Hero section visual for an AI automation agency.",
   },
   {
     name: "services-flow",
     aspectRatio: "16:9",
     prompt:
-      "Clean technical diagram showing a workflow automation pipeline: a robot/AI icon on the left sending data through interconnected modules (chat bubble, gear, document, chart) to a happy customer icon on the right. Flat design, light background (#f2f3f5), teal (#4af0c4) accent arrows and highlights. Minimal, professional, suitable for a B2B AI agency. No text labels.",
+      "Clean flat-design workflow diagram: a robot AI icon on the left sends data through 5 connected modules (chat bubble, gear cog, document, bar chart, lightbulb) to a satisfied business person on the right. Light gray (#f2f3f5) background, teal (#4af0c4) accent arrows. Professional, minimal, no text labels.",
   },
   {
     name: "process-steps",
     aspectRatio: "3:2",
     prompt:
-      "Minimal infographic showing 3 steps connected by smooth flowing lines: (1) magnifying glass over a blueprint — strategy (2) lightning bolt building blocks — prototype (3) rocket launch with upward arrow — scale. Clean flat illustration, light cream/gray background, teal accent color, soft drop shadows. Professional, modern, no text labels.",
+      "Minimal flat infographic showing 3 sequential steps connected by smooth curved lines: Step 1 blueprint with magnifying glass, Step 2 building blocks with lightning bolt, Step 3 rocket launching upward. Light off-white background, teal circular step markers, subtle drop shadows. Professional B2B style, no text.",
   },
   {
     name: "about-visual",
     aspectRatio: "4:3",
     prompt:
-      "Subtle abstract illustration of the Zuid-Limburg Netherlands region represented as an elegant minimalist map or geographic contour lines, with small glowing teal node dots scattered across it representing AI connectivity. Clean, professional, very light background, mostly white space. Suitable as a background element for an about/company section. No text.",
+      "Elegant minimal illustration of the Netherlands province of Limburg as a subtle geographic outline with small glowing teal dot nodes scattered across it representing AI connectivity and digital infrastructure. Very light, mostly white space, delicate contour lines, professional and understated. Suitable as a company section background element. No text.",
   },
 ];
 
-console.log(`\n🎨  Generating ${images.length} images for maisonblender.com`);
-console.log(`📁  Output: public/images/\n`);
+console.log(`\n🎨  Maison Blender image generator`);
+console.log(`📁  Output → public/images/\n`);
 
-let success = 0;
 for (const img of images) {
-  try {
-    await generateImage(img.name, img.prompt, img.aspectRatio);
-    success++;
-    // Small delay to avoid rate limits
-    await new Promise((r) => setTimeout(r, 1500));
-  } catch (err) {
-    console.error(`❌  Failed ${img.name}: ${err.message}`);
-  }
+  await generateImage(img.name, img.prompt, img.aspectRatio);
+  await new Promise((r) => setTimeout(r, 1200)); // avoid rate limits
 }
 
-console.log(`\n🏁  Done: ${success}/${images.length} images generated`);
-console.log(`\nNext steps:`);
-console.log(`  git add public/images`);
-console.log(`  git commit -m "Add AI-generated site visuals"`);
-console.log(`  git push`);
+console.log(`\n✓  Image generation complete.\n`);
