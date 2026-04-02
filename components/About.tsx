@@ -1,22 +1,24 @@
 export default function About() {
   return (
-    <section id="over-ons" className="relative px-6 py-32">
+    <section id="over-ons" className="relative bg-white px-6 py-32">
+      <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
+
       <div className="mx-auto max-w-6xl">
         <div className="grid gap-16 lg:grid-cols-2 lg:gap-24">
           {/* Left: text */}
           <div className="flex flex-col gap-8">
             <div className="flex flex-col gap-4">
-              <span className="text-xs font-medium uppercase tracking-widest text-[#4af0c4]">
+              <span className="text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
                 Over ons
               </span>
-              <h2 className="text-4xl font-black tracking-tight text-[#f0f4ff] sm:text-5xl">
+              <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
                 De AI-autoriteit
                 <br />
-                van Zuid-Limburg.
+                <span className="font-exposure text-[#4af0c4]">van Zuid-Limburg.</span>
               </h2>
             </div>
 
-            <div className="flex flex-col gap-4 text-[#8892a4] leading-relaxed">
+            <div className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
                 Maison Blender is opgericht met één missie: AI toegankelijk en impactvol maken voor
                 ambitieuze organisaties in Zuid-Limburg en daarbuiten. Wij zijn niet alleen
@@ -39,9 +41,9 @@ export default function About() {
                 { label: "Specialisatie", value: "Custom AI-agents" },
                 { label: "Doelgroep", value: "MKB & Scale-ups" },
               ].map((item) => (
-                <div key={item.label} className="flex flex-col gap-1 border-l border-[#4af0c4]/20 pl-4">
-                  <span className="text-xs text-[#8892a4]/60 uppercase tracking-widest">{item.label}</span>
-                  <span className="text-sm font-medium text-[#f0f4ff]">{item.value}</span>
+                <div key={item.label} className="flex flex-col gap-1 border-l-2 border-[#4af0c4] pl-4">
+                  <span className="text-xs text-[#b2b2be] uppercase tracking-widest">{item.label}</span>
+                  <span className="text-sm font-medium text-[#1f1f1f]">{item.value}</span>
                 </div>
               ))}
             </div>
@@ -49,22 +51,22 @@ export default function About() {
 
           {/* Right: manifesto card */}
           <div className="flex items-center">
-            <div className="relative w-full rounded-2xl border border-white/5 bg-[#0a0e15] p-10">
+            <div className="relative w-full rounded-2xl border border-black/[0.06] bg-[#f2f3f5] p-10 shadow-sm">
               {/* Corner accent */}
               <div className="absolute right-0 top-0 h-24 w-24 overflow-hidden rounded-tr-2xl">
-                <div className="absolute right-0 top-0 h-px w-24 bg-[#4af0c4]/30" />
-                <div className="absolute right-0 top-0 h-24 w-px bg-[#4af0c4]/30" />
+                <div className="absolute right-0 top-0 h-px w-24 bg-[#4af0c4]/60" />
+                <div className="absolute right-0 top-0 h-24 w-px bg-[#4af0c4]/60" />
               </div>
 
               <div className="flex flex-col gap-6">
                 <div className="h-px w-8 bg-[#4af0c4]" />
-                <blockquote className="text-2xl font-bold leading-tight text-[#f0f4ff]">
+                <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
                   &ldquo;AI is geen toekomstmuziek meer. Het is de infrastructuur van nu. Wij
                   helpen u die infrastructuur bouwen.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
-                  <span className="text-sm font-medium text-[#4af0c4]">Maison Blender</span>
-                  <span className="text-xs text-[#8892a4]">Sittard, Zuid-Limburg</span>
+                  <span className="text-sm font-medium text-[#0a7a5c]">Maison Blender</span>
+                  <span className="text-xs text-[#b2b2be]">Sittard, Zuid-Limburg</span>
                 </div>
               </div>
             </div>

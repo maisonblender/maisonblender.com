@@ -1,21 +1,32 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'Exposure-20';
+  font-style: normal;
+  font-weight: 400;
+  src: url('https://maisonblender.com/wp-content/uploads/2025/05/ExposureTrial-20.otf') format('opentype');
+  font-display: swap;
+}
+
 :root {
-  --background: #080b10;
-  --foreground: #f0f4ff;
+  --background: #f2f3f5;
+  --foreground: #1f1f1f;
+  --muted: #575760;
+  --muted-light: #b2b2be;
+  --surface: #ffffff;
+  --surface-2: #ecedf0;
+  --border: rgba(0, 0, 0, 0.08);
   --accent: #4af0c4;
-  --accent-dim: #1a6b58;
-  --muted: #8892a4;
+  --accent-text: #0a7a5c;
+  --dark-section: #2c3e50;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
-  --color-accent-dim: var(--accent-dim);
-  --color-muted: var(--muted);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-exposure: 'Exposure-20', sans-serif;
 }
 
 html {
@@ -25,11 +36,15 @@ html {
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), Inter, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+.font-exposure {
+  font-family: 'Exposure-20', Inter, sans-serif;
 }
 
 ::selection {
   background: var(--accent);
-  color: var(--background);
+  color: var(--foreground);
 }

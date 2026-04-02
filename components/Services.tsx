@@ -54,40 +54,40 @@ export default function Services() {
     <section id="diensten" className="relative px-6 py-32">
       <div className="mx-auto max-w-6xl">
         <div className="mb-16 flex flex-col gap-4">
-          <span className="text-xs font-medium uppercase tracking-widest text-[#4af0c4]">
+          <span className="text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
             Diensten
           </span>
-          <h2 className="text-4xl font-black tracking-tight text-[#f0f4ff] sm:text-5xl">
+          <h2 className="text-4xl font-black tracking-tight text-[#1f1f1f] sm:text-5xl" style={{ letterSpacing: "-0.95px" }}>
             Alles wat u nodig heeft.
             <br />
-            <span className="text-[#8892a4]">Onder één dak.</span>
+            <span className="font-exposure text-[#4af0c4]">Onder één dak.</span>
           </h2>
-          <p className="max-w-xl text-[#8892a4]">
+          <p className="max-w-xl text-[#575760]">
             Van AI-chatbots en procesautomatisering tot maatwerksoftware en dataplatformen —
             wij leveren de volledige AI-stack voor uw organisatie.
           </p>
         </div>
 
-        <div className="grid gap-px bg-white/5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-px bg-black/[0.06] sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <div
               key={service.id}
-              className="group flex flex-col gap-6 bg-[#080b10] p-8 transition-colors hover:bg-[#0d1219]"
+              className="group flex flex-col gap-6 bg-[#f2f3f5] p-8 transition-colors hover:bg-white"
             >
               <div className="flex items-start justify-between">
-                <span className="font-mono text-xs text-[#4af0c4]/60">{service.id}</span>
-                <div className="h-px w-8 bg-[#4af0c4]/20 transition-all group-hover:w-16 group-hover:bg-[#4af0c4]/60" />
+                <span className="font-mono text-xs text-[#0a7a5c]/60">{service.id}</span>
+                <div className="h-px w-8 bg-[#4af0c4]/40 transition-all group-hover:w-16 group-hover:bg-[#4af0c4]" />
               </div>
               <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold text-[#f0f4ff]">{service.title}</h3>
-                <p className="text-sm font-medium text-[#4af0c4]">{service.subtitle}</p>
+                <h3 className="text-xl font-bold text-[#1f1f1f]">{service.title}</h3>
+                <p className="text-sm font-medium text-[#0a7a5c]">{service.subtitle}</p>
               </div>
-              <p className="flex-1 text-sm leading-relaxed text-[#8892a4]">{service.description}</p>
+              <p className="flex-1 text-sm leading-relaxed text-[#575760]">{service.description}</p>
               <div className="flex flex-wrap gap-2">
                 {service.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full border border-white/5 bg-white/[0.03] px-3 py-1 text-xs text-[#8892a4]"
+                    className="rounded-full border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760]"
                   >
                     {tag}
                   </span>
