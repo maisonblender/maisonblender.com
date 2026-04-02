@@ -1,3 +1,5 @@
+import SiteImage from "@/components/SiteImage";
+
 const services = [
   {
     id: "01",
@@ -66,6 +68,14 @@ export default function Services() {
             Van AI-chatbots en procesautomatisering tot maatwerksoftware en dataplatformen —
             wij leveren de volledige AI-stack voor uw organisatie.
           </p>
+        </div>
+
+        <div className="mb-12 hidden lg:block rounded-3xl border border-black/[0.06] bg-white p-2 shadow-sm overflow-hidden">
+          <SiteImage
+            src="/images/services-flow.png"
+            alt="Diensten overzicht flow"
+            className="rounded-2xl object-cover w-full max-h-64"
+          />
         </div>
 
         <div className="grid gap-px bg-black/[0.06] sm:grid-cols-2 lg:grid-cols-3">

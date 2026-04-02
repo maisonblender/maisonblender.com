@@ -1,3 +1,5 @@
+import SiteImage from "@/components/SiteImage";
+
 export default function About() {
   return (
     <section id="over-ons" className="relative bg-white px-6 py-32">
@@ -49,8 +51,15 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right: manifesto card */}
-          <div className="flex items-center">
+          {/* Right: visual + manifesto card */}
+          <div className="flex flex-col gap-6">
+            <div className="relative w-full rounded-3xl border border-black/[0.06] bg-white p-2 shadow-sm">
+              <SiteImage
+                src="/images/about-visual.png"
+                alt="Maison Blender team"
+                className="rounded-2xl object-cover w-full"
+              />
+            </div>
             <div className="relative w-full rounded-2xl border border-black/[0.06] bg-[#f2f3f5] p-10 shadow-sm">
               {/* Corner accent */}
               <div className="absolute right-0 top-0 h-24 w-24 overflow-hidden rounded-tr-2xl">
