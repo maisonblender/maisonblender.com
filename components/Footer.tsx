@@ -10,7 +10,7 @@ export default function Footer() {
         <p className="text-xs text-[#b2b2be]">
           © {year} Maison Blender · BTW: NL001832932B87 · Sittard, Nederland
         </p>
-        <nav className="flex gap-6 text-xs text-[#575760]">
+        <nav className="flex flex-wrap justify-center gap-6 text-xs text-[#575760] sm:justify-end">
           <a href="#diensten" className="hover:text-[#1f1f1f] transition-colors">Diensten</a>
           <a href="#sectoren" className="hover:text-[#1f1f1f] transition-colors">Sectoren</a>
           <a href="#aanpak" className="hover:text-[#1f1f1f] transition-colors">Aanpak</a>

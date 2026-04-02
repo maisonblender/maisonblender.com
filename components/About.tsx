@@ -60,7 +60,7 @@ export default function About() {
                 className="object-cover w-full"
               />
             </div>
-            <div className="w-full bg-[#f2f3f5] p-10">
+            <div className="w-full bg-[#f2f3f5] p-6 sm:p-10">
               <div className="flex flex-col gap-6">
                 <div className="h-px w-8 bg-black/30" />
                 <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>

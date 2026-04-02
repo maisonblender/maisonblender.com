@@ -86,7 +86,7 @@ export default function Sectoren() {
           {sectoren.map((item) => (
             <div
               key={item.sector}
-              className="group bg-[#f2f3f5] p-8 transition-all hover:bg-white"
+              className="group bg-[#f2f3f5] p-6 transition-all hover:bg-white sm:p-8"
             >
               <div className="mb-6 flex items-center gap-3">
                 <span className="text-2xl" aria-hidden="true">{item.icon}</span>
@@ -105,7 +105,7 @@ export default function Sectoren() {
         </div>
 
         {/* CTA strip */}
-        <div className="mt-16 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="mt-16 flex flex-col items-center gap-4 bg-[#f2f3f5] p-6 text-center sm:flex-row sm:justify-between sm:p-10 sm:text-left">
           <div className="flex flex-col gap-2">
             <p className="text-lg font-bold text-[#1f1f1f]">Staat uw branche er niet bij?</p>
             <p className="text-sm text-[#575760]">

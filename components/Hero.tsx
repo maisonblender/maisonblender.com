@@ -12,9 +12,9 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16 lg:text-left">
+      <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 md:flex-row md:items-center md:gap-12 md:text-left lg:gap-16">
         {/* Text column */}
-        <div className="flex flex-1 flex-col items-center gap-6 lg:items-start">
+        <div className="flex flex-1 flex-col items-center gap-6 md:items-start">
           <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
             AI-frontrunner · Zuid-Limburg
           </div>
@@ -46,7 +46,7 @@ export default function Hero() {
             </a>
           </div>
 
-          <div className="grid grid-cols-3 gap-6 border-t border-black/[0.06] pt-6 text-center lg:text-left">
+          <div className="grid grid-cols-3 gap-4 border-t border-black/[0.06] pt-6 text-center sm:gap-6 md:text-left">
             {[
               { value: "40+", label: "uur bespaard per week" },
               { value: "100%", label: "maatwerk oplossingen" },
@@ -61,7 +61,7 @@ export default function Hero() {
         </div>
 
         {/* Visual column */}
-        <div className="w-full max-w-md lg:max-w-none lg:w-[420px] lg:shrink-0">
+        <div className="w-full max-w-sm md:max-w-none md:w-[280px] md:shrink-0 lg:w-[420px]">
           <SiteImage
             src="/images/hero-visual.png"
             alt="AI agent netwerk illustratie"

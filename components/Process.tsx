@@ -52,7 +52,7 @@ export default function Process() {
                   </div>
                   <div className="flex flex-col gap-3 pt-1.5">
                     <h3 className="text-xl font-bold text-[#1f1f1f]">{step.title}</h3>
-                    <p className="max-w-xl text-[#575760] leading-relaxed">{step.description}</p>
+                    <p className="text-[#575760] leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               ))}
