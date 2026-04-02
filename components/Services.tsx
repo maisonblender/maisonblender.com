@@ -78,11 +78,11 @@ export default function Services() {
           />
         </div>
 
-        <div className="grid gap-px bg-black/[0.06] sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
             <div
               key={service.id}
-              className="group flex flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#f2f3f5] sm:p-8"
+              className="group flex flex-col gap-6 bg-[#f2f3f5] p-6 transition-colors hover:bg-white sm:p-8"
             >
               <div className="flex items-start justify-between">
                 <span className="font-mono text-xs text-[#575760]/60">{service.id}</span>

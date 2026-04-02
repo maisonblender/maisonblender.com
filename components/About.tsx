@@ -22,17 +22,16 @@ export default function About() {
 
             <div className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
-                Maison Blender is een klein bureau in Sittard dat AI-oplossingen bouwt voor
-                bedrijven die willen groeien. Geen praatjes, geen loze strategiedocumenten —
-                wij leveren werkende software.
+                Maison Blender bouwt AI-oplossingen voor bedrijven die willen groeien.
+                Geen loze strategiedocumenten — wij leveren werkende software die uw mensen
+                dagelijks gebruiken.
               </p>
               <p>
-                We werken het liefst met ondernemers die concreet willen verbeteren: minder
-                handmatig werk, snellere processen, betere klantervaring. Of u nu vijf of
-                vijfhonderd medewerkers hebt.
+                We werken met ondernemers die concreet willen verbeteren: minder handmatig werk,
+                snellere processen, betere klantervaring. Of u nu tien of duizend medewerkers hebt.
               </p>
               <p>
-                Gevestigd in het hart van Zuid-Limburg, actief door heel Nederland.
+                Gevestigd in Sittard, actief door heel Nederland.
               </p>
             </div>
 

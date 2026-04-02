@@ -1,7 +1,16 @@
+import {
+  ShoppingCart,
+  Truck,
+  Briefcase,
+  UtensilsCrossed,
+  HeartPulse,
+  Factory,
+} from "lucide-react";
+
 const sectoren = [
   {
     sector: "Retail & E-commerce",
-    icon: "🛍",
+    Icon: ShoppingCart,
     usecases: [
       "AI-chatbot voor 24/7 klantenservice",
       "Automatische orderverwerking",
@@ -11,7 +20,7 @@ const sectoren = [
   },
   {
     sector: "Logistiek & Transport",
-    icon: "🚛",
+    Icon: Truck,
     usecases: [
       "Automatische routeplanning en planning",
       "Documentverwerking (CMR, vrachtbrieven)",
@@ -21,7 +30,7 @@ const sectoren = [
   },
   {
     sector: "MKB & Zakelijke dienstverlening",
-    icon: "💼",
+    Icon: Briefcase,
     usecases: [
       "Automatische factuurverwerking",
       "AI-assistent voor offertes en contracten",
@@ -31,7 +40,7 @@ const sectoren = [
   },
   {
     sector: "Horeca & Toerisme",
-    icon: "🏨",
+    Icon: UtensilsCrossed,
     usecases: [
       "Reserveringsbot via WhatsApp of web",
       "AI-menuadviseur en upsell assistent",
@@ -41,7 +50,7 @@ const sectoren = [
   },
   {
     sector: "Zorg & Welzijn",
-    icon: "🏥",
+    Icon: HeartPulse,
     usecases: [
       "Afspraken plannen via AI-chatbot",
       "Automatische verwerking van verwijzingen",
@@ -51,7 +60,7 @@ const sectoren = [
   },
   {
     sector: "Productie & Maakindustrie",
-    icon: "⚙️",
+    Icon: Factory,
     usecases: [
       "Orderverwerking en inkoopautomatisering",
       "Kwaliteitscontrole met AI-inspectie",
@@ -82,15 +91,15 @@ export default function Sectoren() {
           </p>
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {sectoren.map((item) => (
             <div
               key={item.sector}
-              className="group bg-[#f2f3f5] p-6 transition-all hover:bg-white sm:p-8"
+              className="group bg-[#f2f3f5] p-8 transition-colors hover:bg-white"
             >
               <div className="mb-6 flex items-center gap-3">
-                <span className="text-2xl" aria-hidden="true">{item.icon}</span>
-                <h3 className="text-lg font-bold text-[#1f1f1f]">{item.sector}</h3>
+                <item.Icon className="h-5 w-5 shrink-0 text-[#1f1f1f]" strokeWidth={1.5} />
+                <h3 className="text-base font-bold text-[#1f1f1f]">{item.sector}</h3>
               </div>
               <ul className="flex flex-col gap-2.5">
                 {item.usecases.map((uc) => (
@@ -105,7 +114,7 @@ export default function Sectoren() {
         </div>
 
         {/* CTA strip */}
-        <div className="mt-16 flex flex-col items-center gap-4 bg-[#f2f3f5] p-6 text-center sm:flex-row sm:justify-between sm:p-10 sm:text-left">
+        <div className="mt-8 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-2">
             <p className="text-lg font-bold text-[#1f1f1f]">Staat uw branche er niet bij?</p>
             <p className="text-sm text-[#575760]">
