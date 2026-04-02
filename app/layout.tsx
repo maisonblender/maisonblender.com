@@ -131,6 +131,13 @@ const jsonLd = {
         "RAG Systems",
         "Business Intelligence",
         "Bedrijfsintelligentie",
+        "OpenAI",
+        "Anthropic Claude",
+        "n8n",
+        "Make.com",
+        "Zapier",
+        "LangChain",
+        "Microsoft Azure AI",
       ],
       hasOfferCatalog: {
         "@type": "OfferCatalog",
@@ -158,6 +165,79 @@ const jsonLd = {
       description: "Het toonaangevende AI-bureau van Zuid-Limburg",
       publisher: { "@id": "https://maisonblender.com/#organization" },
       inLanguage: "nl-NL",
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://maisonblender.com/#webpage",
+      url: "https://maisonblender.com",
+      name: "Maison Blender — AI-bureau in Zuid-Limburg | Custom AI-agents & Automatisering",
+      isPartOf: { "@id": "https://maisonblender.com/#website" },
+      about: { "@id": "https://maisonblender.com/#organization" },
+      speakable: {
+        "@type": "SpeakableSpecification",
+        cssSelector: ["#hero-description", "#about-description"],
+      },
+      inLanguage: "nl-NL",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://maisonblender.com/#service-chatbots",
+      name: "AI Chatbots & Klantenservice",
+      description:
+        "Automatiseer tot 90% van uw klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren — via web, WhatsApp, e-mail en meer. Aangedreven door OpenAI en Anthropic Claude.",
+      provider: { "@id": "https://maisonblender.com/#organization" },
+      areaServed: { "@type": "State", name: "Limburg" },
+      serviceType: "Conversational AI & Klantenservice Automatisering",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://maisonblender.com/#service-agents",
+      name: "AI Agents & Procesautomatisering",
+      description:
+        "Custom AI-agents die taken uitvoeren: documenten verwerken, e-mails interpreteren, acties uitvoeren in uw CRM of ERP. Gebouwd op LangChain, Anthropic Claude en OpenAI. 24/7 operationeel, zonder menselijke tussenkomst.",
+      provider: { "@id": "https://maisonblender.com/#organization" },
+      areaServed: { "@type": "State", name: "Limburg" },
+      serviceType: "AI Agents & Intelligente Procesautomatisering",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://maisonblender.com/#service-rpa",
+      name: "RPA & Workflow-integraties",
+      description:
+        "Automatiseer repetitieve schermtaken en verbind uw systemen via robuuste API-koppelingen. Wij werken met n8n, Make.com en Zapier voor betrouwbare workflow-automatisering. Van factuurverwerking tot contractbeheer.",
+      provider: { "@id": "https://maisonblender.com/#organization" },
+      areaServed: { "@type": "State", name: "Limburg" },
+      serviceType: "Robotic Process Automation & Workflow-integraties",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://maisonblender.com/#service-software",
+      name: "Custom AI Software & Portalen",
+      description:
+        "Bespoke AI-applicaties, klant- en leveranciersportalen, mobiele apps en webapplicaties — volledig op maat gebouwd met Microsoft Azure AI, OpenAI en LangChain.",
+      provider: { "@id": "https://maisonblender.com/#organization" },
+      areaServed: { "@type": "State", name: "Limburg" },
+      serviceType: "Custom AI Software Development",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://maisonblender.com/#service-data",
+      name: "Data-intelligentie & Rapportages",
+      description:
+        "RAG-systemen op basis van LangChain en Anthropic Claude die uw interne kennisbase ontsluiten, automatische rapportages en dashboards die uw team dagelijks sturen op de juiste KPI's.",
+      provider: { "@id": "https://maisonblender.com/#organization" },
+      areaServed: { "@type": "State", name: "Limburg" },
+      serviceType: "Data-intelligentie & Business Intelligence",
+    },
+    {
+      "@type": "Service",
+      "@id": "https://maisonblender.com/#service-strategie",
+      name: "AI Strategie & Quickscan",
+      description:
+        "Gratis automatiseringsquickscan van uw processen met een concreet implementatieplan inclusief business case. Wij adviseren over de inzet van OpenAI, Anthropic Claude, n8n, Make.com, Zapier, LangChain en Microsoft Azure AI.",
+      provider: { "@id": "https://maisonblender.com/#organization" },
+      areaServed: { "@type": "State", name: "Limburg" },
+      serviceType: "AI Strategie Consultancy",
     },
   ],
 };

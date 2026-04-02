@@ -23,9 +23,10 @@ export default function Hero() {
             Intelligente groei.
             <br />
             <span className="font-exposure">Gedreven door AI.</span>
+            <span className="sr-only"> — AI-bureau in Sittard, Zuid-Limburg</span>
           </h1>
 
-          <p className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
+          <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
             Maison Blender bouwt custom AI-agents en intelligente automatisering voor ambitieuze
             bedrijven in Zuid-Limburg en daarbuiten. Bespaar 40+ uur per week en schaal zonder
             proportionele groei in headcount.

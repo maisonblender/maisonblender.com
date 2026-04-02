@@ -20,7 +20,7 @@ export default function About() {
               </h2>
             </div>
 
-            <div className="flex flex-col gap-4 text-[#575760] leading-relaxed">
+            <div id="about-description" className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
                 Maison Blender bouwt AI-oplossingen voor bedrijven die willen groeien.
                 Geen loze strategiedocumenten - wij leveren werkende software die uw mensen
@@ -29,6 +29,12 @@ export default function About() {
               <p>
                 We werken met ondernemers die concreet willen verbeteren: minder handmatig werk,
                 snellere processen, betere klantervaring. Of u nu tien of duizend medewerkers hebt.
+              </p>
+              <p>
+                Wij bouwen met de beste tools: <strong>OpenAI</strong>, <strong>Anthropic Claude</strong>,{" "}
+                <strong>LangChain</strong> en <strong>Microsoft Azure AI</strong> voor intelligente agents en
+                taalmodellen; <strong>n8n</strong>, <strong>Make.com</strong> en <strong>Zapier</strong> voor
+                workflow-automatisering en systeemkoppelingen.
               </p>
               <p>
                 Gevestigd in Sittard, actief door heel Nederland.
