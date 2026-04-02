@@ -38,11 +38,12 @@ export default function Image() {
             color: "#111111",
             lineHeight: 1.1,
             marginBottom: 32,
+            display: "flex",
+            flexDirection: "column",
           }}
         >
-          AI-bureau in
-          <br />
-          Zuid-Limburg
+          <span>AI-bureau in</span>
+          <span>Zuid-Limburg</span>
         </div>
         <div
           style={{
