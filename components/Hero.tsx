@@ -1,3 +1,5 @@
+import SiteImage from "@/components/SiteImage";
+
 export default function Hero() {
   return (
     <section className="relative flex min-h-screen flex-col items-center justify-center overflow-hidden px-6 pt-20 text-center">
@@ -12,50 +14,71 @@ export default function Hero() {
       {/* Soft teal glow */}
       <div className="pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[900px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#4af0c4]/10 blur-3xl" />
 
-      <div className="relative z-10 flex max-w-4xl flex-col items-center gap-8">
-        <div className="inline-flex items-center gap-2 rounded-full border border-[#0a7a5c]/20 bg-[#0a7a5c]/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
-          <span className="h-1.5 w-1.5 rounded-full bg-[#4af0c4] animate-pulse" />
-          AI-frontrunner · Zuid-Limburg
+      <div className="relative z-10 mx-auto flex max-w-5xl flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16 lg:text-left">
+        {/* Text column */}
+        <div className="flex flex-1 flex-col items-center gap-8 lg:items-start">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#0a7a5c]/20 bg-[#0a7a5c]/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#0a7a5c]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#4af0c4] animate-pulse" />
+            AI-frontrunner · Zuid-Limburg
+          </div>
+
+          <h1 className="text-5xl font-black leading-[1.05] tracking-tight text-[#1f1f1f] sm:text-6xl" style={{ letterSpacing: "-0.95px" }}>
+            Intelligente groei.
+            <br />
+            <span className="font-exposure text-[#4af0c4]">Gedreven door AI.</span>
+          </h1>
+
+          <p className="max-w-xl text-lg leading-relaxed text-[#575760]">
+            Maison Blender bouwt custom AI-agents en intelligente automatisering voor ambitieuze
+            bedrijven in Zuid-Limburg en daarbuiten. Bespaar 40+ uur per week en schaal zonder
+            proportionele groei in headcount.
+          </p>
+
+          <div className="flex flex-col gap-4 sm:flex-row">
+            <a
+              href="#contact"
+              className="rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg"
+            >
+              Plan een strategiegesprek
+            </a>
+            <a
+              href="#diensten"
+              className="rounded-full border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:bg-[#f2f3f5]"
+            >
+              Bekijk onze diensten
+            </a>
+          </div>
+
+          <div className="grid grid-cols-3 gap-8 border-t border-black/[0.06] pt-8 text-center lg:text-left">
+            {[
+              { value: "40+", label: "uur bespaard per week" },
+              { value: "100%", label: "maatwerk oplossingen" },
+              { value: "#1", label: "AI-bureau in Z-Limburg" },
+            ].map((stat) => (
+              <div key={stat.label} className="flex flex-col gap-1">
+                <span className="font-exposure text-3xl font-black text-[#0a7a5c]">{stat.value}</span>
+                <span className="text-xs text-[#575760]">{stat.label}</span>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <h1 className="text-5xl font-black leading-[1.05] tracking-tight text-[#1f1f1f] sm:text-7xl" style={{ letterSpacing: "-0.95px" }}>
-          Intelligente groei.
-          <br />
-          <span className="font-exposure text-[#4af0c4]">Gedreven door AI.</span>
-        </h1>
-
-        <p className="max-w-2xl text-lg leading-relaxed text-[#575760]">
-          Maison Blender bouwt custom AI-agents en intelligente automatisering voor ambitieuze
-          bedrijven in Zuid-Limburg en daarbuiten. Bespaar 40+ uur per week en schaal zonder
-          proportionele groei in headcount.
-        </p>
-
-        <div className="flex flex-col gap-4 sm:flex-row">
-          <a
-            href="#contact"
-            className="rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg"
-          >
-            Plan een strategiegesprek
-          </a>
-          <a
-            href="#diensten"
-            className="rounded-full border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:bg-[#f2f3f5]"
-          >
-            Bekijk onze diensten
-          </a>
-        </div>
-
-        <div className="mt-8 grid grid-cols-3 gap-8 border-t border-black/[0.06] pt-8 text-center">
-          {[
-            { value: "40+", label: "uur bespaard per week" },
-            { value: "100%", label: "maatwerk oplossingen" },
-            { value: "#1", label: "AI-bureau in Z-Limburg" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-1">
-              <span className="font-exposure text-3xl font-black text-[#0a7a5c]">{stat.value}</span>
-              <span className="text-xs text-[#575760]">{stat.label}</span>
+        {/* Visual column */}
+        <div className="hidden lg:block lg:w-[420px] lg:shrink-0">
+          <div className="relative rounded-3xl border border-black/[0.06] bg-white p-2 shadow-sm">
+            <SiteImage
+              src="/images/hero-visual.png"
+              alt="AI agent netwerk illustratie"
+              className="rounded-2xl object-cover w-full"
+            />
+            {/* Fallback placeholder shown when image not yet generated */}
+            <div className="absolute inset-2 rounded-2xl bg-gradient-to-br from-[#f2f3f5] to-white flex items-center justify-center -z-10">
+              <div className="text-center text-[#b2b2be] text-xs">
+                <div className="font-exposure text-4xl text-[#4af0c4]/30 mb-2">∆</div>
+                AI visualisatie
+              </div>
             </div>
-          ))}
+          </div>
         </div>
       </div>
 
