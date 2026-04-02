@@ -34,13 +34,13 @@ export default function Hero() {
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <a
-              href="#contact"
+              href="/#contact"
               className="rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg"
             >
               Plan een strategiegesprek
             </a>
             <a
-              href="#diensten"
+              href="/#diensten"
               className="rounded-full border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:bg-[#f2f3f5]"
             >
               Bekijk onze diensten

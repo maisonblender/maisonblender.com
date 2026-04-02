@@ -122,7 +122,7 @@ export default function Sectoren() {
             </p>
           </div>
           <a
-            href="#contact"
+            href="/#contact"
             className="shrink-0 rounded-full bg-[#1f1f1f] px-8 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#3a3a42] hover:shadow-md"
           >
             Gratis quickscan aanvragen

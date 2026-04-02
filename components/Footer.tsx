@@ -13,10 +13,10 @@ export default function Footer() {
           © {year} MAISON BLNDR · BTW: NL001832932B87 · Sittard, Nederland
         </p>
         <nav className="flex flex-wrap justify-center gap-6 text-xs text-[#575760] sm:justify-end">
-          <a href="#diensten" className="hover:text-[#1f1f1f] transition-colors">Diensten</a>
-          <a href="#sectoren" className="hover:text-[#1f1f1f] transition-colors">Sectoren</a>
-          <a href="#aanpak" className="hover:text-[#1f1f1f] transition-colors">Aanpak</a>
-          <a href="#contact" className="hover:text-[#1f1f1f] transition-colors">Contact</a>
+          <a href="/#diensten" className="hover:text-[#1f1f1f] transition-colors">Diensten</a>
+          <a href="/#sectoren" className="hover:text-[#1f1f1f] transition-colors">Sectoren</a>
+          <a href="/#aanpak" className="hover:text-[#1f1f1f] transition-colors">Aanpak</a>
+          <a href="/#contact" className="hover:text-[#1f1f1f] transition-colors">Contact</a>
         </nav>
       </div>
     </footer>

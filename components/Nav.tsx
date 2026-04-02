@@ -4,10 +4,10 @@ import { useState } from "react";
 import { services } from "@/lib/services";
 
 const topLinks = [
-  { href: "#sectoren", label: "Sectoren" },
-  { href: "#aanpak", label: "Aanpak" },
-  { href: "#over-ons", label: "Over ons" },
-  { href: "#contact", label: "Contact" },
+  { href: "/#sectoren", label: "Sectoren" },
+  { href: "/#aanpak", label: "Aanpak" },
+  { href: "/#over-ons", label: "Over ons" },
+  { href: "/#contact", label: "Contact" },
 ];
 
 export default function Nav() {
@@ -34,7 +34,7 @@ export default function Nav() {
             onMouseLeave={() => setDienstenOpen(false)}
           >
             <a
-              href="#diensten"
+              href="/#diensten"
               className="flex items-center gap-1 transition-colors hover:text-[#1f1f1f]"
             >
               Diensten
@@ -67,7 +67,7 @@ export default function Nav() {
 
         <div className="flex items-center gap-3">
           <a
-            href="#contact"
+            href="/#contact"
             className="hidden rounded-full border border-[#1f1f1f]/20 bg-[#1f1f1f] px-5 py-2 text-sm font-medium text-white transition-all hover:bg-[#3a3a42] md:block"
           >
             Strategiegesprek
@@ -132,7 +132,7 @@ export default function Nav() {
             ))}
 
             <a
-              href="#contact"
+              href="/#contact"
               className="mt-2 rounded-full bg-[#1f1f1f] px-5 py-2.5 text-center text-sm font-medium text-white"
               onClick={() => setOpen(false)}
             >
