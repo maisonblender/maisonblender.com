@@ -14,25 +14,25 @@ export default function About() {
                 Over ons
               </span>
               <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
-                De AI-autoriteit
+                Wij bouwen AI
                 <br />
-                <span className="font-exposure">van Zuid-Limburg.</span>
+                <span className="font-exposure">die werkt voor u.</span>
               </h2>
             </div>
 
             <div className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
-                Maison Blender is opgericht met één missie: AI toegankelijk en impactvol maken voor
-                ambitieuze organisaties in Zuid-Limburg en daarbuiten. Wij zijn niet alleen
-                adviseurs — wij bouwen en implementeren.
+                Maison Blender is een klein bureau in Sittard dat AI-oplossingen bouwt voor
+                bedrijven die willen groeien. Geen praatjes, geen loze strategiedocumenten —
+                wij leveren werkende software.
               </p>
               <p>
-                Onze klanten zijn SMBs, startups en scale-ups die willen groeien zonder
-                proportioneel meer mensen aan te nemen. Wij zijn er niet voor organisaties die
-                niet open staan voor innovatie.
+                We werken het liefst met ondernemers die concreet willen verbeteren: minder
+                handmatig werk, snellere processen, betere klantervaring. Of u nu vijf of
+                vijfhonderd medewerkers hebt.
               </p>
               <p>
-                Gevestigd in Sittard, hart van Zuid-Limburg. Denken globaal, handelen lokaal.
+                Gevestigd in het hart van Zuid-Limburg, actief door heel Nederland.
               </p>
             </div>
 
@@ -64,8 +64,8 @@ export default function About() {
               <div className="flex flex-col gap-6">
                 <div className="h-px w-8 bg-black/30" />
                 <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
-                  &ldquo;AI is geen toekomstmuziek meer. Het is de infrastructuur van nu. Wij
-                  helpen u die infrastructuur bouwen.&rdquo;
+                  &ldquo;We brengen geen PowerPoints. We bouwen dingen die uw mensen dagelijks
+                  gebruiken en waar uw klanten beter van worden.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
                   <span className="text-sm font-medium text-[#575760]">Maison Blender</span>

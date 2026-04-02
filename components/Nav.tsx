@@ -14,10 +14,14 @@ export default function Nav() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.06] bg-white/90 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a href="#" className="text-lg font-bold tracking-widest text-[#1f1f1f]">
-          M<span className="font-exposure">∆</span>ISON BLNDR
+    <header className="fixed top-0 left-0 right-0 z-50 border-b border-black/[0.06] bg-white/90 px-6 backdrop-blur-md">
+      <div className="mx-auto flex max-w-6xl items-center justify-between py-4">
+        <a href="#" className="shrink-0">
+          <img
+            src="/maison-blender-logo-black.svg"
+            alt="Maison Blender"
+            className="h-5 w-auto"
+          />
         </a>
 
         {/* Desktop nav */}
@@ -43,16 +47,16 @@ export default function Nav() {
             onClick={() => setOpen((v) => !v)}
             aria-label="Menu"
           >
-            <span className={`block h-0.5 w-6 bg-[#1f1f1f] transition-transform ${open ? "translate-y-2 rotate-45" : ""}`} />
-            <span className={`block h-0.5 w-6 bg-[#1f1f1f] transition-opacity ${open ? "opacity-0" : ""}`} />
-            <span className={`block h-0.5 w-6 bg-[#1f1f1f] transition-transform ${open ? "-translate-y-2 -rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-6 bg-[#1f1f1f] transition-transform duration-200 ${open ? "translate-y-2 rotate-45" : ""}`} />
+            <span className={`block h-0.5 w-6 bg-[#1f1f1f] transition-opacity duration-200 ${open ? "opacity-0" : ""}`} />
+            <span className={`block h-0.5 w-6 bg-[#1f1f1f] transition-transform duration-200 ${open ? "-translate-y-2 -rotate-45" : ""}`} />
           </button>
         </div>
       </div>
 
       {/* Mobile menu */}
       {open && (
-        <div className="border-t border-black/[0.06] bg-white px-6 py-4 md:hidden">
+        <div className="border-t border-black/[0.06] bg-white py-4 md:hidden">
           <nav className="flex flex-col gap-4">
             {links.map((l) => (
               <a
