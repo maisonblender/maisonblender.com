@@ -11,13 +11,13 @@ export default function Services() {
             Diensten
           </span>
           <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
-            Alles wat u nodig heeft.
+            Van quickscan tot live systeem.
             <br />
-            <span className="font-exposure">Onder één dak.</span>
+            <span className="font-exposure">Alles in eigen handen.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Van AI-chatbots en procesautomatisering tot maatwerksoftware en dataplatformen -
-            wij leveren de volledige AI-stack voor uw organisatie.
+            Sommige bureaus adviseren. Anderen bouwen. Wij doen alles: van het eerste gesprek
+            over uw processen tot het beheer van de AI-agents die er uit voortkomen.
           </p>
         </div>
 

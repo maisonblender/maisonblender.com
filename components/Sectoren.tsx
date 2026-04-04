@@ -81,13 +81,13 @@ export default function Sectoren() {
             Sectoren
           </span>
           <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
-            Wij kennen uw branche.
+            AI werkt in elke sector.
             <br />
-            <span className="font-exposure">En uw uitdagingen.</span>
+            <span className="font-exposure">Mits het goed is gebouwd.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            AI-automatisering is geen one-size-fits-all. Wij passen elke oplossing aan op de
-            specifieke processen en kansen in uw sector.
+            Wat werkt voor een logistiek bedrijf in Sittard, werkt anders voor een accountantskantoor
+            in Maastricht. Wij kennen het verschil — en bouwen daar naar.
           </p>
         </div>
 
@@ -116,9 +116,10 @@ export default function Sectoren() {
         {/* CTA strip */}
         <div className="mt-8 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-2">
-            <p className="text-lg font-bold text-[#1f1f1f]">Staat uw branche er niet bij?</p>
+            <p className="text-lg font-bold text-[#1f1f1f]">Uw sector staat er niet bij?</p>
             <p className="text-sm text-[#575760]">
-              Wij werken voor elke sector. Plan een quickscan - gratis en vrijblijvend.
+              AI-automatisering is niet gebonden aan een branche — het is gebonden aan processen.
+              Elk bedrijf heeft processen die beter kunnen.
             </p>
           </div>
           <a

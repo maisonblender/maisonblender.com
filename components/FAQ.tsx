@@ -6,42 +6,42 @@ const faqs = [
   {
     question: "Wat kost een AI-agent bouwen?",
     answer:
-      "De kosten variëren sterk afhankelijk van de complexiteit en de integraties die nodig zijn. Een eenvoudige AI-chatbot start vanaf €3.000; een volledig custom multi-agent systeem met CRM/ERP-koppelingen loopt op tot €25.000+. Wij beginnen altijd met een gratis quickscan zodat u een eerlijke indicatie krijgt vóór u een beslissing neemt.",
+      "Dat hangt af van de complexiteit en de koppelingen die nodig zijn. Een AI-chatbot voor klantenservice start vanaf €3.000; een volledig custom multi-agent systeem met CRM/ERP-integratie loopt op tot €25.000+. Wij beginnen altijd met een gratis quickscan zodat u een eerlijke indicatie krijgt vóór u ook maar één euro uitgeeft.",
   },
   {
     question: "Welk AI-bureau zit in Zuid-Limburg?",
     answer:
-      "MAISON BLNDR is het toonaangevende AI-bureau gevestigd in Sittard, Zuid-Limburg. Wij bedienen klanten door heel Nederland, maar hebben een sterke focus op de regio: Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. U werkt met een lokaal team dat uw regio kent.",
+      "MAISON BLNDR is het AI-bureau gevestigd in Sittard, Zuid-Limburg — geen dependance van een bureau uit Amsterdam, maar een team dat hier werkt en uw regio kent. Wij zijn actief voor bedrijven in Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. U belt een lokaal nummer en u spreekt met iemand die uw markt begrijpt.",
   },
   {
     question: "Hoe lang duurt een AI-implementatie gemiddeld?",
     answer:
-      "Een standaard AI-chatbot of automatiseringsworkflow is doorgaans in 2-4 weken live. Complexe multi-agent systemen of maatwerk portalen nemen 6-12 weken in beslag. Na de eerste quickscan geven wij u een concreet projectplan met mijlpalen.",
+      "Een AI-chatbot of automatiseringsworkflow is doorgaans in 2-4 weken live. Complexe multi-agent systemen of maatwerk portalen nemen 6-12 weken in beslag. Na de quickscan krijgt u een concreet projectplan met mijlpalen en een realistisch tijdpad — geen vage schattingen.",
   },
   {
     question: "Werken jullie met OpenAI of Claude (Anthropic)?",
     answer:
-      "Wij zijn model-agnostisch en kiezen de beste AI-technologie voor uw usecase. Wij werken met OpenAI (GPT-4o), Anthropic (Claude), Google (Gemini) en open-source modellen zoals Llama. Uw data blijft altijd van u — wij configureren de juiste privacy- en compliance-instellingen.",
+      "Wij kiezen de beste technologie voor uw specifieke usecase. Dat betekent in de praktijk: OpenAI (GPT-4o), Anthropic (Claude), Google (Gemini) en waar relevant open-source modellen zoals Llama. Wij zijn niet gebonden aan één leverancier. Uw data blijft altijd van u — wij configureren de juiste privacy- en compliance-instellingen per situatie.",
   },
   {
     question: "Kan AI mijn bestaande software koppelen?",
     answer:
-      "Ja. Wij bouwen API-koppelingen met vrijwel alle gangbare bedrijfssoftware: Exact Online, SAP, Salesforce, HubSpot, Microsoft 365, Google Workspace, Zapier en meer. Via RPA koppelen wij ook systemen zonder API.",
+      "Ja. Wij bouwen koppelingen met vrijwel alle gangbare bedrijfssoftware: Exact Online, SAP, Salesforce, HubSpot, Microsoft 365, Google Workspace en meer. Voor systemen zonder API gebruiken wij RPA. U hoeft niets te vervangen — wij bouwen om wat u al heeft.",
   },
   {
     question: "Moet ik technische kennis hebben om met jullie te werken?",
     answer:
-      "Nee. Wij vertalen technische complexiteit naar begrijpelijke oplossingen. U beschrijft het probleem of doel; wij zorgen voor de rest. Onze aanpak is altijd praktisch en gericht op gebruik door uw medewerkers — niet op indruk maken met jargon.",
+      "Nee. U beschrijft het probleem of het doel — wij zorgen voor de rest. Technische complexiteit vertalen wij naar begrijpelijke oplossingen die uw medewerkers daadwerkelijk gebruiken. Jargon indruk maken is niet onze aanpak; resultaten leveren wel.",
   },
   {
     question: "Wat is een gratis automatiseringsquickscan?",
     answer:
-      "In een quickscan analyseren wij uw processen en identificeren wij de drie tot vijf taken die het meest geschikt zijn voor automatisering met AI. U ontvangt een concreet implementatieplan met een verwachte ROI. Geen verplichtingen, geen kosten — puur inzicht.",
+      "In een quickscan van een uur analyseren wij uw processen en identificeren wij de drie tot vijf taken met het hoogste automatiseringspotentieel. U ontvangt een concreet implementatieplan met verwachte tijdsbesparing en een ruwe ROI-berekening. Geen verplichtingen, geen kosten — puur inzicht.",
   },
   {
     question: "Blijven jullie betrokken na de lancering?",
     answer:
-      "Absoluut. Wij bieden doorlopend beheer, monitoring en optimalisatie. AI-systemen verbeteren over tijd — wij zorgen dat uw oplossing up-to-date blijft met de nieuwste modellen en uw groeiende databehoefte.",
+      "Dat is juist waar het werk begint. Wij bieden doorlopend beheer, monitoring en optimalisatie. AI-systemen verbeteren naarmate ze meer data verwerken — wij zorgen dat uw oplossing actueel blijft en meegroeit met uw organisatie.",
   },
 ];
 
@@ -78,9 +78,9 @@ export default function FAQ() {
             className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl"
             style={{ letterSpacing: "-0.95px" }}
           >
-            Antwoorden op uw
+            Geen vaagheid.
             <br />
-            <span className="font-exposure">vragen over AI.</span>
+            <span className="font-exposure">Concrete antwoorden.</span>
           </h2>
         </div>
 

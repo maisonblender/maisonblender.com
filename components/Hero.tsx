@@ -20,16 +20,16 @@ export default function Hero() {
           </div>
 
           <h1 className="text-4xl font-black leading-[1.05] tracking-tight text-[#1f1f1f] sm:text-5xl lg:text-6xl" style={{ letterSpacing: "-0.95px" }}>
-            Intelligente groei.
+            AI die uw medewerkers
             <br />
-            <span className="font-exposure">Gedreven door AI.</span>
+            <span className="font-exposure">dagelijks gebruiken.</span>
             <span className="sr-only"> — AI-bureau in Sittard, Zuid-Limburg</span>
           </h1>
 
           <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-            MAISON BLNDR bouwt custom AI-agents en intelligente automatisering voor ambitieuze
-            bedrijven in Zuid-Limburg en daarbuiten. Bespaar 40+ uur per week en schaal zonder
-            proportionele groei in headcount.
+            MAISON BLNDR is het AI-bureau van Zuid-Limburg. Wij bouwen geen proof-of-concepts —
+            wij leveren werkende AI-agents, procesautomatisering en maatwerksoftware die uw team
+            vanaf dag één gebruikt. Gevestigd in Sittard, actief door heel Nederland.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">
@@ -50,8 +50,8 @@ export default function Hero() {
           <div className="grid grid-cols-3 gap-4 border-t border-black/[0.06] pt-6 text-center sm:gap-6 md:text-left">
             {[
               { value: "40+", label: "uur bespaard per week" },
-              { value: "100%", label: "maatwerk oplossingen" },
-              { value: "#1", label: "AI-bureau in Z-Limburg" },
+              { value: "2-4", label: "weken naar live systeem" },
+              { value: "0", label: "data-scientists nodig" },
             ].map((stat) => (
               <div key={stat.label} className="flex flex-col gap-1">
                 <span className="font-exposure text-2xl font-black text-[#1f1f1f] sm:text-3xl">{stat.value}</span>

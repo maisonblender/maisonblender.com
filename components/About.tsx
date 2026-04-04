@@ -14,30 +14,31 @@ export default function About() {
                 Over ons
               </span>
               <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
-                Wij bouwen AI
+                Twaalf bedrijven in de regio.
                 <br />
-                <span className="font-exposure">die werkt voor u.</span>
+                <span className="font-exposure">Geen data-scientist nodig.</span>
               </h2>
             </div>
 
             <div id="about-description" className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
-                MAISON BLNDR bouwt AI-oplossingen voor bedrijven die willen groeien.
-                Geen loze strategiedocumenten - wij leveren werkende software die uw mensen
-                dagelijks gebruiken.
+                Wij zijn begonnen met één overtuiging: AI-implementaties mislukken niet door de technologie.
+                Ze mislukken omdat bureaus leveren wat indrukwekkend klinkt — niet wat werkt voor de mensen
+                die het dagelijks moeten gebruiken.
               </p>
               <p>
-                We werken met ondernemers die concreet willen verbeteren: minder handmatig werk,
-                snellere processen, betere klantervaring. Of u nu tien of duizend medewerkers hebt.
+                Daarom beginnen wij altijd met uw processen. Dan pas met de code.
               </p>
               <p>
-                Wij bouwen met de beste tools: <strong>OpenAI</strong>, <strong>Anthropic Claude</strong>,{" "}
-                <strong>LangChain</strong> en <strong>Microsoft Azure AI</strong> voor intelligente agents en
-                taalmodellen; <strong>n8n</strong>, <strong>Make.com</strong> en <strong>Zapier</strong> voor
-                workflow-automatisering en systeemkoppelingen.
+                Wij bouwen met tools die al bewezen zijn: <strong>OpenAI</strong>, <strong>Anthropic Claude</strong>{" "}
+                en <strong>LangChain</strong> voor intelligente agents; <strong>n8n</strong>,{" "}
+                <strong>Make.com</strong> en <strong>Zapier</strong> voor robuuste koppelingen met uw bestaande
+                systemen. Geen evangelisatie van de nieuwste hype — keuze voor wat werkt.
               </p>
               <p>
-                Gevestigd in Sittard, actief door heel Nederland.
+                Gevestigd in Sittard. Actief in Maastricht, Geleen, Heerlen, Venlo en daarbuiten.
+                U heeft geen reiskosten, geen tijdsverschil en geen callcenter — u heeft een team
+                dat uw regio kent.
               </p>
             </div>
 
@@ -69,8 +70,8 @@ export default function About() {
               <div className="flex flex-col gap-6">
                 <div className="h-px w-8 bg-black/30" />
                 <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
-                  &ldquo;Automatisering werkt pas als het past bij uw mensen en uw processen.
-                  Daarom bouwen wij altijd op maat - en blijven wij betrokken na de lancering.&rdquo;
+                  &ldquo;De meeste AI-bureaus zijn weg zodra het systeem live staat.
+                  Wij zijn er dan pas echt begonnen.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
                   <span className="text-sm font-medium text-[#575760]">MAISON BLNDR</span>

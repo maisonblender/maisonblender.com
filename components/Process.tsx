@@ -5,19 +5,19 @@ const steps = [
     step: "01",
     title: "Architectuur & Roadmap",
     description:
-      "Wij beginnen met een diepgaand strategiegesprek om uw situatie te begrijpen. Vervolgens leveren wij een heldere technische architectuur en implementatie-roadmap.",
+      "Geen intakegesprek waarbij u vertelt wat u wilt en wij knikken. Wij gaan in op uw processen, bouwen een architectuur die uw bestaande systemen serieus neemt, en leveren een roadmap met realistische tijdlijnen — inclusief wat het u concreet oplevert.",
   },
   {
     step: "02",
     title: "Prototype & Validatie",
     description:
-      "Snel bouwen, snel leren. Binnen weken draait een werkend prototype in uw omgeving, zodat u direct ziet wat AI voor uw organisatie kan betekenen.",
+      "Binnen twee weken draait een werkend prototype in uw eigen omgeving. Geen demo-omgeving, geen mock-data. U ziet direct of het past — en kunt bijsturen voordat er een euro te veel is uitgegeven.",
   },
   {
     step: "03",
-    title: "Implementatie & Schaling",
+    title: "Implementatie & Beheer",
     description:
-      "Na validatie schalen wij de oplossing naar productie. Robuust, veilig en onderhoudbaar - gebouwd om jaren mee te gaan en mee te groeien.",
+      "Na validatie bouwen wij naar productie. Robuust, veilig, schaalbaar. Monitoring en beheer blijven bij ons — u hoeft alleen de resultaten te zien.",
   },
 ];
 
@@ -35,9 +35,9 @@ export default function Process() {
                 Aanpak
               </span>
               <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
-                Van idee naar impact
+                Geen big bang.
                 <br />
-                <span className="font-exposure">in drie stappen.</span>
+                <span className="font-exposure">Wel live binnen vier weken.</span>
               </h2>
             </div>
 

@@ -10,9 +10,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://maisonblender.com"),
-  title: "Maison Blender — AI-bureau in Zuid-Limburg | Custom AI-agents & Automatisering",
+  title: "MAISON BLNDR — AI-bureau Sittard | Custom AI-agents & Automatisering Zuid-Limburg",
   description:
-    "Maison Blender is het toonaangevende AI-bureau in Zuid-Limburg. Wij bouwen custom AI-agents, workflow-automatisering en intelligente software voor ambitieuze bedrijven in Sittard, Maastricht en heel Zuid-Limburg. Bespaar 40+ uur per week.",
+    "MAISON BLNDR — het AI-bureau van Sittard, Zuid-Limburg. Custom AI-agents, procesautomatisering en maatwerksoftware voor MKB. Geen data-scientist nodig. Van quickscan tot live systeem.",
   keywords: [
     "AI bureau Zuid-Limburg",
     "AI consultant Limburg",
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     canonical: "https://maisonblender.com",
   },
   openGraph: {
-    title: "Maison Blender — AI-bureau in Zuid-Limburg",
+    title: "MAISON BLNDR — AI-bureau Sittard, Zuid-Limburg",
     description:
-      "Intelligente groei. Gedreven door AI. Het toonaangevende AI-bureau van Zuid-Limburg. Custom AI-agents, procesautomatisering en maatwerksoftware voor ambitieuze bedrijven.",
+      "Het AI-bureau van Sittard. Wij bouwen werkende AI-agents, procesautomatisering en maatwerksoftware voor MKB — geen data-scientist nodig, geen proof-of-concepts. Van quickscan tot live systeem.",
     url: "https://maisonblender.com",
     siteName: "Maison Blender",
     locale: "nl_NL",
@@ -47,9 +47,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Maison Blender — AI-bureau in Zuid-Limburg",
+    title: "MAISON BLNDR — AI-bureau Sittard, Zuid-Limburg",
     description:
-      "Intelligente groei. Gedreven door AI. Custom AI-agents en automatisering voor MKB in Zuid-Limburg.",
+      "Werkende AI-agents en procesautomatisering voor MKB in Zuid-Limburg. Geen data-scientist nodig. Van quickscan tot live systeem.",
   },
   robots: {
     index: true,
