@@ -3,21 +3,21 @@ import SiteImage from "@/components/SiteImage";
 const steps = [
   {
     step: "01",
-    title: "Uw processen eerst",
+    title: "Jouw processen eerst",
     description:
-      "Geen intakegesprek waarbij u vertelt wat u wilt en wij knikken. Wij gaan in op uw processen, bouwen een architectuur die uw bestaande systemen serieus neemt, en leveren een roadmap met realistische tijdlijnen — inclusief wat het u concreet oplevert.",
+      "Geen intakegesprek waarbij jij vertelt wat je wilt en wij knikken. Wij gaan in op je processen, bouwen een architectuur die je bestaande systemen serieus neemt, en leveren een roadmap met realistische tijdlijnen — inclusief wat het je concreet oplevert.",
   },
   {
     step: "02",
-    title: "Twee weken. Dan ziet u het.",
+    title: "Twee weken. Dan zie je het.",
     description:
-      "Binnen twee weken draait een werkend prototype in uw eigen omgeving. Geen demo-omgeving, geen mock-data. U ziet direct of het past — en kunt bijsturen voordat er een euro te veel is uitgegeven.",
+      "Binnen twee weken draait een werkend prototype in je eigen omgeving. Geen demo-omgeving, geen mock-data. Je ziet direct of het past — en stuurt bij voordat er een euro te veel is uitgegeven.",
   },
   {
     step: "03",
     title: "Live. En wij blijven.",
     description:
-      "Na validatie bouwen wij naar productie. Robuust, veilig, schaalbaar. Monitoring en beheer blijven bij ons — u hoeft alleen de resultaten te zien.",
+      "Na validatie bouwen wij naar productie. Robuust, veilig, schaalbaar. Monitoring en beheer blijven bij ons — jij hoeft alleen de resultaten te zien.",
   },
 ];
 

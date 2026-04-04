@@ -182,7 +182,7 @@ export default async function ServicePage({
                 className="text-2xl font-black tracking-tight text-[#1f1f1f] sm:text-3xl"
                 style={{ letterSpacing: "-0.5px" }}
               >
-                Wat wij voor u doen
+                Wat wij voor je doen
               </h2>
               {service.longDescription.map((paragraph, i) => (
                 <p key={i} className="text-[#575760] leading-relaxed">
@@ -214,7 +214,7 @@ export default async function ServicePage({
               <div className="bg-[#1f1f1f] p-6 text-white">
                 <h3 className="mb-2 text-sm font-bold">Klaar om te starten?</h3>
                 <p className="mb-4 text-xs text-white/70 leading-relaxed">
-                  Plan een gratis strategiegesprek en ontdek hoe {service.title} uw bedrijf versterkt.
+                  Plan een gratis strategiegesprek en ontdek hoe {service.title} je bedrijf versterkt.
                 </p>
                 <Link
                   href="/#contact"
@@ -318,7 +318,7 @@ export default async function ServicePage({
               <span className="font-exposure">{service.title}?</span>
             </h2>
             <p className="max-w-lg text-white/70">
-              Plan een gratis strategiegesprek en ontdek wat AI concreet voor uw organisatie kan betekenen.
+              Plan een gratis strategiegesprek en ontdek wat AI concreet voor je bedrijf kan betekenen.
               Geen verplichtingen, wel direct inzicht.
             </p>
             <div className="flex flex-wrap justify-center gap-4">

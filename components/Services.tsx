@@ -17,7 +17,7 @@ export default function Services() {
           </h2>
           <p className="max-w-xl text-[#575760]">
             Sommige bureaus adviseren. Anderen bouwen. Wij doen alles: van het eerste gesprek
-            over uw processen tot het beheer van de AI-agents die er uit voortkomen.
+            over je processen tot het beheer van de AI-agents die eruit voortkomen.
           </p>
         </div>
 

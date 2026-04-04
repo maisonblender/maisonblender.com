@@ -183,7 +183,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#service-chatbots",
       name: "AI Chatbots & Klantenservice",
       description:
-        "Automatiseer tot 90% van uw klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren — via web, WhatsApp, e-mail en meer. Aangedreven door OpenAI en Anthropic Claude.",
+        "Automatiseer tot 90% van je klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren — via web, WhatsApp, e-mail en meer. Aangedreven door OpenAI en Anthropic Claude.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "Conversational AI & Klantenservice Automatisering",
@@ -193,7 +193,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#service-agents",
       name: "AI Agents & Procesautomatisering",
       description:
-        "Custom AI-agents die taken uitvoeren: documenten verwerken, e-mails interpreteren, acties uitvoeren in uw CRM of ERP. Gebouwd op LangChain, Anthropic Claude en OpenAI. 24/7 operationeel, zonder menselijke tussenkomst.",
+        "Custom AI-agents die taken uitvoeren: documenten verwerken, e-mails interpreteren, acties uitvoeren in je CRM of ERP. Gebouwd op LangChain, Anthropic Claude en OpenAI. 24/7 operationeel, zonder menselijke tussenkomst.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "AI Agents & Intelligente Procesautomatisering",
@@ -203,7 +203,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#service-rpa",
       name: "RPA & Workflow-integraties",
       description:
-        "Automatiseer repetitieve schermtaken en verbind uw systemen via robuuste API-koppelingen. Wij werken met n8n, Make.com en Zapier voor betrouwbare workflow-automatisering. Van factuurverwerking tot contractbeheer.",
+        "Automatiseer repetitieve schermtaken en verbind je systemen via robuuste API-koppelingen. Wij werken met n8n, Make.com en Zapier voor betrouwbare workflow-automatisering. Van factuurverwerking tot contractbeheer.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "Robotic Process Automation & Workflow-integraties",
@@ -223,7 +223,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#service-data",
       name: "Data-intelligentie & Rapportages",
       description:
-        "RAG-systemen op basis van LangChain en Anthropic Claude die uw interne kennisbase ontsluiten, automatische rapportages en dashboards die uw team dagelijks sturen op de juiste KPI's.",
+        "RAG-systemen op basis van LangChain en Anthropic Claude die je interne kennisbase ontsluiten, automatische rapportages en dashboards die je team dagelijks sturen op de juiste KPI's.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "Data-intelligentie & Business Intelligence",
@@ -233,7 +233,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#service-strategie",
       name: "AI Strategie & Quickscan",
       description:
-        "Gratis automatiseringsquickscan van uw processen met een concreet implementatieplan inclusief business case. Wij adviseren over de inzet van OpenAI, Anthropic Claude, n8n, Make.com, Zapier, LangChain en Microsoft Azure AI.",
+        "Gratis automatiseringsquickscan van je processen met een concreet implementatieplan inclusief business case. Wij adviseren over de inzet van OpenAI, Anthropic Claude, n8n, Make.com, Zapier, LangChain en Microsoft Azure AI.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "AI Strategie Consultancy",

@@ -116,7 +116,7 @@ export default function Sectoren() {
         {/* CTA strip */}
         <div className="mt-8 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-2">
-            <p className="text-lg font-bold text-[#1f1f1f]">Uw sector staat er niet bij?</p>
+            <p className="text-lg font-bold text-[#1f1f1f]">Jouw sector staat er niet bij?</p>
             <p className="text-sm text-[#575760]">
               AI-automatisering is niet gebonden aan een branche — het is gebonden aan processen.
               Elk bedrijf heeft processen die beter kunnen.

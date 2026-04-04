@@ -20,16 +20,17 @@ export default function Hero() {
           </div>
 
           <h1 className="text-4xl font-black leading-[1.05] tracking-tight text-[#1f1f1f] sm:text-5xl lg:text-6xl" style={{ letterSpacing: "-0.95px" }}>
-            AI die uw medewerkers
+            AI die je medewerkers
             <br />
             <span className="font-exposure">dagelijks gebruiken.</span>
             <span className="sr-only"> — AI-bureau in Sittard, Zuid-Limburg</span>
           </h1>
 
           <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-            MAISON BLNDR bouwt werkende AI voor het MKB van Zuid-Limburg. Agents die facturen
-            verwerken, chatbots die klanten helpen, automatisering die uw team dagelijks gebruikt.
-            Gevestigd in Sittard. Actief door heel Nederland.
+            Geen demo's, geen pilots die nergens op uitlopen. MAISON BLNDR bouwt AI die je team
+            dagelijks inzet — agents voor factuurverwerking, chatbots voor klantenservice,
+            automatisering voor de processen die nu te veel tijd kosten. Gevestigd in Sittard.
+            Actief door heel Nederland.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">

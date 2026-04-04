@@ -48,9 +48,9 @@ export default function ContactForm() {
     return (
       <div className="flex flex-col items-center gap-4 py-12 text-center">
         <div className="text-3xl">✓</div>
-        <p className="text-lg font-semibold text-white">Bedankt voor uw bericht!</p>
+        <p className="text-lg font-semibold text-white">Bedankt voor je bericht!</p>
         <p className="text-sm text-white/60">
-          Wij nemen binnen één werkdag contact met u op.
+          Wij nemen binnen één werkdag contact met je op.
         </p>
         <button
           onClick={() => setFormState("idle")}
@@ -86,7 +86,7 @@ export default function ContactForm() {
             id="bedrijf"
             name="bedrijf"
             type="text"
-            placeholder="Uw bedrijfsnaam"
+            placeholder="Je bedrijfsnaam"
             className={inputClass}
           />
         </div>
@@ -115,7 +115,7 @@ export default function ContactForm() {
           name="bericht"
           required
           rows={5}
-          placeholder="Beschrijf uw vraag of situatie..."
+          placeholder="Beschrijf je vraag of situatie..."
           className={inputClass + " resize-none"}
         />
       </div>

@@ -27,18 +27,17 @@ export default function About() {
                 die het dagelijks moeten gebruiken.
               </p>
               <p>
-                Daarom beginnen wij altijd met uw processen. Dan pas met de code.
+                Daarom beginnen wij altijd met je processen. Dan pas met de code.
               </p>
               <p>
                 Wij bouwen met tools die al bewezen zijn: <strong>OpenAI</strong>, <strong>Anthropic Claude</strong>{" "}
                 en <strong>LangChain</strong> voor intelligente agents; <strong>n8n</strong>,{" "}
-                <strong>Make.com</strong> en <strong>Zapier</strong> voor robuuste koppelingen met uw bestaande
+                <strong>Make.com</strong> en <strong>Zapier</strong> voor robuuste koppelingen met je bestaande
                 systemen. Geen evangelisatie van de nieuwste hype — keuze voor wat werkt.
               </p>
               <p>
                 Gevestigd in Sittard. Actief in Maastricht, Geleen, Heerlen, Venlo en daarbuiten.
-                U heeft geen reiskosten, geen tijdsverschil en geen callcenter — u heeft een team
-                dat uw regio kent.
+                Geen reiskosten, geen tijdsverschil, geen callcenter — wel een team dat je regio kent.
               </p>
             </div>
 
