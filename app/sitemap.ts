@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/lib/services";
+import { tagPages } from "@/lib/tag-pages";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const servicePages: MetadataRoute.Sitemap = services.map((s) => ({
@@ -7,6 +8,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.8,
+  }));
+
+  const tagPageEntries: MetadataRoute.Sitemap = tagPages.map((t) => ({
+    url: `https://maisonblender.com/diensten/${t.slug}`,
+    lastModified: new Date(),
+    changeFrequency: "monthly",
+    priority: 0.7,
   }));
 
   return [
@@ -17,5 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     ...servicePages,
+    ...tagPageEntries,
   ];
 }

@@ -1,3 +1,9 @@
+export interface ServiceSection {
+  id: string;   // anchor id (no #), e.g. "lead-generatie"
+  title: string;
+  content: string;
+}
+
 export interface Service {
   id: string;
   slug: string;
@@ -12,6 +18,7 @@ export interface Service {
   benefits: string[];
   useCases: string[];
   technologies: string[];
+  sections?: ServiceSection[];
   jsonLdId: string;
   jsonLdServiceType: string;
 }
@@ -58,6 +65,20 @@ export const services: Service[] = [
       "Productinformatie en beschikbaarheid opvragen",
     ],
     technologies: ["OpenAI GPT-4o", "Anthropic Claude", "WhatsApp Business API", "Zendesk", "HubSpot"],
+    sections: [
+      {
+        id: "lead-generatie",
+        title: "Lead generatie via AI",
+        content:
+          "AI-gestuurde lead generatie via conversational AI gaat verder dan een contactformulier. Een AI-agent op je website of WhatsApp-kanaal kwalificeert bezoekers in real-time: wat zijn hun behoeften, welk budget hebben ze, hoe urgent is de vraag? De agent verzamelt deze informatie in een natuurlijk gesprek — zonder dat de bezoeker het gevoel heeft een formulier in te vullen. Het resultaat: warme leads die direct naar de juiste salesmedewerker gaan, met alle context al uitgeschreven. Maison Blender koppelt AI-gestuurde lead generatie aan je CRM zodat elke lead automatisch wordt aangemaakt, gescoord en opgevolgd. Uit onze implementaties blijkt dat de conversie van websitebezoeker naar qualified lead gemiddeld met 35–60% stijgt na implementatie van AI-gestuurde lead generatie.",
+      },
+      {
+        id: "omnichannel",
+        title: "Omnichannel klantcontact",
+        content:
+          "Omnichannel betekent meer dan aanwezig zijn op meerdere kanalen — het betekent dat je klant een consistente ervaring heeft, ongeacht welk kanaal ze kiezen. Een gesprek dat begint op WhatsApp moet naadloos doorgaan op e-mail of telefonisch, zonder dat de klant alles opnieuw hoeft uit te leggen. Maison Blender bouwt omnichannel AI-agents die context meenemen over kanalen heen. Technisch gezien draait er één centrale agent gekoppeld aan alle kanalen: web, WhatsApp Business, e-mail, Messenger en telefoon. De klanthistorie, openstaande vragen en gesprekscontext zijn overal beschikbaar. Voor MKB in Limburg met klanten die via verschillende kanalen contact opnemen, is dit de oplossing die zorgt dat je team niet steeds opnieuw begint.",
+      },
+    ],
     jsonLdId: "https://maisonblender.com/diensten/ai-chatbots-klantenservice#service",
     jsonLdServiceType: "Conversational AI & Klantenservice Automatisering",
   },
@@ -102,6 +123,26 @@ export const services: Service[] = [
       "Klantenportfolio monitoren en alerting",
     ],
     technologies: ["LangChain", "Anthropic Claude", "OpenAI GPT-4o", "Microsoft Azure AI", "n8n"],
+    sections: [
+      {
+        id: "multi-agent",
+        title: "Multi-agent orkestratie",
+        content:
+          "Multi-agent orkestratie is de aanpak waarbij meerdere gespecialiseerde AI-agents samenwerken aan een complex proces. Eén agent leest de inkomende e-mail en classificeert het verzoek. Een tweede agent haalt relevante data op uit je CRM. Een derde voert de benodigde actie uit. Een coördinerende orchestrator-agent stuurt het geheel aan. Maison Blender bouwt multi-agent systemen op basis van LangChain en AutoGen, waarbij elke agent zijn eigen verantwoordelijkheid heeft en fouten door de andere agents worden opgevangen. Dit is de architectuur die schaalbaar is naar hoge volumes: bij drukte worden meer instanties van dezelfde agent opgestart. Bedrijven met complexe, meertrapsprocessen die nu door meerdere medewerkers worden afgehandeld, zijn de ideale kandidaat voor multi-agent automatisering.",
+      },
+      {
+        id: "documentverwerking",
+        title: "Intelligente documentverwerking",
+        content:
+          "AI-gestuurde documentverwerking gaat verder dan OCR. Een intelligent document processing-systeem van Maison Blender begrijpt de betekenis van een document: het onderscheidt een offerte van een contract, herkent afwijkingen ten opzichte van de standaard en extraheert de relevante data in de juiste context. Of het nu gaat om inkomende offerteaanvragen, leverancierscontracten, belastingdocumenten of medische dossiers — het systeem verwerkt elk documenttype op maat. De geëxtraheerde data gaat direct naar je systemen: CRM, ERP of documentmanagementsysteem. Wij bouwen ook de validatielaag: welke data moet aanwezig zijn, welke waarden zijn plausibel en wanneer moet een medewerker er naar kijken.",
+      },
+      {
+        id: "taakuitvoering",
+        title: "Autonome taakuitvoering",
+        content:
+          "Taakuitvoering door AI-agents is het stadium waarbij automatisering overgaat van data verwerken naar daadwerkelijk handelingen uitvoeren. Een AI-agent die niet alleen een inkomend verzoek classificeert, maar ook de bijbehorende taak aanmaakt in Asana, de verantwoordelijke notificeert via Slack en na 48 uur een follow-up stuurt als er geen reactie is. Maison Blender bouwt AI-agents die taken volledig autonoom afhandelen via integraties met je tool-stack. De agents hebben toegang tot een gedefinieerde set acties — API-calls, bestandsbewerkingen, communicatieplugins — en kiezen op basis van de situatie de juiste actie. Elke handeling wordt gelogd in een audittrail. Voor bedrijven die hun backoffice willen automatiseren zonder bestaande processen volledig te herontwerpen, is deze incrementele aanpak de meest pragmatische weg.",
+      },
+    ],
     jsonLdId: "https://maisonblender.com/diensten/ai-agents-procesautomatisering#service",
     jsonLdServiceType: "AI Agents & Intelligente Procesautomatisering",
   },
@@ -146,6 +187,20 @@ export const services: Service[] = [
       "Voorraad- en inkoopbeheer koppelen",
     ],
     technologies: ["n8n", "Make.com", "Zapier", "Python", "REST API-integraties"],
+    sections: [
+      {
+        id: "api-integraties",
+        title: "API-integraties op maat",
+        content:
+          "API-integraties zijn de verbindingen tussen softwaresystemen via gestandaardiseerde programmeerinterfaces. Maison Blender bouwt robuuste API-integraties die systemen real-time laten communiceren: een bestelling in je webshop triggert automatisch een verzoek in je ERP, een nieuw klantcontact in je CRM maakt een taak aan in je projecttool, en een goedgekeurd verlofverzoek in je HR-systeem past de planning aan. Wij bouwen op REST en GraphQL API's en gebruiken platforms als n8n en Make.com voor visuele workflow-automatisering. Elke integratie wordt gebouwd met foutafhandeling, retry-logica en alerting — zodat je nooit ongemerkt data verliest bij een tijdelijk systeemprobleem. Onderhoud en updates bij API-versiewijzigingen zijn inbegrepen in ons beheercontract.",
+      },
+      {
+        id: "schermautomatisering",
+        title: "Schermautomatisering (UI automation)",
+        content:
+          "Schermautomatisering — ook wel UI-automatisering — is de RPA-techniek waarbij een softwarerobot een computerscherm bestuurt zoals een medewerker dat zou doen: klikken, typen, kopiëren, formulieren invullen. Het bijzondere voordeel is dat het werkt met systemen die geen API bieden. Een twintig jaar oud ERP-systeem, een leveranciersportaal dat je zelf niet kunt aanpassen, een overheidsportaal — allemaal automatiseerbaar via schermautomatisering. Maison Blender implementeert schermautomatisering met Python-gebaseerde oplossingen en combineert dit waar nuttig met AI voor documentherkenning en besluitvorming. De robots draaien in een beveiligde omgeving en worden proactief gemonitord. Als een scherm verandert door een systeemupdate, signaleren wij dit en passen de robot aan voordat jij er last van hebt.",
+      },
+    ],
     jsonLdId: "https://maisonblender.com/diensten/rpa-workflow-integraties#service",
     jsonLdServiceType: "Robotic Process Automation & Workflow-integraties",
   },
@@ -190,6 +245,32 @@ export const services: Service[] = [
       "Dashboards en rapportageplatformen",
     ],
     technologies: ["Next.js", "TypeScript", "Python", "Microsoft Azure AI", "OpenAI", "Anthropic Claude"],
+    sections: [
+      {
+        id: "klantportalen",
+        title: "Klantportalen met AI",
+        content:
+          "Een klantportaal van Maison Blender is meer dan een loginpagina met documenten. Het is een gepersonaliseerde werkplek voor je klanten: ze zien de status van lopende projecten of orders, kunnen documenten uploaden en bekijken, communiceren via geïntegreerde chat en ontvangen proactieve AI-gestuurde statusupdates. De portaal is volledig op maat gebouwd voor jouw branche en klantrelaties. Wij bouwen klantportalen op Next.js en TypeScript, gehost op Microsoft Azure of AWS, met AI-integraties die de klantervaring persoonlijker maken. Beveiliging is ingebouwd: toegang per klant, audit-logging en GDPR-compliance zijn standaard onderdeel van elke implementatie.",
+      },
+      {
+        id: "web-mobiele-apps",
+        title: "Web & mobiele apps",
+        content:
+          "Maison Blender bouwt web- en mobiele applicaties die meer kunnen dan standaardsoftware. Onze apps zijn AI-native: van zoekfuncties die intentie begrijpen tot aanbevelingen op basis van gebruikersgedrag en geautomatiseerde rapportages die zichzelf genereren. We werken met React en Next.js voor web, en React Native voor cross-platform mobiele apps — één codebase, beschikbaar op iOS en Android. Voor buitendienstmedewerkers in Zuid-Limburg die onderweg toegang nodig hebben tot klantdata, inspecties moeten vastleggen of offertes moeten genereren, bieden mobiele apps de juiste tool op het juiste moment. Elke app die wij bouwen is ontworpen voor echte gebruikers: intuïtief, snel en betrouwbaar ook bij een slechte verbinding.",
+      },
+      {
+        id: "ai-applicaties",
+        title: "AI-applicaties als kernproduct",
+        content:
+          "AI-applicaties zijn niet standaardsoftware met een chatbot erbij — ze zijn gebouwd rond AI als kernfunctionaliteit. Maison Blender ontwikkelt applicaties waarbij AI de gebruikerservaring fundamenteel verbetert: een interne zoekfunctie die documenten vindt op basis van vraag in plaats van trefwoord, een dashboard dat anomalieën proactief signaleert, of een adviesapplicatie die op basis van klantdata automatisch de beste productaanbeveling doet. We bouwen custom AI-applicaties op de API's van OpenAI en Anthropic, gecombineerd met jouw eigen data en processen. Het eindresultaat is software die slimmer wordt naarmate je hem meer gebruikt.",
+      },
+      {
+        id: "documentbeheer",
+        title: "AI-gestuurd documentbeheer",
+        content:
+          "Slim documentbeheer is meer dan bestanden opslaan in mappenstructuren. Maison Blender bouwt documentbeheersystemen waarbij AI automatisch documenten classificeert, metadata extraheert, versies bijhoudt en gerelateerde documenten clustert. Je medewerkers vinden wat ze zoeken in seconden via AI-gestuurde zoekfuncties die begrijpen waar ze naar zoeken. Wij integreren met bestaande DMS-platforms (SharePoint, DocuWare, OpenText) of bouwen een eigen oplossing als de standaardpakketten niet passen. Inkomende documenten worden automatisch verwerkt, geclassificeerd en aan het juiste dossier gekoppeld. Voor bedrijven in Limburg met grote documentvolumes in gereguleerde sectoren is dit een compliance- én efficiëntieoplossing tegelijk.",
+      },
+    ],
     jsonLdId: "https://maisonblender.com/diensten/custom-ai-software#service",
     jsonLdServiceType: "Custom AI Software Development",
   },
@@ -234,6 +315,26 @@ export const services: Service[] = [
       "Financiële afwijkingen automatisch signaleren",
     ],
     technologies: ["LangChain", "Anthropic Claude", "OpenAI", "Python", "Supabase", "Grafana"],
+    sections: [
+      {
+        id: "kennismanagement",
+        title: "AI-gestuurd kennismanagement",
+        content:
+          "Kennismanagement met AI lost een fundamenteel bedrijfsprobleem op: kennis zit verspreid in hoofden, e-mails, documenten en gesprekken — en is daarmee kwetsbaar en moeilijk toegankelijk. Maison Blender implementeert AI-gestuurd kennismanagement waarbij alles wat je bedrijf weet doorzoekbaar en deelbaar wordt. Via RAG-technologie koppelen we een taalmodel aan je bestaande kennisrepositories: Confluence, SharePoint, interne wikis, proceshandleidingen en trainingsmateriaal. Medewerkers stellen vragen in gewone taal en krijgen accurate antwoorden met bronvermelding. Nieuwe medewerkers zijn sneller ingewerkt. Expertise van vertrekkende medewerkers wordt geborgd. En je klantenserviceteam geeft altijd consistente, correcte antwoorden — niet afhankelijk van wie er dienst heeft.",
+      },
+      {
+        id: "dashboards",
+        title: "Intelligente KPI-dashboards",
+        content:
+          "Een goed dashboard geeft je niet meer data — het geeft je de juiste data, op het juiste moment, in de juiste context. Maison Blender bouwt dashboards die niet alleen historische KPI's tonen maar ook afwijkingen detecteren, trends voorspellen en aanbevelingen doen. We verbinden je databronnen — CRM, ERP, websiteanalytics, productiesystemen — in één overzicht dat in real-time updates ontvangt. Het dashboard past zich aan op de rol van de gebruiker: een directeur ziet de strategische KPI's, een salesmanager de pipelinedata, een productieleider de capaciteitsbenutting. Elk dashboard wordt gebouwd met een alert-systeem: bij overschrijding van een drempelwaarde ontvangt de juiste persoon een notificatie via e-mail, Slack of WhatsApp.",
+      },
+      {
+        id: "automatische-rapportages",
+        title: "Automatische rapportages",
+        content:
+          "Handmatig rapportages samenstellen kost gemiddeld twee tot acht uur per rapport per week — tijd die niet besteed wordt aan analyse en actie. Maison Blender automatiseert de volledige rapportageketen: data ophalen uit alle bronnen, samenvoegen, berekeningen uitvoeren, visualiseren en distribueren naar de juiste ontvangers op het juiste moment. AI voegt een laag toe die pure rapportage overstijgt: het systeem signaleert welke patronen in de data opvallend zijn, vergelijkt met vorige periodes en geeft een korte tekstuele samenvatting. De rapportage schrijft zichzelf. Onze klanten ontvangen elke maandagochtend automatisch een management summary die de vorige week samenvat — inclusief uitschieters en aanbevolen acties. Geen enkele medewerker heeft er een vinger aan geroerd.",
+      },
+    ],
     jsonLdId: "https://maisonblender.com/diensten/data-intelligentie-rapportages#service",
     jsonLdServiceType: "Data-intelligentie & Business Intelligence",
   },
@@ -278,6 +379,26 @@ export const services: Service[] = [
       "Change management bij AI-implementatie",
     ],
     technologies: ["OpenAI", "Anthropic Claude", "n8n", "Make.com", "LangChain", "Microsoft Azure AI"],
+    sections: [
+      {
+        id: "implementatieroadmap",
+        title: "Implementatieroadmap op maat",
+        content:
+          "Een AI-implementatieroadmap is meer dan een lijst met projecten. Het is een gefaseerd plan dat rekening houdt met je beschikbare capaciteit, budget, organisatorische veranderbereidheid en de afhankelijkheden tussen verschillende automatiseringen. Maison Blender stelt implementatieroadmaps op die pragmatisch zijn: we beginnen met de quick wins die snel ROI genereren en intern draagvlak creëren, bouwen daarna door op de infrastructuur die we hebben neergelegd, en lopen naar de meer complexe transformaties. Per fase staat beschreven wat er wordt opgeleverd, welke resources nodig zijn, welke risico's er zijn en hoe succes gemeten wordt. De roadmap is niet in steen gebeiteld — wij reviewen en actualiseren hem elk kwartaal op basis van voortgang en veranderende prioriteiten.",
+      },
+      {
+        id: "business-case",
+        title: "AI business case bouwen",
+        content:
+          "Een overtuigende AI business case bevat meer dan een kostenschatting. Hij beschrijft de huidige situatie (baseline), de verwachte situatie na implementatie (target state), de investering die daarvoor nodig is, en de financiële en strategische waarde van het verschil. Maison Blender bouwt business cases die houdbaar zijn onder kritische bestuursleden: wij gebruiken conservatieve aannames, bouwen scenario-analyses in (pessimistisch, basis, optimistisch) en valideren de aannames bij vergelijkbare implementaties. De business case omvat ook de niet-financiële baten: betere kwaliteit, lagere foutmarges, hogere medewerkerssatisfactie. Voor directies en aandeelhouders in Zuid-Limburg die AI serieus overwegen maar nog een concreet onderbouwd verhaal missen, is de business case van Maison Blender het vertrekpunt.",
+      },
+      {
+        id: "team-training",
+        title: "Team training & adoptie",
+        content:
+          "AI-implementatie slaagt of faalt met de mensen die ermee werken. Maison Blender begeleidt niet alleen de technische implementatie maar zorgt ook dat je team de nieuwe tools daadwerkelijk gebruikt en vertrouwt. Wij verzorgen training op maat: voor eindgebruikers die dagelijks met de AI-tools werken, voor managers die de outputs moeten interpreteren en beoordelen, en voor de IT-afdeling die de systemen beheert. Training is geen eenmalige sessie maar een doorlopend traject: bij elke nieuwe functionaliteit, bij verloop, en bij de doorontwikkeling van de AI-tools. We meten adoptie — niet hoeveel mensen een training hebben gevolgd, maar hoeveel mensen de tool daadwerkelijk gebruiken na drie maanden. Dat is de metric die telt.",
+      },
+    ],
     jsonLdId: "https://maisonblender.com/diensten/ai-strategie-quickscan#service",
     jsonLdServiceType: "AI Strategie Consultancy",
   },
