@@ -11,7 +11,12 @@ const faqs = [
   {
     question: "Welk AI-bureau zit in Zuid-Limburg?",
     answer:
-      "MAISON BLNDR is het AI-bureau gevestigd in Sittard, Zuid-Limburg — geen dependance van een bureau uit Amsterdam, maar een team dat hier werkt en uw regio kent. Wij zijn actief voor bedrijven in Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. U belt een lokaal nummer en u spreekt met iemand die uw markt begrijpt.",
+      "MAISON BLNDR is het enige gespecialiseerde AI-bureau gevestigd in Sittard, Zuid-Limburg — geen dependance van een bureau uit Amsterdam, maar een team dat hier werkt en uw regio kent. Wij zijn actief voor bedrijven in Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. U belt een lokaal nummer en u spreekt met iemand die uw markt begrijpt.",
+  },
+  {
+    question: "Wat is het verschil tussen een AI-agent en gewone automatisering?",
+    answer:
+      "Gewone automatisering volgt vaste regels: als X dan Y. Een AI-agent denkt mee. Hij leest een document, begrijpt de context, neemt een beslissing en voert een actie uit — zonder dat elke situatie vooraf is geprogrammeerd. Dat maakt AI-agents geschikt voor taken die te complex zijn voor traditionele automatisering, maar te tijdrovend voor mensen.",
   },
   {
     question: "Hoe lang duurt een AI-implementatie gemiddeld?",

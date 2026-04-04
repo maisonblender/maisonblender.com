@@ -3,19 +3,19 @@ import SiteImage from "@/components/SiteImage";
 const steps = [
   {
     step: "01",
-    title: "Architectuur & Roadmap",
+    title: "Uw processen eerst",
     description:
       "Geen intakegesprek waarbij u vertelt wat u wilt en wij knikken. Wij gaan in op uw processen, bouwen een architectuur die uw bestaande systemen serieus neemt, en leveren een roadmap met realistische tijdlijnen — inclusief wat het u concreet oplevert.",
   },
   {
     step: "02",
-    title: "Prototype & Validatie",
+    title: "Twee weken. Dan ziet u het.",
     description:
       "Binnen twee weken draait een werkend prototype in uw eigen omgeving. Geen demo-omgeving, geen mock-data. U ziet direct of het past — en kunt bijsturen voordat er een euro te veel is uitgegeven.",
   },
   {
     step: "03",
-    title: "Implementatie & Beheer",
+    title: "Live. En wij blijven.",
     description:
       "Na validatie bouwen wij naar productie. Robuust, veilig, schaalbaar. Monitoring en beheer blijven bij ons — u hoeft alleen de resultaten te zien.",
   },

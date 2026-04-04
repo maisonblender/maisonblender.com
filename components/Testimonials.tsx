@@ -34,15 +34,15 @@ export default function Testimonials() {
         <div className="flex flex-col gap-12">
           <div className="flex flex-col gap-4 text-center">
             <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
-              Wat onze klanten zeggen
+              Klanten aan het woord
             </span>
             <h2
               className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Resultaten die
+              Minder werk.
               <br />
-              <span className="font-exposure">voor zichzelf spreken.</span>
+              <span className="font-exposure">Elke week opnieuw.</span>
             </h2>
           </div>
 

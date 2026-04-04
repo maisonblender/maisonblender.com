@@ -22,7 +22,7 @@ const sectoren = [
     sector: "Logistiek & Transport",
     Icon: Truck,
     usecases: [
-      "Automatische routeplanning en planning",
+      "Automatische routeplanning en dispatching",
       "Documentverwerking (CMR, vrachtbrieven)",
       "Klantcommunicatie over leveringstijden",
       "RPA voor exportdocumentatie",
@@ -86,8 +86,8 @@ export default function Sectoren() {
             <span className="font-exposure">Mits het goed is gebouwd.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Wat werkt voor een logistiek bedrijf in Sittard, werkt anders voor een accountantskantoor
-            in Maastricht. Wij kennen het verschil — en bouwen daar naar.
+            Een logistiek bedrijf in Sittard en een accountantskantoor in Maastricht hebben andere
+            processen. Andere problemen. Andere kansen. Wij bouwen voor het verschil.
           </p>
         </div>
 

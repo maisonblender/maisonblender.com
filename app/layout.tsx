@@ -10,9 +10,9 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://maisonblender.com"),
-  title: "MAISON BLNDR — AI-bureau Sittard | Custom AI-agents & Automatisering Zuid-Limburg",
+  title: "AI-bureau Zuid-Limburg | MAISON BLNDR — Custom AI-agents & Automatisering Sittard",
   description:
-    "MAISON BLNDR — het AI-bureau van Sittard, Zuid-Limburg. Custom AI-agents, procesautomatisering en maatwerksoftware voor MKB. Geen data-scientist nodig. Van quickscan tot live systeem.",
+    "Het AI-bureau van Sittard, Zuid-Limburg. Custom AI-agents, procesautomatisering en maatwerksoftware voor MKB. Geen data-scientist nodig. Vraag een gratis quickscan aan.",
   keywords: [
     "AI bureau Zuid-Limburg",
     "AI consultant Limburg",
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
     canonical: "https://maisonblender.com",
   },
   openGraph: {
-    title: "MAISON BLNDR — AI-bureau Sittard, Zuid-Limburg",
+    title: "MAISON BLNDR — AI-bureau in Sittard, Zuid-Limburg",
     description:
-      "Het AI-bureau van Sittard. Wij bouwen werkende AI-agents, procesautomatisering en maatwerksoftware voor MKB — geen data-scientist nodig, geen proof-of-concepts. Van quickscan tot live systeem.",
+      "MAISON BLNDR bouwt werkende AI-agents, procesautomatisering en maatwerksoftware voor MKB in Zuid-Limburg. Geen data-scientist nodig. Gevestigd in Sittard, actief door heel Nederland.",
     url: "https://maisonblender.com",
     siteName: "Maison Blender",
     locale: "nl_NL",

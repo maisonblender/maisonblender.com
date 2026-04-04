@@ -27,9 +27,9 @@ export default function Hero() {
           </h1>
 
           <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-            MAISON BLNDR is het AI-bureau van Zuid-Limburg. Wij bouwen geen proof-of-concepts —
-            wij leveren werkende AI-agents, procesautomatisering en maatwerksoftware die uw team
-            vanaf dag één gebruikt. Gevestigd in Sittard, actief door heel Nederland.
+            MAISON BLNDR bouwt werkende AI voor het MKB van Zuid-Limburg. Agents die facturen
+            verwerken, chatbots die klanten helpen, automatisering die uw team dagelijks gebruikt.
+            Gevestigd in Sittard. Actief door heel Nederland.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">
