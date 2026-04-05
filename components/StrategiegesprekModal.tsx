@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 // Update this URL to your Google Calendar appointment scheduling link
-const CALENDAR_BOOKING_URL = "https://calendar.google.com/calendar/appointments/schedules/AcZssZ-PLACEHOLDER";
+const CALENDAR_BOOKING_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2r1GurynCuZKWNZ2LANHLHlc7cbHzbeI3NRwVZJNCj5hrzqsuhRr-SLBbidFplYf1lb_8lHOw5";
 
 type Step =
   | "uitdaging"
