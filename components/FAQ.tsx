@@ -80,7 +80,7 @@ export default function FAQ() {
             Veelgestelde vragen
           </span>
           <h2
-            className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl"
+            className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[35px]"
             style={{ letterSpacing: "-0.95px" }}
           >
             Geen vaagheid.

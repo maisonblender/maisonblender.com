@@ -80,7 +80,7 @@ export default function Sectoren() {
           <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
             Sectoren
           </span>
-          <h2 className="text-3xl font-black tracking-tight text-[#1f1f1f] sm:text-4xl lg:text-5xl" style={{ letterSpacing: "-0.95px" }}>
+          <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[35px]" style={{ letterSpacing: "-0.95px" }}>
             AI werkt in elke sector.
             <br />
             <span className="font-exposure">Mits het goed is gebouwd.</span>

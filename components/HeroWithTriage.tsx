@@ -26,7 +26,7 @@ export default function HeroWithTriage() {
               AI-frontrunner · Zuid-Limburg
             </div>
 
-            <h1 className="text-4xl font-black leading-[1.05] tracking-tight text-[#1f1f1f] sm:text-5xl lg:text-6xl" style={{ letterSpacing: "-0.95px" }}>
+            <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]" style={{ letterSpacing: "-0.95px" }}>
               AI die je medewerkers
               <br />
               <span className="font-exposure">dagelijks gebruiken.</span>

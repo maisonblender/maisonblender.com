@@ -11,7 +11,7 @@ export default function Contact() {
             Contact
           </span>
           <h2
-            className="text-4xl font-black tracking-tight text-white sm:text-5xl"
+            className="text-[28px] font-normal leading-[1.2] tracking-tight text-white sm:text-[35px] lg:text-[42px]"
             style={{ letterSpacing: "-0.95px" }}
           >
             Eerlijk advies. Geen verplichtingen.
