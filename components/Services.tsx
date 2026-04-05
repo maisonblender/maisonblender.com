@@ -1,3 +1,4 @@
+"use client";
 import Link from "next/link";
 import SiteImage from "@/components/SiteImage";
 import { services } from "@/lib/services";
