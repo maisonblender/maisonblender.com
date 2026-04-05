@@ -248,16 +248,13 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
             <StepCard
               eyebrow={`Stap 5 van ${totalSteps}`}
               title="Hoe wil je afspreken?"
-              subtitle="Wij komen graag naar jou toe, of plannen een video-call - wat past het beste?"
+              
             >
               <button
                 className={`${optionClass} ${answers.vergadertype === "Op locatie" ? selectedClass : ""}`}
                 onClick={() => pick("vergadertype", "Op locatie")}
               >
-                <span className="flex flex-col">
-                  <span className="flex items-center gap-2"><span>📍</span> Op locatie bij jullie</span>
-                  <span className="text-xs text-[#575760] mt-0.5 ml-6">Wij komen naar jou toe</span>
-                </span>
+                  <span className="flex items-center gap-2"><span>📍</span> Op locatie</span>
                 <span className="text-black/30 group-hover:text-black/60 transition-colors">→</span>
               </button>
               <button
@@ -405,7 +402,7 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
       {answers.vergadertype && (
         <div className="flex items-center gap-2 rounded bg-white border border-black/8 px-4 py-2.5 text-xs text-[#575760]">
           <span>{isOnline ? "💻" : "📍"}</span>
-          <span>{isOnline ? "Online via Google Meet" : "Op locatie bij jullie"}</span>
+          <span>{isOnline ? "Online via Google Meet" : "Op locatie"}</span>
         </div>
       )}
 
