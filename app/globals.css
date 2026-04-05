@@ -4,7 +4,7 @@
   font-family: 'Exposure-20';
   font-style: normal;
   font-weight: 400;
-  src: url('https://maisonblender.com/wp-content/uploads/2025/05/ExposureTrial-20.otf') format('opentype');
+  src: url('/fonts/ExposureTrial-20.otf') format('opentype');
   font-display: swap;
 }
 
