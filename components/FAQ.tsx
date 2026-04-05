@@ -11,42 +11,42 @@ const faqs = [
   {
     question: "Welk AI-bureau zit in Zuid-Limburg?",
     answer:
-      "MAISON BLNDR is het enige gespecialiseerde AI-bureau gevestigd in Sittard, Zuid-Limburg — geen dependance van een bureau uit Amsterdam, maar een team dat hier werkt en jouw regio kent. Wij zijn actief voor bedrijven in Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. Je belt een lokaal nummer en je spreekt met iemand die jouw markt begrijpt.",
+      "MAISON BLNDR is het enige gespecialiseerde AI-bureau gevestigd in Sittard, Zuid-Limburg - geen dependance van een bureau uit Amsterdam, maar een team dat hier werkt en jouw regio kent. Wij zijn actief voor bedrijven in Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. Je belt een lokaal nummer en je spreekt met iemand die jouw markt begrijpt.",
   },
   {
     question: "Wat is het verschil tussen een AI-agent en gewone automatisering?",
     answer:
-      "Gewone automatisering volgt vaste regels: als X dan Y. Een AI-agent denkt mee. Hij leest een document, begrijpt de context, neemt een beslissing en voert een actie uit — zonder dat elke situatie vooraf is geprogrammeerd. Dat maakt AI-agents geschikt voor taken die te complex zijn voor traditionele automatisering, maar te tijdrovend voor mensen.",
+      "Gewone automatisering volgt vaste regels: als X dan Y. Een AI-agent denkt mee. Hij leest een document, begrijpt de context, neemt een beslissing en voert een actie uit - zonder dat elke situatie vooraf is geprogrammeerd. Dat maakt AI-agents geschikt voor taken die te complex zijn voor traditionele automatisering, maar te tijdrovend voor mensen.",
   },
   {
     question: "Hoe lang duurt een AI-implementatie gemiddeld?",
     answer:
-      "Een AI-chatbot of automatiseringsworkflow is doorgaans in 2-4 weken live. Complexe multi-agent systemen of maatwerk portalen nemen 6-12 weken in beslag. Na de quickscan krijg je een concreet projectplan met mijlpalen en een realistisch tijdpad — geen vage schattingen.",
+      "Een AI-chatbot of automatiseringsworkflow is doorgaans in 2-4 weken live. Complexe multi-agent systemen of maatwerk portalen nemen 6-12 weken in beslag. Na de quickscan krijg je een concreet projectplan met mijlpalen en een realistisch tijdpad - geen vage schattingen.",
   },
   {
     question: "Werken jullie met OpenAI of Claude (Anthropic)?",
     answer:
-      "Wij kiezen de beste technologie voor jouw specifieke usecase. Dat betekent in de praktijk: OpenAI (GPT-4o), Anthropic (Claude), Google (Gemini) en waar relevant open-source modellen zoals Llama. Wij zijn niet gebonden aan één leverancier. Je data blijft altijd van jou — wij configureren de juiste privacy- en compliance-instellingen per situatie.",
+      "Wij kiezen de beste technologie voor jouw specifieke usecase. Dat betekent in de praktijk: OpenAI (GPT-4o), Anthropic (Claude), Google (Gemini) en waar relevant open-source modellen zoals Llama. Wij zijn niet gebonden aan één leverancier. Je data blijft altijd van jou - wij configureren de juiste privacy- en compliance-instellingen per situatie.",
   },
   {
     question: "Kan AI mijn bestaande software koppelen?",
     answer:
-      "Ja. Wij bouwen koppelingen met vrijwel alle gangbare bedrijfssoftware: Exact Online, SAP, Salesforce, HubSpot, Microsoft 365, Google Workspace en meer. Voor systemen zonder API gebruiken wij RPA. Je hoeft niets te vervangen — wij bouwen om wat je al hebt.",
+      "Ja. Wij bouwen koppelingen met vrijwel alle gangbare bedrijfssoftware: Exact Online, SAP, Salesforce, HubSpot, Microsoft 365, Google Workspace en meer. Voor systemen zonder API gebruiken wij RPA. Je hoeft niets te vervangen - wij bouwen om wat je al hebt.",
   },
   {
     question: "Moet ik technische kennis hebben om met jullie te werken?",
     answer:
-      "Nee. Jij beschrijft het probleem of het doel — wij zorgen voor de rest. Wij vertalen technische complexiteit naar oplossingen die je medewerkers daadwerkelijk gebruiken. Geen jargon, geen imponeergedrag. Gewoon resultaten.",
+      "Nee. Jij beschrijft het probleem of het doel - wij zorgen voor de rest. Wij vertalen technische complexiteit naar oplossingen die je medewerkers daadwerkelijk gebruiken. Geen jargon, geen imponeergedrag. Gewoon resultaten.",
   },
   {
     question: "Wat is een gratis automatiseringsquickscan?",
     answer:
-      "In een quickscan van een uur analyseren wij je processen en identificeren wij de drie tot vijf taken met het hoogste automatiseringspotentieel. Je ontvangt een concreet implementatieplan met verwachte tijdsbesparing en een ruwe ROI-berekening. Geen verplichtingen, geen kosten — puur inzicht.",
+      "In een quickscan van een uur analyseren wij je processen en identificeren wij de drie tot vijf taken met het hoogste automatiseringspotentieel. Je ontvangt een concreet implementatieplan met verwachte tijdsbesparing en een ruwe ROI-berekening. Geen verplichtingen, geen kosten - puur inzicht.",
   },
   {
     question: "Blijven jullie betrokken na de lancering?",
     answer:
-      "Dat is juist waar het werk begint. Wij bieden doorlopend beheer, monitoring en optimalisatie. AI-systemen verbeteren naarmate ze meer data verwerken — wij zorgen dat je oplossing actueel blijft en meegroeit met je organisatie.",
+      "Dat is juist waar het werk begint. Wij bieden doorlopend beheer, monitoring en optimalisatie. AI-systemen verbeteren naarmate ze meer data verwerken - wij zorgen dat je oplossing actueel blijft en meegroeit met je organisatie.",
   },
 ];
 

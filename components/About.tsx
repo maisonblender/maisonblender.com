@@ -23,7 +23,7 @@ export default function About() {
             <div id="about-description" className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
                 Wij zijn begonnen met één overtuiging: AI-implementaties mislukken niet door de technologie.
-                Ze mislukken omdat bureaus leveren wat indrukwekkend klinkt — niet wat werkt voor de mensen
+                Ze mislukken omdat bureaus leveren wat indrukwekkend klinkt - niet wat werkt voor de mensen
                 die het dagelijks moeten gebruiken.
               </p>
               <p>
@@ -33,11 +33,11 @@ export default function About() {
                 Wij bouwen met tools die al bewezen zijn: <strong>OpenAI</strong>, <strong>Anthropic Claude</strong>{" "}
                 en <strong>LangChain</strong> voor intelligente agents; <strong>n8n</strong>,{" "}
                 <strong>Make.com</strong> en <strong>Zapier</strong> voor robuuste koppelingen met je bestaande
-                systemen. Geen evangelisatie van de nieuwste hype — keuze voor wat werkt.
+                systemen. Geen evangelisatie van de nieuwste hype - keuze voor wat werkt.
               </p>
               <p>
                 Gevestigd in Sittard. Actief in Maastricht, Geleen, Heerlen, Venlo en daarbuiten.
-                Geen reiskosten, geen tijdsverschil, geen callcenter — wel een team dat je regio kent.
+                Geen reiskosten, geen tijdsverschil, geen callcenter - wel een team dat je regio kent.
               </p>
             </div>
 
@@ -61,7 +61,7 @@ export default function About() {
             <div className="w-full">
               <SiteImage
                 src="/images/about-visual.png"
-                alt="Maison Blender team"
+                alt="MAISON BLNDR team"
                 className="object-cover w-full"
               />
             </div>

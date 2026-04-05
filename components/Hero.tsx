@@ -23,12 +23,12 @@ export default function Hero() {
             AI die je medewerkers
             <br />
             <span className="font-exposure">dagelijks gebruiken.</span>
-            <span className="sr-only"> — AI-bureau in Sittard, Zuid-Limburg</span>
+            <span className="sr-only"> - AI-bureau in Sittard, Zuid-Limburg</span>
           </h1>
 
           <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
             Geen demo's, geen pilots die nergens op uitlopen. MAISON BLNDR bouwt AI die je team
-            dagelijks inzet — agents voor factuurverwerking, chatbots voor klantenservice,
+            dagelijks inzet - agents voor factuurverwerking, chatbots voor klantenservice,
             automatisering voor de processen die nu te veel tijd kosten. Gevestigd in Sittard.
             Actief door heel Nederland.
           </p>

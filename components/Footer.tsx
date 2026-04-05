@@ -6,7 +6,7 @@ export default function Footer() {
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 sm:flex-row">
         <img
           src="/maison-blender-logo-black.svg"
-          alt="Maison Blender"
+          alt="MAISON BLNDR"
           className="h-4 w-auto"
         />
         <p className="text-xs text-[#b2b2be]">

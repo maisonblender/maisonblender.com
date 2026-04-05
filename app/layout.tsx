@@ -10,7 +10,7 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://maisonblender.com"),
-  title: "AI-bureau Zuid-Limburg | MAISON BLNDR — Custom AI-agents & Automatisering Sittard",
+  title: "AI-bureau Zuid-Limburg | MAISON BLNDR - Custom AI-agents & Automatisering Sittard",
   description:
     "Het AI-bureau van Sittard, Zuid-Limburg. Custom AI-agents, procesautomatisering en maatwerksoftware voor MKB. Geen data-scientist nodig. Vraag een gratis quickscan aan.",
   keywords: [
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "AI automatisering",
     "custom AI agents",
     "workflow automatisering",
-    "Maison Blender",
+    "MAISON BLNDR",
     "AI bureau Nederland",
     "procesautomatisering MKB",
     "AI chatbot bedrijf",
@@ -31,23 +31,23 @@ export const metadata: Metadata = {
     "AI implementatie",
     "intelligente automatisering",
   ],
-  authors: [{ name: "Maison Blender", url: "https://maisonblender.com" }],
+  authors: [{ name: "MAISON BLNDR", url: "https://maisonblender.com" }],
   alternates: {
     canonical: "https://maisonblender.com",
   },
   openGraph: {
-    title: "MAISON BLNDR — AI-bureau in Sittard, Zuid-Limburg",
+    title: "MAISON BLNDR - AI-bureau in Sittard, Zuid-Limburg",
     description:
       "MAISON BLNDR bouwt werkende AI-agents, procesautomatisering en maatwerksoftware voor MKB in Zuid-Limburg. Geen data-scientist nodig. Gevestigd in Sittard, actief door heel Nederland.",
     url: "https://maisonblender.com",
-    siteName: "Maison Blender",
+    siteName: "MAISON BLNDR",
     locale: "nl_NL",
     type: "website",
     images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "MAISON BLNDR — AI-bureau Sittard, Zuid-Limburg",
+    title: "MAISON BLNDR - AI-bureau Sittard, Zuid-Limburg",
     description:
       "Werkende AI-agents en procesautomatisering voor MKB in Zuid-Limburg. Geen data-scientist nodig. Van quickscan tot live systeem.",
   },
@@ -67,11 +67,11 @@ const jsonLd = {
     {
       "@type": ["Organization", "LocalBusiness", "ProfessionalService"],
       "@id": "https://maisonblender.com/#organization",
-      name: "Maison Blender",
+      name: "MAISON BLNDR",
       url: "https://maisonblender.com",
       logo: "https://maisonblender.com/maison-blender-logo-black.svg",
       description:
-        "Maison Blender is het toonaangevende AI-bureau in Zuid-Limburg. Wij bouwen custom AI-agents, workflow-automatisering en intelligente software voor ambitieuze bedrijven. Gespecialiseerd in AI-chatbots, procesautomatisering, RPA en maatwerksoftware.",
+        "MAISON BLNDR is het toonaangevende AI-bureau in Zuid-Limburg. Wij bouwen custom AI-agents, workflow-automatisering en intelligente software voor ambitieuze bedrijven. Gespecialiseerd in AI-chatbots, procesautomatisering, RPA en maatwerksoftware.",
       foundingDate: "2024",
       email: "info@maisonblender.com",
       telephone: "+31462004035",
@@ -160,7 +160,7 @@ const jsonLd = {
       "@type": "WebSite",
       "@id": "https://maisonblender.com/#website",
       url: "https://maisonblender.com",
-      name: "Maison Blender",
+      name: "MAISON BLNDR",
       description: "Het toonaangevende AI-bureau van Zuid-Limburg",
       publisher: { "@id": "https://maisonblender.com/#organization" },
       inLanguage: "nl-NL",
@@ -169,7 +169,7 @@ const jsonLd = {
       "@type": "WebPage",
       "@id": "https://maisonblender.com/#webpage",
       url: "https://maisonblender.com",
-      name: "Maison Blender — AI-bureau in Zuid-Limburg | Custom AI-agents & Automatisering",
+      name: "MAISON BLNDR - AI-bureau in Zuid-Limburg | Custom AI-agents & Automatisering",
       isPartOf: { "@id": "https://maisonblender.com/#website" },
       about: { "@id": "https://maisonblender.com/#organization" },
       speakable: {
@@ -183,7 +183,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#service-chatbots",
       name: "AI Chatbots & Klantenservice",
       description:
-        "Automatiseer tot 90% van je klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren — via web, WhatsApp, e-mail en meer. Aangedreven door OpenAI en Anthropic Claude.",
+        "Automatiseer tot 90% van je klantenservice met AI-agents die vragen beantwoorden, afspraken inplannen en leads kwalificeren - via web, WhatsApp, e-mail en meer. Aangedreven door OpenAI en Anthropic Claude.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "Conversational AI & Klantenservice Automatisering",
@@ -213,7 +213,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#service-software",
       name: "Custom AI Software & Portalen",
       description:
-        "Bespoke AI-applicaties, klant- en leveranciersportalen, mobiele apps en webapplicaties — volledig op maat gebouwd met Microsoft Azure AI, OpenAI en LangChain.",
+        "Bespoke AI-applicaties, klant- en leveranciersportalen, mobiele apps en webapplicaties - volledig op maat gebouwd met Microsoft Azure AI, OpenAI en LangChain.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "Custom AI Software Development",

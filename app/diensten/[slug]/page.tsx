@@ -35,7 +35,7 @@ export async function generateMetadata({
       title: page.metaTitle,
       description: page.metaDescription,
       url: `https://maisonblender.com/diensten/${page.slug}`,
-      siteName: "Maison Blender",
+      siteName: "MAISON BLNDR",
       locale: "nl_NL",
       type: "website",
       images: [{ url: "/opengraph-image", width: 1200, height: 630 }],
@@ -69,7 +69,7 @@ export default async function DienstenPage({
           provider: {
             "@type": "Organization",
             "@id": "https://maisonblender.com/#organization",
-            name: "Maison Blender",
+            name: "MAISON BLNDR",
           },
           areaServed: [
             { "@type": "State", name: "Limburg" },
@@ -395,7 +395,7 @@ export default async function DienstenPage({
         provider: {
           "@type": "Organization",
           "@id": "https://maisonblender.com/#organization",
-          name: "Maison Blender",
+          name: "MAISON BLNDR",
         },
         areaServed: [
           { "@type": "State", name: "Limburg" },

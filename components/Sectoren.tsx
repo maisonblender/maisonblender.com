@@ -118,7 +118,7 @@ export default function Sectoren() {
           <div className="flex flex-col gap-2">
             <p className="text-lg font-bold text-[#1f1f1f]">Jouw sector staat er niet bij?</p>
             <p className="text-sm text-[#575760]">
-              AI-automatisering is niet gebonden aan een branche — het is gebonden aan processen.
+              AI-automatisering is niet gebonden aan een branche - het is gebonden aan processen.
               Elk bedrijf heeft processen die beter kunnen.
             </p>
           </div>

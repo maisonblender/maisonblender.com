@@ -14,7 +14,7 @@ const IMAGES = [
     name: "hero-visual",
     aspectRatio: "4:3",
     prompt:
-      "Minimalist isometric illustration of an AI agent network — interconnected glowing teal nodes on a clean light gray background. Abstract data flows between stylized server and brain icons. Professional Dutch B2B tech aesthetic. No text. Soft shadows, lots of white space.",
+      "Minimalist isometric illustration of an AI agent network - interconnected glowing teal nodes on a clean light gray background. Abstract data flows between stylized server and brain icons. Professional Dutch B2B tech aesthetic. No text. Soft shadows, lots of white space.",
   },
   {
     name: "services-flow",
