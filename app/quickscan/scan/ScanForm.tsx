@@ -23,7 +23,7 @@ const STAP_TITELS = [
 const STAP_SUBTITELS = [
   "3 snelle vragen over je sector en digitale volwassenheid",
   "Selecteer je grootste uitdagingen (meerdere mogelijk)",
-  "Laatste 3 vragen — daarna zie je je score",
+  "Laatste 3 vragen - daarna zie je je score",
 ];
 
 type PartialAntwoorden = Partial<ScanAntwoorden>;

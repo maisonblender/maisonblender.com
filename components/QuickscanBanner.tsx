@@ -26,7 +26,7 @@ export default function QuickscanBanner() {
 
             <p className="text-sm leading-relaxed text-white/60 sm:text-base">
               De gratis AI Quickscan analyseert jouw bedrijfsprofiel met echte AI en geeft een
-              gepersonaliseerde score, ROI-berekening en concrete aanbevelingen — direct, zonder
+              gepersonaliseerde score, ROI-berekening en concrete aanbevelingen - direct, zonder
               formulier of wachten.
             </p>
 
@@ -50,7 +50,7 @@ export default function QuickscanBanner() {
               <ul className="mt-3 space-y-2 text-sm text-white/70">
                 {[
                   "10 gerichte vragen",
-                  "Live AI-analyse (Claude)",
+                  "Live AI-analyse",
                   "Score + sector-benchmark",
                   "Top 3 kansen met ROI",
                   "Opportunity Map heatmap",
