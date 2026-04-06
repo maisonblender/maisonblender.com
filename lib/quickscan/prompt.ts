@@ -73,37 +73,45 @@ Structuur:
 Schrijf alsof je rechtstreeks tegen de ondernemer praat. Gebruik "je" en "jouw bedrijf".`;
 }
 
-export function buildActieplanPrompt(antwoorden: ScanAntwoorden, resultaat: ScanResultaat): string {
-  return `Je bent een senior AI-strateeg van MAISON BLNDR. Schrijf een uitgebreid, gepersonaliseerd AI Actieplan voor dit bedrijf.
+export function buildActieplanPrompt(
+  antwoorden: ScanAntwoorden,
+  resultaat: ScanResultaat,
+  klant?: { naam?: string; bedrijf?: string }
+): string {
+  const klantNaam = klant?.bedrijf ?? klant?.naam ?? "het bedrijf";
+  const aanhef = klant?.naam ? klant.naam : "de ondernemer";
 
-BEDRIJFSPROFIEL:
+  return `Je bent een senior AI-strateeg van MAISON BLNDR (het adviesbureau). Je schrijft een AI Actieplan voor een KLANT. MAISON BLNDR is de adviseur - NIET de klant.
+
+KLANT: ${klantNaam} (${aanhef})
+BEDRIJFSPROFIEL KLANT:
 - Sector: ${SECTOR_LABELS[antwoorden.sector] ?? antwoorden.sector}
 - Omvang: ${antwoorden.omvang} medewerkers
 - AI Score: ${resultaat.aiReadinessScore}/100 (${resultaat.scoreLabel})
 - ROI potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar
 - Tijdsbesparing: ${resultaat.tijdsbesparingTotaal} uur/week
 
-Schrijf een professioneel AI Actieplan (ca. 800 woorden) met de volgende secties:
+Schrijf een professioneel AI Actieplan (ca. 800 woorden) voor ${klantNaam}. Spreek de klant aan als "je/jouw bedrijf". Noem MAISON BLNDR alleen als adviseur/uitvoerder, NIET als de organisatie die het actieplan ontvangt.
 
-# AI Actieplan - Gepersonaliseerd voor jouw bedrijf
+# AI Actieplan - ${klantNaam}
 
 ## Samenvatting
-[Executive summary, 3 zinnen]
+[Executive summary, 3 zinnen over de situatie van ${klantNaam}]
 
-## Jouw AI Positie
+## AI Positie van ${klantNaam}
 [Score, benchmark, wat dit betekent voor de competitie]
 
 ## Top 3 Prioriteiten
-${resultaat.topKansen.map((k, i) => `### ${i + 1}. ${k.functie}\n[Concrete aanpak, tijdlijn, verwacht resultaat]`).join("\n\n")}
+${resultaat.topKansen.map((k, i) => `### ${i + 1}. ${k.functie}\n[Concrete aanpak, tijdlijn, verwacht resultaat voor ${klantNaam}]`).join("\n\n")}
 
 ## 90-dagen Roadmap
 [Fase 1: Quick wins (week 1-4), Fase 2: Implementatie (week 5-12), Fase 3: Optimalisatie]
 
 ## Investering & Rendement
-[ROI berekening, terugverdientijd, businesscase]
+[ROI berekening, terugverdientijd, businesscase voor ${klantNaam}]
 
 ## Volgende Stap
-[Call to action: gratis strategiegesprek met MAISON BLNDR]
+[Concrete eerste actie voor ${klantNaam} om te beginnen]
 
 Schrijf in het Nederlands, professioneel maar toegankelijk. Gebruik concrete getallen.`;
 }

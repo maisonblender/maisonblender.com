@@ -73,7 +73,7 @@ export async function POST(request: NextRequest) {
   if (anthropicKey) {
     try {
       const client = new Anthropic({ apiKey: anthropicKey });
-      const prompt = buildActieplanPrompt(antwoorden, resultaat);
+      const prompt = buildActieplanPrompt(antwoorden, resultaat, { naam, bedrijf });
       const response = await client.messages.create({
         model: "claude-haiku-4-5-20251001",
         max_tokens: 1200,
