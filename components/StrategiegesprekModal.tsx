@@ -339,7 +339,7 @@ function ContactStep({ answers, setAnswers, totalSteps, onNext }: {
           Stap {totalSteps} van {totalSteps}
         </span>
         <h2 className="text-xl font-black tracking-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
-          Wie mogen wij verwachten?
+          Met wie spreken we?
         </h2>
       </div>
       <div className="flex flex-col gap-3">
