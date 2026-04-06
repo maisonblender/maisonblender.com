@@ -67,7 +67,7 @@ export default function Nav() {
 
         <div className="flex items-center gap-3">
           <a
-            href="/#contact"
+            href="/strategiegesprek"
             className="hidden rounded-full border border-[#1f1f1f]/20 bg-[#1f1f1f] px-5 py-2 text-sm font-medium text-white transition-all hover:bg-[#3a3a42] md:block"
           >
             Strategiegesprek
@@ -132,7 +132,7 @@ export default function Nav() {
             ))}
 
             <a
-              href="/#contact"
+              href="/strategiegesprek"
               className="mt-2 rounded-full bg-[#1f1f1f] px-5 py-2.5 text-center text-sm font-medium text-white"
               onClick={() => setOpen(false)}
             >

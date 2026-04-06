@@ -35,7 +35,7 @@ export default function Hero() {
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <a
-              href="/#contact"
+              href="/strategiegesprek"
               className="rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg"
             >
               Plan een strategiegesprek

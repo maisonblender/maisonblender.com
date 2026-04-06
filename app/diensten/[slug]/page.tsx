@@ -167,7 +167,7 @@ export default async function DienstenPage({
                 </p>
                 <div className="mt-4 flex flex-wrap gap-3">
                   <Link
-                    href="/#contact"
+                    href="/strategiegesprek"
                     className="rounded-full bg-[#1f1f1f] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#3a3a42]"
                   >
                     Gratis strategiegesprek
@@ -240,7 +240,7 @@ export default async function DienstenPage({
                     Plan een gratis strategiegesprek en ontdek hoe {tagPage.title} je bedrijf versterkt.
                   </p>
                   <Link
-                    href="/#contact"
+                    href="/strategiegesprek"
                     className="block rounded-full bg-white px-4 py-2.5 text-center text-xs font-medium text-[#1f1f1f] transition-all hover:bg-[#f2f3f5]"
                   >
                     Afspraak inplannen
@@ -360,7 +360,7 @@ export default async function DienstenPage({
               </p>
               <div className="flex flex-wrap justify-center gap-4">
                 <Link
-                  href="/#contact"
+                  href="/strategiegesprek"
                   className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[#1f1f1f] transition-all hover:bg-[#f2f3f5]"
                 >
                   Strategiegesprek inplannen
@@ -480,7 +480,7 @@ export default async function DienstenPage({
               </p>
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link
-                  href="/#contact"
+                  href="/strategiegesprek"
                   className="rounded-full bg-[#1f1f1f] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#3a3a42]"
                 >
                   Gratis strategiegesprek
@@ -553,7 +553,7 @@ export default async function DienstenPage({
                   Plan een gratis strategiegesprek en ontdek hoe {service!.title} je bedrijf versterkt.
                 </p>
                 <Link
-                  href="/#contact"
+                  href="/strategiegesprek"
                   className="block rounded-full bg-white px-4 py-2.5 text-center text-xs font-medium text-[#1f1f1f] transition-all hover:bg-[#f2f3f5]"
                 >
                   Afspraak inplannen
@@ -678,7 +678,7 @@ export default async function DienstenPage({
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link
-                href="/#contact"
+                href="/strategiegesprek"
                 className="rounded-full bg-white px-6 py-3 text-sm font-medium text-[#1f1f1f] transition-all hover:bg-[#f2f3f5]"
               >
                 Strategiegesprek inplannen
