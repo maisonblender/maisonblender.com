@@ -11,6 +11,41 @@ interface LeadRequest {
   resultaat: ScanResultaat;
 }
 
+// Convert markdown sections to clean HTML for email, no markdown chars in output
+function actieplanToHtml(text: string): string {
+  const lines = text.replace(/—/g, "-").split("\n");
+  let html = "";
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    // Headings: ## or **Heading**
+    const headingMatch = line.match(/^#{1,3}\s+(.+)$/) || line.match(/^\*\*(.+?)\*\*:?\s*$/);
+    if (headingMatch) {
+      const heading = headingMatch[1].replace(/\*\*/g, "");
+      html += `<h3 style="margin: 20px 0 6px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1f1f1f;">${heading}</h3>`;
+      continue;
+    }
+
+    // Bullets
+    if (/^[-*]\s+/.test(line)) {
+      const item = line.replace(/^[-*]\s+/, "").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+      html += `<div style="display: flex; gap: 8px; margin-bottom: 6px; font-size: 14px; color: #575760; line-height: 1.6;">
+        <span style="margin-top: 8px; width: 4px; height: 4px; border-radius: 50%; background: #b2b2be; flex-shrink: 0; display: inline-block;"></span>
+        <span>${item}</span>
+      </div>`;
+      continue;
+    }
+
+    // Paragraph
+    const para = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    html += `<p style="margin: 0 0 12px; font-size: 14px; color: #575760; line-height: 1.7;">${para}</p>`;
+  }
+
+  return html;
+}
+
 export async function POST(request: NextRequest) {
   let body: LeadRequest;
   try {
@@ -50,53 +85,133 @@ export async function POST(request: NextRequest) {
         .join("");
     } catch (err) {
       console.error("Actieplan generatie mislukt:", err);
-      actieplanTekst = `# AI Actieplan\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar`;
+      actieplanTekst = `## Jouw AI Actieplan\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar`;
     }
   } else {
-    actieplanTekst = `# AI Actieplan\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar`;
+    actieplanTekst = `## Jouw AI Actieplan\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar`;
   }
 
   // Stuur e-mail via Resend
   if (resendKey) {
-    const naamLabel = naam ? `Beste ${naam},` : "Beste ondernemer,";
+    const naamLabel = naam ? naam : "ondernemer";
     const bedrijfLabel = bedrijf ? ` van ${bedrijf}` : "";
+    const scoreLabel = resultaat.scoreLabel.charAt(0).toUpperCase() + resultaat.scoreLabel.slice(1);
 
-    const emailHtml = `
-<!DOCTYPE html>
+    const actieplanHtml = actieplanToHtml(actieplanTekst);
+
+    const emailHtml = `<!DOCTYPE html>
 <html lang="nl">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"></head>
-<body style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #1a1a1a;">
-  <div style="background: #0a0a0a; padding: 30px; border-radius: 8px; margin-bottom: 30px;">
-    <h1 style="color: #ffffff; margin: 0; font-size: 24px;">MAISON BLNDR</h1>
-    <p style="color: #a0a0a0; margin: 8px 0 0;">Jouw gepersonaliseerd AI Actieplan</p>
-  </div>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jouw AI Actieplan - MAISON BLNDR</title>
+</head>
+<body style="margin: 0; padding: 0; background: #f2f3f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background: #f2f3f5; padding: 40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%;">
 
-  <p>${naamLabel}</p>
-  <p>Bedankt voor het invullen van de gratis AI Quickscan${bedrijfLabel}. Hieronder vind je jouw gepersonaliseerde AI Actieplan.</p>
+          <!-- Header -->
+          <tr>
+            <td style="background: #1f1f1f; padding: 32px 40px; text-align: left;">
+              <div style="font-size: 18px; font-weight: 700; color: #ffffff; letter-spacing: -0.3px;">MAISON BLNDR</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em;">AI Actieplan</div>
+            </td>
+          </tr>
 
-  <div style="background: #f5f5f5; border-left: 4px solid #0a0a0a; padding: 20px; margin: 20px 0; border-radius: 4px;">
-    <h2 style="margin-top: 0;">Jouw resultaten</h2>
-    <p><strong>AI Readiness Score:</strong> ${resultaat.aiReadinessScore}/100 (${resultaat.scoreLabel})</p>
-    <p><strong>Beter dan:</strong> ${resultaat.benchmarkPercentiel}% van vergelijkbare bedrijven</p>
-    <p><strong>ROI potentieel:</strong> €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar</p>
-    <p><strong>Tijdsbesparing:</strong> ${resultaat.tijdsbesparingTotaal} uur/week</p>
-  </div>
+          <!-- Greeting -->
+          <tr>
+            <td style="background: #ffffff; padding: 40px 40px 32px;">
+              <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${naamLabel},</p>
+              <p style="margin: 0; font-size: 15px; color: #575760; line-height: 1.7;">
+                Bedankt voor het invullen van de gratis AI Quickscan${bedrijfLabel}.
+                Op basis van jouw antwoorden heeft onze AI een gepersonaliseerd actieplan samengesteld.
+                Hieronder vind je jouw resultaten en de aanbevolen eerste stappen.
+              </p>
+            </td>
+          </tr>
 
-  <div style="background: white; border: 1px solid #e0e0e0; padding: 20px; border-radius: 8px; margin: 20px 0;">
-    ${actieplanTekst.replace(/\n/g, "<br>").replace(/#{1,3} (.*)/g, "<strong>$1</strong>")}
-  </div>
+          <!-- Score strip -->
+          <tr>
+            <td style="background: #ffffff; padding: 0 40px 32px;">
+              <table width="100%" cellpadding="0" cellspacing="0" style="background: #f2f3f5; border-radius: 12px; overflow: hidden;">
+                <tr>
+                  <td style="padding: 24px 28px;">
+                    <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #575760; margin-bottom: 16px;">Jouw scanresultaten</div>
+                    <table width="100%" cellpadding="0" cellspacing="0">
+                      <tr>
+                        <td style="width: 25%; text-align: center; padding: 0 8px 0 0;">
+                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${resultaat.aiReadinessScore}</div>
+                          <div style="font-size: 11px; color: #575760; margin-top: 4px;">Readiness Score</div>
+                        </td>
+                        <td style="width: 25%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
+                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${scoreLabel}</div>
+                          <div style="font-size: 11px; color: #575760; margin-top: 4px;">Niveau</div>
+                        </td>
+                        <td style="width: 25%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
+                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">€${(resultaat.roiTotaal / 1000).toFixed(0)}K</div>
+                          <div style="font-size: 11px; color: #575760; margin-top: 4px;">ROI potentieel/jaar</div>
+                        </td>
+                        <td style="width: 25%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
+                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${resultaat.tijdsbesparingTotaal}u</div>
+                          <div style="font-size: 11px; color: #575760; margin-top: 4px;">Besparing/week</div>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
 
-  <div style="background: #0a0a0a; color: white; padding: 24px; border-radius: 8px; text-align: center; margin-top: 30px;">
-    <h2 style="margin-top: 0; color: white;">Klaar om te starten?</h2>
-    <p style="color: #a0a0a0;">Plan een gratis 30-minuten strategiegesprek en ontdek hoe MAISON BLNDR jouw AI-kansen concreet maakt.</p>
-    <a href="https://maisonblender.com/#contact" style="background: white; color: #0a0a0a; padding: 12px 28px; border-radius: 4px; text-decoration: none; font-weight: bold; display: inline-block; margin-top: 8px;">
-      Plan gratis strategiegesprek
-    </a>
-  </div>
+          <!-- Actieplan divider -->
+          <tr>
+            <td style="background: #ffffff; padding: 0 40px 8px;">
+              <div style="height: 1px; background: rgba(0,0,0,0.06);"></div>
+            </td>
+          </tr>
+          <tr>
+            <td style="background: #ffffff; padding: 24px 40px 0;">
+              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #575760;">Jouw gepersonaliseerde AI Actieplan</div>
+            </td>
+          </tr>
 
-  <p style="color: #a0a0a0; font-size: 12px; margin-top: 30px;">
-    MAISON BLNDR | Burg. Coonenplein 37, 6141BZ Sittard | <a href="mailto:info@maisonblender.com">info@maisonblender.com</a>
-  </p>
+          <!-- Actieplan body -->
+          <tr>
+            <td style="background: #ffffff; padding: 16px 40px 40px;">
+              ${actieplanHtml}
+            </td>
+          </tr>
+
+          <!-- CTA -->
+          <tr>
+            <td style="background: #1f1f1f; padding: 36px 40px; text-align: center;">
+              <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 8px; letter-spacing: -0.3px;">Klaar voor de volgende stap?</div>
+              <p style="margin: 0 0 24px; font-size: 14px; color: rgba(255,255,255,0.6); line-height: 1.6;">
+                Plan een gratis 30-minuten strategiegesprek en ontdek hoe MAISON BLNDR<br>
+                jouw AI-kansen concreet maakt.
+              </p>
+              <a href="https://maisonblender.com/quickscan" style="display: inline-block; background: #ffffff; color: #1f1f1f; padding: 14px 32px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: -0.1px;">
+                Plan gratis strategiegesprek
+              </a>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background: #f2f3f5; padding: 24px 40px; text-align: center;">
+              <p style="margin: 0; font-size: 12px; color: #b2b2be; line-height: 1.6;">
+                MAISON BLNDR - Burg. Coonenplein 37, 6141BZ Sittard<br>
+                <a href="mailto:info@maisonblender.com" style="color: #b2b2be; text-decoration: none;">info@maisonblender.com</a>
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
 </body>
 </html>`;
 

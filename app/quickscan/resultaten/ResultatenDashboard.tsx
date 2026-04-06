@@ -4,6 +4,7 @@ import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
+import StrategiegesprekModal from "@/components/StrategiegesprekModal";
 
 const SCORE_LABELS = {
   beginner: { kleur: "text-gray-600", bg: "bg-gray-100", label: "Beginner" },
@@ -13,12 +14,93 @@ const SCORE_LABELS = {
   koploper: { kleur: "text-orange-600", bg: "bg-orange-50", label: "Koploper" },
 };
 
+// Render markdown-like text as styled HTML elements with color indicators.
+// Sections whose heading matches warning keywords get orange; positive keywords get green.
+function renderAnalyse(text: string): React.ReactNode[] {
+  // Normalise em-dashes to hyphens
+  const normalised = text.replace(/—/g, "-");
+  const lines = normalised.split("\n");
+  const nodes: React.ReactNode[] = [];
+  let key = 0;
+
+  function sectionColor(heading: string): { border: string; dot: string } {
+    const lc = heading.toLowerCase();
+    if (/waarschuw|risico|let op|opgelet/.test(lc))
+      return { border: "border-l-orange-400", dot: "bg-orange-400" };
+    if (/kans|winst|aanbevel|eerste stap|opport|positief|start/.test(lc))
+      return { border: "border-l-green-500", dot: "bg-green-500" };
+    return { border: "border-l-[#b2b2be]", dot: "bg-[#b2b2be]" };
+  }
+
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Bold headings: **Heading** or ## Heading or ### Heading
+    const boldHeadingMatch = line.match(/^\*\*(.+?)\*\*:?\s*$/) || line.match(/^#{1,3}\s+(.+)$/);
+    if (boldHeadingMatch) {
+      const heading = boldHeadingMatch[1].replace(/\*\*/g, "");
+      const { border, dot } = sectionColor(heading);
+      nodes.push(
+        <div key={key++} className={`flex items-center gap-2 mt-6 mb-2`}>
+          <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
+          <h3 className="font-semibold text-sm text-[#1f1f1f] uppercase tracking-wide">{heading}</h3>
+        </div>
+      );
+      i++;
+      continue;
+    }
+
+    // Bullet list items: - item or * item
+    if (/^[-*]\s+/.test(line)) {
+      const items: string[] = [];
+      while (i < lines.length && /^[-*]\s+/.test(lines[i])) {
+        items.push(lines[i].replace(/^[-*]\s+/, ""));
+        i++;
+      }
+      nodes.push(
+        <ul key={key++} className="space-y-1 mb-3">
+          {items.map((item, idx) => (
+            <li key={idx} className="flex items-start gap-2 text-sm text-[#575760]">
+              <span className="mt-2 w-1 h-1 rounded-full bg-black/30 shrink-0" />
+              <span dangerouslySetInnerHTML={{ __html: inlineFormat(item) }} />
+            </li>
+          ))}
+        </ul>
+      );
+      continue;
+    }
+
+    // Paragraph (non-empty line)
+    if (line.trim()) {
+      nodes.push(
+        <p
+          key={key++}
+          className="text-sm leading-relaxed text-[#575760] mb-3"
+          dangerouslySetInnerHTML={{ __html: inlineFormat(line) }}
+        />
+      );
+    }
+
+    i++;
+  }
+
+  return nodes;
+}
+
+// Convert inline **bold** to <strong> and remove stray markdown chars
+function inlineFormat(text: string): string {
+  return text
+    .replace(/—/g, "-")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/\*(.+?)\*/g, "<em>$1</em>");
+}
+
 function OpportunityHeatmap({ data }: { data: ScanResultaat["opportunityMapData"] }) {
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
       {data.map((item) => {
         const intensity = item.potentieel / 100;
-        const bgOpacity = Math.round(intensity * 9) + 1; // 1-10
         return (
           <div
             key={item.gebied}
@@ -131,9 +213,13 @@ function LeadCaptureForm({
   if (success) {
     return (
       <div className="text-center p-6">
-        <div className="text-4xl mb-3">📨</div>
-        <h3 className="font-bold text-lg mb-2">Actieplan onderweg!</h3>
-        <p className="text-gray-600 text-sm">
+        <div className="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-3">
+          <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 className="font-bold text-lg mb-2 text-[#1f1f1f]">Actieplan onderweg!</h3>
+        <p className="text-[#575760] text-sm">
           Controleer je inbox. Je ontvangt het gepersonaliseerde AI Actieplan binnen enkele minuten.
         </p>
       </div>
@@ -143,35 +229,35 @@ function LeadCaptureForm({
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">E-mailadres *</label>
+        <label className="block text-xs font-medium text-[#575760] mb-1 uppercase tracking-wide">E-mailadres *</label>
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="jij@bedrijf.nl"
-          className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
+          className="w-full border border-black/10 rounded-none px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:border-[#1f1f1f] transition-colors bg-white"
         />
       </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Naam</label>
+          <label className="block text-xs font-medium text-[#575760] mb-1 uppercase tracking-wide">Naam</label>
           <input
             type="text"
             value={naam}
             onChange={(e) => setNaam(e.target.value)}
             placeholder="Jan de Vries"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
+            className="w-full border border-black/10 rounded-none px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:border-[#1f1f1f] transition-colors bg-white"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Bedrijf</label>
+          <label className="block text-xs font-medium text-[#575760] mb-1 uppercase tracking-wide">Bedrijf</label>
           <input
             type="text"
             value={bedrijf}
             onChange={(e) => setBedrijf(e.target.value)}
             placeholder="Bedrijfsnaam BV"
-            className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-black/20 focus:border-black"
+            className="w-full border border-black/10 rounded-none px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:border-[#1f1f1f] transition-colors bg-white"
           />
         </div>
       </div>
@@ -179,7 +265,7 @@ function LeadCaptureForm({
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-black text-white font-semibold py-3 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
+        className="w-full rounded-full bg-[#1f1f1f] text-white font-semibold py-3 hover:bg-[#3a3a42] transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
       >
         {loading ? (
           <>
@@ -190,7 +276,7 @@ function LeadCaptureForm({
           "Stuur mij het gratis AI Actieplan"
         )}
       </button>
-      <p className="text-xs text-gray-400 text-center">
+      <p className="text-xs text-[#b2b2be] text-center">
         Geen spam. Je ontvangt alleen het actieplan en eventueel een follow-up van MAISON BLNDR.
       </p>
     </form>
@@ -204,6 +290,7 @@ export default function ResultatenDashboard() {
   const [analysetekst, setAnalysetekst] = useState("");
   const [analysing, setAnalysing] = useState(false);
   const [analyseKlaar, setAnalyseKlaar] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const analyseRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -280,7 +367,7 @@ export default function ResultatenDashboard() {
             <div className="w-16 h-16 border-4 border-black/10 rounded-full" />
             <div className="absolute inset-0 w-16 h-16 border-4 border-black border-t-transparent rounded-full animate-spin" />
           </div>
-          <p className="text-gray-500 text-sm">AI analyseert jouw bedrijfsprofiel...</p>
+          <p className="text-[#575760] text-sm">AI analyseert jouw bedrijfsprofiel...</p>
         </div>
       </div>
     );
@@ -289,12 +376,14 @@ export default function ResultatenDashboard() {
   const scoreMeta = SCORE_LABELS[resultaat.scoreLabel];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f2f3f5]">
+      <StrategiegesprekModal open={modalOpen} onClose={() => setModalOpen(false)} />
+
       {/* Header */}
-      <header className="bg-black text-white px-6 py-4">
+      <header className="bg-white border-b border-black/[0.06] px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <a href="/" className="font-bold text-lg">MAISON BLNDR</a>
-          <span className="text-white/50 text-sm">AI Quickscan Resultaten</span>
+          <a href="/" className="font-bold text-lg text-[#1f1f1f]">MAISON BLNDR</a>
+          <span className="text-[#575760] text-sm">AI Quickscan Resultaten</span>
         </div>
       </header>
 
@@ -304,7 +393,7 @@ export default function ResultatenDashboard() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+          className="bg-white rounded-2xl p-8 shadow-sm border border-black/[0.06]"
         >
           <div className="flex flex-col md:flex-row items-center gap-8">
             <div className="flex-shrink-0">
@@ -314,22 +403,22 @@ export default function ResultatenDashboard() {
               <div className={`inline-flex items-center gap-2 ${scoreMeta.bg} ${scoreMeta.kleur} px-3 py-1 rounded-full text-sm font-semibold mb-3`}>
                 <span>{scoreMeta.label}</span>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">Jouw AI Readiness Score</h1>
-              <p className="text-gray-600 mb-4">{resultaat.scoreBeschrijving}</p>
+              <h1 className="text-2xl font-bold text-[#1f1f1f] mb-2">Jouw AI Readiness Score</h1>
+              <p className="text-[#575760] mb-4">{resultaat.scoreBeschrijving}</p>
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-black">{resultaat.benchmarkPercentiel}%</div>
-                  <div className="text-xs text-gray-500">beter dan jouw sector</div>
+                  <div className="text-2xl font-bold text-[#1f1f1f]">{resultaat.benchmarkPercentiel}%</div>
+                  <div className="text-xs text-[#575760]">beter dan jouw sector</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-black">
+                  <div className="text-2xl font-bold text-[#1f1f1f]">
                     €{(resultaat.roiTotaal / 1000).toFixed(0)}K
                   </div>
-                  <div className="text-xs text-gray-500">ROI potentieel/jaar</div>
+                  <div className="text-xs text-[#575760]">ROI potentieel/jaar</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-black">{resultaat.tijdsbesparingTotaal}u</div>
-                  <div className="text-xs text-gray-500">besparing/week</div>
+                  <div className="text-2xl font-bold text-[#1f1f1f]">{resultaat.tijdsbesparingTotaal}u</div>
+                  <div className="text-xs text-[#575760]">besparing/week</div>
                 </div>
               </div>
             </div>
@@ -341,34 +430,36 @@ export default function ResultatenDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+          className="bg-white rounded-2xl p-8 shadow-sm border border-black/[0.06]"
         >
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-8 h-8 bg-[#1f1f1f] rounded-lg flex items-center justify-center">
               <svg className="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
             </div>
-            <h2 className="font-bold text-lg">AI Analyse</h2>
+            <h2 className="font-bold text-lg text-[#1f1f1f]">AI Analyse</h2>
             {analysing && (
-              <div className="flex items-center gap-2 text-sm text-gray-500">
+              <div className="flex items-center gap-2 text-sm text-[#575760]">
                 <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
                 Analyseert...
               </div>
             )}
           </div>
-          <div ref={analyseRef} className="prose prose-sm max-w-none text-gray-700 leading-relaxed min-h-[100px]">
+          <div ref={analyseRef} className="min-h-[100px]">
             {analysetekst ? (
-              <p className="whitespace-pre-wrap">{analysetekst}</p>
+              <div>
+                {renderAnalyse(analysetekst)}
+                {analysing && (
+                  <span className="inline-block w-1 h-4 bg-[#1f1f1f] animate-pulse ml-1" />
+                )}
+              </div>
             ) : (
               <div className="space-y-3">
                 {[...Array(4)].map((_, i) => (
-                  <div key={i} className={`h-4 bg-gray-100 rounded animate-pulse ${i === 3 ? "w-2/3" : "w-full"}`} />
+                  <div key={i} className={`h-4 bg-[#f2f3f5] rounded animate-pulse ${i === 3 ? "w-2/3" : "w-full"}`} />
                 ))}
               </div>
-            )}
-            {analysing && analysetekst && (
-              <span className="inline-block w-1 h-4 bg-black animate-pulse ml-1" />
             )}
           </div>
         </motion.div>
@@ -378,18 +469,18 @@ export default function ResultatenDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+          className="bg-white rounded-2xl p-8 shadow-sm border border-black/[0.06]"
         >
-          <h2 className="font-bold text-lg mb-6">Top AI-kansen voor jouw bedrijf</h2>
+          <h2 className="font-bold text-lg mb-6 text-[#1f1f1f]">Top AI-kansen voor jouw bedrijf</h2>
           <div className="space-y-4">
             {resultaat.topKansen.map((kans, i) => (
-              <div key={kans.functie} className="flex items-start gap-4 p-4 bg-gray-50 rounded-xl">
-                <div className="w-8 h-8 bg-black text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">
+              <div key={kans.functie} className="flex items-start gap-4 p-4 bg-[#f2f3f5] rounded-xl">
+                <div className="w-8 h-8 bg-[#1f1f1f] text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">
                   {i + 1}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1 flex-wrap">
-                    <h3 className="font-semibold text-gray-900">{kans.functie}</h3>
+                    <h3 className="font-semibold text-[#1f1f1f]">{kans.functie}</h3>
                     <span
                       className={`text-xs px-2 py-0.5 rounded-full font-medium ${
                         kans.prioriteit === "hoog"
@@ -402,17 +493,17 @@ export default function ResultatenDashboard() {
                       {kans.prioriteit} prioriteit
                     </span>
                   </div>
-                  <p className="text-sm text-gray-600 mb-3">{kans.beschrijving}</p>
+                  <p className="text-sm text-[#575760] mb-3">{kans.beschrijving}</p>
                   <div className="flex gap-4 text-sm">
                     <span className="text-green-700 font-semibold">
                       €{kans.roiEurosPerJaar.toLocaleString("nl-NL")}/jaar
                     </span>
-                    <span className="text-gray-500">{kans.tijdsbesparing}u/week besparing</span>
+                    <span className="text-[#575760]">{kans.tijdsbesparing}u/week besparing</span>
                   </div>
                 </div>
                 <div className="text-right flex-shrink-0">
-                  <div className="text-2xl font-bold text-black">{kans.potentieel}%</div>
-                  <div className="text-xs text-gray-400">potentieel</div>
+                  <div className="text-2xl font-bold text-[#1f1f1f]">{kans.potentieel}%</div>
+                  <div className="text-xs text-[#575760]">potentieel</div>
                 </div>
               </div>
             ))}
@@ -424,11 +515,11 @@ export default function ResultatenDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
+          className="bg-white rounded-2xl p-8 shadow-sm border border-black/[0.06]"
         >
-          <h2 className="font-bold text-lg mb-2">AI Opportunity Map</h2>
-          <p className="text-sm text-gray-500 mb-6">
-            Heatmap van AI-potentieel per bedrijfsfunctie — donkerder = hoger potentieel
+          <h2 className="font-bold text-lg mb-2 text-[#1f1f1f]">AI Opportunity Map</h2>
+          <p className="text-sm text-[#575760] mb-6">
+            Heatmap van AI-potentieel per bedrijfsfunctie - donkerder = hoger potentieel
           </p>
           <OpportunityHeatmap data={resultaat.opportunityMapData} />
         </motion.div>
@@ -438,19 +529,19 @@ export default function ResultatenDashboard() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="bg-black text-white rounded-2xl p-8 shadow-sm"
+          className="bg-[#1f1f1f] rounded-2xl p-8 shadow-sm"
         >
           <div className="max-w-lg mx-auto">
             <div className="text-center mb-6">
-              <h2 className="text-xl font-bold mb-2">
+              <h2 className="text-xl font-bold mb-2 text-white">
                 Ontvang jouw gepersonaliseerd AI Actieplan
               </h2>
-              <p className="text-white/70 text-sm">
+              <p className="text-white/60 text-sm">
                 Een volledig uitgewerkt 15-pagina actieplan met 90-dagen roadmap, ROI-berekening en
-                concrete eerste stappen — gegenereerd door AI op basis van jouw scan.
+                concrete eerste stappen - gegenereerd door AI op basis van jouw scan.
               </p>
             </div>
-            <div className="bg-white rounded-xl p-6">
+            <div className="bg-white rounded-xl p-6 text-[#1f1f1f]">
               <LeadCaptureForm antwoorden={antwoorden} resultaat={resultaat} />
             </div>
           </div>
@@ -463,18 +554,18 @@ export default function ResultatenDashboard() {
           transition={{ delay: 0.5 }}
           className="text-center py-8"
         >
-          <p className="text-gray-500 text-sm mb-4">
+          <p className="text-[#575760] text-sm mb-4">
             Wil je direct sparren met een AI-expert?
           </p>
-          <a
-            href="/#contact"
-            className="inline-flex items-center gap-2 border-2 border-black text-black font-semibold px-6 py-3 rounded-xl hover:bg-black hover:text-white transition-colors"
+          <button
+            onClick={() => setModalOpen(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-[#1f1f1f] text-white font-semibold px-6 py-3 hover:bg-[#3a3a42] transition-colors"
           >
             Plan gratis strategiegesprek
             <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
             </svg>
-          </a>
+          </button>
         </motion.div>
       </main>
     </div>

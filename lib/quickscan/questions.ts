@@ -57,7 +57,7 @@ export const aiMaturiteitOpties: VraagOptie<AiMaturiteit>[] = [
 ];
 
 export const budgetOpties: VraagOptie<"laag" | "midden" | "hoog">[] = [
-  { value: "laag", label: "< €5.000", beschrijving: "Kleine investering, snelle wins" },
+  { value: "laag", label: "< €5.000", beschrijving: "Kleine investering, snelle winst" },
   { value: "midden", label: "€5.000 - €25.000", beschrijving: "Serieuze implementatie" },
   { value: "hoog", label: "> €25.000", beschrijving: "Strategisch AI-programma" },
 ];
