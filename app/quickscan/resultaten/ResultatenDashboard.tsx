@@ -97,26 +97,26 @@ function inlineFormat(text: string): string {
 }
 
 function OpportunityHeatmap({ data }: { data: ScanResultaat["opportunityMapData"] }) {
+  function heatmapColors(potentieel: number): { bg: string; border: string; text: string } {
+    if (potentieel >= 70) return { bg: "rgba(22, 163, 74, 0.12)", border: "rgba(22, 163, 74, 0.3)", text: "#15803d" };
+    if (potentieel >= 40) return { bg: "rgba(234, 88, 12, 0.10)", border: "rgba(234, 88, 12, 0.25)", text: "#c2410c" };
+    return { bg: "rgba(220, 38, 38, 0.10)", border: "rgba(220, 38, 38, 0.25)", text: "#b91c1c" };
+  }
+
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
       {data.map((item) => {
-        const intensity = item.potentieel / 100;
+        const { bg, border, text } = heatmapColors(item.potentieel);
         return (
           <div
             key={item.gebied}
             className="rounded-xl p-4 text-center"
-            style={{
-              backgroundColor: `rgba(0, 0, 0, ${intensity * 0.15 + 0.03})`,
-              border: `1px solid rgba(0,0,0,${intensity * 0.2 + 0.05})`,
-            }}
+            style={{ backgroundColor: bg, border: `1px solid ${border}` }}
           >
-            <div
-              className="text-2xl font-bold mb-1"
-              style={{ color: `hsl(${220 + intensity * -100}, 70%, ${50 - intensity * 20}%)` }}
-            >
+            <div className="text-2xl font-bold mb-1" style={{ color: text }}>
               {item.potentieel}%
             </div>
-            <div className="text-xs text-gray-600 font-medium">{item.gebied}</div>
+            <div className="text-xs font-medium" style={{ color: text }}>{item.gebied}</div>
           </div>
         );
       })}

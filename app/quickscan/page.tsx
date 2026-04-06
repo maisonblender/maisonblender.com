@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 
 const voordelen = [
   { Icon: Zap, titel: "3 minuten", tekst: "10 korte vragen over jouw bedrijf en uitdagingen" },
-  { Icon: Brain, titel: "Echte AI-analyse", tekst: "Claude analyseert live jouw situatie - geen generiek rapport" },
+  { Icon: Brain, titel: "Echte AI-analyse", tekst: "Analyseert live jouw situatie - geen generiek rapport" },
   { Icon: BarChart3, titel: "AI Readiness Score", tekst: "Jouw score 0-100 + benchmark vs. jouw sector" },
   { Icon: TrendingUp, titel: "ROI Berekening", tekst: "Concrete euro-indicaties voor tijds- en kostenbesparing" },
   { Icon: Map, titel: "Opportunity Map", tekst: "Visuele heatmap van AI-kansen per bedrijfsfunctie" },
@@ -58,7 +58,7 @@ export default function QuickscanPage() {
             </h1>
 
             <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-              De gratis AI Quickscan analyseert jouw bedrijfsprofiel met echte AI (Claude) en geeft je
+              De gratis AI Quickscan analyseert jouw bedrijfsprofiel met echte AI en geeft je
               een gepersonaliseerde AI Readiness Score, ROI-berekening en concrete aanbevelingen.
             </p>
 
