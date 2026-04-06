@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { Clock, TrendingUp, BarChart3 } from "lucide-react";
 
 const KANSEN = [
-  { icon: "⏱️", tekst: "40+ uur/week besparing" },
-  { icon: "💶", tekst: "Concrete ROI in euro's" },
-  { icon: "📊", tekst: "AI Readiness Score 0-100" },
+  { Icon: Clock, tekst: "40+ uur/week besparing" },
+  { Icon: TrendingUp, tekst: "Concrete ROI in euro's" },
+  { Icon: BarChart3, tekst: "AI Readiness Score 0-100" },
 ];
 
 export default function QuickscanBanner() {
@@ -33,7 +34,7 @@ export default function QuickscanBanner() {
             <div className="flex flex-wrap gap-4 text-sm text-white/70">
               {KANSEN.map((k) => (
                 <span key={k.tekst} className="flex items-center gap-1.5">
-                  <span>{k.icon}</span>
+                  <k.Icon className="h-3.5 w-3.5 shrink-0" strokeWidth={1.5} />
                   {k.tekst}
                 </span>
               ))}
