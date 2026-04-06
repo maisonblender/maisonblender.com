@@ -173,10 +173,10 @@ export default async function DienstenPage({
                     Gratis strategiegesprek
                   </Link>
                   <Link
-                    href="/diensten/ai-quickscan"
+                    href="/quickscan"
                     className="rounded-full border border-[#1f1f1f]/20 px-6 py-3 text-sm font-medium text-[#1f1f1f] transition-all hover:bg-white"
                   >
-                    Bekijk quickscan
+                    Start gratis AI-scan
                   </Link>
                 </div>
               </div>
@@ -366,10 +366,10 @@ export default async function DienstenPage({
                   Strategiegesprek inplannen
                 </Link>
                 <Link
-                  href="/diensten/ai-quickscan"
+                  href="/quickscan"
                   className="rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-white/10"
                 >
-                  Gratis quickscan
+                  Start gratis AI-scan
                 </Link>
               </div>
             </div>
@@ -486,10 +486,10 @@ export default async function DienstenPage({
                   Gratis strategiegesprek
                 </Link>
                 <Link
-                  href="/diensten/ai-strategie-quickscan"
+                  href="/quickscan"
                   className="rounded-full border border-[#1f1f1f]/20 px-6 py-3 text-sm font-medium text-[#1f1f1f] transition-all hover:bg-white"
                 >
-                  Bekijk quickscan
+                  Start gratis AI-scan
                 </Link>
               </div>
             </div>
@@ -684,10 +684,10 @@ export default async function DienstenPage({
                 Strategiegesprek inplannen
               </Link>
               <Link
-                href="/diensten/ai-strategie-quickscan"
+                href="/quickscan"
                 className="rounded-full border border-white/20 px-6 py-3 text-sm font-medium text-white transition-all hover:bg-white/10"
               >
-                Gratis quickscan
+                Start gratis AI-scan
               </Link>
             </div>
           </div>

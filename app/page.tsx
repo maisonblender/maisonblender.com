@@ -1,5 +1,6 @@
 import Nav from "@/components/Nav";
 import HeroWithTriage from "@/components/HeroWithTriage";
+import QuickscanBanner from "@/components/QuickscanBanner";
 import Services from "@/components/Services";
 import Sectoren from "@/components/Sectoren";
 import Process from "@/components/Process";
@@ -14,6 +15,7 @@ export default function Home() {
     <main className="flex flex-col flex-1 bg-[#f2f3f5] text-[#1f1f1f]">
       <Nav />
       <HeroWithTriage />
+      <QuickscanBanner />
       <Services />
       <Sectoren />
       <Process />

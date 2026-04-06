@@ -48,10 +48,10 @@ export default function HeroWithTriage() {
                 Plan een strategiegesprek
               </button>
               <a
-                href="/#diensten"
+                href="/quickscan"
                 className="rounded-full border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:bg-[#f2f3f5]"
               >
-                Bekijk onze diensten
+                Start gratis AI-scan →
               </a>
             </div>
 
