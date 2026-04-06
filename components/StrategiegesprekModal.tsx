@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { MessageSquare, Cpu, Code2, Compass, HelpCircle, ExternalLink, Mail, MapPin, Monitor } from "lucide-react";
 
 const CALENDAR_BOOKING_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2r1GurynCuZKWNZ2LANHLHlc7cbHzbeI3NRwVZJNCj5hrzqsuhRr-SLBbidFplYf1lb_8lHOw5";
 
@@ -138,18 +139,18 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
               subtitle="Kies het thema dat het beste past bij je vraag."
             >
               {[
-                { label: "AI chatbots & klantenservice", icon: "💬" },
-                { label: "AI-agents & procesautomatisering", icon: "⚙️" },
-                { label: "Custom AI software", icon: "🛠️" },
-                { label: "AI-strategie & quickscan", icon: "🧭" },
-                { label: "Ik weet het nog niet", icon: "🤔" },
-              ].map(({ label, icon }) => (
+                { label: "AI chatbots & klantenservice", Icon: MessageSquare },
+                { label: "AI-agents & procesautomatisering", Icon: Cpu },
+                { label: "Custom AI software", Icon: Code2 },
+                { label: "AI-strategie & quickscan", Icon: Compass },
+                { label: "Ik weet het nog niet", Icon: HelpCircle },
+              ].map(({ label, Icon }) => (
                 <button
                   key={label}
                   className={`${optionClass} ${answers.uitdaging === label ? selectedClass : ""}`}
                   onClick={() => pick("uitdaging", label)}
                 >
-                  <span className="flex items-center gap-3"><span>{icon}</span>{label}</span>
+                  <span className="flex items-center gap-3"><Icon className="h-4 w-4 shrink-0 text-[#575760]" strokeWidth={1.5} />{label}</span>
                   <span className="text-black/30 group-hover:text-black/60 transition-colors">→</span>
                 </button>
               ))}
@@ -208,11 +209,11 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
                   rel="noopener noreferrer"
                   className={optionClass}
                 >
-                  <span className="flex items-center gap-3"><span>💼</span>Volg ons op LinkedIn voor gratis AI-tips</span>
+                  <span className="flex items-center gap-3"><ExternalLink className="h-4 w-4 shrink-0 text-[#575760]" strokeWidth={1.5} />Volg ons op LinkedIn voor gratis AI-tips</span>
                   <span className="text-black/30">→</span>
                 </a>
                 <a href="mailto:info@maisonblender.com" className={optionClass}>
-                  <span className="flex items-center gap-3"><span>✉️</span>Stuur een e-mail - misschien kunnen we verwijzen</span>
+                  <span className="flex items-center gap-3"><Mail className="h-4 w-4 shrink-0 text-[#575760]" strokeWidth={1.5} />Stuur een e-mail - misschien kunnen we verwijzen</span>
                   <span className="text-black/30">→</span>
                 </a>
                 <button className="mt-2 text-xs text-[#575760] underline hover:text-[#1f1f1f] transition-colors text-left" onClick={back}>
@@ -254,7 +255,7 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
                 className={`${optionClass} ${answers.vergadertype === "Op locatie" ? selectedClass : ""}`}
                 onClick={() => pick("vergadertype", "Op locatie")}
               >
-                  <span className="flex items-center gap-2"><span>📍</span> Op locatie</span>
+                  <span className="flex items-center gap-2"><MapPin className="h-4 w-4 shrink-0 text-[#575760]" strokeWidth={1.5} /> Op locatie</span>
                 <span className="text-black/30 group-hover:text-black/60 transition-colors">→</span>
               </button>
               <button
@@ -262,7 +263,7 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
                 onClick={() => pick("vergadertype", "Online via Google Meet")}
               >
                 <span className="flex flex-col">
-                  <span className="flex items-center gap-2"><span>💻</span> Online via Google Meet</span>
+                  <span className="flex items-center gap-2"><Monitor className="h-4 w-4 shrink-0 text-[#575760]" strokeWidth={1.5} /> Online via Google Meet</span>
                   <span className="text-xs text-[#575760] mt-0.5 ml-6">Je ontvangt de Meet-link in de agenda-uitnodiging</span>
                 </span>
                 <span className="text-black/30 group-hover:text-black/60 transition-colors">→</span>
@@ -401,7 +402,7 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
 
       {answers.vergadertype && (
         <div className="flex items-center gap-2 rounded bg-white border border-black/8 px-4 py-2.5 text-xs text-[#575760]">
-          <span>{isOnline ? "💻" : "📍"}</span>
+          <span>{isOnline ? <Monitor className="h-4 w-4 text-[#575760]" strokeWidth={1.5} /> : <MapPin className="h-4 w-4 text-[#575760]" strokeWidth={1.5} />}</span>
           <span>{isOnline ? "Online via Google Meet" : "Op locatie"}</span>
         </div>
       )}
