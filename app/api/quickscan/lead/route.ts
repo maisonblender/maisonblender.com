@@ -192,7 +192,7 @@ export async function POST(request: NextRequest) {
                 Plan een gratis 30-minuten strategiegesprek en ontdek hoe MAISON BLNDR<br>
                 jouw AI-kansen concreet maakt.
               </p>
-              <a href="https://maisonblender.com/quickscan" style="display: inline-block; background: #ffffff; color: #1f1f1f; padding: 14px 32px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: -0.1px;">
+              <a href="https://maisonblender.com/strategiegesprek" style="display: inline-block; background: #ffffff; color: #1f1f1f; padding: 14px 32px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: 700; letter-spacing: -0.1px;">
                 Plan gratis strategiegesprek
               </a>
             </td>
