@@ -14,12 +14,11 @@ export default function Contact() {
             className="text-[28px] font-normal leading-[1.2] tracking-tight text-white sm:text-[35px] lg:text-[42px]"
             style={{ letterSpacing: "-0.95px" }}
           >
-            Eerlijk advies. Geen verplichtingen.
+            Stel ons je vraag.
           </h2>
           <p className="max-w-lg text-lg text-white/70 leading-relaxed">
-            Plan een gratis gesprek van een uur. Wij analyseren je drie grootste tijdvreters
-            en vertellen je concreet welke daarvan AI-klaar zijn - inclusief een ruwe business case.
-            Geen pitch, geen verplichtingen.
+            Wil je meer weten, een project bespreken of weten wat AI voor jouw bedrijf kan betekenen?
+            Vul het formulier in — wij reageren binnen één werkdag.
           </p>
         </div>
 
