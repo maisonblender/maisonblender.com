@@ -26,7 +26,7 @@ export default function QuickscanBanner() {
             </h2>
 
             <p className="text-sm leading-relaxed text-white/60 sm:text-base">
-              De gratis AI Quickscan analyseert jouw bedrijfsprofiel met echte AI en geeft een
+              De gratis AI Quickscan analyseert jouw bedrijfsprofiel en geeft een
               gepersonaliseerde score, ROI-berekening en concrete aanbevelingen - direct, zonder
               formulier of wachten.
             </p>

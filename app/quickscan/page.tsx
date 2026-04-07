@@ -58,7 +58,7 @@ export default function QuickscanPage() {
             </h1>
 
             <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-              De gratis AI Quickscan analyseert jouw bedrijfsprofiel met echte AI en geeft je
+              De gratis AI Quickscan analyseert jouw bedrijfsprofiel en geeft je
               een gepersonaliseerde AI Readiness Score, ROI-berekening en concrete aanbevelingen.
             </p>
 
