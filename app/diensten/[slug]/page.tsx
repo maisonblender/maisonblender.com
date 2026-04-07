@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { services, getServiceBySlug } from "@/lib/services";
@@ -457,41 +458,56 @@ export default async function DienstenPage({
               <span className="text-[#1f1f1f]">{service!.title}</span>
             </nav>
 
-            <div className="flex flex-col gap-4 max-w-3xl">
-              <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
-                {service!.subtitle}
-              </span>
-              <h1
-                className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]"
-                style={{ letterSpacing: "-0.95px" }}
-              >
-                {service!.title.includes("&") ? (
-                  <>
-                    {service!.title.split("&")[0].trim()}
-                    <br />
-                    <span className="font-exposure">&amp; {service!.title.split("&")[1].trim()}</span>
-                  </>
-                ) : (
-                  <span className="font-exposure">{service!.title}</span>
-                )}
-              </h1>
-              <p className="text-lg text-[#575760] max-w-xl leading-relaxed">
-                {service!.description}
-              </p>
-              <div className="mt-4 flex flex-wrap gap-3">
-                <Link
-                  href="/strategiegesprek"
-                  className="rounded-full bg-[#1f1f1f] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#3a3a42]"
+            <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+              <div className="flex flex-col gap-4">
+                <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
+                  {service!.subtitle}
+                </span>
+                <h1
+                  className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]"
+                  style={{ letterSpacing: "-0.95px" }}
                 >
-                  Gratis strategiegesprek
-                </Link>
-                <Link
-                  href="/quickscan"
-                  className="rounded-full border border-[#1f1f1f]/20 px-6 py-3 text-sm font-medium text-[#1f1f1f] transition-all hover:bg-white"
-                >
-                  Start gratis AI-scan
-                </Link>
+                  {service!.title.includes("&") ? (
+                    <>
+                      {service!.title.split("&")[0].trim()}
+                      <br />
+                      <span className="font-exposure">&amp; {service!.title.split("&")[1].trim()}</span>
+                    </>
+                  ) : (
+                    <span className="font-exposure">{service!.title}</span>
+                  )}
+                </h1>
+                <p className="text-lg text-[#575760] max-w-xl leading-relaxed">
+                  {service!.description}
+                </p>
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <Link
+                    href="/strategiegesprek"
+                    className="rounded-full bg-[#1f1f1f] px-6 py-3 text-sm font-medium text-white transition-all hover:bg-[#3a3a42]"
+                  >
+                    Gratis strategiegesprek
+                  </Link>
+                  <Link
+                    href="/quickscan"
+                    className="rounded-full border border-[#1f1f1f]/20 px-6 py-3 text-sm font-medium text-[#1f1f1f] transition-all hover:bg-white"
+                  >
+                    Start gratis AI-scan
+                  </Link>
+                </div>
               </div>
+
+              {service!.heroImage && (
+                <div className="relative aspect-[3/2] w-full overflow-hidden rounded-sm">
+                  <Image
+                    src={service!.heroImage.src}
+                    alt={service!.heroImage.alt}
+                    fill
+                    className="object-cover"
+                    priority
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                  />
+                </div>
+              )}
             </div>
           </div>
         </section>

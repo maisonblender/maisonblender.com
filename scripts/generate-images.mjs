@@ -64,14 +64,15 @@ async function generateImage(name, prompt, aspectRatio = "16:9") {
 
   const json = await res.json();
   const parts = json?.candidates?.[0]?.content?.parts ?? [];
-  const imgPart = parts.find((p) => p.inline_data?.data);
+  const imgPart = parts.find((p) => p.inline_data?.data ?? p.inlineData?.data);
 
   if (!imgPart) {
     console.error(`❌  No image returned for "${name}". Response: ${JSON.stringify(json).slice(0, 200)}`);
     return;
   }
 
-  const buf = Buffer.from(imgPart.inline_data.data, "base64");
+  const imgData = imgPart.inline_data?.data ?? imgPart.inlineData?.data;
+  const buf = Buffer.from(imgData, "base64");
   writeFileSync(outPath, buf);
   console.log(`✅  ${name}.png saved (${Math.round(buf.length / 1024)} KB)`);
 }
@@ -100,6 +101,44 @@ const images = [
     aspectRatio: "4:3",
     prompt:
       "Elegant minimal illustration of the Netherlands province of Limburg as a subtle geographic outline with small glowing teal dot nodes scattered across it representing AI connectivity and digital infrastructure. Very light, mostly white space, delicate contour lines, professional and understated. Suitable as a company section background element. No text.",
+  },
+
+  // --- Service hero images (3:2) ---
+  {
+    name: "service-ai-chatbots",
+    aspectRatio: "3:2",
+    prompt:
+      "Minimalist isometric illustration of an AI chatbot interface — a clean smartphone and desktop screen side by side showing floating chat bubbles in teal (#4af0c4) and white. Abstract message flow lines connect a stylized AI brain icon to customer silhouettes. Light gray (#f2f3f5) background. WhatsApp and web chat icons subtly present. Professional Dutch B2B aesthetic, no text, lots of white space, soft shadows.",
+  },
+  {
+    name: "service-ai-agents",
+    aspectRatio: "3:2",
+    prompt:
+      "Minimalist isometric illustration of autonomous AI agents at work — a central glowing teal robot/AI core dispatching task arrows to three floating modules: a document scanner, a CRM database cylinder, and an email envelope. Clean light gray (#f2f3f5) background. Teal (#4af0c4) connection lines and highlights. Professional Dutch B2B tech aesthetic. No text, soft shadows, ample white space.",
+  },
+  {
+    name: "service-rpa-workflow",
+    aspectRatio: "3:2",
+    prompt:
+      "Minimalist flat-design illustration of a robotic process automation workflow — a stylized robot arm connecting three software interface windows via smooth teal (#4af0c4) curved connector lines. Icons represent data input, a gear process, and a checkmark output. Light gray (#f2f3f5) background. Professional Dutch B2B style. No text, clean layout, soft drop shadows.",
+  },
+  {
+    name: "service-custom-software",
+    aspectRatio: "3:2",
+    prompt:
+      "Minimalist isometric illustration of a custom AI software portal — a sleek floating laptop/tablet showing a modern dashboard UI with teal (#4af0c4) accent graphs and modular interface panels. Abstract code brackets and API connection nodes surround it. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, abundant white space, soft shadows.",
+  },
+  {
+    name: "service-data-intelligence",
+    aspectRatio: "3:2",
+    prompt:
+      "Minimalist flat-design illustration of data intelligence — a central glowing database cylinder radiating clean lines to three floating analytics panels: a bar chart rising upward, a circular pie chart, and a line trend graph with teal (#4af0c4) highlights. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, lots of white space, soft shadows.",
+  },
+  {
+    name: "service-ai-strategy",
+    aspectRatio: "3:2",
+    prompt:
+      "Minimalist isometric illustration of AI strategy and discovery — a stylized compass or roadmap unfolding on a clean surface, with small glowing teal (#4af0c4) milestone nodes along a path. A magnifying glass with an AI circuit pattern hovers above. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, lots of white space, subtle shadows.",
   },
 ];
 
