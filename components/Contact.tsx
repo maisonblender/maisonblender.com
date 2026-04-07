@@ -48,7 +48,7 @@ export default function Contact() {
                   Burg. Coonenplein 37<br />
                   6141BZ Sittard
                 </span>
-                <div className="mt-3 flex flex-col gap-1 text-sm text-white/50">
+                <div className="mt-3 flex flex-col gap-1 text-white/70">
                   <span>KvK 14080126</span>
                   <span>BTW ID NL001832932B87</span>
                   <span>MAISON BLNDR is een handelsnaam van Applemooz</span>
