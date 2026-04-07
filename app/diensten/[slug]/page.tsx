@@ -218,7 +218,7 @@ export default async function DienstenPage({
             <div className="mx-auto max-w-6xl grid gap-16 lg:grid-cols-3">
               <div className="lg:col-span-2 flex flex-col gap-6">
                 <h2
-                  className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px]"
+                  className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                   style={{ letterSpacing: "-0.5px" }}
                 >
                   Wat wij voor je doen
@@ -274,7 +274,7 @@ export default async function DienstenPage({
                   Veelgestelde vragen
                 </span>
                 <h2
-                  className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px]"
+                  className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                   style={{ letterSpacing: "-0.5px" }}
                 >
                   Alles over {tagPage.title}
@@ -316,7 +316,7 @@ export default async function DienstenPage({
                   Meer diensten
                 </span>
                 <h2
-                  className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px]"
+                  className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                   style={{ letterSpacing: "-0.5px" }}
                 >
                   Ontdek onze andere diensten
@@ -364,7 +364,7 @@ export default async function DienstenPage({
           <section className="bg-[#1f1f1f] px-6 py-20 text-white">
             <div className="mx-auto max-w-6xl flex flex-col items-center gap-6 text-center">
               <h2
-                className="text-[24px] font-normal leading-[1.2] tracking-tight sm:text-[29px] lg:text-[35px]"
+                className="text-[24px] font-normal leading-[1.2] tracking-tight sm:text-[29px] lg:text-[32px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
                 Klaar voor{" "}
@@ -546,7 +546,7 @@ export default async function DienstenPage({
           <div className="mx-auto max-w-6xl grid gap-16 lg:grid-cols-3">
             <div className="lg:col-span-2 flex flex-col gap-6">
               <h2
-                className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px]"
+                className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                 style={{ letterSpacing: "-0.5px" }}
               >
                 Wat wij voor je doen
@@ -602,7 +602,7 @@ export default async function DienstenPage({
                 Toepassingen
               </span>
               <h2
-                className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px]"
+                className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                 style={{ letterSpacing: "-0.5px" }}
               >
                 Waarvoor gebruiken onze klanten dit?
@@ -628,7 +628,7 @@ export default async function DienstenPage({
               {service!.sections.map((section) => (
                 <div key={section.id} id={section.id} className="scroll-mt-24">
                   <h2
-                    className="mb-4 text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-2xl"
+                    className="mb-4 text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-2xl lg:text-[32px]"
                     style={{ letterSpacing: "-0.5px" }}
                   >
                     {section.title}
@@ -665,7 +665,7 @@ export default async function DienstenPage({
                 Meer diensten
               </span>
               <h2
-                className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px]"
+                className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                 style={{ letterSpacing: "-0.5px" }}
               >
                 Ontdek onze andere diensten
@@ -697,7 +697,7 @@ export default async function DienstenPage({
         <section className="bg-[#1f1f1f] px-6 py-20 text-white">
           <div className="mx-auto max-w-6xl flex flex-col items-center gap-6 text-center">
             <h2
-              className="text-[24px] font-normal leading-[1.2] tracking-tight sm:text-[29px] lg:text-[35px]"
+              className="text-[24px] font-normal leading-[1.2] tracking-tight sm:text-[29px] lg:text-[32px]"
               style={{ letterSpacing: "-0.95px" }}
             >
               Klaar voor{" "}

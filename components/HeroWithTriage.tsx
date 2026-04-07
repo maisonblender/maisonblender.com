@@ -26,7 +26,7 @@ export default function HeroWithTriage() {
               Van strategie naar productie · Custom AI
             </div>
 
-            <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]" style={{ letterSpacing: "-0.95px" }}>
+            <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[32px]" style={{ letterSpacing: "-0.95px" }}>
               Geen pilots, geen proof-of-concepts.
               <br />
               <span className="font-exposure">Minder handwerk, meer marge, vanaf dag één.</span>

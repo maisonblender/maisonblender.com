@@ -37,7 +37,7 @@ export default function Testimonials() {
               Klanten aan het woord
             </span>
             <h2
-              className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[35px]"
+              className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
               style={{ letterSpacing: "-0.95px" }}
             >
               Minder werk.

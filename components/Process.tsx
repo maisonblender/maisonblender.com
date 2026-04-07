@@ -34,7 +34,7 @@ export default function Process() {
               <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
                 Aanpak
               </span>
-              <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[35px]" style={{ letterSpacing: "-0.95px" }}>
+              <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]" style={{ letterSpacing: "-0.95px" }}>
                 Geen big bang.
                 <br />
                 <span className="font-exposure">Wel live binnen vier weken.</span>
