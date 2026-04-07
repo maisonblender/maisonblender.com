@@ -14,9 +14,12 @@ export default function Footer() {
         </p>
         <nav className="flex flex-wrap justify-center gap-6 text-xs text-[#575760] sm:justify-end">
           <a href="/#diensten" className="hover:text-[#1f1f1f] transition-colors">Diensten</a>
+          <a href="/sessies" className="hover:text-[#1f1f1f] transition-colors">AI-op-Maat Sessies</a>
+          <a href="/brand-ambassador" className="hover:text-[#1f1f1f] transition-colors">Brand Ambassador</a>
           <a href="/#sectoren" className="hover:text-[#1f1f1f] transition-colors">Sectoren</a>
           <a href="/#aanpak" className="hover:text-[#1f1f1f] transition-colors">Aanpak</a>
           <a href="/#contact" className="hover:text-[#1f1f1f] transition-colors">Contact</a>
+          <a href="/labs" className="hover:text-[#1f1f1f] transition-colors font-medium">Labs →</a>
         </nav>
       </div>
     </footer>

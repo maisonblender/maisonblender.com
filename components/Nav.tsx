@@ -8,6 +8,7 @@ const topLinks = [
   { href: "/#aanpak", label: "Aanpak" },
   { href: "/#over-ons", label: "Over ons" },
   { href: "/#contact", label: "Contact" },
+  { href: "/labs", label: "Labs →" },
 ];
 
 export default function Nav() {

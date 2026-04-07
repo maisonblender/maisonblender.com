@@ -140,6 +140,32 @@ const images = [
     prompt:
       "Minimalist isometric illustration of AI strategy and discovery — a stylized compass or roadmap unfolding on a clean surface, with small glowing teal (#4af0c4) milestone nodes along a path. A magnifying glass with an AI circuit pattern hovers above. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, lots of white space, subtle shadows.",
   },
+
+  // --- New feature visuals ---
+  {
+    name: "sessies-visual",
+    aspectRatio: "4:3",
+    prompt:
+      "Minimalist flat-design illustration of an on-site AI workshop session — two professionals at a desk with a laptop, with glowing teal (#22c55e) workflow automation lines flowing between icons: a gear, a document, and a checkmark. Charcoal (#1f1f1f) background with subtle white dot grid. Warm professional atmosphere. No text, lots of breathing room, soft highlights.",
+  },
+  {
+    name: "sessies-steps",
+    aspectRatio: "3:2",
+    prompt:
+      "Clean minimal flat infographic showing 3 sequential workflow steps on a light gray (#f2f3f5) background: Step 1 a briefing clipboard with magnifying glass, Step 2 two people collaborating at a laptop with AI sparks, Step 3 a rocket or launch arrow with green (#22c55e) checkmark. Connected by smooth teal (#22c55e) curved lines with numbered square markers. Professional Dutch B2B style. No text, soft shadows.",
+  },
+  {
+    name: "brand-ambassador-visual",
+    aspectRatio: "4:3",
+    prompt:
+      "Minimalist isometric illustration of an AI brand ambassador chat interface — a sleek smartphone and desktop screen side by side showing a branded chat window with a company avatar icon, floating teal (#22c55e) and white chat bubbles, and subtle brand colour accents. Abstract neural connection lines radiate from an AI core. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, ample white space, soft shadows.",
+  },
+  {
+    name: "labs-hero",
+    aspectRatio: "16:9",
+    prompt:
+      "Elegant minimal flat illustration representing a regional AI knowledge hub — the province of Limburg as a subtle geographic outline in the center, with small glowing green (#22c55e) dot nodes representing connected communities (universities, businesses, municipalities). Thin teal connection lines create a network across the region. Very light off-white background (#f2f3f5), mostly white space, delicate contour lines. Professional and understated. No text.",
+  },
 ];
 
 console.log(`\n🎨  Maison Blender image generator`);

@@ -3,6 +3,8 @@ import HeroWithTriage from "@/components/HeroWithTriage";
 import QuickscanBanner from "@/components/QuickscanBanner";
 import Services from "@/components/Services";
 import Sectoren from "@/components/Sectoren";
+import SessiesSection from "@/components/SessiesSection";
+import BrandAmbassadorSection from "@/components/BrandAmbassadorSection";
 import Process from "@/components/Process";
 import About from "@/components/About";
 import Testimonials from "@/components/Testimonials";
@@ -18,6 +20,8 @@ export default function Home() {
       <QuickscanBanner />
       <Services />
       <Sectoren />
+      <SessiesSection />
+      <BrandAmbassadorSection />
       <Process />
       <About />
       <Testimonials />
