@@ -44,16 +44,18 @@ export default function Nav() {
             </a>
 
             {dienstenOpen && (
-              <div className="absolute left-0 top-full z-50 mt-1 w-72 border border-black/[0.06] bg-white py-2 shadow-lg">
-                {services.map((s) => (
-                  <a
-                    key={s.slug}
-                    href={`/diensten/${s.slug}`}
-                    className="block px-4 py-2.5 text-sm text-[#575760] transition-colors hover:bg-[#f2f3f5] hover:text-[#1f1f1f]"
-                  >
-                    {s.title}
-                  </a>
-                ))}
+              <div className="absolute left-0 top-full z-50 w-72 pt-1">
+                <div className="border border-black/[0.06] bg-white py-2 shadow-lg">
+                  {services.map((s) => (
+                    <a
+                      key={s.slug}
+                      href={`/diensten/${s.slug}`}
+                      className="block px-4 py-2.5 text-sm text-[#575760] transition-colors hover:bg-[#f2f3f5] hover:text-[#1f1f1f]"
+                    >
+                      {s.title}
+                    </a>
+                  ))}
+                </div>
               </div>
             )}
           </div>
