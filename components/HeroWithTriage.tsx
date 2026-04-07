@@ -27,9 +27,9 @@ export default function HeroWithTriage() {
             </div>
 
             <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]" style={{ letterSpacing: "-0.95px" }}>
-              AI die elke week uren teruggeeft -
+              Geen pilots, geen proof-of-concepts.
               <br />
-              <span className="font-exposure">gebouwd voor jouw processen, niet voor een demo.</span>
+              <span className="font-exposure">Minder handwerk, meer marge, vanaf dag één.</span>
             </h1>
 
             <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
