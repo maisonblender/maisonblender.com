@@ -42,34 +42,18 @@ export default function Contact() {
               </div>
               <div className="flex flex-col gap-1.5">
                 <span className="text-xs font-medium uppercase tracking-widest text-white/40">
-                  E-mail
-                </span>
-                <a
-                  href="mailto:info@maisonblender.com"
-                  className="text-white hover:text-white/70 transition-colors"
-                >
-                  info@maisonblender.com
-                </a>
-              </div>
-              <div className="flex flex-col gap-1.5">
-                <span className="text-xs font-medium uppercase tracking-widest text-white/40">
                   Adres
                 </span>
                 <span className="text-white/70">
                   Burg. Coonenplein 37<br />
                   6141BZ Sittard
                 </span>
+                <div className="mt-3 flex flex-col gap-1 text-sm text-white/50">
+                  <span>KvK 14080126</span>
+                  <span>BTW ID NL001832932B87</span>
+                  <span>MAISON BLNDR is een handelsnaam van Applemooz</span>
+                </div>
               </div>
-            </div>
-
-            <div className="border-t border-white/10 pt-6">
-              <a
-                href="mailto:info@maisonblender.com"
-                className="group inline-flex items-center gap-2 text-sm text-white/60 hover:text-white transition-colors"
-              >
-                Liever direct mailen?
-                <span className="transition-transform group-hover:translate-x-1">→</span>
-              </a>
             </div>
           </div>
         </div>
