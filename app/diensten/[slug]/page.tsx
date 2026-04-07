@@ -361,7 +361,6 @@ export default async function DienstenPage({
                           <Link
                             key={tag}
                             href={href}
-                            onClick={(e) => e.stopPropagation()}
                             className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760] hover:bg-[#f2f3f5] hover:border-black/20 transition-colors"
                           >
                             {tag}
@@ -716,7 +715,6 @@ export default async function DienstenPage({
                         <Link
                           key={tag}
                           href={href}
-                          onClick={(e) => e.stopPropagation()}
                           className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760] hover:bg-[#f2f3f5] hover:border-black/20 transition-colors"
                         >
                           {tag}
