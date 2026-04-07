@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
 import { buildActieplanPrompt } from "@/lib/quickscan/prompt";
 import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
@@ -63,6 +64,19 @@ export async function POST(request: NextRequest) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return Response.json({ error: "Ongeldig e-mailadres." }, { status: 400 });
+  }
+
+  // Rate limiting: max 2 actieplan requests per IP per hour
+  const ip = getClientIp(request);
+  const rateCheck = checkRateLimit(`lead:${ip}`, 2, 60 * 60 * 1000);
+  if (!rateCheck.allowed) {
+    return Response.json(
+      { error: `Te veel verzoeken. Probeer het opnieuw over ${rateCheck.retryAfterSeconds} seconden.` },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateCheck.retryAfterSeconds) },
+      }
+    );
   }
 
   const resendKey = process.env.RESEND_API_KEY;

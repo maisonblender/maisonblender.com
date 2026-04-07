@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
 import { berekenAiReadinessScore, bepaalScoreLabel, bepaalScoreBeschrijving, berekenOpportunityMap } from "@/lib/quickscan/scoring";
 import { berekenTopKansen, berekenTotaalROI } from "@/lib/quickscan/roi";
@@ -15,6 +16,19 @@ export async function POST(request: NextRequest) {
 
   if (!antwoorden.sector || !antwoorden.omvang || !antwoorden.techStack || !antwoorden.pijnpunten?.length) {
     return Response.json({ error: "Vul alle stappen in." }, { status: 400 });
+  }
+
+  // Rate limiting: max 3 scans per IP per hour
+  const ip = getClientIp(request);
+  const rateCheck = checkRateLimit(`analyze:${ip}`, 3, 60 * 60 * 1000);
+  if (!rateCheck.allowed) {
+    return Response.json(
+      { error: `Te veel verzoeken. Probeer het opnieuw over ${rateCheck.retryAfterSeconds} seconden.` },
+      {
+        status: 429,
+        headers: { "Retry-After": String(rateCheck.retryAfterSeconds) },
+      }
+    );
   }
 
   // Bereken score en kansen
