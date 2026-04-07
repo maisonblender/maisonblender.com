@@ -11,11 +11,10 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://maisonblender.com"),
-  title: "AI-bureau Zuid-Limburg | MAISON BLNDR - Custom AI-agents & Automatisering Sittard",
+  title: "MAISON BLNDR · Custom AI-agents & Procesautomatisering voor het MKB",
   description:
-    "Het AI-bureau van Sittard, Zuid-Limburg. Custom AI-agents, procesautomatisering en maatwerksoftware voor MKB. Geen data-scientist nodig. Vraag een gratis quickscan aan.",
+    "Custom AI-agents, procesautomatisering en maatwerksoftware voor het MKB. MAISON BLNDR levert werkende AI-systemen binnen vier weken. Vraag een gratis quickscan aan.",
   keywords: [
-    "AI bureau Zuid-Limburg",
     "AI consultant Limburg",
     "AI bureau Sittard",
     "kunstmatige intelligentie bureau",
@@ -37,9 +36,9 @@ export const metadata: Metadata = {
     canonical: "https://maisonblender.com",
   },
   openGraph: {
-    title: "MAISON BLNDR - AI-bureau in Sittard, Zuid-Limburg",
+    title: "MAISON BLNDR - Custom AI-agents & Procesautomatisering voor het MKB",
     description:
-      "MAISON BLNDR bouwt werkende AI-agents, procesautomatisering en maatwerksoftware voor MKB in Zuid-Limburg. Geen data-scientist nodig. Gevestigd in Sittard, actief door heel Nederland.",
+      "MAISON BLNDR bouwt werkende AI-agents, procesautomatisering en maatwerksoftware voor het MKB. Geen data-scientist nodig. Gevestigd in Sittard, actief door heel Nederland.",
     url: "https://maisonblender.com",
     siteName: "MAISON BLNDR",
     locale: "nl_NL",
@@ -48,9 +47,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "MAISON BLNDR - AI-bureau Sittard, Zuid-Limburg",
+    title: "MAISON BLNDR - Custom AI-agents & Procesautomatisering voor het MKB",
     description:
-      "Werkende AI-agents en procesautomatisering voor MKB in Zuid-Limburg. Geen data-scientist nodig. Van quickscan tot live systeem.",
+      "Werkende AI-agents en procesautomatisering voor het MKB. Geen data-scientist nodig. Van quickscan tot live systeem.",
   },
   robots: {
     index: true,
@@ -75,7 +74,7 @@ const jsonLd = {
       url: "https://maisonblender.com",
       logo: "https://maisonblender.com/maison-blender-logo-black.svg",
       description:
-        "MAISON BLNDR is het toonaangevende AI-bureau in Zuid-Limburg. Wij bouwen custom AI-agents, workflow-automatisering en intelligente software voor ambitieuze bedrijven. Gespecialiseerd in AI-chatbots, procesautomatisering, RPA en maatwerksoftware.",
+        "MAISON BLNDR bouwt custom AI-agents, workflow-automatisering en intelligente software voor ambitieuze bedrijven in het MKB. Gespecialiseerd in AI-chatbots, procesautomatisering, RPA en maatwerksoftware.",
       foundingDate: "2024",
       email: "info@maisonblender.com",
       telephone: "+31462004035",
@@ -165,7 +164,7 @@ const jsonLd = {
       "@id": "https://maisonblender.com/#website",
       url: "https://maisonblender.com",
       name: "MAISON BLNDR",
-      description: "Het toonaangevende AI-bureau van Zuid-Limburg",
+      description: "MAISON BLNDR - Custom AI-agents & Procesautomatisering voor het MKB",
       publisher: { "@id": "https://maisonblender.com/#organization" },
       inLanguage: "nl-NL",
     },
@@ -173,7 +172,7 @@ const jsonLd = {
       "@type": "WebPage",
       "@id": "https://maisonblender.com/#webpage",
       url: "https://maisonblender.com",
-      name: "MAISON BLNDR - AI-bureau in Zuid-Limburg | Custom AI-agents & Automatisering",
+      name: "MAISON BLNDR - Custom AI-agents & Procesautomatisering voor het MKB",
       isPartOf: { "@id": "https://maisonblender.com/#website" },
       about: { "@id": "https://maisonblender.com/#organization" },
       speakable: {

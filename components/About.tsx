@@ -14,7 +14,7 @@ export default function About() {
                 Over ons
               </span>
               <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[35px]" style={{ letterSpacing: "-0.95px" }}>
-                Twaalf bedrijven in de regio.
+                Gebouwd voor bedrijven die willen dat AI écht werkt.
                 <br />
                 <span className="font-exposure">Geen data-scientist nodig.</span>
               </h2>
@@ -36,17 +36,17 @@ export default function About() {
                 systemen. Geen evangelisatie van de nieuwste hype - keuze voor wat werkt.
               </p>
               <p>
-                Gevestigd in Sittard. Actief in Maastricht, Geleen, Heerlen, Venlo en daarbuiten.
-                Geen reiskosten, geen tijdsverschil, geen callcenter - wel een team dat je regio kent.
+                Gevestigd in Sittard. Actief door heel Nederland. Geen callcenter, geen wisselende
+                consultants — een vast team dat jouw systemen kent.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               {[
                 { label: "Gevestigd in", value: "Sittard, NL" },
-                { label: "Focusgebied", value: "Zuid-Limburg" },
+                { label: "Focusgebied", value: "MKB & Scale-ups" },
                 { label: "Specialisatie", value: "Custom AI-agents" },
-                { label: "Doelgroep", value: "MKB & Scale-ups" },
+                { label: "Doelgroep", value: "Operationeel NL" },
               ].map((item) => (
                 <div key={item.label} className="flex flex-col gap-1 border-l-2 border-black/20 pl-4">
                   <span className="text-xs text-[#b2b2be] uppercase tracking-widest">{item.label}</span>
@@ -69,12 +69,12 @@ export default function About() {
               <div className="flex flex-col gap-6">
                 <div className="h-px w-8 bg-black/30" />
                 <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
-                  &ldquo;De meeste AI-bureaus zijn weg zodra het systeem live staat.
-                  Wij zijn er dan pas echt begonnen.&rdquo;
+                  &ldquo;Onze klanten meten het succes niet in features. Ze meten het in uren die ze
+                  terugkrijgen.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
                   <span className="text-sm font-medium text-[#575760]">MAISON BLNDR</span>
-                  <span className="text-xs text-[#b2b2be]">Sittard, Zuid-Limburg</span>
+                  
                 </div>
               </div>
             </div>

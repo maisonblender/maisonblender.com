@@ -23,21 +23,19 @@ export default function HeroWithTriage() {
           {/* Text column */}
           <div className="flex flex-1 flex-col items-center gap-6 md:items-start">
             <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
-              AI-frontrunner · Zuid-Limburg
+              Van strategie naar productie · Custom AI
             </div>
 
             <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]" style={{ letterSpacing: "-0.95px" }}>
-              AI die je medewerkers
+              AI die elke week uren teruggeeft —
               <br />
-              <span className="font-exposure">dagelijks gebruiken.</span>
-              <span className="sr-only"> - AI-bureau in Sittard, Zuid-Limburg</span>
+              <span className="font-exposure">gebouwd voor jouw processen, niet voor een demo.</span>
             </h1>
 
             <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-              Geen demo&apos;s, geen pilots die nergens op uitlopen. MAISON BLNDR bouwt AI die je team
-              dagelijks inzet - agents voor factuurverwerking, chatbots voor klantenservice,
-              automatisering voor de processen die nu te veel tijd kosten. Gevestigd in Sittard.
-              Actief door heel Nederland.
+              Facturen verwerken, klantvragen beantwoorden, leads opvolgen — wij automatiseren wat
+              nu handmatig gaat. MAISON BLNDR begint bij jouw workflows, levert binnen vier
+              weken een werkend systeem, en blijft beheren terwijl jij de resultaten ziet.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">

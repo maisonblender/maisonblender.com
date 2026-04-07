@@ -86,8 +86,8 @@ export default function Sectoren() {
             <span className="font-exposure">Mits het goed is gebouwd.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Een logistiek bedrijf in Sittard en een accountantskantoor in Maastricht hebben andere
-            processen. Andere problemen. Andere kansen. Wij bouwen voor het verschil.
+            Een logistiek bedrijf en een accountantskantoor hebben andere processen. Andere problemen.
+            Andere kansen. Wij bouwen voor het verschil.
           </p>
         </div>
 

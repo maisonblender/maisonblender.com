@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "MAISON BLNDR - AI-bureau in Zuid-Limburg";
+export const alt = "MAISON BLNDR - Custom AI-agents & Procesautomatisering voor het MKB";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -43,7 +43,7 @@ export default function Image() {
           }}
         >
           <span>AI-bureau in</span>
-          <span>Zuid-Limburg</span>
+          <span>MKB & Scale-ups</span>
         </div>
         <div
           style={{

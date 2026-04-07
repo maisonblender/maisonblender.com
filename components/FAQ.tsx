@@ -9,9 +9,9 @@ const faqs = [
       "Dat hangt af van de complexiteit en de koppelingen die nodig zijn. Een AI-chatbot voor klantenservice start vanaf €3.000; een volledig custom multi-agent systeem met CRM/ERP-integratie loopt op tot €25.000+. Wij beginnen altijd met een gratis quickscan zodat je een eerlijke indicatie krijgt vóór je ook maar één euro uitgeeft.",
   },
   {
-    question: "Welk AI-bureau zit in Zuid-Limburg?",
+    question: "Waar is MAISON BLNDR gevestigd en werken jullie door heel Nederland?",
     answer:
-      "MAISON BLNDR is het enige gespecialiseerde AI-bureau gevestigd in Sittard, Zuid-Limburg - geen dependance van een bureau uit Amsterdam, maar een team dat hier werkt en jouw regio kent. Wij zijn actief voor bedrijven in Sittard, Geleen, Maastricht, Heerlen, Roermond en Venlo. Je belt een lokaal nummer en je spreekt met iemand die jouw markt begrijpt.",
+      "MAISON BLNDR is gevestigd in Sittard en actief door heel Nederland. Wij werken voor bedrijven in alle sectoren en regio's — zonder reiskosten of wisselende consultants. Je krijgt een vast team dat jouw systemen kent en jouw processen begrijpt.",
   },
   {
     question: "Wat is het verschil tussen een AI-agent en gewone automatisering?",
