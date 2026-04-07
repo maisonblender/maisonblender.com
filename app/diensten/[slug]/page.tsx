@@ -159,7 +159,7 @@ export default async function DienstenPage({
                     {tagPage.subtitle}
                   </span>
                   <h1
-                    className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px] font-exposure"
+                    className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[32px] font-exposure"
                     style={{ letterSpacing: "-0.95px" }}
                   >
                     {tagPage.title}
@@ -479,7 +479,7 @@ export default async function DienstenPage({
                   {service!.subtitle}
                 </span>
                 <h1
-                  className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]"
+                  className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[32px]"
                   style={{ letterSpacing: "-0.95px" }}
                 >
                   {service!.title.includes("&") ? (
