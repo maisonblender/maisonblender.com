@@ -84,7 +84,7 @@ export default function QuickscanPage() {
             <div className="mb-12 flex flex-col gap-3">
               <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">Wat je krijgt</span>
               <h2
-                className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
+                className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
                 Alles in 3 minuten.
