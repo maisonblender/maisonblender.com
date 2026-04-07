@@ -174,12 +174,12 @@ export default function LabsHomePage() {
             className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px] mb-4"
             style={{ letterSpacing: "-0.95px" }}
           >
-            Wekelijks AI-nieuws voor
+            Maandelijks een AI-update
             <br />
-            <span className="font-exposure">Limburgse ondernemers.</span>
+            <span className="font-exposure">die de moeite waard is.</span>
           </h2>
           <p className="text-base leading-relaxed text-[#575760] mb-8 max-w-xl mx-auto">
-            Geen spam. Geen hype. Elke week één bruikbare AI-tip, één case en één gratis resource.
+            Geen nieuwsbrief over de toekomst van AI. Wel: één concreet inzicht, één gratis tool en één voorbeeld uit de regio. Elke maand. Afmelden kan altijd.
           </p>
           <Link
             href="/labs/nieuwsbrief"

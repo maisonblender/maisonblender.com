@@ -17,48 +17,48 @@ export const metadata: Metadata = {
 const steps = [
   {
     number: "01",
-    title: "Intake & voorbereiding",
+    title: "Intake: jouw processen in kaart",
     description:
-      "Voorafgaand aan de sessie maken we een korte intake. We identificeren het concrete knelpunt in jouw workflow en bereiden de technische omgeving voor.",
+      "Vóór de sessie lever je drie knelpunten of tijdvreters in jouw organisatie aan — processen die te veel handwerk kosten of te vaak fout gaan. We bereiden de technische omgeving voor op basis van jouw systemen.",
   },
   {
     number: "02",
     title: "Bouwdag on-site",
     description:
-      "Onze engineer komt naar jouw locatie. We bouwen de automatisering samen, in jouw systemen, zodat je direct ziet hoe het werkt en hoe je het beheert.",
+      "Onze engineer komt naar jouw locatie. We bouwen de automatisering samen, in jouw systemen, zodat je direct ziet hoe het werkt en hoe je het beheert. Concreet resultaat, geen demo-omgeving.",
   },
   {
     number: "03",
-    title: "Oplevering & overdracht",
+    title: "Oplevering: een systeem dat direct werkt",
     description:
-      "Aan het einde van de dag lever je een werkend systeem op. We doen een volledige overdracht zodat je team ermee aan de slag kan.",
+      "Aan het einde van de dag lever je een werkend systeem op. Inclusief volledige overdracht en 30 dagen support — zodat jouw team ermee aan de slag kan, ook als wij weg zijn.",
   },
 ];
 
 const usecases = [
   {
-    sector: "Accountancy & Finance",
-    example: "Automatisch verwerken van inkoopfacturen via Exact Online koppeling",
+    sector: "Zorg & Paramedisch",
+    example: "Een fysiotherapiepraktijk in Sittard bespaart nu 11 uur per week op patiëntadministratie — dossierverwerking, verwijsbrieven en herinneringen voor 80% geautomatiseerd.",
   },
   {
-    sector: "Makelaar & Vastgoed",
-    example: "AI-agent die bezichtigingsverzoeken kwalificeert en inplant via WhatsApp",
+    sector: "Bouw & Installatie",
+    example: "Een installatiebedrijf in Maastricht beantwoordt nu 70% van offertevragen volledig via AI — zonder dat een projectleider eraan te pas hoeft te komen.",
   },
   {
     sector: "Logistiek & Transport",
-    example: "Geautomatiseerde statusupdates en klantnotificaties via Microsoft 365",
+    example: "Vrachtbrief-verwerking van 3 uur per dag naar 20 minuten. Zonder extra personeel. Zonder nieuwe systemen.",
   },
   {
-    sector: "Zorg & Welzijn",
-    example: "Intakeformulieren verwerken en doorsturen naar het juiste team",
+    sector: "Accountancy & Finance",
+    example: "Een accountantskantoor vertaalde zijn meest tijdrovende klantproces naar een werkende AI-agent — vier weken na de sessie al in gebruik.",
   },
   {
-    sector: "Retail & E-commerce",
-    example: "Retourverzoeken automatisch afhandelen en ERP bijwerken",
+    sector: "Makelaar & Vastgoed",
+    example: "AI-agent die bezichtigingsverzoeken kwalificeert, inplant en bevestigt via WhatsApp — ook buiten kantooruren.",
   },
   {
     sector: "Professionele dienstverlening",
-    example: "Offerte-aanvragen parsen en direct een concept-voorstel genereren",
+    example: "Offerte-aanvragen worden geparsed en omgezet in een concept-voorstel — projectleider controleert in 5 minuten wat voorheen een uur kostte.",
   },
 ];
 
@@ -137,12 +137,12 @@ export default function SessiesPage() {
                 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
-                Wat bouwen we
+                Uit de praktijk.
                 <br />
-                <span className="font-exposure">in één dag?</span>
+                <span className="font-exposure">Echte resultaten.</span>
               </h2>
               <p className="mt-4 text-base leading-relaxed text-[#575760] max-w-xl mx-auto">
-                Voorbeelden uit de praktijk. Elke sessie is maatwerk — dit zijn de meest voorkomende toepassingen per sector.
+                Elke sessie is maatwerk. Dit zijn voorbeelden van wat we bouwen — per sector, met concrete getallen.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
