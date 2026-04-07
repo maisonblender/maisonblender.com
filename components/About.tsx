@@ -37,7 +37,7 @@ export default function About() {
               </p>
               <p>
                 Gevestigd in Sittard. Actief door heel Nederland. Geen callcenter, geen wisselende
-                consultants — een vast team dat jouw systemen kent.
+                consultants - een vast team dat jouw systemen kent.
               </p>
             </div>
 

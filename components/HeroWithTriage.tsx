@@ -27,13 +27,13 @@ export default function HeroWithTriage() {
             </div>
 
             <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]" style={{ letterSpacing: "-0.95px" }}>
-              AI die elke week uren teruggeeft —
+              AI die elke week uren teruggeeft -
               <br />
               <span className="font-exposure">gebouwd voor jouw processen, niet voor een demo.</span>
             </h1>
 
             <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-              Facturen verwerken, klantvragen beantwoorden, leads opvolgen — wij automatiseren wat
+              Facturen verwerken, klantvragen beantwoorden, leads opvolgen - wij automatiseren wat
               nu handmatig gaat. MAISON BLNDR begint bij jouw workflows, levert binnen vier
               weken een werkend systeem, en blijft beheren terwijl jij de resultaten ziet.
             </p>

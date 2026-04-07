@@ -81,7 +81,7 @@ export const services: Service[] = [
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/ai-chatbots-klantenservice#service",
-    heroImage: { src: "/images/service-ai-chatbots.png", alt: "AI chatbot interface met chat bubbles op smartphone en desktop — AI-gestuurde klantenservice automatisering voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/service-ai-chatbots.png", alt: "AI chatbot interface met chat bubbles op smartphone en desktop - AI-gestuurde klantenservice automatisering voor bedrijven in Zuid-Limburg" },
     jsonLdServiceType: "Conversational AI & Klantenservice Automatisering",
   },
   {
@@ -205,7 +205,7 @@ export const services: Service[] = [
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/rpa-workflow-integraties#service",
-    heroImage: { src: "/images/service-rpa-workflow.png", alt: "RPA workflow automatisering: robot arm verbindt softwareapplicaties via geautomatiseerde processen — procesoptimalisatie voor MKB in Zuid-Limburg" },
+    heroImage: { src: "/images/service-rpa-workflow.png", alt: "RPA workflow automatisering: robot arm verbindt softwareapplicaties via geautomatiseerde processen - procesoptimalisatie voor MKB in Zuid-Limburg" },
     jsonLdServiceType: "Robotic Process Automation & Workflow-integraties",
   },
   {
@@ -276,7 +276,7 @@ export const services: Service[] = [
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/custom-ai-software#service",
-    heroImage: { src: "/images/service-custom-software.png", alt: "Custom AI software portaal met modern dashboard — maatwerk AI-oplossingen en intelligente portalen ontwikkeld door MAISON BLNDR in Limburg" },
+    heroImage: { src: "/images/service-custom-software.png", alt: "Custom AI software portaal met modern dashboard - maatwerk AI-oplossingen en intelligente portalen ontwikkeld door MAISON BLNDR in Limburg" },
     jsonLdServiceType: "Custom AI Software Development",
   },
   {
@@ -406,7 +406,7 @@ export const services: Service[] = [
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/ai-strategie-quickscan#service",
-    heroImage: { src: "/images/service-ai-strategy.png", alt: "AI strategie en quickscan: roadmap met mijlpalen en analysevergrootglas — strategisch AI-advies voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/service-ai-strategy.png", alt: "AI strategie en quickscan: roadmap met mijlpalen en analysevergrootglas - strategisch AI-advies voor bedrijven in Zuid-Limburg" },
     jsonLdServiceType: "AI Strategie Consultancy",
   },
 ];

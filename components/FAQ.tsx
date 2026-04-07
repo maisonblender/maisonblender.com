@@ -11,7 +11,7 @@ const faqs = [
   {
     question: "Waar is MAISON BLNDR gevestigd en werken jullie door heel Nederland?",
     answer:
-      "MAISON BLNDR is gevestigd in Sittard en actief door heel Nederland. Wij werken voor bedrijven in alle sectoren en regio's — zonder reiskosten of wisselende consultants. Je krijgt een vast team dat jouw systemen kent en jouw processen begrijpt.",
+      "MAISON BLNDR is gevestigd in Sittard en actief door heel Nederland. Wij werken voor bedrijven in alle sectoren en regio's - zonder reiskosten of wisselende consultants. Je krijgt een vast team dat jouw systemen kent en jouw processen begrijpt.",
   },
   {
     question: "Wat is het verschil tussen een AI-agent en gewone automatisering?",

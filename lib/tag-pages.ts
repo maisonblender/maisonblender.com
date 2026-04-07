@@ -98,7 +98,7 @@ export const tagPages: TagPage[] = [
       "Lead generatie",
       "CRM-integratie",
     ],
-    heroImage: { src: "/images/tag-whatsapp-chatbot.png", alt: "WhatsApp chatbot met AI chat bubbles op smartphone — automatisch klantcontact via WhatsApp voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-whatsapp-chatbot.png", alt: "WhatsApp chatbot met AI chat bubbles op smartphone - automatisch klantcontact via WhatsApp voor bedrijven in Zuid-Limburg" },
     jsonLdId:
       "https://maisonblender.com/diensten/whatsapp-chatbot#service",
   },
@@ -176,7 +176,7 @@ export const tagPages: TagPage[] = [
       "Legacy-systemen",
       "Workflow-automatisering",
     ],
-    heroImage: { src: "/images/tag-robotic-process-automation.png", alt: "Digitale robot voert handmatige taken automatisch uit op de computer — Robotic Process Automation voor MKB in Limburg" },
+    heroImage: { src: "/images/tag-robotic-process-automation.png", alt: "Digitale robot voert handmatige taken automatisch uit op de computer - Robotic Process Automation voor MKB in Limburg" },
     jsonLdId:
       "https://maisonblender.com/diensten/robotic-process-automation#service",
   },
@@ -256,7 +256,7 @@ export const tagPages: TagPage[] = [
       "Omnichannel",
       "CRM-integratie",
     ],
-    heroImage: { src: "/images/tag-conversational-ai.png", alt: "Conversational AI: mens en AI-brain voeren intelligente gesprekken via teal verbindingslijnen — meertalige AI op elk kanaal" },
+    heroImage: { src: "/images/tag-conversational-ai.png", alt: "Conversational AI: mens en AI-brain voeren intelligente gesprekken via teal verbindingslijnen - meertalige AI op elk kanaal" },
     jsonLdId:
       "https://maisonblender.com/diensten/conversational-ai#service",
   },
@@ -336,7 +336,7 @@ export const tagPages: TagPage[] = [
       "Kennisborging",
       "On-premise mogelijk",
     ],
-    heroImage: { src: "/images/tag-rag-systemen.png", alt: "RAG-systeem: AI doorzoekt kennisdatabase en retourneert precieze data — bedrijfseigen data doorzoekbaar met AI in Limburg" },
+    heroImage: { src: "/images/tag-rag-systemen.png", alt: "RAG-systeem: AI doorzoekt kennisdatabase en retourneert precieze data - bedrijfseigen data doorzoekbaar met AI in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/rag-systemen#service",
   },
   {
@@ -418,7 +418,7 @@ export const tagPages: TagPage[] = [
       "Middleware",
       "Real-time data",
     ],
-    heroImage: { src: "/images/tag-crm-erp-koppelingen.png", alt: "CRM en ERP systemen verbonden via bidirectionele teal API-koppelingen — automatische systeemintegraties voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-crm-erp-koppelingen.png", alt: "CRM en ERP systemen verbonden via bidirectionele teal API-koppelingen - automatische systeemintegraties voor bedrijven in Zuid-Limburg" },
     jsonLdId:
       "https://maisonblender.com/diensten/crm-erp-koppelingen#service",
   },
@@ -499,7 +499,7 @@ export const tagPages: TagPage[] = [
       "Goedkeuringsflows",
       "AVG-compliant",
     ],
-    heroImage: { src: "/images/tag-factuurverwerking.png", alt: "Factuur vloeit automatisch van inbox via scannen naar boekhouding — factuurverwerking automatiseren met AI voor MKB in Limburg" },
+    heroImage: { src: "/images/tag-factuurverwerking.png", alt: "Factuur vloeit automatisch van inbox via scannen naar boekhouding - factuurverwerking automatiseren met AI voor MKB in Limburg" },
     jsonLdId:
       "https://maisonblender.com/diensten/factuurverwerking-automatiseren#service",
   },
@@ -578,7 +578,7 @@ export const tagPages: TagPage[] = [
       "Procesanalyse",
       "Zonder verplichtingen",
     ],
-    heroImage: { src: "/images/tag-ai-quickscan.png", alt: "AI quickscan: vergrootglas met AI-circuit scant bedrijf op automatiseringsmogelijkheden — gratis AI quickscan voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-ai-quickscan.png", alt: "AI quickscan: vergrootglas met AI-circuit scant bedrijf op automatiseringsmogelijkheden - gratis AI quickscan voor bedrijven in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/ai-quickscan#service",
   },
   {
@@ -650,7 +650,7 @@ export const tagPages: TagPage[] = [
       "WhatsApp Business API",
     ],
     tags: ["Leadkwalificatie", "CRM-integratie", "Conversational AI", "B2B sales"],
-    heroImage: { src: "/images/tag-lead-generatie-chatbot.png", alt: "Leadgeneratie funnel: websitebezoekers stromen via AI chatbot naar gekwalificeerde leads — automatische leadgeneratie via chatbot in Limburg" },
+    heroImage: { src: "/images/tag-lead-generatie-chatbot.png", alt: "Leadgeneratie funnel: websitebezoekers stromen via AI chatbot naar gekwalificeerde leads - automatische leadgeneratie via chatbot in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/lead-generatie-chatbot#service",
   },
   {
@@ -722,7 +722,7 @@ export const tagPages: TagPage[] = [
       "HubSpot",
     ],
     tags: ["WhatsApp Business API", "Multichannel", "Unified inbox", "Klantenservice"],
-    heroImage: { src: "/images/tag-omnichannel-klantcontact.png", alt: "Omnichannel AI hub verbindt chat, e-mail, telefoon, WhatsApp en web — één AI-brein voor alle klantkanalen in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-omnichannel-klantcontact.png", alt: "Omnichannel AI hub verbindt chat, e-mail, telefoon, WhatsApp en web - één AI-brein voor alle klantkanalen in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/omnichannel-ai-klantcontact#service",
   },
   {
@@ -794,7 +794,7 @@ export const tagPages: TagPage[] = [
       "Python",
     ],
     tags: ["Agentic AI", "Workflow orchestration", "LangGraph", "Autonome agents"],
-    heroImage: { src: "/images/tag-multi-agent-orkestratie.png", alt: "Multi-agent orkestratie: drie AI-agents werken samen via centrale orchestrator — intelligente AI-samenwerking voor complexe bedrijfsprocessen" },
+    heroImage: { src: "/images/tag-multi-agent-orkestratie.png", alt: "Multi-agent orkestratie: drie AI-agents werken samen via centrale orchestrator - intelligente AI-samenwerking voor complexe bedrijfsprocessen" },
     jsonLdId: "https://maisonblender.com/diensten/multi-agent-orkestratie#service",
   },
   {
@@ -866,7 +866,7 @@ export const tagPages: TagPage[] = [
       "SharePoint",
     ],
     tags: ["OCR", "Document extraction", "PDF-verwerking", "Backoffice automatisering"],
-    heroImage: { src: "/images/tag-documentverwerking.png", alt: "AI scant documenten en extraheert gestructureerde data automatisch — intelligente documentverwerking voor bedrijven in Limburg" },
+    heroImage: { src: "/images/tag-documentverwerking.png", alt: "AI scant documenten en extraheert gestructureerde data automatisch - intelligente documentverwerking voor bedrijven in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/documentverwerking-ai#service",
   },
   {
@@ -938,7 +938,7 @@ export const tagPages: TagPage[] = [
       "Python",
     ],
     tags: ["Agentic AI", "Task automation", "Autonome agents", "Procesautomatisering"],
-    heroImage: { src: "/images/tag-ai-taakuitvoering.png", alt: "Autonome AI voert taakenlijst zelfstandig uit met teal vinkjes — AI taakautomatisering zonder menselijke tussenkomst in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-ai-taakuitvoering.png", alt: "Autonome AI voert taakenlijst zelfstandig uit met teal vinkjes - AI taakautomatisering zonder menselijke tussenkomst in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/ai-taakuitvoering#service",
   },
   {
@@ -1010,7 +1010,7 @@ export const tagPages: TagPage[] = [
       "Python",
     ],
     tags: ["REST API", "Webhooks", "Systeem integratie", "Realtime data"],
-    heroImage: { src: "/images/tag-api-integraties.png", alt: "API-integratie: twee softwaresystemen verbonden via teal dataflow connector — maatwerk API-koppelingen voor bedrijven in Limburg" },
+    heroImage: { src: "/images/tag-api-integraties.png", alt: "API-integratie: twee softwaresystemen verbonden via teal dataflow connector - maatwerk API-koppelingen voor bedrijven in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/api-integraties-automatisering#service",
   },
   {
@@ -1081,7 +1081,7 @@ export const tagPages: TagPage[] = [
       "n8n",
     ],
     tags: ["UI automation", "Legacy systemen", "RPA", "Desktop automatisering"],
-    heroImage: { src: "/images/tag-schermautomatisering.png", alt: "Softwarerobot bestuurt computerinterface automatisch — schermautomatisering en UI automation voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-schermautomatisering.png", alt: "Softwarerobot bestuurt computerinterface automatisch - schermautomatisering en UI automation voor bedrijven in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/schermautomatisering-rpa#service",
   },
   {
@@ -1153,7 +1153,7 @@ export const tagPages: TagPage[] = [
       "PostgreSQL",
     ],
     tags: ["B2B portaal", "Selfservice", "ERP-integratie", "AI-assistent"],
-    heroImage: { src: "/images/tag-klantportaal.png", alt: "AI klantportaal op tablet met selfservice functies en teal actieknoppen — maatwerk klantportaal ontwikkeling voor bedrijven in Limburg" },
+    heroImage: { src: "/images/tag-klantportaal.png", alt: "AI klantportaal op tablet met selfservice functies en teal actieknoppen - maatwerk klantportaal ontwikkeling voor bedrijven in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/klantportaal-ontwikkeling-ai#service",
   },
   {
@@ -1225,7 +1225,7 @@ export const tagPages: TagPage[] = [
       "PostgreSQL",
     ],
     tags: ["Web app", "Mobiele app", "PWA", "AI-integratie"],
-    heroImage: { src: "/images/tag-web-mobiele-app.png", alt: "AI-gestuurde web app op desktop en smartphone met teal accent grafieken — web en mobiele app ontwikkeling met ingebouwde AI in Limburg" },
+    heroImage: { src: "/images/tag-web-mobiele-app.png", alt: "AI-gestuurde web app op desktop en smartphone met teal accent grafieken - web en mobiele app ontwikkeling met ingebouwde AI in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/web-mobiele-app-ai#service",
   },
   {
@@ -1297,7 +1297,7 @@ export const tagPages: TagPage[] = [
       "PostgreSQL",
     ],
     tags: ["AI-first software", "Maatwerk", "Beslissingstool", "Kennisassistent"],
-    heroImage: { src: "/images/tag-ai-applicaties-maatwerk.png", alt: "Puzzelstukjes vormen samen een maatwerk AI applicatie — custom AI software ontwikkeling op maat voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-ai-applicaties-maatwerk.png", alt: "Puzzelstukjes vormen samen een maatwerk AI applicatie - custom AI software ontwikkeling op maat voor bedrijven in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/ai-applicaties-maatwerk#service",
   },
   {
@@ -1369,7 +1369,7 @@ export const tagPages: TagPage[] = [
       "Next.js",
     ],
     tags: ["DMS", "Versiebeheer", "SharePoint", "Compliance"],
-    heroImage: { src: "/images/tag-documentbeheer.png", alt: "AI sorteert documenten automatisch in categorieën en maakt ze direct vindbaar — documentbeheer automatiseren met AI voor MKB in Limburg" },
+    heroImage: { src: "/images/tag-documentbeheer.png", alt: "AI sorteert documenten automatisch in categorieën en maakt ze direct vindbaar - documentbeheer automatiseren met AI voor MKB in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/documentbeheer-ai#service",
   },
   {
@@ -1441,7 +1441,7 @@ export const tagPages: TagPage[] = [
       "Next.js",
     ],
     tags: ["Kennisborging", "AI kennisbank", "Onboarding", "Organisatorisch leren"],
-    heroImage: { src: "/images/tag-kennismanagement.png", alt: "AI kennisgraaf verbindt boeken, ideeën en processen in een centraal brein — kennismanagement met AI voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-kennismanagement.png", alt: "AI kennisgraaf verbindt boeken, ideeën en processen in een centraal brein - kennismanagement met AI voor bedrijven in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/kennismanagement-ai#service",
   },
   {
@@ -1513,7 +1513,7 @@ export const tagPages: TagPage[] = [
       "PostgreSQL",
     ],
     tags: ["Business intelligence", "Data visualisatie", "KPI monitoring", "Voorspellende analyse"],
-    heroImage: { src: "/images/tag-ai-dashboard.png", alt: "Interactief AI dashboard met teal staafdiagrammen, lijngrafiek en KPI-kaarten — AI dashboard ontwikkeling voor datagedreven bedrijven in Limburg" },
+    heroImage: { src: "/images/tag-ai-dashboard.png", alt: "Interactief AI dashboard met teal staafdiagrammen, lijngrafiek en KPI-kaarten - AI dashboard ontwikkeling voor datagedreven bedrijven in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/ai-dashboard-ontwikkeling#service",
   },
   {
@@ -1585,7 +1585,7 @@ export const tagPages: TagPage[] = [
       "Microsoft 365",
     ],
     tags: ["Management rapportage", "BI automatisering", "AI copywriting", "Scheduled workflows"],
-    heroImage: { src: "/images/tag-automatische-rapportages.png", alt: "AI schrijft automatisch rapporten met grafieken en bulletpoints vanuit ruwe data — automatische rapportages met AI voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-automatische-rapportages.png", alt: "AI schrijft automatisch rapporten met grafieken en bulletpoints vanuit ruwe data - automatische rapportages met AI voor bedrijven in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/automatische-rapportages-ai#service",
   },
   {
@@ -1657,7 +1657,7 @@ export const tagPages: TagPage[] = [
       "Microsoft Azure AI",
     ],
     tags: ["AI strategie", "Prioriteitenmatrix", "Business case", "Implementatieplanning"],
-    heroImage: { src: "/images/tag-ai-implementatie-roadmap.png", alt: "AI implementatie roadmap: pad met teal mijlpalen en kompas — stap-voor-stap AI uitvoeringsplan voor bedrijven in Limburg" },
+    heroImage: { src: "/images/tag-ai-implementatie-roadmap.png", alt: "AI implementatie roadmap: pad met teal mijlpalen en kompas - stap-voor-stap AI uitvoeringsplan voor bedrijven in Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/ai-implementatie-roadmap#service",
   },
   {
@@ -1728,7 +1728,7 @@ export const tagPages: TagPage[] = [
       "Microsoft Azure AI",
     ],
     tags: ["ROI-analyse", "Business case", "CFO-presentatie", "Haalbaarheidsonderzoek"],
-    heroImage: { src: "/images/tag-ai-business-case.png", alt: "Weegschaal met investering links en stijgende ROI rechts — AI business case en ROI-onderbouwing voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-ai-business-case.png", alt: "Weegschaal met investering links en stijgende ROI rechts - AI business case en ROI-onderbouwing voor bedrijven in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/ai-business-case#service",
   },
   {
@@ -1800,7 +1800,7 @@ export const tagPages: TagPage[] = [
       "GitHub Copilot",
     ],
     tags: ["Prompt engineering", "AI adoptie", "Upskilling", "Change management"],
-    heroImage: { src: "/images/tag-ai-team-training.png", alt: "Drie medewerkers ontvangen AI-kennis via teal kennisstralen van scherm — AI team training voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/tag-ai-team-training.png", alt: "Drie medewerkers ontvangen AI-kennis via teal kennisstralen van scherm - AI team training voor bedrijven in Zuid-Limburg" },
     jsonLdId: "https://maisonblender.com/diensten/ai-team-training#service",
   },
 ];

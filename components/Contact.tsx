@@ -18,7 +18,7 @@ export default function Contact() {
           </h2>
           <p className="max-w-lg text-lg text-white/70 leading-relaxed">
             Wil je meer weten, een project bespreken of weten wat AI voor jouw bedrijf kan betekenen?
-            Vul het formulier in — wij reageren binnen één werkdag.
+            Vul het formulier in - wij reageren binnen één werkdag.
           </p>
         </div>
 
