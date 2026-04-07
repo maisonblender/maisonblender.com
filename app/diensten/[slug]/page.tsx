@@ -5,7 +5,7 @@ import Image from "next/image";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import { services, getServiceBySlug } from "@/lib/services";
-import { tagPages, getTagPageBySlug } from "@/lib/tag-pages";
+import { tagPages, getTagPageBySlug, tagUrlMap } from "@/lib/tag-pages";
 
 export async function generateStaticParams() {
   return [
@@ -343,17 +343,39 @@ export default async function DienstenPage({
                   <Link
                     key={s.slug}
                     href={`/diensten/${s.slug}`}
-                    className="group flex flex-col gap-4 bg-[#f2f3f5] p-6 transition-colors hover:bg-white border border-transparent hover:border-black/[0.06]"
+                    className="group flex flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#ecedf0] sm:p-8"
                   >
                     <div className="flex items-start justify-between">
                       <span className="font-mono text-xs text-[#575760]/60">{s.id}</span>
                       <div className="h-px w-8 bg-black/20 transition-all group-hover:w-16 group-hover:bg-black/40" />
                     </div>
-                    <div className="flex flex-col gap-1">
-                      <h3 className="text-base font-bold text-[#1f1f1f]">{s.title}</h3>
-                      <p className="text-xs text-[#575760]">{s.subtitle}</p>
+                    <div className="flex flex-col gap-2">
+                      <h3 className="text-xl font-bold text-[#1f1f1f]">{s.title}</h3>
+                      <p className="text-sm font-medium text-[#575760]">{s.subtitle}</p>
                     </div>
-                    <p className="text-xs leading-relaxed text-[#575760] line-clamp-2">{s.description}</p>
+                    <p className="flex-1 text-sm leading-relaxed text-[#575760]">{s.description}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {s.tags.map((tag) => {
+                        const href = tagUrlMap[tag];
+                        return href ? (
+                          <Link
+                            key={tag}
+                            href={href}
+                            onClick={(e) => e.stopPropagation()}
+                            className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760] hover:bg-[#f2f3f5] hover:border-black/20 transition-colors"
+                          >
+                            {tag}
+                          </Link>
+                        ) : (
+                          <span
+                            key={tag}
+                            className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760]"
+                          >
+                            {tag}
+                          </span>
+                        );
+                      })}
+                    </div>
                   </Link>
                 ))}
               </div>
@@ -676,17 +698,39 @@ export default async function DienstenPage({
                 <Link
                   key={s.slug}
                   href={`/diensten/${s.slug}`}
-                  className="group flex flex-col gap-4 bg-[#f2f3f5] p-6 transition-colors hover:bg-white border border-transparent hover:border-black/[0.06]"
+                  className="group flex flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#ecedf0] sm:p-8"
                 >
                   <div className="flex items-start justify-between">
                     <span className="font-mono text-xs text-[#575760]/60">{s.id}</span>
                     <div className="h-px w-8 bg-black/20 transition-all group-hover:w-16 group-hover:bg-black/40" />
                   </div>
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-base font-bold text-[#1f1f1f]">{s.title}</h3>
-                    <p className="text-xs text-[#575760]">{s.subtitle}</p>
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-xl font-bold text-[#1f1f1f]">{s.title}</h3>
+                    <p className="text-sm font-medium text-[#575760]">{s.subtitle}</p>
                   </div>
-                  <p className="text-xs leading-relaxed text-[#575760] line-clamp-2">{s.description}</p>
+                  <p className="flex-1 text-sm leading-relaxed text-[#575760]">{s.description}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {s.tags.map((tag) => {
+                      const href = tagUrlMap[tag];
+                      return href ? (
+                        <Link
+                          key={tag}
+                          href={href}
+                          onClick={(e) => e.stopPropagation()}
+                          className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760] hover:bg-[#f2f3f5] hover:border-black/20 transition-colors"
+                        >
+                          {tag}
+                        </Link>
+                      ) : (
+                        <span
+                          key={tag}
+                          className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760]"
+                        >
+                          {tag}
+                        </span>
+                      );
+                    })}
+                  </div>
                 </Link>
               ))}
             </div>
