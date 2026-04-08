@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
-const BREVO_LIST_ID = process.env.BREVO_LIST_ID || '2'; // Default list ID
+const BREVO_LIST_ID = process.env.BREVO_LIST_ID || '3'; // Limburg AI Labs list
 
 export async function POST(request: Request) {
   try {
