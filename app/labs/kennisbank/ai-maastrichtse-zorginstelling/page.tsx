@@ -52,7 +52,7 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              Zorginstelling Heijmans Thuiszorg in Maastricht besloot vorig jaar een gecontroleerde pilot te starten.
+              Een Maastrichtse zorginstelling besloot vorig jaar een gecontroleerde pilot te starten.
               Niet met experimentele technologie, maar met bestaande tools ingezet op een duidelijk afgebakend
               administratief proces. Dit is wat ze deden, wat werkte, wat niet werkte en wat ze anderen aanraden.
             </p>
@@ -62,7 +62,7 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Heijmans Thuiszorg biedt thuiszorg aan zo&#39;n 340 clienten in de regio Maastricht-Heuvelland.
+              De zorginstelling biedt thuiszorg aan zo&#39;n 340 clienten in de regio Maastricht-Heuvelland.
               Het administratieve team van vijf medewerkers verwerkt dagelijks intakeformulieren, zorgplannen,
               rapportages en correspondentie met clienten, families en huisartsen.
             </p>
@@ -162,7 +162,7 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              Heijmans Thuiszorg paste hun intakeformulier aan met een expliciete verklaring over AI-gebruik.
+              De zorginstelling paste hun intakeformulier aan met een expliciete verklaring over AI-gebruik.
               Twee van de eerste tien clienten gaven aan liever zonder AI te worden geholpen. Dat werd gehonoreerd.
               Het vergde een apart proces, maar dat bleek goed beheerbaar.
             </p>
@@ -210,7 +210,7 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Heijmans Thuiszorg is nu bezig met de tweede fase van de pilot: het automatisch samenvatten van
+              De zorginstelling is nu bezig met de tweede fase van de pilot: het automatisch samenvatten van
               voortgangsrapportages. Dat zijn de wekelijkse notities die zorgmedewerkers schrijven over de
               toestand van een client. Doel is om de maandelijkse evaluatiegesprekken beter voor te bereiden
               met een automatisch gegenereerd overzicht van de afgelopen vier weken.

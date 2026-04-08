@@ -57,7 +57,7 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Het kantoor - Van den Berg Administraties - behandelt de boekhouding voor 85 MKB-klanten in de regio.
+              Het kantoor - een Sittards accountantskantoor - behandelt de boekhouding voor 85 MKB-klanten in de regio.
               De meeste klanten leveren facturen via e-mail aan: soms als PDF, soms als foto van een bon. Een medewerker
               opende die bestanden, voerde de gegevens handmatig in in de boekhoudssoftware en archiveerde de
               originelen in een mappenstructuur.
@@ -79,7 +79,7 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Na een orientatiefase van drie weken kozen Van den Berg en zijn team voor een combinatie van twee tools:
+              Na een orientatiefase van drie weken kozen het kantoor voor een combinatie van twee tools:
             </p>
 
             <ul className="space-y-3 pl-4">
@@ -124,7 +124,7 @@ export default function ArticlePage() {
 
             <p>
               De klanten merkten het ook. Doordat bonnen niet meer per kwartaal maar real-time worden verwerkt, heeft
-              Van den Berg een actueler beeld van de financiele positie van zijn klanten. Dat leidde al tot betere
+              Het kantoor een actueler beeld van de financiele positie van zijn klanten. Dat leidde al tot betere
               adviezen bij twee klanten met cashflowproblemen.
             </p>
 
@@ -150,7 +150,7 @@ export default function ArticlePage() {
 
             <p>
               Ten derde: het systeem kost geld op volume. Bij een piekmaand valt de factuur iets hoger uit dan
-              verwacht. Van den Berg heeft inmiddels een maandelijks plafond afgesproken, maar de eerste factuur was
+              verwacht. Het kantoor heeft inmiddels een maandelijks plafond afgesproken, maar de eerste factuur was
               een verrassing.
             </p>
 
@@ -193,7 +193,7 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              De echte les van Van den Berg is een andere: begin klein. Automatiseer eerst een proces volledig voordat
+              De echte les uit dit traject is een andere: begin klein. Automatiseer eerst een proces volledig voordat
               je er tien halffabrieken naast zet. Acht uur per week is genoeg om te beginnen - en genoeg om intern
               draagvlak te kweken voor de volgende stap.
             </p>

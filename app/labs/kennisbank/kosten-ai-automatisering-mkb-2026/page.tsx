@@ -162,8 +162,8 @@ export default function ArticlePage() {
             </div>
 
             <p>
-              Dit is geen theoretisch model. Het is gebaseerd op het werkelijke traject van Van den Berg
-              Administraties in Sittard, waarover we eerder schreven.
+              Dit is geen theoretisch model. Het is gebaseerd op het werkelijke traject van het kantoor
+              accountantskantoor in Sittard, waarover we eerder schreven.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>

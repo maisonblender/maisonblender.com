@@ -4,7 +4,7 @@ const testimonials = [
       "Dankzij MAISON BLNDR verwerken we inkoopfacturen nu volledig automatisch. Wat vroeger een halve dag kostte, doet de AI in minuten. Indrukwekkend.",
     name: "Marco van den Berg",
     title: "Directeur Operations",
-    company: "Van den Berg Logistics, Sittard",
+    company: "Productiebedrijf, Sittard",
     initials: "MB",
   },
   {
