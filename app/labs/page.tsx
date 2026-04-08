@@ -17,15 +17,15 @@ const tools = [
   },
   {
     title: "Prompt Starter Kit",
-    description: "10 direct inzetbare prompts voor MKB-ondernemers. Voor offertes, e-mails en analyses.",
-    href: "#",
-    label: "Download gratis →",
+    description: "15+ direct inzetbare prompts voor MKB-ondernemers. Voor klantenservice, marketing en meer.",
+    href: "/labs/prompt-starter-kit",
+    label: "Bekijk prompts →",
   },
   {
     title: "AI Tools Vergelijker",
     description: "Welke AI-tool past bij welk probleem? Overzicht voor niet-technische ondernemers.",
-    href: "#",
-    label: "Bekijk het overzicht →",
+    href: "/labs/tools-vergelijker",
+    label: "Vergelijk tools →",
   },
 ];
 
@@ -34,13 +34,13 @@ const latestPosts = [
     tag: "Case study",
     title: "Hoe een Sittardse accountant 8 uur per week bespaart met AI",
     excerpt: "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd - inclusief de valkuilen.",
-    href: "/labs/kennisbank/sittardse-accountant-8-uur-besparen-ai",
+    href: "/labs/kennisbank",
   },
   {
     tag: "Gids",
     title: "ChatGPT vs. Claude vs. Gemini: wat kies je als Limburgse ondernemer?",
     excerpt: "Geen tech-jargon. Gewoon: welke tool doet wat, en voor wie.",
-    href: "/labs/kennisbank/chatgpt-vs-claude-vs-gemini",
+    href: "/labs/kennisbank",
   },
   {
     tag: "Webinar terugkijken",
