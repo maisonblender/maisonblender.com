@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export default function BrandAmbassadorSection() {
   return (
-    <section id="brand-ambassador" className="relative bg-[#f2f3f5] px-6 py-20 lg:py-32 overflow-hidden">
+    <section id="brand-ambassador" className="relative bg-[#1f1f1f] px-6 py-20 lg:py-32 overflow-hidden text-white">
       {/* Subtle dot grid */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-[0.4]"
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
         style={{
-          backgroundImage: "radial-gradient(circle, #b2b2be 1px, transparent 1px)",
+          backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
           backgroundSize: "32px 32px",
         }}
       />
@@ -54,13 +54,13 @@ export default function BrandAmbassadorSection() {
 
           {/* Text column - right */}
           <div className="flex flex-col gap-6 order-1 lg:order-2">
-            <div className="inline-flex w-fit items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
+            <div className="inline-flex w-fit items-center gap-2 border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-white/80">
               <span className="h-2 w-2 rounded-full bg-[#22c55e]" />
               Nieuw · 24/7 beschikbaar
             </div>
 
             <h2
-              className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]"
+              className="text-[24px] font-normal leading-[1.2] tracking-tight text-white sm:text-[29px] lg:text-[26px]"
               style={{ letterSpacing: "-0.95px" }}
             >
               Jouw merk.
@@ -68,12 +68,12 @@ export default function BrandAmbassadorSection() {
               <span className="font-exposure">Altijd online. Altijd on-brand.</span>
             </h2>
 
-            <p className="text-base leading-relaxed text-[#575760] max-w-lg">
+            <p className="text-base leading-relaxed text-white/60 max-w-lg">
               Een AI Brand Ambassador spreekt met de stem van jouw merk - productkennis, tone-of-voice,
               commerciële instelling. Via je website, WhatsApp of Teams. Dag en nacht, zonder personeelskosten.
             </p>
 
-            <ul className="flex flex-col gap-3 text-sm text-[#575760]">
+            <ul className="flex flex-col gap-3 text-sm text-white/60">
               {[
                 "Getraind op jouw producten, diensten en tone-of-voice",
                 "Live demo: ervaar onze eigen Brand Ambassador",
@@ -97,7 +97,7 @@ export default function BrandAmbassadorSection() {
               </Link>
               <a
                 href="/strategiegesprek"
-                className="inline-block rounded-full border border-[#1f1f1f]/20 bg-white px-8 py-4 text-sm font-medium text-[#575760] transition-all hover:border-[#1f1f1f]/40 hover:text-[#1f1f1f] text-center"
+                className="inline-block rounded-full border border-white/20 bg-white/10 px-8 py-4 text-sm font-medium text-white/70 transition-all hover:border-white/40 hover:text-white text-center"
               >
                 Vraag een demo aan
               </a>
