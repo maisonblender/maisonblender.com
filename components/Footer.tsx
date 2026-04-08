@@ -20,6 +20,7 @@ export default function Footer() {
           <a href="/#aanpak" className="hover:text-[#1f1f1f] transition-colors">Aanpak</a>
           <a href="/#contact" className="hover:text-[#1f1f1f] transition-colors">Contact</a>
           <a href="/labs" className="hover:text-[#1f1f1f] transition-colors font-medium">Labs →</a>
+          <a href="/privacybeleid" className="hover:text-[#1f1f1f] transition-colors">Privacybeleid</a>
         </nav>
       </div>
     </footer>
