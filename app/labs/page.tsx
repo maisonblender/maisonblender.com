@@ -34,13 +34,13 @@ const latestPosts = [
     tag: "Case study",
     title: "Hoe een Sittardse accountant 8 uur per week bespaart met AI",
     excerpt: "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd - inclusief de valkuilen.",
-    href: "/labs/kennisbank",
+    href: "/labs/kennisbank/sittardse-accountant-8-uur-besparen-ai",
   },
   {
     tag: "Gids",
     title: "ChatGPT vs. Claude vs. Gemini: wat kies je als Limburgse ondernemer?",
     excerpt: "Geen tech-jargon. Gewoon: welke tool doet wat, en voor wie.",
-    href: "/labs/kennisbank",
+    href: "/labs/kennisbank/chatgpt-vs-claude-vs-gemini",
   },
   {
     tag: "Webinar terugkijken",

@@ -15,6 +15,7 @@ const posts = [
     excerpt:
       "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd - inclusief de valkuilen en wat het werkelijk kostte.",
     readTime: "6 min",
+    href: "/labs/kennisbank/sittardse-accountant-8-uur-besparen-ai",
   },
   {
     tag: "Gids",
@@ -22,6 +23,7 @@ const posts = [
     excerpt:
       "Geen tech-jargon. Gewoon: welke tool doet wat, voor wie is welke tool geschikt, en wat zijn de echte kosten?",
     readTime: "8 min",
+    href: "/labs/kennisbank/chatgpt-vs-claude-vs-gemini",
   },
   {
     tag: "How-to",
@@ -29,6 +31,7 @@ const posts = [
     excerpt:
       "Van blanco pagina naar een prompt die echt werkt. Met voorbeelden voor offertes, e-mails en analyses.",
     readTime: "5 min",
+    href: "/labs/kennisbank/eerste-ai-prompt-schrijven",
   },
   {
     tag: "Case study",
@@ -36,6 +39,7 @@ const posts = [
     excerpt:
       "Een eerlijk verslag van een pilot met AI-ondersteunde intake - de successen, de compliance-uitdagingen en de lessen.",
     readTime: "7 min",
+    href: "/labs/kennisbank/ai-maastrichtse-zorginstelling",
   },
   {
     tag: "Achtergrond",
@@ -43,6 +47,7 @@ const posts = [
     excerpt:
       "Een realistische kijk op investering, terugverdientijd en total cost of ownership - op basis van Limburgse praktijkdata.",
     readTime: "6 min",
+    href: "/labs/kennisbank/kosten-ai-automatisering-mkb-2026",
   },
   {
     tag: "Gids",
@@ -50,6 +55,7 @@ const posts = [
     excerpt:
       "De belangrijkste vragen over privacy, dataverwerking en AI - beantwoord voor MKB-ondernemers zonder juridisch jargon.",
     readTime: "9 min",
+    href: "/labs/kennisbank/avg-en-ai-automatiseren",
   },
 ];
 
@@ -86,9 +92,10 @@ export default function KennisbankPage() {
         <div className="mx-auto max-w-6xl">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {posts.map((post) => (
-              <article
+              <Link
                 key={post.title}
-                className="group flex flex-col gap-3 bg-white border border-black/[0.06] p-6 hover:border-[#22c55e]/40 transition-colors cursor-pointer"
+                href={post.href}
+                className="group flex flex-col gap-3 bg-white border border-black/[0.06] p-6 hover:border-[#22c55e]/40 transition-colors"
               >
                 <div className="flex items-center justify-between">
                   <span className="text-xs font-medium uppercase tracking-widest text-[#22c55e]">{post.tag}</span>
@@ -99,7 +106,7 @@ export default function KennisbankPage() {
                 </h2>
                 <p className="text-xs leading-relaxed text-[#575760] flex-1">{post.excerpt}</p>
                 <span className="text-xs font-medium text-[#22c55e]">Lees verder →</span>
-              </article>
+              </Link>
             ))}
           </div>
         </div>
