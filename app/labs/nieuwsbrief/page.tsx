@@ -66,8 +66,8 @@ export default function NieuwsbriefPage() {
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {[
-              { label: "Concreet inzicht", description: "Eén AI-toepassing uitgelegd zonder jargon — wat het is, wat het kost, wat het oplevert." },
-              { label: "Voorbeeld uit de regio", description: "Hoe een Limburgs bedrijf AI heeft ingezet — en wat het opleverde." },
+              { label: "Concreet inzicht", description: "Eén AI-toepassing uitgelegd zonder jargon - wat het is, wat het kost, wat het oplevert." },
+              { label: "Voorbeeld uit de regio", description: "Hoe een Limburgs bedrijf AI heeft ingezet - en wat het opleverde." },
               { label: "Gratis tool", description: "Een template, prompt of tool die je direct kunt gebruiken." },
             ].map((item) => (
               <div key={item.label} className="border border-black/[0.06] bg-[#f2f3f5] p-6 text-center">

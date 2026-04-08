@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | Limburg AI Labs",
   },
   description:
-    "Limburg AI Labs deelt praktische AI-kennis met Limburgse ondernemers. Webinars, tools, cases en een kennisbank — gratis toegankelijk.",
+    "Limburg AI Labs deelt praktische AI-kennis met Limburgse ondernemers. Webinars, tools, cases en een kennisbank - gratis toegankelijk.",
   openGraph: {
     siteName: "Limburg AI Labs",
     locale: "nl_NL",

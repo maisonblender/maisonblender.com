@@ -49,7 +49,7 @@ export default function HeroWithTriage() {
                 href="/quickscan"
                 className="rounded-full border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:bg-[#f2f3f5]"
               >
-                Start gratis AI-scan →
+                Start AI Impact Scan →
               </a>
             </div>
 

@@ -13,7 +13,7 @@ export default function Services() {
             Diensten
           </span>
           <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]" style={{ letterSpacing: "-0.95px" }}>
-            Van quickscan tot live systeem.
+            Van AI Impact Scan tot live systeem.
             <br />
             <span className="font-exposure">Alles in eigen handen.</span>
           </h2>

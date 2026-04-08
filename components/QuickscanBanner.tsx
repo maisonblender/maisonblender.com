@@ -26,9 +26,9 @@ export default function QuickscanBanner() {
             </h2>
 
             <p className="text-sm leading-relaxed text-white/60 sm:text-base">
-              De gratis AI Quickscan analyseert jouw bedrijfsprofiel en geeft een
-              gepersonaliseerde score, ROI-berekening en concrete aanbevelingen - direct, zonder
-              formulier of wachten.
+              De AI Impact Scan analyseert jouw bedrijfsprofiel en geeft een
+              gepersonaliseerde score, ROI-schatting en concrete implementatieroadmap - diepgaander
+              dan een snelle scan, direct en zonder formulier of wachten.
             </p>
 
             <div className="flex flex-wrap gap-4 text-sm text-white/70">
@@ -45,7 +45,7 @@ export default function QuickscanBanner() {
           <div className="w-full shrink-0 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm md:w-72 lg:w-80">
             <div className="mb-5 flex flex-col gap-1">
               <span className="text-xs font-medium uppercase tracking-widest text-white/50">
-                AI Quickscan
+                AI Impact Scan
               </span>
               <span className="text-lg font-semibold text-white">Gratis · 3 minuten</span>
               <ul className="mt-3 space-y-2 text-sm text-white/70">
@@ -70,7 +70,7 @@ export default function QuickscanBanner() {
               href="/quickscan"
               className="block w-full rounded-full bg-white py-3 text-center text-sm font-semibold text-[#1f1f1f] transition-all hover:bg-[#f2f3f5] hover:shadow-md"
             >
-              Start jouw gratis AI-scan
+              Start jouw gratis AI Impact Scan
             </Link>
             <p className="mt-3 text-center text-xs text-white/40">
               Geen e-mail vereist voor resultaten

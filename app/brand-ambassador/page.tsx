@@ -21,7 +21,7 @@ const capabilities = [
   },
   {
     title: "Tone-of-voice",
-    description: "Communiceert in de stijl van jouw merk — of dat nu formeel, informeel, technisch of laagdrempelig is.",
+    description: "Communiceert in de stijl van jouw merk - of dat nu formeel, informeel, technisch of laagdrempelig is.",
   },
   {
     title: "Leadgeneratie",
@@ -75,7 +75,7 @@ export default function BrandAmbassadorPage() {
               <span className="font-exposure">Altijd online. Altijd on-brand.</span>
             </h1>
             <p className="text-base leading-relaxed text-white/70 sm:text-lg mb-10 max-w-2xl mx-auto">
-              Een AI Brand Ambassador spreekt met de stem van jouw merk — productkennis, tone-of-voice,
+              Een AI Brand Ambassador spreekt met de stem van jouw merk - productkennis, tone-of-voice,
               commerciële instelling. Via je website, WhatsApp of Teams. Dag en nacht, zonder personeelskosten.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row justify-center">
@@ -113,7 +113,7 @@ export default function BrandAmbassadorPage() {
                   <span className="font-exposure">Brand Ambassador.</span>
                 </h2>
                 <p className="text-base leading-relaxed text-[#575760] mb-6">
-                  Dit is geen demo-omgeving — dit is de echte MAISON BLNDR Brand Ambassador.
+                  Dit is geen demo-omgeving - dit is de echte MAISON BLNDR Brand Ambassador.
                   Stel een vraag over onze diensten, tarieven of aanpak. Zo ervaar je precies
                   wat jouw klanten zullen ervaren.
                 </p>
@@ -147,7 +147,7 @@ export default function BrandAmbassadorPage() {
                     <p className="text-sm text-white">Wat maakt jullie anders dan andere AI-bureaus?</p>
                   </div>
                   <div className="max-w-[85%] rounded-2xl rounded-tl-sm bg-white px-4 py-3 shadow-sm">
-                    <p className="text-sm text-[#1f1f1f]">We bouwen altijd werkende systemen — geen PowerPoint-strategie. Onze sessies leveren op dag 1 een live AI-oplossing op, in jouw systemen, overdraagbaar aan jouw team.</p>
+                    <p className="text-sm text-[#1f1f1f]">We bouwen altijd werkende systemen - geen PowerPoint-strategie. Onze sessies leveren op dag 1 een live AI-oplossing op, in jouw systemen, overdraagbaar aan jouw team.</p>
                   </div>
                 </div>
                 <div className="border-t border-black/[0.06] bg-white px-4 py-3">
@@ -226,7 +226,7 @@ export default function BrandAmbassadorPage() {
               <span className="font-exposure">die nooit slaapt?</span>
             </h2>
             <p className="text-base leading-relaxed text-white/70 mb-8 max-w-xl mx-auto">
-              Vraag een offerte aan. We bouwen een Ambassador getraind op jouw merk — live binnen twee weken.
+              Vraag een offerte aan. We bouwen een Ambassador getraind op jouw merk - live binnen twee weken.
             </p>
             <a
               href="/strategiegesprek"

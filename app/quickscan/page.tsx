@@ -5,12 +5,12 @@ import Footer from "@/components/Footer";
 import { Zap, Brain, BarChart3, TrendingUp, Map, FileText } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Gratis AI Quickscan | MAISON BLNDR - Ontdek jouw AI-kansen",
+  title: "AI Impact Scan | MAISON BLNDR - Ontdek jouw AI-kansen",
   description:
-    "Doe in 3 minuten de gratis AI Quickscan van MAISON BLNDR. Ontdek jouw AI Readiness Score, ROI-potentieel en top AI-kansen. Direct resultaat, geen e-mail vereist.",
+    "Doe in 3 minuten de gratis AI Impact Scan van MAISON BLNDR. Ontdek jouw AI Readiness Score, ROI-potentieel en concrete implementatieroadmap. Direct resultaat, geen e-mail vereist.",
   alternates: { canonical: "https://maisonblender.com/quickscan" },
   openGraph: {
-    title: "Gratis AI Quickscan | MAISON BLNDR",
+    title: "AI Impact Scan | MAISON BLNDR",
     description: "3 minuten. Echte AI. Gepersonaliseerde resultaten.",
     url: "https://maisonblender.com/quickscan",
   },
@@ -45,7 +45,7 @@ export default function QuickscanPage() {
           <div className="relative z-10 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760] mb-8">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-              Live AI-analyse - gratis, zonder registratie
+              AI Impact Scan - gratis, zonder registratie
             </div>
 
             <h1
@@ -58,8 +58,8 @@ export default function QuickscanPage() {
             </h1>
 
             <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-              De gratis AI Quickscan analyseert jouw bedrijfsprofiel en geeft je
-              een gepersonaliseerde AI Readiness Score, ROI-berekening en concrete aanbevelingen.
+              De AI Impact Scan analyseert jouw bedrijfsprofiel en geeft je
+              een gepersonaliseerde AI Readiness Score, ROI-schatting en concrete implementatieroadmap.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -33,13 +33,13 @@ export default function SessiesSection() {
 
             <p className="text-base leading-relaxed text-white/70 max-w-lg">
               Wij komen naar jou toe, analyseren een concreet knelpunt in jouw workflow en bouwen
-              samen de automatisering op dezelfde dag. Geen pitch, geen advies op papier — gewoon
+              samen de automatisering op dezelfde dag. Geen pitch, geen advies op papier - gewoon
               bouwen en opleveren.
             </p>
 
             <ul className="flex flex-col gap-3 text-sm text-white/70">
               {[
-                "Direct resultaat op dag 1 — geen wachttijd",
+                "Direct resultaat op dag 1 - geen wachttijd",
                 "Gestandaardiseerde connectors voor Exact, Microsoft 365, WhatsApp",
                 "Premium sessie met gegarandeerde output",
               ].map((item) => (

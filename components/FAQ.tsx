@@ -6,7 +6,7 @@ const faqs = [
   {
     question: "Wat kost een AI-agent bouwen?",
     answer:
-      "Dat hangt af van de complexiteit en de koppelingen die nodig zijn. Een AI-chatbot voor klantenservice start vanaf €3.000; een volledig custom multi-agent systeem met CRM/ERP-integratie loopt op tot €25.000+. Wij beginnen altijd met een gratis quickscan zodat je een eerlijke indicatie krijgt vóór je ook maar één euro uitgeeft.",
+      "Dat hangt af van de complexiteit en de koppelingen die nodig zijn. Een AI-chatbot voor klantenservice start vanaf €3.000; een volledig custom multi-agent systeem met CRM/ERP-integratie loopt op tot €25.000+. Wij beginnen altijd met een gratis AI Impact Scan zodat je een eerlijke indicatie krijgt vóór je ook maar één euro uitgeeft.",
   },
   {
     question: "Waar is MAISON BLNDR gevestigd en werken jullie door heel Nederland?",
@@ -21,7 +21,7 @@ const faqs = [
   {
     question: "Hoe lang duurt een AI-implementatie gemiddeld?",
     answer:
-      "Een AI-chatbot of automatiseringsworkflow is doorgaans in 2-4 weken live. Complexe multi-agent systemen of maatwerk portalen nemen 6-12 weken in beslag. Na de quickscan krijg je een concreet projectplan met mijlpalen en een realistisch tijdpad - geen vage schattingen.",
+      "Een AI-chatbot of automatiseringsworkflow is doorgaans in 2-4 weken live. Complexe multi-agent systemen of maatwerk portalen nemen 6-12 weken in beslag. Na de AI Impact Scan krijg je een concreet projectplan met mijlpalen en een realistisch tijdpad - geen vage schattingen.",
   },
   {
     question: "Werken jullie met OpenAI of Claude (Anthropic)?",
@@ -39,9 +39,9 @@ const faqs = [
       "Nee. Jij beschrijft het probleem of het doel - wij zorgen voor de rest. Wij vertalen technische complexiteit naar oplossingen die je medewerkers daadwerkelijk gebruiken. Geen jargon, geen imponeergedrag. Gewoon resultaten.",
   },
   {
-    question: "Wat is een gratis automatiseringsquickscan?",
+    question: "Wat is een gratis AI Impact Scan?",
     answer:
-      "In een quickscan van een uur analyseren wij je processen en identificeren wij de drie tot vijf taken met het hoogste automatiseringspotentieel. Je ontvangt een concreet implementatieplan met verwachte tijdsbesparing en een ruwe ROI-berekening. Geen verplichtingen, geen kosten - puur inzicht.",
+      "In een AI Impact Scan van een uur analyseren wij je processen en identificeren wij de drie tot vijf taken met het hoogste automatiseringspotentieel. Je ontvangt een concreet implementatieplan met verwachte tijdsbesparing en een ruwe ROI-berekening. Geen verplichtingen, geen kosten - puur inzicht.",
   },
   {
     question: "Blijven jullie betrokken na de lancering?",

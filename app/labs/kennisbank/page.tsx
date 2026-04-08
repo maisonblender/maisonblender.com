@@ -13,7 +13,7 @@ const posts = [
     tag: "Case study",
     title: "Hoe een Sittardse accountant 8 uur per week bespaart met AI",
     excerpt:
-      "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd — inclusief de valkuilen en wat het werkelijk kostte.",
+      "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd - inclusief de valkuilen en wat het werkelijk kostte.",
     readTime: "6 min",
   },
   {
@@ -34,21 +34,21 @@ const posts = [
     tag: "Case study",
     title: "AI in een Maastrichtse zorginstelling: wat werkt en wat (nog) niet",
     excerpt:
-      "Een eerlijk verslag van een pilot met AI-ondersteunde intake — de successen, de compliance-uitdagingen en de lessen.",
+      "Een eerlijk verslag van een pilot met AI-ondersteunde intake - de successen, de compliance-uitdagingen en de lessen.",
     readTime: "7 min",
   },
   {
     tag: "Achtergrond",
     title: "Wat kost AI automatisering voor een MKB-bedrijf in 2026?",
     excerpt:
-      "Een realistische kijk op investering, terugverdientijd en total cost of ownership — op basis van Limburgse praktijkdata.",
+      "Een realistische kijk op investering, terugverdientijd en total cost of ownership - op basis van Limburgse praktijkdata.",
     readTime: "6 min",
   },
   {
     tag: "Gids",
     title: "AVG en AI: wat mag je automatiseren en wat niet?",
     excerpt:
-      "De belangrijkste vragen over privacy, dataverwerking en AI — beantwoord voor MKB-ondernemers zonder juridisch jargon.",
+      "De belangrijkste vragen over privacy, dataverwerking en AI - beantwoord voor MKB-ondernemers zonder juridisch jargon.",
     readTime: "9 min",
   },
 ];

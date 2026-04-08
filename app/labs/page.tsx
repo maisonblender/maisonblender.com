@@ -33,7 +33,7 @@ const latestPosts = [
   {
     tag: "Case study",
     title: "Hoe een Sittardse accountant 8 uur per week bespaart met AI",
-    excerpt: "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd — inclusief de valkuilen.",
+    excerpt: "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd - inclusief de valkuilen.",
     href: "/labs/kennisbank",
   },
   {
@@ -77,7 +77,7 @@ export default function LabsHomePage() {
           </h1>
           <p className="text-base leading-relaxed text-white/70 sm:text-lg mb-10 max-w-2xl mx-auto">
             Limburg AI Labs deelt praktische kennis over AI met Limburgse ondernemers.
-            Geen hype, geen jargon — gewoon wat werkt en hoe je het toepast in jouw bedrijf.
+            Geen hype, geen jargon - gewoon wat werkt en hoe je het toepast in jouw bedrijf.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row justify-center">
             <Link

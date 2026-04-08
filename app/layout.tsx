@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://maisonblender.com"),
   title: "MAISON BLNDR · Custom AI-agents & Procesautomatisering voor het MKB",
   description:
-    "Custom AI-agents, procesautomatisering en maatwerksoftware voor het MKB. MAISON BLNDR levert werkende AI-systemen binnen vier weken. Vraag een gratis quickscan aan.",
+    "Custom AI-agents, procesautomatisering en maatwerksoftware voor het MKB. MAISON BLNDR levert werkende AI-systemen binnen vier weken. Start een gratis AI Impact Scan.",
   keywords: [
     "AI consultant Limburg",
     "AI bureau Sittard",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "MAISON BLNDR - Custom AI-agents & Procesautomatisering voor het MKB",
     description:
-      "Werkende AI-agents en procesautomatisering voor het MKB. Geen data-scientist nodig. Van quickscan tot live systeem.",
+      "Werkende AI-agents en procesautomatisering voor het MKB. Geen data-scientist nodig. Van AI Impact Scan tot live systeem.",
   },
   robots: {
     index: true,
@@ -151,7 +151,7 @@ const jsonLd = {
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "RPA & Workflow-integraties" } },
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Custom AI Software & Portalen" } },
           { "@type": "Offer", itemOffered: { "@type": "Service", name: "Data-intelligentie & Rapportages" } },
-          { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Strategie & Quickscan" } },
+          { "@type": "Offer", itemOffered: { "@type": "Service", name: "AI Strategie & Impact Scan" } },
         ],
       },
       sameAs: [
@@ -234,9 +234,9 @@ const jsonLd = {
     {
       "@type": "Service",
       "@id": "https://maisonblender.com/#service-strategie",
-      name: "AI Strategie & Quickscan",
+      name: "AI Strategie & Impact Scan",
       description:
-        "Gratis automatiseringsquickscan van je processen met een concreet implementatieplan inclusief business case. Wij adviseren over de inzet van OpenAI, Anthropic Claude, n8n, Make.com, Zapier, LangChain en Microsoft Azure AI.",
+        "Gratis AI Impact Scan van je processen met een concreet implementatieplan inclusief business case. Wij adviseren over de inzet van OpenAI, Anthropic Claude, n8n, Make.com, Zapier, LangChain en Microsoft Azure AI.",
       provider: { "@id": "https://maisonblender.com/#organization" },
       areaServed: { "@type": "State", name: "Limburg" },
       serviceType: "AI Strategie Consultancy",

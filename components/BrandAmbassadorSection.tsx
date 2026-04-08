@@ -14,7 +14,7 @@ export default function BrandAmbassadorSection() {
 
       <div className="relative z-10 mx-auto max-w-6xl">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20 items-center">
-          {/* Visual column — left */}
+          {/* Visual column - left */}
           <div className="flex items-center justify-center order-2 lg:order-1">
             <div className="w-full max-w-md rounded-2xl border border-black/[0.06] bg-white p-8 shadow-sm">
               {/* Mock chat widget preview */}
@@ -52,7 +52,7 @@ export default function BrandAmbassadorSection() {
             </div>
           </div>
 
-          {/* Text column — right */}
+          {/* Text column - right */}
           <div className="flex flex-col gap-6 order-1 lg:order-2">
             <div className="inline-flex w-fit items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
               <span className="h-2 w-2 rounded-full bg-[#22c55e]" />
@@ -69,7 +69,7 @@ export default function BrandAmbassadorSection() {
             </h2>
 
             <p className="text-base leading-relaxed text-[#575760] max-w-lg">
-              Een AI Brand Ambassador spreekt met de stem van jouw merk — productkennis, tone-of-voice,
+              Een AI Brand Ambassador spreekt met de stem van jouw merk - productkennis, tone-of-voice,
               commerciële instelling. Via je website, WhatsApp of Teams. Dag en nacht, zonder personeelskosten.
             </p>
 
