@@ -72,20 +72,27 @@ const sectoren = [
 
 export default function Sectoren() {
   return (
-    <section id="sectoren" className="relative bg-white px-6 py-20 lg:py-32">
-      <div className="pointer-events-none absolute left-0 top-0 h-px w-full bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
+    <section id="sectoren" className="relative bg-[#1f1f1f] px-6 py-20 lg:py-32 text-white overflow-hidden">
+      {/* Subtle dot grid */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.06]"
+        style={{
+          backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+          backgroundSize: "32px 32px",
+        }}
+      />
 
-      <div className="mx-auto max-w-6xl">
+      <div className="relative z-10 mx-auto max-w-6xl">
         <div className="mb-16 flex flex-col gap-4">
-          <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
+          <span className="text-xs font-medium uppercase tracking-widest text-white/50">
             Sectoren
           </span>
-          <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]" style={{ letterSpacing: "-0.95px" }}>
+          <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-white sm:text-[29px] lg:text-[26px]" style={{ letterSpacing: "-0.95px" }}>
             AI werkt in elke sector.
             <br />
             <span className="font-exposure">Mits het goed is gebouwd.</span>
           </h2>
-          <p className="max-w-xl text-[#575760]">
+          <p className="max-w-xl text-white/60">
             Een logistiek bedrijf en een accountantskantoor hebben andere processen. Andere problemen.
             Andere kansen. Wij bouwen voor het verschil.
           </p>
@@ -95,16 +102,16 @@ export default function Sectoren() {
           {sectoren.map((item) => (
             <div
               key={item.sector}
-              className="group bg-[#f2f3f5] p-8 transition-colors hover:bg-white"
+              className="group bg-white/[0.06] p-8 transition-colors hover:bg-white/[0.10]"
             >
               <div className="mb-6 flex items-center gap-3">
-                <item.Icon className="h-5 w-5 shrink-0 text-[#1f1f1f]" strokeWidth={1.5} />
-                <h3 className="text-base font-bold text-[#1f1f1f]">{item.sector}</h3>
+                <item.Icon className="h-5 w-5 shrink-0 text-white/80" strokeWidth={1.5} />
+                <h3 className="text-base font-bold text-white">{item.sector}</h3>
               </div>
               <ul className="flex flex-col gap-2.5">
                 {item.usecases.map((uc) => (
-                  <li key={uc} className="flex items-start gap-2.5 text-sm text-[#575760]">
-                    <span className="mt-1.5 h-1 w-1 shrink-0 bg-black/30" />
+                  <li key={uc} className="flex items-start gap-2.5 text-sm text-white/60">
+                    <span className="mt-1.5 h-1 w-1 shrink-0 bg-white/30" />
                     {uc}
                   </li>
                 ))}
@@ -114,24 +121,22 @@ export default function Sectoren() {
         </div>
 
         {/* CTA strip */}
-        <div className="mt-8 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="mt-8 flex flex-col items-center gap-4 bg-white/[0.06] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-2">
-            <p className="text-lg font-bold text-[#1f1f1f]">Jouw sector staat er niet bij?</p>
-            <p className="text-sm text-[#575760]">
+            <p className="text-lg font-bold text-white">Jouw sector staat er niet bij?</p>
+            <p className="text-sm text-white/60">
               AI-automatisering is niet gebonden aan een branche - het is gebonden aan processen.
               Elk bedrijf heeft processen die beter kunnen.
             </p>
           </div>
           <a
             href="/quickscan"
-            className="shrink-0 rounded-full bg-[#1f1f1f] px-8 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#3a3a42] hover:shadow-md"
+            className="shrink-0 rounded-full bg-white px-8 py-3.5 text-sm font-bold text-[#1f1f1f] transition-all hover:bg-white/90 hover:shadow-md"
           >
             Start gratis AI-scan
           </a>
         </div>
       </div>
-
-      <div className="pointer-events-none absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-black/[0.06] to-transparent" />
     </section>
   );
 }
