@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import NewsletterForm from "./NewsletterForm";
 
 export const metadata: Metadata = {
   title: "Nieuwsbrief - Maandelijkse AI-update voor Limburgse ondernemers",
@@ -31,27 +32,7 @@ export default function NieuwsbriefPage() {
             Geen nieuwsbrief over de toekomst van AI. Wel: één concreet inzicht, één gratis tool en één voorbeeld uit de regio. Elke maand. Afmelden kan altijd.
           </p>
 
-          {/* Newsletter signup form */}
-          <div className="bg-white rounded-2xl p-8 text-left">
-            <p className="text-sm font-semibold text-[#1f1f1f] mb-1">Schrijf je in</p>
-            <p className="text-xs text-[#575760] mb-6">Gratis · Maandelijks · Altijd afmeldbaar</p>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <input
-                type="email"
-                placeholder="jouw@email.nl"
-                className="flex-1 rounded-xl border border-black/[0.1] bg-[#f2f3f5] px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:ring-2 focus:ring-[#22c55e]"
-              />
-              <button
-                type="submit"
-                className="rounded-full bg-[#22c55e] px-8 py-3 text-sm font-semibold text-[#1f1f1f] transition-all hover:bg-[#16a34a] hover:shadow-lg whitespace-nowrap"
-              >
-                Schrijf me in →
-              </button>
-            </div>
-            <p className="mt-3 text-xs text-[#b2b2be]">
-              Door je in te schrijven ga je akkoord met onze privacyverklaring. Je ontvangt maximaal één e-mail per maand.
-            </p>
-          </div>
+          <NewsletterForm />
         </div>
       </section>
 
