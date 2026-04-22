@@ -491,6 +491,11 @@ export async function pushLeadToTwenty(
       try {
         const companyRes = await twentyREST(baseUrl, apiKey, "companies", companyBody);
         companyId = extractId(companyRes, "companies");
+        if (companyId) {
+          console.log(`[CRM] Nieuwe company aangemaakt: ${lead.bedrijf} (${companyId})`);
+        } else {
+          console.warn(`[CRM] Company POST gaf 200 maar geen id, response:`, JSON.stringify(companyRes).slice(0, 500));
+        }
       } catch (err) {
         if (err instanceof TwentyDuplicateError) {
           // Twenty matched op iets anders (bijv. domain in andere shape) — zoek nogmaals op naam
@@ -612,26 +617,37 @@ async function tryNoteTarget(
   relId: string,
   context: string
 ): Promise<void> {
-  const variants: Record<string, unknown>[] = [
-    // Shape 1: Prisma-style connect (Twenty's vereiste vorm)
-    { note: { connect: { id: noteId } }, [relType]: { connect: { id: relId } } },
-    // Shape 2: nested id object
-    { note: { id: noteId }, [relType]: { id: relId } },
-    // Shape 3: flat id velden
-    { noteId, [`${relType}Id`]: relId },
+  const variants: { label: string; body: Record<string, unknown> }[] = [
+    {
+      label: "connect",
+      body: { note: { connect: { id: noteId } }, [relType]: { connect: { id: relId } } },
+    },
+    {
+      label: "nested-id",
+      body: { note: { id: noteId }, [relType]: { id: relId } },
+    },
+    {
+      label: "flat-id",
+      body: { noteId, [`${relType}Id`]: relId },
+    },
+    {
+      label: "snake-flat",
+      body: { note_id: noteId, [`${relType}_id`]: relId },
+    },
   ];
 
-  for (let i = 0; i < variants.length; i++) {
+  const failures: string[] = [];
+  for (const variant of variants) {
     try {
-      await twentyREST(baseUrl, apiKey, "noteTargets", variants[i]);
+      await twentyREST(baseUrl, apiKey, "noteTargets", variant.body);
+      console.log(`[CRM] noteTarget shape "${variant.label}" werkt voor ${relType}`);
       return;
     } catch (err) {
-      // Probeer volgende shape, behalve bij laatste
-      if (i === variants.length - 1) {
-        console.warn(`[CRM] Note→${relType} koppeling mislukt (${context}) — alle shapes geprobeerd:`, err);
-      }
+      const msg = err instanceof Error ? err.message : String(err);
+      failures.push(`[${variant.label}] ${msg.slice(0, 200)}`);
     }
   }
+  console.warn(`[CRM] Note→${relType} koppeling mislukt (${context}) — alle shapes geprobeerd:\n  ${failures.join("\n  ")}`);
 }
 
 /**
