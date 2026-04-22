@@ -220,30 +220,61 @@ export async function pushLeadToTwenty(
 
   const baseUrl = normaliseerBaseUrl(rawBaseUrl);
 
+  // Email-domain als unieke company identifier — applemooz.nl ≠ applemooz.com
+  const emailDomain = lead.email.split("@")[1]?.toLowerCase() ?? "";
+
   try {
-    // 1. Company aanmaken — of bestaande hergebruiken bij duplicate
+    // 1. Company aanmaken — of bestaande hergebruiken op basis van domain (niet alleen naam,
+    //    omdat meerdere bedrijven dezelfde naam kunnen hebben).
     let companyId: string | null = null;
-    try {
-      const companyRes = await twentyREST(baseUrl, apiKey, "companies", { name: lead.bedrijf });
-      companyId = extractId(companyRes, "companies");
-    } catch (err) {
-      if (err instanceof TwentyDuplicateError) {
-        try {
-          const existing = await twentyGET(
-            baseUrl,
-            apiKey,
-            "companies",
-            `filter=name[eq]:${encodeURIComponent(lead.bedrijf)}`
-          );
-          companyId = extractFirstId(existing);
-          if (companyId) {
-            console.log(`[CRM] Bestaande company hergebruikt: ${lead.bedrijf}`);
-          }
-        } catch (lookupErr) {
-          console.warn("[CRM] Company duplicate, lookup mislukt:", lookupErr);
+
+    // 1a. Eerst zoeken op email-domain — meest unieke matcher
+    if (emailDomain) {
+      try {
+        const existing = await twentyGET(
+          baseUrl,
+          apiKey,
+          "companies",
+          `filter=domainName.primaryLinkUrl[eq]:${encodeURIComponent(emailDomain)}`
+        );
+        companyId = extractFirstId(existing);
+        if (companyId) {
+          console.log(`[CRM] Bestaande company hergebruikt op domain: ${emailDomain}`);
         }
-      } else {
-        console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
+      } catch {
+        // lookup-fout is niet fataal, we maken zo nodig een nieuwe company
+      }
+    }
+
+    // 1b. Geen bestaande gevonden → nieuwe company aanmaken
+    if (!companyId) {
+      const companyBody: Record<string, unknown> = { name: lead.bedrijf };
+      if (emailDomain) {
+        companyBody.domainName = { primaryLinkUrl: emailDomain };
+      }
+      try {
+        const companyRes = await twentyREST(baseUrl, apiKey, "companies", companyBody);
+        companyId = extractId(companyRes, "companies");
+      } catch (err) {
+        if (err instanceof TwentyDuplicateError) {
+          // Twenty matched op iets anders (bijv. domain in andere shape) — zoek nogmaals op naam
+          try {
+            const existing = await twentyGET(
+              baseUrl,
+              apiKey,
+              "companies",
+              `filter=name[eq]:${encodeURIComponent(lead.bedrijf)}`
+            );
+            companyId = extractFirstId(existing);
+            if (companyId) {
+              console.log(`[CRM] Bestaande company hergebruikt op naam: ${lead.bedrijf}`);
+            }
+          } catch (lookupErr) {
+            console.warn("[CRM] Company duplicate, lookup mislukt:", lookupErr);
+          }
+        } else {
+          console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
+        }
       }
     }
 
@@ -297,20 +328,37 @@ export async function pushLeadToTwenty(
       body: noteSamenvatting,
     });
 
-    // 4. Note koppelen aan person
+    // 4. Note koppelen aan person én company via aparte noteTarget records
     const noteId = extractId(noteRes, "notes");
-    if (noteId) {
+    if (!noteId) {
+      console.warn("[CRM] Note aangemaakt maar id niet gevonden — koppeling overgeslagen");
+    } else {
+      // Person koppeling
       try {
         await twentyREST(baseUrl, apiKey, "noteTargets", {
           noteId,
           personId,
         });
-      } catch {
-        // koppeling mislukt — note staat los in Twenty, niet fataal
+        console.log(`[CRM] Note ${noteId} gekoppeld aan person ${personId}`);
+      } catch (err) {
+        console.warn(`[CRM] Note→Person koppeling mislukt:`, err);
+      }
+
+      // Company koppeling
+      if (companyId) {
+        try {
+          await twentyREST(baseUrl, apiKey, "noteTargets", {
+            noteId,
+            companyId,
+          });
+          console.log(`[CRM] Note ${noteId} gekoppeld aan company ${companyId}`);
+        } catch (err) {
+          console.warn(`[CRM] Note→Company koppeling mislukt:`, err);
+        }
       }
     }
 
-    console.log(`[CRM] Lead aangemaakt in Twenty: ${lead.voornaam} ${lead.achternaam} (${lead.email}), score ${resultaat.aiReadinessScore}`);
+    console.log(`[CRM] Lead verwerkt in Twenty: ${lead.voornaam} ${lead.achternaam} (${lead.email}), score ${resultaat.aiReadinessScore}, company=${companyId ?? "geen"}, person=${personId}`);
   } catch (err) {
     console.error("[CRM] Twenty push mislukt (lead bewaard via e-mail):", err);
   }
