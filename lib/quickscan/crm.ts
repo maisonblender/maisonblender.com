@@ -30,6 +30,16 @@ const SCORE_LABELS: Record<string, string> = {
   koploper: "Koploper",
 };
 
+function normaliseerTelefoon(raw: string | undefined): string | null {
+  if (!raw) return null;
+  const cleaned = raw.replace(/[\s\-().]/g, "");
+  if (!cleaned) return null;
+  if (cleaned.startsWith("+")) return cleaned;
+  if (cleaned.startsWith("00")) return "+" + cleaned.slice(2);
+  if (cleaned.startsWith("0")) return "+31" + cleaned.slice(1);
+  return "+31" + cleaned;
+}
+
 function normaliseerBaseUrl(raw: string): string {
   let url = raw.trim().replace(/\/+$/, "");
   if (url.includes("://")) {
@@ -160,8 +170,9 @@ export async function pushLeadToTwenty(
       emails: { primaryEmail: lead.email },
       jobTitle: antwoorden.rol ?? "",
     };
-    if (lead.telefoon) {
-      personBody.phones = { primaryPhoneNumber: lead.telefoon };
+    const telefoonE164 = normaliseerTelefoon(lead.telefoon);
+    if (telefoonE164) {
+      personBody.phones = { primaryPhoneNumber: telefoonE164 };
     }
     if (companyId) {
       personBody.companyId = companyId;
