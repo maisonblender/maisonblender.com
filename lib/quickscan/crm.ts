@@ -314,9 +314,12 @@ async function zoekPersonOpEmail(
   email: string
 ): Promise<string | null> {
   const enc = encodeURIComponent(email);
+  // BELANGRIJK: Twenty soft-deletes records — ze blijven via API benaderbaar maar zijn
+  // verborgen in de UI. We voegen daarom altijd deletedAt[is]:NULL toe zodat we alleen
+  // actieve records hergebruiken.
   const filters = [
+    `filter=emails.primaryEmail[eq]:${enc},deletedAt[is]:NULL`,
     `filter=emails.primaryEmail[eq]:${enc}`,
-    `filter=emails.primaryEmail%5Beq%5D:${enc}`,
     `filter[emails][primaryEmail][eq]=${enc}`,
     `filter=email[eq]:${enc}`,
   ];
@@ -324,10 +327,17 @@ async function zoekPersonOpEmail(
   for (const filterQuery of filters) {
     try {
       const res = await twentyGET(baseUrl, apiKey, "people", filterQuery);
-      const id = extractFirstId(res);
-      if (id) {
-        console.log(`[CRM] Bestaande person gevonden: ${email} (filter: ${filterQuery.slice(0, 40)})`);
-        return id;
+      const item = extractFirstItem(res);
+      if (item) {
+        const id = typeof item.id === "string" ? item.id : null;
+        const deletedAt = item.deletedAt;
+        if (id && !deletedAt) {
+          console.log(`[CRM] Bestaande person gevonden: ${email} (filter: ${filterQuery.slice(0, 40)})`);
+          return id;
+        }
+        if (id && deletedAt) {
+          console.warn(`[CRM] Person ${email} bestaat maar is soft-deleted in Twenty (id=${id}). Leeg de prullenbak in Twenty UI om opnieuw te kunnen aanmaken.`);
+        }
       }
     } catch {
       // probeer volgende
@@ -364,6 +374,23 @@ async function zoekPersonOpEmail(
     console.warn(`[CRM] Fallback person lookup mislukt:`, err);
   }
 
+  return null;
+}
+
+/** Haal het eerste record uit een Twenty REST list-response (incl. alle velden). */
+function extractFirstItem(response: unknown): Record<string, unknown> | null {
+  if (!response || typeof response !== "object") return null;
+  const r = response as Record<string, unknown>;
+  const data = r.data;
+  if (!data || typeof data !== "object") return null;
+  for (const value of Object.values(data as Record<string, unknown>)) {
+    if (Array.isArray(value) && value.length > 0) {
+      const first = value[0];
+      if (first && typeof first === "object") {
+        return first as Record<string, unknown>;
+      }
+    }
+  }
   return null;
 }
 
@@ -465,16 +492,18 @@ export async function pushLeadToTwenty(
     let companyId: string | null = null;
 
     // 1a. Eerst zoeken op email-domain — meest unieke matcher
+    //    (filter op deletedAt[is]:NULL zodat soft-deleted records niet hergebruikt worden)
     if (emailDomain) {
       try {
         const existing = await twentyGET(
           baseUrl,
           apiKey,
           "companies",
-          `filter=domainName.primaryLinkUrl[eq]:${encodeURIComponent(emailDomain)}`
+          `filter=domainName.primaryLinkUrl[eq]:${encodeURIComponent(emailDomain)},deletedAt[is]:NULL`
         );
-        companyId = extractFirstId(existing);
-        if (companyId) {
+        const item = extractFirstItem(existing);
+        if (item && !item.deletedAt && typeof item.id === "string") {
+          companyId = item.id;
           console.log(`[CRM] Bestaande company hergebruikt op domain: ${emailDomain}`);
         }
       } catch {
