@@ -539,21 +539,48 @@ async function maakNoteEnKoppel(
     return;
   }
 
-  try {
-    await twentyREST(baseUrl, apiKey, "noteTargets", { noteId, personId });
-  } catch (err) {
-    console.warn(`[CRM] Note→Person koppeling mislukt (${title}):`, err);
-  }
-
+  // Twenty noteTarget gebruikt relatie-objecten, geen *Id velden direct.
+  // Probeer eerst { note: {id}, person: {id} } shape — fallback naar enkele andere shapes.
+  await tryNoteTarget(baseUrl, apiKey, noteId, "person", personId, title);
   if (companyId) {
-    try {
-      await twentyREST(baseUrl, apiKey, "noteTargets", { noteId, companyId });
-    } catch (err) {
-      console.warn(`[CRM] Note→Company koppeling mislukt (${title}):`, err);
-    }
+    await tryNoteTarget(baseUrl, apiKey, noteId, "company", companyId, title);
   }
 
   console.log(`[CRM] Note "${title}" toegevoegd (note=${noteId}, person=${personId}, company=${companyId ?? "geen"})`);
+}
+
+/**
+ * Probeer noteTarget aanmaken in verschillende shapes — Twenty REST schema kan
+ * variëren tussen versies. We loggen alleen als alle pogingen falen.
+ */
+async function tryNoteTarget(
+  baseUrl: string,
+  apiKey: string,
+  noteId: string,
+  relType: "person" | "company",
+  relId: string,
+  context: string
+): Promise<void> {
+  const variants: Record<string, unknown>[] = [
+    // Shape 1: relatie als nested object
+    { note: { id: noteId }, [relType]: { id: relId } },
+    // Shape 2: id-velden zonder wrapper
+    { noteId, [`${relType}Id`]: relId },
+    // Shape 3: alleen note als nested + relId los
+    { note: { id: noteId }, [`${relType}Id`]: relId },
+  ];
+
+  for (let i = 0; i < variants.length; i++) {
+    try {
+      await twentyREST(baseUrl, apiKey, "noteTargets", variants[i]);
+      return;
+    } catch (err) {
+      // Probeer volgende shape, behalve bij laatste
+      if (i === variants.length - 1) {
+        console.warn(`[CRM] Note→${relType} koppeling mislukt (${context}) — alle shapes geprobeerd:`, err);
+      }
+    }
+  }
 }
 
 /**
