@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -95,10 +95,15 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function ScanForm() {
   const router = useRouter();
   const [stap, setStap] = useState(1);
+  const topRef = useRef<HTMLDivElement>(null);
 
   const naarStap = useCallback((nieuweStap: number) => {
     setStap(nieuweStap);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    // Scroll de pagina én de container naar boven
+    topRef.current?.scrollIntoView({ behavior: "instant" });
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, []);
   const [antwoorden, setAntwoorden] = useState<PartialAntwoorden>({
     pijnpunten: [],
@@ -169,6 +174,7 @@ export default function ScanForm() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
+      <div ref={topRef} />
       {/* Header */}
       <header className="bg-black text-white px-6 py-4">
         <div className="max-w-2xl mx-auto flex items-center justify-between">
