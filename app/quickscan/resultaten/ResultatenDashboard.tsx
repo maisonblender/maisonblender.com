@@ -282,10 +282,12 @@ export default function ResultatenDashboard() {
     setAntwoorden(parsedAntwoorden);
 
     // Laad lead gegevens (opgeslagen in stap 5 van de scan)
+    let parsedLead: LeadGegevens | null = null;
     const opgeslagenLead = sessionStorage.getItem("quickscan_lead");
     if (opgeslagenLead) {
       try {
-        setLead(JSON.parse(opgeslagenLead) as LeadGegevens);
+        parsedLead = JSON.parse(opgeslagenLead) as LeadGegevens;
+        setLead(parsedLead);
       } catch {
         // lead ontbreekt, resultatenpagina toont zonder actieplan-verzendknop
       }
@@ -293,11 +295,11 @@ export default function ResultatenDashboard() {
 
     setAnalysing(true);
 
-    // Start streaming analyse
+    // Start streaming analyse — bedrijfsnaam meesturen voor persoonlijkere AI-tekst
     fetch("/api/quickscan/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(parsedAntwoorden),
+      body: JSON.stringify({ antwoorden: parsedAntwoorden, bedrijf: parsedLead?.bedrijf }),
     }).then(async (res) => {
       if (!res.ok || !res.body) {
         setAnalysing(false);
@@ -473,7 +475,7 @@ export default function ResultatenDashboard() {
           transition={{ delay: 0.2 }}
           className="bg-white rounded-2xl p-8 shadow-sm border border-black/[0.06]"
         >
-          <h2 className="font-bold text-lg mb-6 text-[#1f1f1f]">Top AI-kansen voor jouw bedrijf</h2>
+          <h2 className="font-bold text-lg mb-6 text-[#1f1f1f]">Top AI-kansen voor {lead?.bedrijf || "jouw bedrijf"}</h2>
           <div className="space-y-4">
             {resultaat.topKansen.map((kans, i) => (
               <div key={kans.functie} className="flex items-start gap-4 p-4 bg-[#f2f3f5] rounded-xl">

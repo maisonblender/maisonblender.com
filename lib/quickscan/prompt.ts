@@ -71,7 +71,12 @@ const UREN_LABELS: Record<string, string> = {
   ">30": "meer dan 30 uur per week",
 };
 
-export function buildAnalysePrompt(antwoorden: ScanAntwoorden, resultaat: ScanResultaat): string {
+export function buildAnalysePrompt(
+  antwoorden: ScanAntwoorden,
+  resultaat: ScanResultaat,
+  klant?: { bedrijf?: string }
+): string {
+  const bedrijfsnaam = klant?.bedrijf?.trim() || "";
   const pijnpuntenTekst = antwoorden.pijnpunten
     .map((p) => `- ${PIJNPUNT_LABELS[p] ?? p}`)
     .join("\n");
@@ -89,7 +94,7 @@ export function buildAnalysePrompt(antwoorden: ScanAntwoorden, resultaat: ScanRe
 
   return `Je bent een expert AI-strateeg van MAISON BLNDR. Je analyseert een uitgebreid bedrijfsprofiel en geeft een gepersonaliseerde, diepgaande maar toegankelijke AI-readiness analyse. Begin direct met de inhoud — geen titels, geen aanhef, geen "Opgesteld door" regels.
 
-BEDRIJFSPROFIEL:
+${bedrijfsnaam ? `KLANT: ${bedrijfsnaam} — gebruik deze bedrijfsnaam expliciet in de analyse (minimaal 2-3 keer), zodat het persoonlijk en gericht voelt.\n\n` : ""}BEDRIJFSPROFIEL:
 - Sector: ${SECTOR_LABELS[antwoorden.sector] ?? antwoorden.sector}
 - Omvang: ${antwoorden.omvang} medewerkers
 - Rol contactpersoon: ${ROL_LABELS[antwoorden.rol] ?? antwoorden.rol}
@@ -136,7 +141,7 @@ Structuur:
 4. **Cultuur & governance** (2-3 zinnen): Is het team klaar? Zijn er governance-risico's die aandacht vragen?
 5. **Aanbevolen eerste stap** (2 zinnen): Concreet en actionabel — wat doen ze als allereerste?
 
-Schrijf alsof je rechtstreeks tegen de ondernemer praat. Gebruik "je" en "jouw bedrijf". Benoem specifieke sectornuances.`;
+Schrijf alsof je rechtstreeks tegen de ondernemer praat. Gebruik "je"${bedrijfsnaam ? ` en noem expliciet "${bedrijfsnaam}" een paar keer in de tekst (niet in elke zin, maar wel duidelijk gericht op dit specifieke bedrijf)` : ' en "jouw bedrijf"'}. Benoem specifieke sectornuances.`;
 }
 
 export function buildActieplanPrompt(
@@ -168,7 +173,7 @@ BEDRIJFSPROFIEL KLANT:
 - Privacy beleid: ${PRIVACY_LABELS[antwoorden.privacyBeleid ?? "geen_richtlijnen"]}
 - Grootste zorgen: ${aiZorgenTekst}
 
-Schrijf een professioneel AI Actieplan (ca. 900 woorden) voor ${klantNaam}. Spreek de klant aan als "je/jouw bedrijf". Noem MAISON BLNDR alleen als adviseur/uitvoerder.
+Schrijf een professioneel AI Actieplan (ca. 900 woorden) voor ${klantNaam}. Gebruik de bedrijfsnaam "${klantNaam}" expliciet door de tekst heen (minimaal 5-8 keer verspreid over de secties) zodat het persoonlijk en gericht voelt. Wissel af met "je/jouw bedrijf". Noem MAISON BLNDR alleen als adviseur/uitvoerder.
 
 ## Executive Summary
 [3 zinnen over de huidige situatie, het grootste potentieel en de urgentie voor ${klantNaam}]

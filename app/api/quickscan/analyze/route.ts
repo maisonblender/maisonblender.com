@@ -7,12 +7,18 @@ import { buildAnalysePrompt } from "@/lib/quickscan/prompt";
 import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
 
 export async function POST(request: NextRequest) {
-  let antwoorden: ScanAntwoorden;
+  let payload: ScanAntwoorden | { antwoorden: ScanAntwoorden; bedrijf?: string };
   try {
-    antwoorden = await request.json();
+    payload = await request.json();
   } catch {
     return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
   }
+
+  // Backwards compat: payload kan direct ScanAntwoorden zijn, of { antwoorden, bedrijf }
+  const antwoorden: ScanAntwoorden =
+    "antwoorden" in payload ? payload.antwoorden : (payload as ScanAntwoorden);
+  const bedrijf: string | undefined =
+    "antwoorden" in payload ? payload.bedrijf : undefined;
 
   if (!antwoorden.sector || !antwoorden.omvang || !antwoorden.techStack || !antwoorden.pijnpunten?.length || !antwoorden.aiMaturiteit) {
     return Response.json({ error: "Vul alle stappen in." }, { status: 400 });
@@ -86,7 +92,7 @@ export async function POST(request: NextRequest) {
   }
 
   const client = new Anthropic({ apiKey });
-  const prompt = buildAnalysePrompt(antwoorden, resultaat);
+  const prompt = buildAnalysePrompt(antwoorden, resultaat, { bedrijf });
 
   // Stream de AI-analyse terug naar de client
   const encoder = new TextEncoder();
