@@ -304,6 +304,69 @@ async function twentyGET(
   return JSON.parse(text);
 }
 
+/**
+ * Zoek een Twenty Person op email — probeert meerdere filter-syntaxes
+ * omdat Twenty REST API verschilt per versie voor composite fields.
+ */
+async function zoekPersonOpEmail(
+  baseUrl: string,
+  apiKey: string,
+  email: string
+): Promise<string | null> {
+  const enc = encodeURIComponent(email);
+  const filters = [
+    `filter=emails.primaryEmail[eq]:${enc}`,
+    `filter=emails.primaryEmail%5Beq%5D:${enc}`,
+    `filter[emails][primaryEmail][eq]=${enc}`,
+    `filter=email[eq]:${enc}`,
+  ];
+
+  for (const filterQuery of filters) {
+    try {
+      const res = await twentyGET(baseUrl, apiKey, "people", filterQuery);
+      const id = extractFirstId(res);
+      if (id) {
+        console.log(`[CRM] Bestaande person gevonden: ${email} (filter: ${filterQuery.slice(0, 40)})`);
+        return id;
+      }
+    } catch {
+      // probeer volgende
+    }
+  }
+
+  // Fallback: haal alle people op (paginated, max 60) en match in code
+  try {
+    const res = await twentyGET(baseUrl, apiKey, "people", "limit=60");
+    if (res && typeof res === "object") {
+      const data = (res as Record<string, unknown>).data;
+      if (data && typeof data === "object") {
+        for (const value of Object.values(data as Record<string, unknown>)) {
+          if (Array.isArray(value)) {
+            for (const item of value) {
+              if (item && typeof item === "object") {
+                const it = item as Record<string, unknown>;
+                const emails = it.emails as Record<string, unknown> | undefined;
+                if (
+                  emails?.primaryEmail === email &&
+                  typeof it.id === "string"
+                ) {
+                  console.log(`[CRM] Person gevonden via fallback scan: ${email}`);
+                  return it.id;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    console.warn(`[CRM] Person ${email} niet gevonden in eerste 60 records — geen koppeling mogelijk`);
+  } catch (err) {
+    console.warn(`[CRM] Fallback person lookup mislukt:`, err);
+  }
+
+  return null;
+}
+
 /** Zoek bestaand record via filter en geef het eerste id terug. */
 function extractFirstId(response: unknown): string | null {
   if (!response || typeof response !== "object") return null;
@@ -471,27 +534,15 @@ export async function pushLeadToTwenty(
       personId = extractId(personRes, "people");
     } catch (err) {
       if (err instanceof TwentyDuplicateError) {
-        try {
-          const existing = await twentyGET(
-            baseUrl,
-            apiKey,
-            "people",
-            `filter=emails.primaryEmail[eq]:${encodeURIComponent(lead.email)}`
-          );
-          personId = extractFirstId(existing);
-          if (personId) {
-            console.log(`[CRM] Bestaande person hergebruikt: ${lead.email}`);
-          }
-        } catch (lookupErr) {
-          console.warn("[CRM] Person duplicate, lookup mislukt:", lookupErr);
-        }
+        personId = await zoekPersonOpEmail(baseUrl, apiKey, lead.email);
       } else {
         throw err;
       }
     }
 
     if (!personId) {
-      throw new Error("Person ID niet teruggekregen van Twenty (ook geen bestaand record gevonden)");
+      console.warn(`[CRM] Person voor ${lead.email} niet aangemaakt en niet gevonden — note koppeling overgeslagen, company is wel bewaard`);
+      return;
     }
 
     // 3. Note met scan samenvatting (Q&A) aanmaken en koppelen
@@ -602,21 +653,8 @@ export async function addNoteForLead(
 
   const baseUrl = normaliseerBaseUrl(rawBaseUrl);
 
-  // Person opzoeken via email
-  let personId: string | null = null;
-  try {
-    const personLookup = await twentyGET(
-      baseUrl,
-      apiKey,
-      "people",
-      `filter=emails.primaryEmail[eq]:${encodeURIComponent(email)}`
-    );
-    personId = extractFirstId(personLookup);
-  } catch (err) {
-    console.warn(`[CRM] Person lookup mislukt voor ${email}:`, err);
-    return;
-  }
-
+  // Person opzoeken via email (robuste lookup met meerdere filter-shapes)
+  const personId = await zoekPersonOpEmail(baseUrl, apiKey, email);
   if (!personId) {
     console.warn(`[CRM] Geen person gevonden voor ${email} — note "${title}" overgeslagen`);
     return;
