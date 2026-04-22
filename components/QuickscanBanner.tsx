@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { Clock, TrendingUp, BarChart3 } from "lucide-react";
+import { Clock, TrendingUp, BarChart3, Shield } from "lucide-react";
 
 const KANSEN = [
-  { Icon: Clock, tekst: "40+ uur/week besparing" },
+  { Icon: Clock, tekst: "~10 minuten, 5 pijlers" },
   { Icon: TrendingUp, tekst: "Concrete ROI in euro's" },
   { Icon: BarChart3, tekst: "AI Readiness Score 0-100" },
+  { Icon: Shield, tekst: "Governance & privacy check" },
 ];
 
 export default function QuickscanBanner() {
@@ -16,19 +17,18 @@ export default function QuickscanBanner() {
           <div className="flex flex-col gap-4 md:max-w-xl">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-white/80">
               <span className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-              Gratis · Direct resultaat · Geen registratie
+              Gratis · AI Readiness Intake · 5 pijlers
             </div>
 
             <h2 className="text-[26px] font-normal leading-tight tracking-tight sm:text-[32px]" style={{ letterSpacing: "-0.6px" }}>
               Ontdek jouw AI-kansen
               <br />
-              <span className="font-exposure">in 3 minuten.</span>
+              <span className="font-exposure">in 10 minuten.</span>
             </h2>
 
             <p className="text-sm leading-relaxed text-white/60 sm:text-base">
-              De AI Impact Scan analyseert jouw bedrijfsprofiel en geeft een
-              gepersonaliseerde score, ROI-schatting en concrete implementatieroadmap - diepgaander
-              dan een snelle scan, direct en zonder formulier of wachten.
+              De AI Readiness Intake analyseert jouw bedrijf op 5 pijlers — van laaghangend fruit en ROI
+              tot governance, datakwaliteit en teamadoptie. Je ontvangt een gepersonaliseerde AI Kansenkaart.
             </p>
 
             <div className="flex flex-wrap gap-4 text-sm text-white/70">
@@ -45,17 +45,18 @@ export default function QuickscanBanner() {
           <div className="w-full shrink-0 rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur-sm md:w-72 lg:w-80">
             <div className="mb-5 flex flex-col gap-1">
               <span className="text-xs font-medium uppercase tracking-widest text-white/50">
-                AI Impact Scan
+                AI Readiness Intake
               </span>
-              <span className="text-lg font-semibold text-white">Gratis · 3 minuten</span>
+              <span className="text-lg font-semibold text-white">Gratis · ~10 minuten</span>
               <ul className="mt-3 space-y-2 text-sm text-white/70">
                 {[
-                  "10 gerichte vragen",
-                  "Live AI-analyse",
+                  "5 pijlers, 17 gerichte vragen",
+                  "Live AI-analyse op maat",
                   "Score + sector-benchmark",
-                  "Top 3 kansen met ROI",
-                  "Opportunity Map heatmap",
-                  "Gratis Actieplan per e-mail",
+                  "Top 3 quick wins met ROI",
+                  "Governance & privacy risico",
+                  "Cultuur & adoptie inzicht",
+                  "AI Kansenkaart via e-mail",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <svg className="h-3.5 w-3.5 shrink-0 text-green-400" fill="currentColor" viewBox="0 0 20 20">
@@ -70,10 +71,10 @@ export default function QuickscanBanner() {
               href="/quickscan"
               className="block w-full rounded-full bg-white py-3 text-center text-sm font-semibold text-[#1f1f1f] transition-all hover:bg-[#f2f3f5] hover:shadow-md"
             >
-              Start jouw gratis AI Impact Scan
+              Start de AI Readiness Intake
             </Link>
             <p className="mt-3 text-center text-xs text-white/40">
-              Geen e-mail vereist voor resultaten
+              Gratis · Resultaten direct zichtbaar
             </p>
           </div>
         </div>
