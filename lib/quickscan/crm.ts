@@ -96,6 +96,8 @@ function bouwScanSamenvatting(
 **Toestemming verleend:** ja`;
 }
 
+class TwentyDuplicateError extends Error {}
+
 async function twentyREST(
   baseUrl: string,
   apiKey: string,
@@ -114,10 +116,51 @@ async function twentyREST(
   const text = await res.text().catch(() => "");
 
   if (!res.ok) {
+    if (res.status === 400 && /duplicate/i.test(text)) {
+      throw new TwentyDuplicateError(`duplicate op /${path}: ${text}`);
+    }
     throw new Error(`Twenty REST ${res.status} op /${path}: ${text}`);
   }
 
   return JSON.parse(text);
+}
+
+async function twentyGET(
+  baseUrl: string,
+  apiKey: string,
+  path: string,
+  query: string
+): Promise<unknown> {
+  const res = await fetch(`${baseUrl}/rest/${path}?${query}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${apiKey}`,
+    },
+  });
+
+  const text = await res.text().catch(() => "");
+  if (!res.ok) {
+    throw new Error(`Twenty REST GET ${res.status} op /${path}: ${text}`);
+  }
+  return JSON.parse(text);
+}
+
+/** Zoek bestaand record via filter en geef het eerste id terug. */
+function extractFirstId(response: unknown): string | null {
+  if (!response || typeof response !== "object") return null;
+  const r = response as Record<string, unknown>;
+  const data = r.data;
+  if (data && typeof data === "object") {
+    for (const value of Object.values(data as Record<string, unknown>)) {
+      if (Array.isArray(value) && value.length > 0) {
+        const first = value[0];
+        if (first && typeof first === "object" && typeof (first as Record<string, unknown>).id === "string") {
+          return (first as Record<string, string>).id;
+        }
+      }
+    }
+  }
+  return null;
 }
 
 /**
@@ -178,16 +221,33 @@ export async function pushLeadToTwenty(
   const baseUrl = normaliseerBaseUrl(rawBaseUrl);
 
   try {
-    // 1. Company aanmaken
+    // 1. Company aanmaken — of bestaande hergebruiken bij duplicate
     let companyId: string | null = null;
     try {
       const companyRes = await twentyREST(baseUrl, apiKey, "companies", { name: lead.bedrijf });
       companyId = extractId(companyRes, "companies");
     } catch (err) {
-      console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
+      if (err instanceof TwentyDuplicateError) {
+        try {
+          const existing = await twentyGET(
+            baseUrl,
+            apiKey,
+            "companies",
+            `filter=name[eq]:${encodeURIComponent(lead.bedrijf)}`
+          );
+          companyId = extractFirstId(existing);
+          if (companyId) {
+            console.log(`[CRM] Bestaande company hergebruikt: ${lead.bedrijf}`);
+          }
+        } catch (lookupErr) {
+          console.warn("[CRM] Company duplicate, lookup mislukt:", lookupErr);
+        }
+      } else {
+        console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
+      }
     }
 
-    // 2. Person aanmaken
+    // 2. Person aanmaken — of bestaande hergebruiken bij duplicate
     const personBody: Record<string, unknown> = {
       name: { firstName: lead.voornaam, lastName: lead.achternaam },
       emails: { primaryEmail: lead.email },
@@ -201,11 +261,33 @@ export async function pushLeadToTwenty(
       personBody.companyId = companyId;
     }
 
-    const personRes = await twentyREST(baseUrl, apiKey, "people", personBody);
-    const personId = extractId(personRes, "people");
+    let personId: string | null = null;
+    try {
+      const personRes = await twentyREST(baseUrl, apiKey, "people", personBody);
+      personId = extractId(personRes, "people");
+    } catch (err) {
+      if (err instanceof TwentyDuplicateError) {
+        try {
+          const existing = await twentyGET(
+            baseUrl,
+            apiKey,
+            "people",
+            `filter=emails.primaryEmail[eq]:${encodeURIComponent(lead.email)}`
+          );
+          personId = extractFirstId(existing);
+          if (personId) {
+            console.log(`[CRM] Bestaande person hergebruikt: ${lead.email}`);
+          }
+        } catch (lookupErr) {
+          console.warn("[CRM] Person duplicate, lookup mislukt:", lookupErr);
+        }
+      } else {
+        throw err;
+      }
+    }
 
     if (!personId) {
-      throw new Error("Person ID niet teruggekregen van Twenty");
+      throw new Error("Person ID niet teruggekregen van Twenty (ook geen bestaand record gevonden)");
     }
 
     // 3. Note aanmaken met scan samenvatting

@@ -86,7 +86,7 @@ function OptionButton({
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <label className="block text-sm font-semibold text-gray-700 mb-3">
+    <label className="block text-lg md:text-xl font-bold text-[#1f1f1f] mb-4 leading-snug">
       {children}
     </label>
   );

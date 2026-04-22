@@ -387,7 +387,7 @@ export default function ResultatenDashboard() {
               <div className={`inline-flex items-center gap-2 ${scoreMeta.bg} ${scoreMeta.kleur} px-3 py-1 rounded-full text-sm font-semibold mb-3`}>
                 <span>{scoreMeta.label}</span>
               </div>
-              <h1 className="text-2xl font-bold text-[#1f1f1f] mb-2">Jouw AI Readiness Score</h1>
+              <h1 className="text-2xl font-bold text-[#1f1f1f] mb-2">AI Readiness Score{lead?.bedrijf ? ` voor ${lead.bedrijf}` : ""}</h1>
               <p className="text-[#575760] mb-4">{resultaat.scoreBeschrijving}</p>
               <div className="flex flex-wrap gap-4 justify-center md:justify-start">
                 <div className="text-center">
