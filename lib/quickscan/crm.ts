@@ -96,12 +96,12 @@ function bouwScanSamenvatting(
 **Toestemming verleend:** ja`;
 }
 
-async function twentyREST<T>(
+async function twentyREST(
   baseUrl: string,
   apiKey: string,
   path: string,
   body: Record<string, unknown>
-): Promise<T> {
+): Promise<unknown> {
   const res = await fetch(`${baseUrl}/rest/${path}`, {
     method: "POST",
     headers: {
@@ -117,7 +117,35 @@ async function twentyREST<T>(
     throw new Error(`Twenty REST ${res.status} op /${path}: ${text}`);
   }
 
-  return JSON.parse(text) as T;
+  return JSON.parse(text);
+}
+
+/**
+ * Twenty REST responses kunnen verschillende shapes hebben:
+ *   { data: { id, ... } }
+ *   { data: { createPerson: { id, ... } } }
+ *   { id, ... }
+ * Deze helper haalt het id eruit en logt de structuur bij onbekende shape.
+ */
+function extractId(response: unknown, path: string): string | null {
+  if (!response || typeof response !== "object") return null;
+  const r = response as Record<string, unknown>;
+  if (typeof r.id === "string") return r.id;
+
+  const data = r.data;
+  if (data && typeof data === "object") {
+    const d = data as Record<string, unknown>;
+    if (typeof d.id === "string") return d.id;
+    // GraphQL-style nested response: data.createPerson.id, data.createCompany.id, etc.
+    for (const value of Object.values(d)) {
+      if (value && typeof value === "object" && typeof (value as Record<string, unknown>).id === "string") {
+        return (value as Record<string, string>).id;
+      }
+    }
+  }
+
+  console.warn(`[CRM] Onverwachte response shape voor ${path}:`, JSON.stringify(response).slice(0, 300));
+  return null;
 }
 
 export async function pushLeadToTwenty(
@@ -153,13 +181,8 @@ export async function pushLeadToTwenty(
     // 1. Company aanmaken
     let companyId: string | null = null;
     try {
-      const companyRes = await twentyREST<{ data: { id: string } }>(
-        baseUrl,
-        apiKey,
-        "companies",
-        { name: lead.bedrijf }
-      );
-      companyId = companyRes?.data?.id ?? null;
+      const companyRes = await twentyREST(baseUrl, apiKey, "companies", { name: lead.bedrijf });
+      companyId = extractId(companyRes, "companies");
     } catch (err) {
       console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
     }
@@ -178,13 +201,8 @@ export async function pushLeadToTwenty(
       personBody.companyId = companyId;
     }
 
-    const personRes = await twentyREST<{ data: { id: string } }>(
-      baseUrl,
-      apiKey,
-      "people",
-      personBody
-    );
-    const personId = personRes?.data?.id;
+    const personRes = await twentyREST(baseUrl, apiKey, "people", personBody);
+    const personId = extractId(personRes, "people");
 
     if (!personId) {
       throw new Error("Person ID niet teruggekregen van Twenty");
@@ -192,18 +210,13 @@ export async function pushLeadToTwenty(
 
     // 3. Note aanmaken met scan samenvatting
     const noteSamenvatting = bouwScanSamenvatting(lead, antwoorden, resultaat);
-    const noteRes = await twentyREST<{ data: { id: string } }>(
-      baseUrl,
-      apiKey,
-      "notes",
-      {
-        title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100 — ${lead.bedrijf}`,
-        body: noteSamenvatting,
-      }
-    );
+    const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
+      title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100 — ${lead.bedrijf}`,
+      body: noteSamenvatting,
+    });
 
     // 4. Note koppelen aan person
-    const noteId = noteRes?.data?.id;
+    const noteId = extractId(noteRes, "notes");
     if (noteId) {
       try {
         await twentyREST(baseUrl, apiKey, "noteTargets", {
