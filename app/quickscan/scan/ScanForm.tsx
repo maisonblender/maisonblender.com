@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -95,6 +95,11 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 export default function ScanForm() {
   const router = useRouter();
   const [stap, setStap] = useState(1);
+
+  const naarStap = useCallback((nieuweStap: number) => {
+    setStap(nieuweStap);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   const [antwoorden, setAntwoorden] = useState<PartialAntwoorden>({
     pijnpunten: [],
     kernApplicaties: [],
@@ -647,7 +652,7 @@ export default function ScanForm() {
             {stap > 1 && (
               <button
                 type="button"
-                onClick={() => setStap((s) => s - 1)}
+                onClick={() => naarStap(stap - 1)}
                 className="flex-1 border-2 border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-xl hover:border-gray-400 transition-colors"
               >
                 Terug
@@ -656,7 +661,7 @@ export default function ScanForm() {
             {stap < 5 ? (
               <button
                 type="button"
-                onClick={() => setStap((s) => s + 1)}
+                onClick={() => naarStap(stap + 1)}
                 disabled={!kanVolgende()}
                 className="flex-1 bg-black text-white font-semibold py-3 px-6 rounded-xl hover:bg-gray-800 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               >
