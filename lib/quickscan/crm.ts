@@ -632,21 +632,17 @@ async function maakNoteEnKoppel(
     return;
   }
 
-  // Twenty noteTarget gebruikt relatie-objecten, geen *Id velden direct.
-  // Probeer eerst { note: {id}, person: {id} } shape — fallback naar enkele andere shapes.
-  await tryNoteTarget(baseUrl, apiKey, noteId, "person", personId, title);
+  // Twenty noteTarget velden: noteId + targetPersonId / targetCompanyId / targetOpportunityId.
+  // (Twenty gebruikt "target" prefix omdat noteTarget polymorf naar meerdere entiteiten linkt.)
+  await koppelNoteTarget(baseUrl, apiKey, noteId, "person", personId, title);
   if (companyId) {
-    await tryNoteTarget(baseUrl, apiKey, noteId, "company", companyId, title);
+    await koppelNoteTarget(baseUrl, apiKey, noteId, "company", companyId, title);
   }
 
-  console.log(`[CRM] Note "${title}" toegevoegd (note=${noteId}, person=${personId}, company=${companyId ?? "geen"})`);
+  console.log(`[CRM] ✓ Note "${title}" gekoppeld (note=${noteId}, person=${personId}, company=${companyId ?? "geen"})`);
 }
 
-/**
- * Probeer noteTarget aanmaken in verschillende shapes — Twenty REST schema kan
- * variëren tussen versies. We loggen alleen als alle pogingen falen.
- */
-async function tryNoteTarget(
+async function koppelNoteTarget(
   baseUrl: string,
   apiKey: string,
   noteId: string,
@@ -654,37 +650,12 @@ async function tryNoteTarget(
   relId: string,
   context: string
 ): Promise<void> {
-  const variants: { label: string; body: Record<string, unknown> }[] = [
-    {
-      label: "connect",
-      body: { note: { connect: { id: noteId } }, [relType]: { connect: { id: relId } } },
-    },
-    {
-      label: "nested-id",
-      body: { note: { id: noteId }, [relType]: { id: relId } },
-    },
-    {
-      label: "flat-id",
-      body: { noteId, [`${relType}Id`]: relId },
-    },
-    {
-      label: "snake-flat",
-      body: { note_id: noteId, [`${relType}_id`]: relId },
-    },
-  ];
-
-  const failures: string[] = [];
-  for (const variant of variants) {
-    try {
-      await twentyREST(baseUrl, apiKey, "noteTargets", variant.body);
-      console.log(`[CRM] noteTarget shape "${variant.label}" werkt voor ${relType}`);
-      return;
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      failures.push(`[${variant.label}] ${msg.slice(0, 200)}`);
-    }
+  const targetField = relType === "person" ? "targetPersonId" : "targetCompanyId";
+  try {
+    await twentyREST(baseUrl, apiKey, "noteTargets", { noteId, [targetField]: relId });
+  } catch (err) {
+    console.warn(`[CRM] Note→${relType} koppeling mislukt (${context}):`, err);
   }
-  console.warn(`[CRM] Note→${relType} koppeling mislukt (${context}) — alle shapes geprobeerd:\n  ${failures.join("\n  ")}`);
 }
 
 /**
