@@ -73,17 +73,27 @@ function bouwScanSamenvatting(
 **Toestemming verleend:** ja`;
 }
 
+function normaliseerBaseUrl(raw: string): string {
+  let url = raw.trim().replace(/\/+$/, ""); // verwijder trailing slashes
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+    url = `https://${url}`;
+  }
+  return url;
+}
+
 async function twentyRequest<T>(
   endpoint: string,
   method: "GET" | "POST" | "PATCH",
   body?: unknown
 ): Promise<T> {
-  const baseUrl = process.env.TWENTY_BASE_URL;
+  const rawBaseUrl = process.env.TWENTY_BASE_URL;
   const apiKey = process.env.TWENTY_API_KEY;
 
-  if (!baseUrl || !apiKey) {
+  if (!rawBaseUrl || !apiKey) {
     throw new Error("Twenty CRM niet geconfigureerd (TWENTY_BASE_URL of TWENTY_API_KEY ontbreekt)");
   }
+
+  const baseUrl = normaliseerBaseUrl(rawBaseUrl);
 
   const res = await fetch(`${baseUrl}/api${endpoint}`, {
     method,
