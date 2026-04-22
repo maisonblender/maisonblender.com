@@ -150,7 +150,7 @@ export function buildActieplanPrompt(
   const applicatiesTekst = (antwoorden.kernApplicaties ?? []).join(", ") || "niet gespecificeerd";
   const aiZorgenTekst = (antwoorden.aiZorgen ?? []).join(", ") || "geen specifieke zorgen";
 
-  return `Je bent een senior AI-strateeg van MAISON BLNDR (het adviesbureau). Je schrijft een professioneel AI Actieplan voor een KLANT. MAISON BLNDR is de adviseur — NIET de klant. Begin DIRECT met de Executive Summary. Voeg GEEN titel zoals "AI Actieplan — [bedrijf]", GEEN "Opgesteld door" regel en GEEN "Ter attentie van" toe.
+  return `Je bent een senior AI-strateeg van MAISON BLNDR (het adviesbureau). Je schrijft een professioneel AI Actieplan voor een KLANT. MAISON BLNDR is de adviseur — NIET de klant. Begin DIRECT met de Executive Summary. Voeg GEEN titel zoals "AI Actieplan — [bedrijf]", GEEN "Opgesteld door" regel, GEEN "Ter attentie van" toe en eindig NIET met een zin als "Neem contact op via MAISON BLNDR".
 
 KLANT: ${klantNaam} (contactpersoon: ${aanhef})
 BEDRIJFSPROFIEL KLANT:

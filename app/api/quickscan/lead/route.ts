@@ -20,6 +20,8 @@ function stripAiHeaders(text: string): string {
       if (/opgesteld\s*door/i.test(t)) return false;
       if (/ter\s*attentie\s*van/i.test(t)) return false;
       if (/^[•*_]\s*(door\s*maison|jouw\s*persoonlijke)/i.test(t)) return false;
+      if (/neem\s*contact\s*op\s*via\s*maison/i.test(t)) return false;
+      if (/refereer\s*aan\s*dit\s*actieplan/i.test(t)) return false;
       return true;
     })
     .join("\n");
