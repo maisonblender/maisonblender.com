@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { after } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
 import { berekenAiReadinessScore, bepaalScoreLabel, bepaalScoreBeschrijving, berekenOpportunityMap, berekenGovernanceRisico, berekenCultuurReadiness } from "@/lib/quickscan/scoring";
@@ -138,15 +139,21 @@ export async function POST(request: NextRequest) {
         controller.close();
 
         // Bewaar de gegenereerde scherm-analyse als note in Twenty (best-effort).
+        // Via after() zodat de fetch naar Twenty mag voltooien NA de stream-close
+        // ipv door Vercel serverless gekild te worden.
         if (email && volledigeTekst.trim()) {
           const datum = new Date().toLocaleString("nl-NL", { dateStyle: "long", timeStyle: "short" });
           const noteBody = `# AI Analyse op scherm — ${datum}\n\n${volledigeTekst}\n\n---\n*Gegenereerd door Claude voor ${bedrijf ?? "klant"} — Score ${resultaat.aiReadinessScore}/100*`;
-          addNoteForLead(
-            email,
-            `AI Analyse (scherm) — ${bedrijf ?? "klant"} — ${datum}`,
-            noteBody
-          ).catch((noteErr) => {
-            console.warn("[Analyze] Note pushen naar Twenty mislukt:", noteErr);
+          after(async () => {
+            try {
+              await addNoteForLead(
+                email,
+                `AI Analyse (scherm) — ${bedrijf ?? "klant"} — ${datum}`,
+                noteBody
+              );
+            } catch (noteErr) {
+              console.warn("[Analyze] Note pushen naar Twenty mislukt:", noteErr);
+            }
           });
         }
       }
