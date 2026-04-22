@@ -13,6 +13,12 @@ export default function Footer() {
           <div className="mt-5 space-y-1 text-sm leading-relaxed text-[#1f1f1f]">
             <p>Burgemeester Coonenplein 37</p>
             <p>6141BZ Sittard, NL</p>
+            <p>
+              T:{" "}
+              <a href="tel:+31462004035" className="hover:text-black transition-colors">
+                +31 (0)46 200 4035
+              </a>
+            </p>
             <p>BTW: NL001832932B87</p>
           </div>
         </div>
