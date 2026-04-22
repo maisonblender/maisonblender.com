@@ -128,7 +128,13 @@ export async function pushLeadToTwenty(
     return;
   }
 
-  console.log(`[CRM] Verbinding naar: ${rawBaseUrl.slice(0, 40)}... | API key aanwezig: ${apiKey.length > 10 ? "ja (" + apiKey.length + " chars)" : "te kort — controleer Vercel!"}`);
+  // Twenty API keys zijn JWT tokens (typisch 200+ chars beginnend met "eyJ").
+  // Een korte string (< 50 chars) is meestal de workspace ID i.p.v. de API key.
+  const looksLikeJwt = apiKey.startsWith("eyJ") && apiKey.length > 100;
+  console.log(
+    `[CRM] Verbinding naar: ${rawBaseUrl.slice(0, 50)} | API key: ${apiKey.length} chars` +
+      (looksLikeJwt ? " (JWT format ✓)" : " ⚠️  geen JWT format — verwacht 'eyJ...' van 200+ chars")
+  );
 
 
   const baseUrl = normaliseerBaseUrl(rawBaseUrl);

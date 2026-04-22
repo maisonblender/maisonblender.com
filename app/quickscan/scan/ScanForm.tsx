@@ -161,6 +161,19 @@ export default function ScanForm() {
     try {
       const volledigeAntwoorden = antwoorden as ScanAntwoorden;
       const volledigeLead = lead as LeadGegevens;
+
+      // Capture lead in CRM vóór de resultaten getoond worden.
+      // Faalt deze stap, dan blokkeert het de flow NIET — lead wordt later via email-step alsnog geprobeerd.
+      try {
+        await fetch("/api/quickscan/capture-lead", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lead: volledigeLead, antwoorden: volledigeAntwoorden }),
+        });
+      } catch (captureErr) {
+        console.warn("[Quickscan] Lead capture mislukt, ga door naar resultaten:", captureErr);
+      }
+
       sessionStorage.setItem("quickscan_antwoorden", JSON.stringify(volledigeAntwoorden));
       sessionStorage.setItem("quickscan_lead", JSON.stringify(volledigeLead));
       router.push("/quickscan/resultaten");

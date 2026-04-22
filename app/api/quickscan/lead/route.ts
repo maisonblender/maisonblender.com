@@ -2,7 +2,6 @@ import type { NextRequest } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
 import { buildActieplanPrompt } from "@/lib/quickscan/prompt";
-import { pushLeadToTwenty } from "@/lib/quickscan/crm";
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
 
 interface LeadRequest {
@@ -119,8 +118,8 @@ export async function POST(request: NextRequest) {
     actieplanTekst = `## AI Actieplan — ${lead.bedrijf}\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar\nTijdsbesparing: ${resultaat.tijdsbesparingTotaal} uur/week`;
   }
 
-  // Push naar Twenty CRM (awaited — Vercel serverless termineert anders te vroeg)
-  await pushLeadToTwenty(lead, antwoorden, resultaat);
+  // CRM push gebeurt al in /api/quickscan/capture-lead vóór de resultaten.
+  // Hier alleen nog email versturen — geen dubbele push.
 
   // Stuur e-mail via Resend
   if (resendKey) {
