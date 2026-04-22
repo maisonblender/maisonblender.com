@@ -86,33 +86,28 @@ function bouwScanSamenvatting(
 **Toestemming verleend:** ja`;
 }
 
-async function twentyGQL<T>(
+async function twentyREST<T>(
   baseUrl: string,
   apiKey: string,
-  query: string,
-  variables?: Record<string, unknown>
+  path: string,
+  body: Record<string, unknown>
 ): Promise<T> {
-  const res = await fetch(`${baseUrl}/graphql`, {
+  const res = await fetch(`${baseUrl}/rest/${path}`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: JSON.stringify({ query, variables: variables ?? {} }),
+    body: JSON.stringify(body),
   });
 
+  const text = await res.text().catch(() => "");
+
   if (!res.ok) {
-    const text = await res.text().catch(() => "");
-    throw new Error(`Twenty GraphQL HTTP ${res.status}: ${text}`);
+    throw new Error(`Twenty REST ${res.status} op /${path}: ${text}`);
   }
 
-  const json = await res.json() as { data?: T; errors?: { message: string }[] };
-
-  if (json.errors?.length) {
-    throw new Error(`Twenty GraphQL fout: ${json.errors.map((e) => e.message).join(", ")}`);
-  }
-
-  return json.data as T;
+  return JSON.parse(text) as T;
 }
 
 export async function pushLeadToTwenty(
@@ -139,68 +134,48 @@ export async function pushLeadToTwenty(
     // 1. Company aanmaken
     let companyId: string | null = null;
     try {
-      const companyResult = await twentyGQL<{ createCompany: { id: string } }>(
+      const companyRes = await twentyREST<{ data: { id: string } }>(
         baseUrl,
         apiKey,
-        `mutation CreateCompany($name: String!) {
-          createCompany(data: { name: $name }) {
-            id
-          }
-        }`,
+        "companies",
         { name: lead.bedrijf }
       );
-      companyId = companyResult?.createCompany?.id ?? null;
+      companyId = companyRes?.data?.id ?? null;
     } catch (err) {
       console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
     }
 
     // 2. Person aanmaken
-    const personResult = await twentyGQL<{ createPerson: { id: string } }>(
+    const personBody: Record<string, unknown> = {
+      name: { firstName: lead.voornaam, lastName: lead.achternaam },
+      emails: { primaryEmail: lead.email },
+      jobTitle: antwoorden.rol ?? "",
+    };
+    if (lead.telefoon) {
+      personBody.phones = { primaryPhoneNumber: lead.telefoon };
+    }
+    if (companyId) {
+      personBody.companyId = companyId;
+    }
+
+    const personRes = await twentyREST<{ data: { id: string } }>(
       baseUrl,
       apiKey,
-      `mutation CreatePerson(
-        $firstName: String!
-        $lastName: String!
-        $email: String!
-        $phone: String
-        $jobTitle: String
-        $companyId: ID
-      ) {
-        createPerson(data: {
-          name: { firstName: $firstName, lastName: $lastName }
-          emails: { primaryEmail: $email }
-          phones: { primaryPhoneNumber: $phone }
-          jobTitle: $jobTitle
-          company: { id: $companyId }
-        }) {
-          id
-        }
-      }`,
-      {
-        firstName: lead.voornaam,
-        lastName: lead.achternaam,
-        email: lead.email,
-        phone: lead.telefoon ?? null,
-        jobTitle: antwoorden.rol ?? null,
-        companyId: companyId ?? null,
-      }
+      "people",
+      personBody
     );
-    const personId = personResult?.createPerson?.id;
+    const personId = personRes?.data?.id;
 
     if (!personId) {
       throw new Error("Person ID niet teruggekregen van Twenty");
     }
 
-    // 3. Note aanmaken
+    // 3. Note aanmaken met scan samenvatting
     const noteSamenvatting = bouwScanSamenvatting(lead, antwoorden, resultaat);
-    const noteResult = await twentyGQL<{ createNote: { id: string } }>(
+    const noteRes = await twentyREST<{ data: { id: string } }>(
       baseUrl,
       apiKey,
-      `mutation CreateNote($title: String!, $body: String!) {
-        createNote(data: { title: $title, body: $body }) {
-          id
-        }
-      }`,
+      "notes",
       {
         title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100 — ${lead.bedrijf}`,
         body: noteSamenvatting,
@@ -208,24 +183,15 @@ export async function pushLeadToTwenty(
     );
 
     // 4. Note koppelen aan person
-    const noteId = noteResult?.createNote?.id;
+    const noteId = noteRes?.data?.id;
     if (noteId) {
       try {
-        await twentyGQL(
-          baseUrl,
-          apiKey,
-          `mutation CreateNoteTarget($noteId: ID!, $personId: ID!) {
-            createNoteTarget(data: {
-              note: { id: $noteId }
-              person: { id: $personId }
-            }) {
-              id
-            }
-          }`,
-          { noteId, personId }
-        );
+        await twentyREST(baseUrl, apiKey, "noteTargets", {
+          noteId,
+          personId,
+        });
       } catch {
-        // noteTarget koppeling mislukt — note staat los in Twenty, niet fataal
+        // koppeling mislukt — note staat los in Twenty, niet fataal
       }
     }
 
