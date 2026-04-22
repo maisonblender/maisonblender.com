@@ -75,7 +75,13 @@ function bouwScanSamenvatting(
 
 function normaliseerBaseUrl(raw: string): string {
   let url = raw.trim().replace(/\/+$/, ""); // verwijder trailing slashes
-  if (!url.startsWith("http://") && !url.startsWith("https://")) {
+  // Als er een scheme aanwezig is maar het is niet http(s), strip het en vervang
+  if (url.includes("://")) {
+    const scheme = url.split("://")[0].toLowerCase();
+    if (scheme !== "http" && scheme !== "https") {
+      url = "https://" + url.split("://").slice(1).join("://");
+    }
+  } else {
     url = `https://${url}`;
   }
   return url;
