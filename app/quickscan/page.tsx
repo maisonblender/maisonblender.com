@@ -7,23 +7,23 @@ import { Zap, Brain, BarChart3, TrendingUp, Map, FileText, Shield, Users } from 
 export const metadata: Metadata = {
   title: "AI Readiness Intake | MAISON BLNDR - Ontdek jouw AI-kansen",
   description:
-    "Doe de gratis AI Readiness Intake van MAISON BLNDR. In 10 minuten breng je jouw AI-potentieel, datakwaliteit, governance-risico en cultuurreadiness in kaart. Ontvang een gepersonaliseerde AI Kansenkaart.",
+    "Doe de gratis AI Readiness Intake van MAISON BLNDR. In 10 minuten breng je jouw AI-potentieel, datakwaliteit, IT-infrastructuur, governance-risico, EU AI Act-compliance en cultuurreadiness in kaart. Ontvang een gepersonaliseerde AI Kansenkaart.",
   alternates: { canonical: "https://maisonblender.com/quickscan" },
   openGraph: {
     title: "AI Readiness Intake | MAISON BLNDR",
-    description: "10 minuten. 5 pijlers. Directe AI Kansenkaart op maat.",
+    description: "10 minuten. 5 pijlers, 22 gerichte vragen. Directe AI Kansenkaart op maat.",
     url: "https://maisonblender.com/quickscan",
   },
 };
 
 const voordelen = [
-  { Icon: Zap, titel: "~10 minuten", tekst: "5 pijlers, 17 gerichte vragen over jouw bedrijf, data, cultuur en governance" },
+  { Icon: Zap, titel: "~10 minuten", tekst: "5 pijlers, 22 gerichte vragen over bedrijf, data, IT-infrastructuur, cultuur en governance" },
   { Icon: Brain, titel: "Echte AI-analyse", tekst: "Analyseert live jouw volledige situatie — geen generiek rapport" },
   { Icon: BarChart3, titel: "AI Readiness Score", tekst: "Jouw score 0-100 + benchmark versus jouw sector" },
   { Icon: TrendingUp, titel: "ROI Berekening", tekst: "Concrete euro-indicaties voor tijds- en kostenbesparing per use case" },
   { Icon: Map, titel: "AI Kansenkaart", tekst: "Geprioriteerde quick wins én strategische kansen voor jouw organisatie" },
-  { Icon: Shield, titel: "Governance & Privacy", tekst: "Inzicht in jouw AVG-risico's en wat je nodig hebt om AI veilig in te zetten" },
-  { Icon: Users, titel: "Cultuur & Adoptie", tekst: "Hoe klaar is jouw team? Inzicht in veranderbereidheid en draagvlak" },
+  { Icon: Shield, titel: "Governance & EU AI Act", tekst: "Inzicht in jouw AVG-risico's, EU AI Act-bekendheid en wat je nodig hebt om AI veilig in te zetten" },
+  { Icon: Users, titel: "Cultuur, kennis & training", tekst: "Hoe klaar is jouw team? Sentiment, management-betrokkenheid en concrete trainingsbehoeften in beeld" },
   { Icon: FileText, titel: "Gratis Actieplan", tekst: "Gepersonaliseerd AI Actieplan met 90-dagen roadmap via e-mail" },
 ];
 
@@ -46,7 +46,7 @@ export default function QuickscanPage() {
           <div className="relative z-10 max-w-3xl mx-auto">
             <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760] mb-8">
               <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-              Gratis AI Readiness Intake — 5 pijlers
+              Gratis AI Readiness Intake — 5 pijlers, 22 vragen
             </div>
 
             <h1
@@ -59,8 +59,9 @@ export default function QuickscanPage() {
             </h1>
 
             <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-              De AI Readiness Intake analyseert jouw bedrijfsprofiel op 5 pijlers: processen, data & systemen,
-              cultuur, governance en ambitie. Je ontvangt een gepersonaliseerde AI Kansenkaart met directe quick wins.
+              De AI Readiness Intake analyseert jouw bedrijfsprofiel op 5 pijlers: bedrijfsprofiel, pijnpunten & urgentie,
+              data & infrastructuur, kennis cultuur & governance, en AI-ambitie. Je ontvangt een gepersonaliseerde AI
+              Kansenkaart met directe quick wins, ROI-berekening en EU AI Act-roadmap.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -121,11 +122,11 @@ export default function QuickscanPage() {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-5 gap-px bg-white/10">
               {[
-                { nr: "01", titel: "Bedrijfsprofiel", sub: "Sector, omvang, digitale volwassenheid" },
-                { nr: "02", titel: "Pijnpunten", sub: "Tijdvreters en operationele knelpunten" },
-                { nr: "03", titel: "Data & Systemen", sub: "Applicaties, datakwaliteit, gevoelige data" },
-                { nr: "04", titel: "Cultuur & Governance", sub: "Teamsentiment, AVG-beleid, AI-zorgen" },
-                { nr: "05", titel: "AI Ambitie", sub: "Maturiteit, budget en implementatiesnelheid" },
+                { nr: "01", titel: "Bedrijfsprofiel", sub: "Sector, omvang, functie & digitale volwassenheid" },
+                { nr: "02", titel: "Pijnpunten & urgentie", sub: "Activiteiten, tijdverlies per medewerker, urgentiemeter 1-10" },
+                { nr: "03", titel: "Data, systemen & infrastructuur", sub: "Applicaties, datakwaliteit, integratie, IT-infra & gevoelige data" },
+                { nr: "04", titel: "Kennis, cultuur & governance", sub: "AI-maturiteit, sentiment, management, training, beleid, EU AI Act, risico" },
+                { nr: "05", titel: "AI Ambitie", sub: "Budget en gewenste implementatiesnelheid" },
               ].map((p) => (
                 <div key={p.nr} className="bg-[#1f1f1f] p-6 flex flex-col gap-2">
                   <span className="text-xs font-mono text-white/30">{p.nr}</span>

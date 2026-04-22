@@ -5,7 +5,7 @@ const KANSEN = [
   { Icon: Clock, tekst: "~10 minuten, 5 pijlers" },
   { Icon: TrendingUp, tekst: "Concrete ROI in euro's" },
   { Icon: BarChart3, tekst: "AI Readiness Score 0-100" },
-  { Icon: Shield, tekst: "Governance & privacy check" },
+  { Icon: Shield, tekst: "Governance & EU AI Act check" },
 ];
 
 export default function QuickscanBanner() {
@@ -17,7 +17,7 @@ export default function QuickscanBanner() {
           <div className="flex flex-col gap-4 md:max-w-xl">
             <div className="inline-flex w-fit items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-white/80">
               <span className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-              Gratis · AI Readiness Intake · 5 pijlers
+              Gratis · AI Readiness Intake · 5 pijlers, 22 vragen
             </div>
 
             <h2 className="text-[26px] font-normal leading-tight tracking-tight sm:text-[32px]" style={{ letterSpacing: "-0.6px" }}>
@@ -28,7 +28,8 @@ export default function QuickscanBanner() {
 
             <p className="text-sm leading-relaxed text-white/60 sm:text-base">
               De AI Readiness Intake analyseert jouw bedrijf op 5 pijlers — van laaghangend fruit en ROI
-              tot governance, datakwaliteit en teamadoptie. Je ontvangt een gepersonaliseerde AI Kansenkaart.
+              tot governance, datakwaliteit, IT-infrastructuur, EU AI Act-bekendheid en teamadoptie.
+              Je ontvangt een gepersonaliseerde AI Kansenkaart.
             </p>
 
             <div className="flex flex-wrap gap-4 text-sm text-white/70">
@@ -50,12 +51,12 @@ export default function QuickscanBanner() {
               <span className="text-lg font-semibold text-white">Gratis · ~10 minuten</span>
               <ul className="mt-3 space-y-2 text-sm text-white/70">
                 {[
-                  "5 pijlers, 17 gerichte vragen",
+                  "5 pijlers, 22 gerichte vragen",
                   "Live AI-analyse op maat",
                   "Score + sector-benchmark",
                   "Top 3 quick wins met ROI",
-                  "Governance & privacy risico",
-                  "Cultuur & adoptie inzicht",
+                  "Governance, privacy & EU AI Act",
+                  "Cultuur, training & adoptie",
                   "AI Kansenkaart via e-mail",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2">
