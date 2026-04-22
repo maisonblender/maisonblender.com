@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
-import { berekenAiReadinessScore, bepaalScoreLabel, bepaalScoreBeschrijving, berekenOpportunityMap } from "@/lib/quickscan/scoring";
+import { berekenAiReadinessScore, bepaalScoreLabel, bepaalScoreBeschrijving, berekenOpportunityMap, berekenGovernanceRisico, berekenCultuurReadiness } from "@/lib/quickscan/scoring";
 import { berekenTopKansen, berekenTotaalROI } from "@/lib/quickscan/roi";
 import { buildAnalysePrompt } from "@/lib/quickscan/prompt";
 import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
@@ -14,7 +14,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
   }
 
-  if (!antwoorden.sector || !antwoorden.omvang || !antwoorden.techStack || !antwoorden.pijnpunten?.length) {
+  if (!antwoorden.sector || !antwoorden.omvang || !antwoorden.techStack || !antwoorden.pijnpunten?.length || !antwoorden.aiMaturiteit) {
     return Response.json({ error: "Vul alle stappen in." }, { status: 400 });
   }
 
@@ -38,6 +38,8 @@ export async function POST(request: NextRequest) {
   const opportunityMapData = berekenOpportunityMap(antwoorden);
   const topKansen = berekenTopKansen(antwoorden);
   const { roiTotaal, tijdsbesparingTotaal } = berekenTotaalROI(topKansen);
+  const governanceRisico = berekenGovernanceRisico(antwoorden);
+  const cultuurReadiness = berekenCultuurReadiness(antwoorden);
 
   // Sectorgemiddelde (importeer direct om circulaire deps te vermijden)
   const SECTOR_BENCHMARKS: Record<string, number> = {
@@ -70,6 +72,8 @@ export async function POST(request: NextRequest) {
     aanbevelingen: [],
     scoreLabel,
     scoreBeschrijving,
+    governanceRisico,
+    cultuurReadiness,
   };
 
   const apiKey = process.env.ANTHROPIC_API_KEY;

@@ -2,17 +2,15 @@ import type { NextRequest } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
 import { buildActieplanPrompt } from "@/lib/quickscan/prompt";
-import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
+import { pushLeadToTwenty } from "@/lib/quickscan/crm";
+import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
 
 interface LeadRequest {
-  email: string;
-  naam?: string;
-  bedrijf?: string;
+  lead: LeadGegevens;
   antwoorden: ScanAntwoorden;
   resultaat: ScanResultaat;
 }
 
-// Convert markdown sections to clean HTML for email, no markdown chars in output
 function actieplanToHtml(text: string): string {
   const lines = text.replace(/—/g, "-").split("\n");
   let html = "";
@@ -21,7 +19,6 @@ function actieplanToHtml(text: string): string {
     const line = lines[i].trim();
     if (!line) continue;
 
-    // Headings: ## or **Heading**
     const headingMatch = line.match(/^#{1,3}\s+(.+)$/) || line.match(/^\*\*(.+?)\*\*:?\s*$/);
     if (headingMatch) {
       const heading = headingMatch[1].replace(/\*\*/g, "");
@@ -29,7 +26,6 @@ function actieplanToHtml(text: string): string {
       continue;
     }
 
-    // Bullets
     if (/^[-*]\s+/.test(line)) {
       const item = line.replace(/^[-*]\s+/, "").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
       html += `<div style="display: flex; gap: 8px; margin-bottom: 6px; font-size: 14px; color: #575760; line-height: 1.6;">
@@ -39,7 +35,6 @@ function actieplanToHtml(text: string): string {
       continue;
     }
 
-    // Paragraph
     const para = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
     html += `<p style="margin: 0 0 12px; font-size: 14px; color: #575760; line-height: 1.7;">${para}</p>`;
   }
@@ -55,18 +50,21 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
   }
 
-  const { email, naam, bedrijf, antwoorden, resultaat } = body;
+  const { lead, antwoorden, resultaat } = body;
 
-  if (!email || !antwoorden || !resultaat) {
-    return Response.json({ error: "E-mailadres en scanresultaten zijn verplicht." }, { status: 400 });
+  if (!lead?.email || !lead?.naam || !lead?.bedrijf || !antwoorden || !resultaat) {
+    return Response.json({ error: "Naam, bedrijf, e-mailadres en scanresultaten zijn verplicht." }, { status: 400 });
+  }
+
+  if (!lead.toestemming) {
+    return Response.json({ error: "Toestemming voor gegevensverwerking is verplicht." }, { status: 400 });
   }
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
+  if (!emailRegex.test(lead.email)) {
     return Response.json({ error: "Ongeldig e-mailadres." }, { status: 400 });
   }
 
-  // Rate limiting: max 2 actieplan requests per IP per hour
   const ip = getClientIp(request);
   const rateCheck = checkRateLimit(`lead:${ip}`, 2, 60 * 60 * 1000);
   if (!rateCheck.allowed) {
@@ -87,10 +85,10 @@ export async function POST(request: NextRequest) {
   if (anthropicKey) {
     try {
       const client = new Anthropic({ apiKey: anthropicKey });
-      const prompt = buildActieplanPrompt(antwoorden, resultaat, { naam, bedrijf });
+      const prompt = buildActieplanPrompt(antwoorden, resultaat, { naam: lead.naam, bedrijf: lead.bedrijf });
       const response = await client.messages.create({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 1200,
+        max_tokens: 1500,
         messages: [{ role: "user", content: prompt }],
       });
       actieplanTekst = response.content
@@ -99,26 +97,32 @@ export async function POST(request: NextRequest) {
         .join("");
     } catch (err) {
       console.error("Actieplan generatie mislukt:", err);
-      actieplanTekst = `## Jouw AI Actieplan\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar`;
+      actieplanTekst = `## AI Actieplan — ${lead.bedrijf}\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar\nTijdsbesparing: ${resultaat.tijdsbesparingTotaal} uur/week`;
     }
   } else {
-    actieplanTekst = `## Jouw AI Actieplan\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar`;
+    actieplanTekst = `## AI Actieplan — ${lead.bedrijf}\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar\nTijdsbesparing: ${resultaat.tijdsbesparingTotaal} uur/week`;
   }
+
+  // Push naar Twenty CRM (parallel, niet-blokkerend bij fout)
+  void pushLeadToTwenty(lead, antwoorden, resultaat);
 
   // Stuur e-mail via Resend
   if (resendKey) {
-    const naamLabel = naam ? naam : "ondernemer";
-    const bedrijfLabel = bedrijf ? ` van ${bedrijf}` : "";
     const scoreLabel = resultaat.scoreLabel.charAt(0).toUpperCase() + resultaat.scoreLabel.slice(1);
-
     const actieplanHtml = actieplanToHtml(actieplanTekst);
+    const telefoonRegel = lead.telefoon
+      ? `<td style="width: 25%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
+           <div style="font-size: 18px; font-weight: 700; color: #1f1f1f; line-height: 1;">${lead.telefoon}</div>
+           <div style="font-size: 11px; color: #575760; margin-top: 4px;">Telefoonnummer</div>
+         </td>`
+      : "";
 
     const emailHtml = `<!DOCTYPE html>
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Jouw AI Actieplan - MAISON BLNDR</title>
+  <title>AI Kansenkaart — MAISON BLNDR</title>
 </head>
 <body style="margin: 0; padding: 0; background: #f2f3f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;">
   <table width="100%" cellpadding="0" cellspacing="0" style="background: #f2f3f5; padding: 40px 20px;">
@@ -126,27 +130,23 @@ export async function POST(request: NextRequest) {
       <td align="center">
         <table width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%;">
 
-          <!-- Header -->
           <tr>
             <td style="background: #1f1f1f; padding: 32px 40px; text-align: left;">
               <div style="font-size: 18px; font-weight: 700; color: #ffffff; letter-spacing: -0.3px;">MAISON BLNDR</div>
-              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em;">AI Actieplan</div>
+              <div style="font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.08em;">AI Kansenkaart & Actieplan</div>
             </td>
           </tr>
 
-          <!-- Greeting -->
           <tr>
             <td style="background: #ffffff; padding: 40px 40px 32px;">
-              <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${naamLabel},</p>
+              <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${lead.naam},</p>
               <p style="margin: 0; font-size: 15px; color: #575760; line-height: 1.7;">
-                Bedankt voor het invullen van de gratis AI Quickscan${bedrijfLabel}.
-                Op basis van jouw antwoorden heeft onze AI een gepersonaliseerd actieplan samengesteld.
-                Hieronder vind je jouw resultaten en de aanbevolen eerste stappen.
+                Bedankt voor het invullen van de AI Readiness Intake voor <strong>${lead.bedrijf}</strong>.
+                Op basis van jouw uitgebreide profiel heeft onze AI een gepersonaliseerde AI Kansenkaart en actieplan samengesteld.
               </p>
             </td>
           </tr>
 
-          <!-- Score strip -->
           <tr>
             <td style="background: #ffffff; padding: 0 40px 32px;">
               <table width="100%" cellpadding="0" cellspacing="0" style="background: #f2f3f5; border-radius: 12px; overflow: hidden;">
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
                           <div style="font-size: 11px; color: #575760; margin-top: 4px;">Readiness Score</div>
                         </td>
                         <td style="width: 25%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
-                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${scoreLabel}</div>
+                          <div style="font-size: 22px; font-weight: 700; color: #1f1f1f; line-height: 1;">${scoreLabel}</div>
                           <div style="font-size: 11px; color: #575760; margin-top: 4px;">Niveau</div>
                         </td>
                         <td style="width: 25%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
@@ -173,13 +173,28 @@ export async function POST(request: NextRequest) {
                         </td>
                       </tr>
                     </table>
+                    <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06);">
+                      <tr>
+                        <td style="width: 33%; text-align: center; padding: 0 8px 0 0;">
+                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${resultaat.governanceRisico}</div>
+                          <div style="font-size: 11px; color: #575760; margin-top: 2px;">Governance risico</div>
+                        </td>
+                        <td style="width: 33%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
+                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${resultaat.cultuurReadiness}</div>
+                          <div style="font-size: 11px; color: #575760; margin-top: 2px;">Cultuur readiness</div>
+                        </td>
+                        <td style="width: 33%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
+                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${resultaat.benchmarkPercentiel}%</div>
+                          <div style="font-size: 11px; color: #575760; margin-top: 2px;">Beter dan sector</div>
+                        </td>
+                      </tr>
+                    </table>
                   </td>
                 </tr>
               </table>
             </td>
           </tr>
 
-          <!-- Actieplan divider -->
           <tr>
             <td style="background: #ffffff; padding: 0 40px 8px;">
               <div style="height: 1px; background: rgba(0,0,0,0.06);"></div>
@@ -191,14 +206,12 @@ export async function POST(request: NextRequest) {
             </td>
           </tr>
 
-          <!-- Actieplan body -->
           <tr>
             <td style="background: #ffffff; padding: 16px 40px 40px;">
               ${actieplanHtml}
             </td>
           </tr>
 
-          <!-- CTA -->
           <tr>
             <td style="background: #1f1f1f; padding: 36px 40px; text-align: center;">
               <div style="font-size: 18px; font-weight: 700; color: #ffffff; margin-bottom: 8px; letter-spacing: -0.3px;">Klaar voor de volgende stap?</div>
@@ -212,7 +225,6 @@ export async function POST(request: NextRequest) {
             </td>
           </tr>
 
-          <!-- Footer -->
           <tr>
             <td style="background: #f2f3f5; padding: 24px 40px; text-align: center;">
               <p style="margin: 0; font-size: 12px; color: #b2b2be; line-height: 1.6;">
@@ -238,9 +250,9 @@ export async function POST(request: NextRequest) {
         },
         body: JSON.stringify({
           from: "quickscan@maisonblender.com",
-          to: [email],
+          to: [lead.email],
           bcc: ["info@maisonblender.com"],
-          subject: `Jouw AI Actieplan - Score ${resultaat.aiReadinessScore}/100 | MAISON BLNDR`,
+          subject: `AI Kansenkaart ${lead.bedrijf} — Score ${resultaat.aiReadinessScore}/100 | MAISON BLNDR`,
           html: emailHtml,
           text: actieplanTekst,
         }),
@@ -255,8 +267,13 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "E-mail verzenden mislukt." }, { status: 502 });
     }
   } else {
-    // Dev mode: log
-    console.log("Lead captured (no RESEND_API_KEY):", { email, naam, bedrijf, score: resultaat.aiReadinessScore });
+    console.log("Lead captured (no RESEND_API_KEY):", {
+      naam: lead.naam,
+      bedrijf: lead.bedrijf,
+      email: lead.email,
+      telefoon: lead.telefoon,
+      score: resultaat.aiReadinessScore,
+    });
   }
 
   return Response.json({ ok: true, actieplan: actieplanTekst });

@@ -3,7 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
+import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
 import StrategiegesprekModal from "@/components/StrategiegesprekModal";
 
 const SCORE_LABELS = {
@@ -172,22 +172,20 @@ function ScoreGauge({ score }: { score: number }) {
   );
 }
 
-function LeadCaptureForm({
+function ActieplanVerzender({
   antwoorden,
   resultaat,
+  lead,
 }: {
   antwoorden: ScanAntwoorden;
   resultaat: ScanResultaat;
+  lead: LeadGegevens;
 }) {
-  const [email, setEmail] = useState("");
-  const [naam, setNaam] = useState("");
-  const [bedrijf, setBedrijf] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  async function verstuur() {
     setLoading(true);
     setError(null);
 
@@ -195,7 +193,7 @@ function LeadCaptureForm({
       const res = await fetch("/api/quickscan/lead", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, naam, bedrijf, antwoorden, resultaat }),
+        body: JSON.stringify({ lead, antwoorden, resultaat }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -218,52 +216,24 @@ function LeadCaptureForm({
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h3 className="font-bold text-lg mb-2 text-[#1f1f1f]">Actieplan onderweg!</h3>
+        <h3 className="font-bold text-lg mb-2 text-[#1f1f1f]">AI Kansenkaart onderweg!</h3>
         <p className="text-[#575760] text-sm">
-          Controleer je inbox. Je ontvangt het gepersonaliseerde AI Actieplan binnen enkele minuten.
+          Controleer je inbox op <strong>{lead.email}</strong>. Je ontvangt het gepersonaliseerde actieplan binnen enkele minuten.
         </p>
       </div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label className="block text-xs font-medium text-[#575760] mb-1 uppercase tracking-wide">E-mailadres *</label>
-        <input
-          type="email"
-          required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="jij@bedrijf.nl"
-          className="w-full border border-black/10 rounded-none px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:border-[#1f1f1f] transition-colors bg-white"
-        />
-      </div>
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <label className="block text-xs font-medium text-[#575760] mb-1 uppercase tracking-wide">Naam</label>
-          <input
-            type="text"
-            value={naam}
-            onChange={(e) => setNaam(e.target.value)}
-            placeholder="Jan de Vries"
-            className="w-full border border-black/10 rounded-none px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:border-[#1f1f1f] transition-colors bg-white"
-          />
-        </div>
-        <div>
-          <label className="block text-xs font-medium text-[#575760] mb-1 uppercase tracking-wide">Bedrijf</label>
-          <input
-            type="text"
-            value={bedrijf}
-            onChange={(e) => setBedrijf(e.target.value)}
-            placeholder="Bedrijfsnaam BV"
-            className="w-full border border-black/10 rounded-none px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:border-[#1f1f1f] transition-colors bg-white"
-          />
-        </div>
+    <div className="space-y-4">
+      <div className="bg-[#f2f3f5] rounded-xl p-4 text-sm text-[#575760]">
+        <p className="font-semibold text-[#1f1f1f] mb-1">{lead.naam} — {lead.bedrijf}</p>
+        <p>{lead.email}{lead.telefoon ? ` · ${lead.telefoon}` : ""}</p>
       </div>
       {error && <p className="text-red-600 text-sm">{error}</p>}
       <button
-        type="submit"
+        type="button"
+        onClick={verstuur}
         disabled={loading}
         className="w-full rounded-full bg-[#1f1f1f] text-white font-semibold py-3 hover:bg-[#3a3a42] transition-colors disabled:opacity-40 flex items-center justify-center gap-2"
       >
@@ -273,13 +243,13 @@ function LeadCaptureForm({
             Actieplan genereren...
           </>
         ) : (
-          "Stuur mij het gratis AI Actieplan"
+          "Stuur mij de AI Kansenkaart"
         )}
       </button>
       <p className="text-xs text-[#b2b2be] text-center">
-        Geen spam. Je ontvangt alleen het actieplan en eventueel een follow-up van MAISON BLNDR.
+        Geen spam. Je ontvangt alleen de kansenkaart en een eventuele follow-up van MAISON BLNDR.
       </p>
-    </form>
+    </div>
   );
 }
 
@@ -287,6 +257,7 @@ export default function ResultatenDashboard() {
   const router = useRouter();
   const [antwoorden, setAntwoorden] = useState<ScanAntwoorden | null>(null);
   const [resultaat, setResultaat] = useState<ScanResultaat | null>(null);
+  const [lead, setLead] = useState<LeadGegevens | null>(null);
   const [analysetekst, setAnalysetekst] = useState("");
   const [analysing, setAnalysing] = useState(false);
   const [analyseKlaar, setAnalyseKlaar] = useState(false);
@@ -309,6 +280,17 @@ export default function ResultatenDashboard() {
     }
 
     setAntwoorden(parsedAntwoorden);
+
+    // Laad lead gegevens (opgeslagen in stap 5 van de scan)
+    const opgeslagenLead = sessionStorage.getItem("quickscan_lead");
+    if (opgeslagenLead) {
+      try {
+        setLead(JSON.parse(opgeslagenLead) as LeadGegevens);
+      } catch {
+        // lead ontbreekt, resultatenpagina toont zonder actieplan-verzendknop
+      }
+    }
+
     setAnalysing(true);
 
     // Start streaming analyse
@@ -421,6 +403,26 @@ export default function ResultatenDashboard() {
                   <div className="text-xs text-[#575760]">besparing/week</div>
                 </div>
               </div>
+              <div className="flex flex-wrap gap-3 justify-center md:justify-start mt-4 pt-4 border-t border-black/[0.06]">
+                <div className={`text-xs px-3 py-1.5 rounded-full font-medium ${
+                  resultaat.governanceRisico === "laag"
+                    ? "bg-green-50 text-green-700"
+                    : resultaat.governanceRisico === "midden"
+                      ? "bg-yellow-50 text-yellow-700"
+                      : "bg-red-50 text-red-700"
+                }`}>
+                  Governance risico: {resultaat.governanceRisico}
+                </div>
+                <div className={`text-xs px-3 py-1.5 rounded-full font-medium ${
+                  resultaat.cultuurReadiness === "hoog"
+                    ? "bg-green-50 text-green-700"
+                    : resultaat.cultuurReadiness === "midden"
+                      ? "bg-yellow-50 text-yellow-700"
+                      : "bg-red-50 text-red-700"
+                }`}>
+                  Cultuur readiness: {resultaat.cultuurReadiness}
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -524,7 +526,7 @@ export default function ResultatenDashboard() {
           <OpportunityHeatmap data={resultaat.opportunityMapData} />
         </motion.div>
 
-        {/* Lead Capture */}
+        {/* Actieplan verzenden */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -534,15 +536,22 @@ export default function ResultatenDashboard() {
           <div className="max-w-lg mx-auto">
             <div className="text-center mb-6">
               <h2 className="text-xl font-bold mb-2 text-white">
-                Ontvang jouw gepersonaliseerd AI Actieplan
+                Ontvang jouw AI Kansenkaart per e-mail
               </h2>
               <p className="text-white/60 text-sm">
-                Een volledig uitgewerkt 15-pagina actieplan met 90-dagen roadmap, ROI-berekening en
-                concrete eerste stappen - gegenereerd door AI op basis van jouw scan.
+                Een volledig gepersonaliseerd actieplan met 90-dagen roadmap, ROI-berekening,
+                governance advies en concrete eerste stappen — gegenereerd door AI op basis van jouw intake.
               </p>
             </div>
             <div className="bg-white rounded-xl p-6 text-[#1f1f1f]">
-              <LeadCaptureForm antwoorden={antwoorden} resultaat={resultaat} />
+              {lead ? (
+                <ActieplanVerzender antwoorden={antwoorden} resultaat={resultaat} lead={lead} />
+              ) : (
+                <div className="text-center text-sm text-[#575760] py-4">
+                  <p>Gegevens niet gevonden.</p>
+                  <a href="/quickscan/scan" className="underline mt-2 inline-block">Vul de scan opnieuw in</a>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
