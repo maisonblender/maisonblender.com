@@ -87,7 +87,7 @@ export function buildAnalysePrompt(antwoorden: ScanAntwoorden, resultaat: ScanRe
   const gevoeligeDataTekst = (antwoorden.gevoeligeData ?? []).join(", ") || "niet opgegeven";
   const aiZorgenTekst = (antwoorden.aiZorgen ?? []).join(", ") || "geen specifieke zorgen";
 
-  return `Je bent een expert AI-strateeg van MAISON BLNDR, het toonaangevende AI-bureau van Zuid-Limburg. Je analyseert een uitgebreid bedrijfsprofiel en geeft een gepersonaliseerde, diepgaande maar toegankelijke AI-readiness analyse.
+  return `Je bent een expert AI-strateeg van MAISON BLNDR. Je analyseert een uitgebreid bedrijfsprofiel en geeft een gepersonaliseerde, diepgaande maar toegankelijke AI-readiness analyse. Begin direct met de inhoud — geen titels, geen aanhef, geen "Opgesteld door" regels.
 
 BEDRIJFSPROFIEL:
 - Sector: ${SECTOR_LABELS[antwoorden.sector] ?? antwoorden.sector}
@@ -150,7 +150,7 @@ export function buildActieplanPrompt(
   const applicatiesTekst = (antwoorden.kernApplicaties ?? []).join(", ") || "niet gespecificeerd";
   const aiZorgenTekst = (antwoorden.aiZorgen ?? []).join(", ") || "geen specifieke zorgen";
 
-  return `Je bent een senior AI-strateeg van MAISON BLNDR (het adviesbureau). Je schrijft een professioneel AI Actieplan voor een KLANT. MAISON BLNDR is de adviseur — NIET de klant.
+  return `Je bent een senior AI-strateeg van MAISON BLNDR (het adviesbureau). Je schrijft een professioneel AI Actieplan voor een KLANT. MAISON BLNDR is de adviseur — NIET de klant. Begin DIRECT met de Executive Summary. Voeg GEEN titel zoals "AI Actieplan — [bedrijf]", GEEN "Opgesteld door" regel en GEEN "Ter attentie van" toe.
 
 KLANT: ${klantNaam} (contactpersoon: ${aanhef})
 BEDRIJFSPROFIEL KLANT:
@@ -169,8 +169,6 @@ BEDRIJFSPROFIEL KLANT:
 - Grootste zorgen: ${aiZorgenTekst}
 
 Schrijf een professioneel AI Actieplan (ca. 900 woorden) voor ${klantNaam}. Spreek de klant aan als "je/jouw bedrijf". Noem MAISON BLNDR alleen als adviseur/uitvoerder.
-
-# AI Actieplan — ${klantNaam}
 
 ## Executive Summary
 [3 zinnen over de huidige situatie, het grootste potentieel en de urgentie voor ${klantNaam}]

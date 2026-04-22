@@ -11,6 +11,20 @@ interface LeadRequest {
   resultaat: ScanResultaat;
 }
 
+function stripAiHeaders(text: string): string {
+  return text
+    .split("\n")
+    .filter((line) => {
+      const t = line.trim();
+      if (/^#{1,3}\s*(AI\s*Actieplan|AI\s*ACTIEPLAN)/i.test(t)) return false;
+      if (/opgesteld\s*door/i.test(t)) return false;
+      if (/ter\s*attentie\s*van/i.test(t)) return false;
+      if (/^[•*_]\s*(door\s*maison|jouw\s*persoonlijke)/i.test(t)) return false;
+      return true;
+    })
+    .join("\n");
+}
+
 function actieplanToHtml(text: string): string {
   const lines = text.replace(/—/g, "-").split("\n");
   let html = "";
@@ -109,7 +123,7 @@ export async function POST(request: NextRequest) {
   // Stuur e-mail via Resend
   if (resendKey) {
     const scoreLabel = resultaat.scoreLabel.charAt(0).toUpperCase() + resultaat.scoreLabel.slice(1);
-    const actieplanHtml = actieplanToHtml(actieplanTekst);
+    const actieplanHtml = actieplanToHtml(stripAiHeaders(actieplanTekst));
     const telefoonRegel = lead.telefoon
       ? `<td style="width: 25%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
            <div style="font-size: 18px; font-weight: 700; color: #1f1f1f; line-height: 1;">${lead.telefoon}</div>

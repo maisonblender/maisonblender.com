@@ -128,6 +128,9 @@ export async function pushLeadToTwenty(
     return;
   }
 
+  console.log(`[CRM] Verbinding naar: ${rawBaseUrl.slice(0, 40)}... | API key aanwezig: ${apiKey.length > 10 ? "ja (" + apiKey.length + " chars)" : "te kort — controleer Vercel!"}`);
+
+
   const baseUrl = normaliseerBaseUrl(rawBaseUrl);
 
   try {
