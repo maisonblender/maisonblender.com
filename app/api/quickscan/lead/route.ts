@@ -52,7 +52,7 @@ export async function POST(request: NextRequest) {
 
   const { lead, antwoorden, resultaat } = body;
 
-  if (!lead?.email || !lead?.naam || !lead?.bedrijf || !antwoorden || !resultaat) {
+  if (!lead?.email || !lead?.voornaam || !lead?.bedrijf || !antwoorden || !resultaat) {
     return Response.json({ error: "Naam, bedrijf, e-mailadres en scanresultaten zijn verplicht." }, { status: 400 });
   }
 
