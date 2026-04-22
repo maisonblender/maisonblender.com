@@ -44,6 +44,10 @@ export type KernApplicatie =
   | "hubspot"
   | "microsoft365"
   | "google_workspace"
+  | "shopify"
+  | "magento"
+  | "woocommerce"
+  | "lightspeed"
   | "eigen_maatwerk"
   | "geen"
   | "anders";
