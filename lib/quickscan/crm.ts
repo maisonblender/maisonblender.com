@@ -2,36 +2,14 @@
  * Twenty CRM integratie voor quickscan leads.
  *
  * Setup:
- * 1. Deploy Twenty op Contabo met Docker Compose (zie README hieronder)
- * 2. Genereer API key in Twenty: Settings → API Keys → Create
+ * 1. Deploy Twenty (Railway / Contabo)
+ * 2. Genereer API key: Settings → API & Webhooks → API Keys → Create
  * 3. Voeg toe aan .env.local en Vercel environment variables:
  *    TWENTY_API_KEY=your_api_key_here
- *    TWENTY_BASE_URL=https://crm.jouwdomein.nl  (geen trailing slash)
- *
- * Twenty Contabo Docker deploy:
- *   git clone https://github.com/twentyhq/twenty.git
- *   cd twenty/packages/twenty-docker
- *   cp .env.example .env
- *   # Pas SERVER_URL, APP_SECRET en storage aan in .env
- *   docker compose up -d
+ *    TWENTY_BASE_URL=https://crm.maisonblender.com  (geen trailing slash)
  */
 
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "./types";
-
-interface TwentyPerson {
-  name: { firstName: string; lastName: string };
-  emails: { primaryEmail: string };
-  phones?: { primaryPhoneNumber: string };
-}
-
-interface TwentyCompany {
-  name: string;
-}
-
-interface TwentyNote {
-  title: string;
-  body: string;
-}
 
 const SECTOR_LABELS: Record<string, string> = {
   productie: "Productie & Industrie",
@@ -52,14 +30,6 @@ const SCORE_LABELS: Record<string, string> = {
   koploper: "Koploper",
 };
 
-function parsNaam(volledigeNaam: string): { firstName: string; lastName: string } {
-  const delen = volledigeNaam.trim().split(" ");
-  if (delen.length === 1) return { firstName: delen[0], lastName: "" };
-  const firstName = delen[0];
-  const lastName = delen.slice(1).join(" ");
-  return { firstName, lastName };
-}
-
 function bouwScanSamenvatting(
   lead: LeadGegevens,
   antwoorden: ScanAntwoorden,
@@ -68,6 +38,7 @@ function bouwScanSamenvatting(
   const pijnpunten = antwoorden.pijnpunten.join(", ");
   const applicaties = (antwoorden.kernApplicaties ?? []).join(", ") || "niet opgegeven";
   const zorgen = (antwoorden.aiZorgen ?? []).join(", ") || "geen";
+  const volledigeNaam = `${lead.voornaam} ${lead.achternaam}`.trim();
 
   return `**AI Readiness Intake — ${new Date().toLocaleDateString("nl-NL")}**
 
@@ -97,6 +68,7 @@ function bouwScanSamenvatting(
 **Snelheid:** ${antwoorden.implementatieSnelheid ?? "niet opgegeven"}
 **AI maturiteit:** ${antwoorden.aiMaturiteit ?? "niet opgegeven"}
 
+**Naam:** ${volledigeNaam}
 **Telefoon:** ${lead.telefoon ?? "niet opgegeven"}
 **Toestemming verleend:** ja`;
 }
@@ -124,7 +96,7 @@ async function twentyRequest<T>(
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`Twenty API fout ${res.status}: ${text}`);
+    throw new Error(`Twenty API fout ${res.status} op ${endpoint}: ${text}`);
   }
 
   return res.json() as Promise<T>;
@@ -137,7 +109,7 @@ export async function pushLeadToTwenty(
 ): Promise<void> {
   if (!process.env.TWENTY_API_KEY || !process.env.TWENTY_BASE_URL) {
     console.log("[CRM] Twenty niet geconfigureerd — lead lokaal gelogd:", {
-      naam: lead.naam,
+      naam: `${lead.voornaam} ${lead.achternaam}`,
       bedrijf: lead.bedrijf,
       email: lead.email,
       score: resultaat.aiReadinessScore,
@@ -146,56 +118,71 @@ export async function pushLeadToTwenty(
   }
 
   try {
-    const { firstName, lastName } = parsNaam(lead.naam);
-
-    // 1. Maak of zoek Company op naam
+    // 1. Company aanmaken
     let companyId: string | null = null;
     try {
-      const companyData = await twentyRequest<{ data: { createCompany: { id: string } } }>(
-        "/objects/companies",
+      const company = await twentyRequest<{ id: string }>(
+        "/companies",
         "POST",
-        { name: lead.bedrijf } satisfies TwentyCompany
+        { name: lead.bedrijf }
       );
-      companyId = companyData.data?.createCompany?.id ?? null;
+      companyId = company?.id ?? null;
     } catch (err) {
-      console.warn("[CRM] Company aanmaken mislukt, ga door zonder company koppeling:", err);
+      console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
     }
 
-    // 2. Maak Person aan
-    const personPayload: TwentyPerson & { companyId?: string; jobTitle?: string } = {
-      name: { firstName, lastName },
+    // 2. Person aanmaken
+    const personPayload: Record<string, unknown> = {
+      name: { firstName: lead.voornaam, lastName: lead.achternaam },
       emails: { primaryEmail: lead.email },
-      jobTitle: antwoorden.rol ?? undefined,
-      ...(lead.telefoon
-        ? { phones: { primaryPhoneNumber: lead.telefoon } }
-        : {}),
-      ...(companyId ? { companyId } : {}),
     };
+    if (lead.telefoon) {
+      personPayload.phones = { primaryPhoneNumber: lead.telefoon };
+    }
+    if (antwoorden.rol) {
+      personPayload.jobTitle = antwoorden.rol;
+    }
+    if (companyId) {
+      personPayload.companyId = companyId;
+    }
 
-    const personData = await twentyRequest<{ data: { createPerson: { id: string } } }>(
-      "/objects/people",
+    const person = await twentyRequest<{ id: string }>(
+      "/people",
       "POST",
       personPayload
     );
-    const personId = personData.data?.createPerson?.id;
+    const personId = person?.id;
 
     if (!personId) {
       throw new Error("Person ID niet teruggekregen van Twenty");
     }
 
-    // 3. Voeg Note toe met volledige scan samenvatting
+    // 3. Note aanmaken
     const noteSamenvatting = bouwScanSamenvatting(lead, antwoorden, resultaat);
-    const notePayload: TwentyNote & { personId?: string } = {
-      title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100`,
-      body: noteSamenvatting,
-      personId,
-    };
+    const note = await twentyRequest<{ id: string }>(
+      "/notes",
+      "POST",
+      {
+        title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100`,
+        body: noteSamenvatting,
+      }
+    );
 
-    await twentyRequest("/objects/notes", "POST", notePayload);
+    // 4. Note koppelen aan person via noteTargets
+    if (note?.id) {
+      try {
+        await twentyRequest(
+          "/noteTargets",
+          "POST",
+          { noteId: note.id, personId }
+        );
+      } catch {
+        // noteTargets koppeling mislukt — note staat nog los in Twenty
+      }
+    }
 
-    console.log(`[CRM] Lead succesvol aangemaakt in Twenty: ${lead.naam} (${lead.email}), score ${resultaat.aiReadinessScore}`);
+    console.log(`[CRM] Lead aangemaakt in Twenty: ${lead.voornaam} ${lead.achternaam} (${lead.email}), score ${resultaat.aiReadinessScore}`);
   } catch (err) {
-    // Niet-fatale fout — lead is al via e-mail opgeslagen
     console.error("[CRM] Twenty push mislukt (lead bewaard via e-mail):", err);
   }
 }

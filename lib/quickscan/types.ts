@@ -116,7 +116,8 @@ export interface ScanAntwoorden {
 }
 
 export interface LeadGegevens {
-  naam: string;
+  voornaam: string;
+  achternaam: string;
   bedrijf: string;
   email: string;
   telefoon?: string;

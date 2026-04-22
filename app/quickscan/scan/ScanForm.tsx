@@ -136,7 +136,8 @@ export default function ScanForm() {
           antwoorden.aiMaturiteit &&
           antwoorden.budgetBereidheid &&
           antwoorden.implementatieSnelheid &&
-          lead.naam?.trim() &&
+          lead.voornaam?.trim() &&
+          lead.achternaam?.trim() &&
           lead.bedrijf?.trim() &&
           lead.email?.trim() &&
           /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(lead.email ?? "") &&
@@ -562,57 +563,74 @@ export default function ScanForm() {
                     </div>
 
                     <div className="space-y-4">
+                      {/* Voornaam + Achternaam */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                            Naam <span className="text-red-500">*</span>
+                            Voornaam <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="text"
-                            value={lead.naam ?? ""}
-                            onChange={(e) => setLead((p) => ({ ...p, naam: e.target.value }))}
-                            placeholder="Jan de Vries"
+                            value={lead.voornaam ?? ""}
+                            onChange={(e) => setLead((p) => ({ ...p, voornaam: e.target.value }))}
+                            placeholder="Jan"
                             className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
                           />
                         </div>
                         <div>
                           <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                            Bedrijfsnaam <span className="text-red-500">*</span>
+                            Achternaam <span className="text-red-500">*</span>
                           </label>
                           <input
                             type="text"
-                            value={lead.bedrijf ?? ""}
-                            onChange={(e) => setLead((p) => ({ ...p, bedrijf: e.target.value }))}
-                            placeholder="Bedrijf BV"
+                            value={lead.achternaam ?? ""}
+                            onChange={(e) => setLead((p) => ({ ...p, achternaam: e.target.value }))}
+                            placeholder="de Vries"
                             className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
                           />
                         </div>
                       </div>
 
+                      {/* Bedrijfsnaam */}
                       <div>
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                          E-mailadres <span className="text-red-500">*</span>
+                          Bedrijfsnaam <span className="text-red-500">*</span>
                         </label>
                         <input
-                          type="email"
-                          value={lead.email ?? ""}
-                          onChange={(e) => setLead((p) => ({ ...p, email: e.target.value }))}
-                          placeholder="jij@bedrijf.nl"
+                          type="text"
+                          value={lead.bedrijf ?? ""}
+                          onChange={(e) => setLead((p) => ({ ...p, bedrijf: e.target.value }))}
+                          placeholder="Bedrijf BV"
                           className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
                         />
                       </div>
 
-                      <div>
-                        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                          Telefoonnummer <span className="text-gray-400 font-normal normal-case">(optioneel)</span>
-                        </label>
-                        <input
-                          type="tel"
-                          value={lead.telefoon ?? ""}
-                          onChange={(e) => setLead((p) => ({ ...p, telefoon: e.target.value }))}
-                          placeholder="+31 6 12345678"
-                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
-                        />
+                      {/* E-mail + Telefoon naast elkaar */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                            E-mailadres <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="email"
+                            value={lead.email ?? ""}
+                            onChange={(e) => setLead((p) => ({ ...p, email: e.target.value }))}
+                            placeholder="jij@bedrijf.nl"
+                            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                            Telefoon <span className="text-gray-400 font-normal normal-case">(optioneel)</span>
+                          </label>
+                          <input
+                            type="tel"
+                            value={lead.telefoon ?? ""}
+                            onChange={(e) => setLead((p) => ({ ...p, telefoon: e.target.value }))}
+                            placeholder="+31 6 12345678"
+                            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
+                          />
+                        </div>
                       </div>
 
                       <div className="flex items-start gap-3 pt-2">

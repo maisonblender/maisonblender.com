@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
   if (anthropicKey) {
     try {
       const client = new Anthropic({ apiKey: anthropicKey });
-      const prompt = buildActieplanPrompt(antwoorden, resultaat, { naam: lead.naam, bedrijf: lead.bedrijf });
+      const prompt = buildActieplanPrompt(antwoorden, resultaat, { naam: `${lead.voornaam} ${lead.achternaam}`.trim(), bedrijf: lead.bedrijf });
       const response = await client.messages.create({
         model: "claude-haiku-4-5-20251001",
         max_tokens: 1500,
@@ -103,8 +103,8 @@ export async function POST(request: NextRequest) {
     actieplanTekst = `## AI Actieplan — ${lead.bedrijf}\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar\nTijdsbesparing: ${resultaat.tijdsbesparingTotaal} uur/week`;
   }
 
-  // Push naar Twenty CRM (parallel, niet-blokkerend bij fout)
-  void pushLeadToTwenty(lead, antwoorden, resultaat);
+  // Push naar Twenty CRM (awaited — Vercel serverless termineert anders te vroeg)
+  await pushLeadToTwenty(lead, antwoorden, resultaat);
 
   // Stuur e-mail via Resend
   if (resendKey) {
@@ -139,7 +139,7 @@ export async function POST(request: NextRequest) {
 
           <tr>
             <td style="background: #ffffff; padding: 40px 40px 32px;">
-              <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${lead.naam},</p>
+              <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${lead.voornaam},</p>
               <p style="margin: 0; font-size: 15px; color: #575760; line-height: 1.7;">
                 Bedankt voor het invullen van de AI Readiness Intake voor <strong>${lead.bedrijf}</strong>.
                 Op basis van jouw uitgebreide profiel heeft onze AI een gepersonaliseerde AI Kansenkaart en actieplan samengesteld.
@@ -267,8 +267,8 @@ export async function POST(request: NextRequest) {
       return Response.json({ error: "E-mail verzenden mislukt." }, { status: 502 });
     }
   } else {
-    console.log("Lead captured (no RESEND_API_KEY):", {
-      naam: lead.naam,
+      console.log("Lead captured (no RESEND_API_KEY):", {
+      naam: `${lead.voornaam} ${lead.achternaam}`.trim(),
       bedrijf: lead.bedrijf,
       email: lead.email,
       telefoon: lead.telefoon,

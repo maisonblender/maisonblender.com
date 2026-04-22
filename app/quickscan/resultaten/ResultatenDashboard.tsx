@@ -218,7 +218,7 @@ function ActieplanVerzender({
         </div>
         <h3 className="font-bold text-lg mb-2 text-[#1f1f1f]">AI Kansenkaart onderweg!</h3>
         <p className="text-[#575760] text-sm">
-          Controleer je inbox op <strong>{lead.email}</strong>. Je ontvangt het gepersonaliseerde actieplan binnen enkele minuten.
+          Controleer je inbox op <strong>{lead.email}</strong>. Je ontvangt de AI Kansenkaart binnen enkele minuten.
         </p>
       </div>
     );
@@ -227,7 +227,7 @@ function ActieplanVerzender({
   return (
     <div className="space-y-4">
       <div className="bg-[#f2f3f5] rounded-xl p-4 text-sm text-[#575760]">
-        <p className="font-semibold text-[#1f1f1f] mb-1">{lead.naam} — {lead.bedrijf}</p>
+        <p className="font-semibold text-[#1f1f1f] mb-1">{lead.voornaam} {lead.achternaam} — {lead.bedrijf}</p>
         <p>{lead.email}{lead.telefoon ? ` · ${lead.telefoon}` : ""}</p>
       </div>
       {error && <p className="text-red-600 text-sm">{error}</p>}
