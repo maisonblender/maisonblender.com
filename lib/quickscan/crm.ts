@@ -1,5 +1,5 @@
 /**
- * Twenty CRM integratie voor quickscan leads.
+ * Twenty CRM integratie via GraphQL API.
  *
  * Setup:
  * 1. Deploy Twenty (Railway / Contabo)
@@ -29,6 +29,19 @@ const SCORE_LABELS: Record<string, string> = {
   voorloper: "Voorloper",
   koploper: "Koploper",
 };
+
+function normaliseerBaseUrl(raw: string): string {
+  let url = raw.trim().replace(/\/+$/, "");
+  if (url.includes("://")) {
+    const scheme = url.split("://")[0].toLowerCase();
+    if (scheme !== "http" && scheme !== "https") {
+      url = "https://" + url.split("://").slice(1).join("://");
+    }
+  } else {
+    url = `https://${url}`;
+  }
+  return url;
+}
 
 function bouwScanSamenvatting(
   lead: LeadGegevens,
@@ -73,49 +86,33 @@ function bouwScanSamenvatting(
 **Toestemming verleend:** ja`;
 }
 
-function normaliseerBaseUrl(raw: string): string {
-  let url = raw.trim().replace(/\/+$/, ""); // verwijder trailing slashes
-  // Als er een scheme aanwezig is maar het is niet http(s), strip het en vervang
-  if (url.includes("://")) {
-    const scheme = url.split("://")[0].toLowerCase();
-    if (scheme !== "http" && scheme !== "https") {
-      url = "https://" + url.split("://").slice(1).join("://");
-    }
-  } else {
-    url = `https://${url}`;
-  }
-  return url;
-}
-
-async function twentyRequest<T>(
-  endpoint: string,
-  method: "GET" | "POST" | "PATCH",
-  body?: unknown
+async function twentyGQL<T>(
+  baseUrl: string,
+  apiKey: string,
+  query: string,
+  variables?: Record<string, unknown>
 ): Promise<T> {
-  const rawBaseUrl = process.env.TWENTY_BASE_URL;
-  const apiKey = process.env.TWENTY_API_KEY;
-
-  if (!rawBaseUrl || !apiKey) {
-    throw new Error("Twenty CRM niet geconfigureerd (TWENTY_BASE_URL of TWENTY_API_KEY ontbreekt)");
-  }
-
-  const baseUrl = normaliseerBaseUrl(rawBaseUrl);
-
-  const res = await fetch(`${baseUrl}/api${endpoint}`, {
-    method,
+  const res = await fetch(`${baseUrl}/api`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: JSON.stringify({ query, variables: variables ?? {} }),
   });
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`Twenty API fout ${res.status} op ${endpoint}: ${text}`);
+    throw new Error(`Twenty GraphQL HTTP ${res.status}: ${text}`);
   }
 
-  return res.json() as Promise<T>;
+  const json = await res.json() as { data?: T; errors?: { message: string }[] };
+
+  if (json.errors?.length) {
+    throw new Error(`Twenty GraphQL fout: ${json.errors.map((e) => e.message).join(", ")}`);
+  }
+
+  return json.data as T;
 }
 
 export async function pushLeadToTwenty(
@@ -123,7 +120,10 @@ export async function pushLeadToTwenty(
   antwoorden: ScanAntwoorden,
   resultaat: ScanResultaat
 ): Promise<void> {
-  if (!process.env.TWENTY_API_KEY || !process.env.TWENTY_BASE_URL) {
+  const rawBaseUrl = process.env.TWENTY_BASE_URL;
+  const apiKey = process.env.TWENTY_API_KEY;
+
+  if (!rawBaseUrl || !apiKey) {
     console.log("[CRM] Twenty niet geconfigureerd — lead lokaal gelogd:", {
       naam: `${lead.voornaam} ${lead.achternaam}`,
       bedrijf: lead.bedrijf,
@@ -133,41 +133,59 @@ export async function pushLeadToTwenty(
     return;
   }
 
+  const baseUrl = normaliseerBaseUrl(rawBaseUrl);
+
   try {
     // 1. Company aanmaken
     let companyId: string | null = null;
     try {
-      const company = await twentyRequest<{ id: string }>(
-        "/companies",
-        "POST",
+      const companyResult = await twentyGQL<{ createCompany: { id: string } }>(
+        baseUrl,
+        apiKey,
+        `mutation CreateCompany($name: String!) {
+          createCompany(data: { name: $name }) {
+            id
+          }
+        }`,
         { name: lead.bedrijf }
       );
-      companyId = company?.id ?? null;
+      companyId = companyResult?.createCompany?.id ?? null;
     } catch (err) {
       console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
     }
 
     // 2. Person aanmaken
-    const personPayload: Record<string, unknown> = {
-      name: { firstName: lead.voornaam, lastName: lead.achternaam },
-      emails: { primaryEmail: lead.email },
-    };
-    if (lead.telefoon) {
-      personPayload.phones = { primaryPhoneNumber: lead.telefoon };
-    }
-    if (antwoorden.rol) {
-      personPayload.jobTitle = antwoorden.rol;
-    }
-    if (companyId) {
-      personPayload.companyId = companyId;
-    }
-
-    const person = await twentyRequest<{ id: string }>(
-      "/people",
-      "POST",
-      personPayload
+    const personResult = await twentyGQL<{ createPerson: { id: string } }>(
+      baseUrl,
+      apiKey,
+      `mutation CreatePerson(
+        $firstName: String!
+        $lastName: String!
+        $email: String!
+        $phone: String
+        $jobTitle: String
+        $companyId: ID
+      ) {
+        createPerson(data: {
+          name: { firstName: $firstName, lastName: $lastName }
+          emails: { primaryEmail: $email }
+          phones: { primaryPhoneNumber: $phone }
+          jobTitle: $jobTitle
+          company: { id: $companyId }
+        }) {
+          id
+        }
+      }`,
+      {
+        firstName: lead.voornaam,
+        lastName: lead.achternaam,
+        email: lead.email,
+        phone: lead.telefoon ?? null,
+        jobTitle: antwoorden.rol ?? null,
+        companyId: companyId ?? null,
+      }
     );
-    const personId = person?.id;
+    const personId = personResult?.createPerson?.id;
 
     if (!personId) {
       throw new Error("Person ID niet teruggekregen van Twenty");
@@ -175,25 +193,39 @@ export async function pushLeadToTwenty(
 
     // 3. Note aanmaken
     const noteSamenvatting = bouwScanSamenvatting(lead, antwoorden, resultaat);
-    const note = await twentyRequest<{ id: string }>(
-      "/notes",
-      "POST",
+    const noteResult = await twentyGQL<{ createNote: { id: string } }>(
+      baseUrl,
+      apiKey,
+      `mutation CreateNote($title: String!, $body: String!) {
+        createNote(data: { title: $title, body: $body }) {
+          id
+        }
+      }`,
       {
-        title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100`,
+        title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100 — ${lead.bedrijf}`,
         body: noteSamenvatting,
       }
     );
 
-    // 4. Note koppelen aan person via noteTargets
-    if (note?.id) {
+    // 4. Note koppelen aan person
+    const noteId = noteResult?.createNote?.id;
+    if (noteId) {
       try {
-        await twentyRequest(
-          "/noteTargets",
-          "POST",
-          { noteId: note.id, personId }
+        await twentyGQL(
+          baseUrl,
+          apiKey,
+          `mutation CreateNoteTarget($noteId: ID!, $personId: ID!) {
+            createNoteTarget(data: {
+              note: { id: $noteId }
+              person: { id: $personId }
+            }) {
+              id
+            }
+          }`,
+          { noteId, personId }
         );
       } catch {
-        // noteTargets koppeling mislukt — note staat nog los in Twenty
+        // noteTarget koppeling mislukt — note staat los in Twenty, niet fataal
       }
     }
 
