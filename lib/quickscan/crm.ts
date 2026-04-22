@@ -275,7 +275,7 @@ async function twentyREST(
   const text = await res.text().catch(() => "");
 
   if (!res.ok) {
-    if (res.status === 400 && /duplicate/i.test(text)) {
+    if (res.status === 409 || (res.status === 400 && /duplicate/i.test(text))) {
       throw new TwentyDuplicateError(`duplicate op /${path}: ${text}`);
     }
     throw new Error(`Twenty REST ${res.status} op /${path}: ${text}`);
@@ -313,38 +313,32 @@ async function zoekPersonOpEmail(
   apiKey: string,
   email: string
 ): Promise<string | null> {
-  const enc = encodeURIComponent(email);
-  // BELANGRIJK: Twenty soft-deletes records — ze blijven via API benaderbaar maar zijn
-  // verborgen in de UI. We voegen daarom altijd deletedAt[is]:NULL toe zodat we alleen
-  // actieve records hergebruiken.
-  const filters = [
-    `filter=emails.primaryEmail[eq]:${enc},deletedAt[is]:NULL`,
-    `filter=emails.primaryEmail[eq]:${enc}`,
-    `filter[emails][primaryEmail][eq]=${enc}`,
-    `filter=email[eq]:${enc}`,
-  ];
+  // Twenty REST filter syntax: filter=field.subfield[operator]:value
+  // BELANGRIJK: filter[field][sub][op]=value syntax wordt door Twenty GENEGEERD
+  // (geeft alle records terug) — niet gebruiken!
+  const filterQuery = `filter=emails.primaryEmail[eq]:${encodeURIComponent(email)}`;
 
-  for (const filterQuery of filters) {
-    try {
-      const res = await twentyGET(baseUrl, apiKey, "people", filterQuery);
-      const item = extractFirstItem(res);
-      if (item) {
-        const id = typeof item.id === "string" ? item.id : null;
-        const deletedAt = item.deletedAt;
-        if (id && !deletedAt) {
-          console.log(`[CRM] Bestaande person gevonden: ${email} (filter: ${filterQuery.slice(0, 40)})`);
-          return id;
-        }
-        if (id && deletedAt) {
-          console.warn(`[CRM] Person ${email} bestaat maar is soft-deleted in Twenty (id=${id}). Leeg de prullenbak in Twenty UI om opnieuw te kunnen aanmaken.`);
-        }
+  try {
+    const res = await twentyGET(baseUrl, apiKey, "people", filterQuery);
+    const item = extractFirstItem(res);
+    if (item) {
+      const emails = item.emails as Record<string, unknown> | undefined;
+      if (emails?.primaryEmail === email && !item.deletedAt && typeof item.id === "string") {
+        console.log(`[CRM] ✓ Person gevonden via filter: ${email} (${item.id})`);
+        return item.id;
       }
-    } catch {
-      // probeer volgende
+      if (emails?.primaryEmail !== email) {
+        console.warn(`[CRM] Filter gaf verkeerde person (kreeg ${emails?.primaryEmail}). Skip.`);
+      } else if (item.deletedAt) {
+        console.warn(`[CRM] Person ${email} is soft-deleted (id=${item.id}). Hard-delete in Twenty UI nodig.`);
+        return null;
+      }
     }
+  } catch (err) {
+    console.warn(`[CRM] Filter-lookup faalde voor ${email}:`, err);
   }
 
-  // Fallback: haal alle people op (paginated, max 60) en match in code
+  // Fallback: pagineer en match in code (Twenty filters zijn soms onbetrouwbaar voor composite fields)
   try {
     const res = await twentyGET(baseUrl, apiKey, "people", "limit=60");
     if (res && typeof res === "object") {
@@ -353,25 +347,21 @@ async function zoekPersonOpEmail(
         for (const value of Object.values(data as Record<string, unknown>)) {
           if (Array.isArray(value)) {
             for (const item of value) {
-              if (item && typeof item === "object") {
-                const it = item as Record<string, unknown>;
-                const emails = it.emails as Record<string, unknown> | undefined;
-                if (
-                  emails?.primaryEmail === email &&
-                  typeof it.id === "string"
-                ) {
-                  console.log(`[CRM] Person gevonden via fallback scan: ${email}`);
-                  return it.id;
-                }
+              if (!item || typeof item !== "object") continue;
+              const it = item as Record<string, unknown>;
+              const emails = it.emails as Record<string, unknown> | undefined;
+              if (emails?.primaryEmail === email && !it.deletedAt && typeof it.id === "string") {
+                console.log(`[CRM] ✓ Person gevonden via fallback scan: ${email} (${it.id})`);
+                return it.id;
               }
             }
           }
         }
       }
     }
-    console.warn(`[CRM] Person ${email} niet gevonden in eerste 60 records — geen koppeling mogelijk`);
+    console.warn(`[CRM] Person ${email} niet in eerste 60 records — geen koppeling mogelijk`);
   } catch (err) {
-    console.warn(`[CRM] Fallback person lookup mislukt:`, err);
+    console.warn(`[CRM] Fallback person scan mislukt:`, err);
   }
 
   return null;
@@ -491,20 +481,26 @@ export async function pushLeadToTwenty(
     //    omdat meerdere bedrijven dezelfde naam kunnen hebben).
     let companyId: string | null = null;
 
-    // 1a. Eerst zoeken op email-domain — meest unieke matcher
-    //    (filter op deletedAt[is]:NULL zodat soft-deleted records niet hergebruikt worden)
+    // 1a. Eerst zoeken op email-domain — meest unieke matcher.
+    //    Filter syntax: filter=field.subfield[op]:value (NOOIT filter[a][b][op]=val).
     if (emailDomain) {
       try {
         const existing = await twentyGET(
           baseUrl,
           apiKey,
           "companies",
-          `filter=domainName.primaryLinkUrl[eq]:${encodeURIComponent(emailDomain)},deletedAt[is]:NULL`
+          `filter=domainName.primaryLinkUrl[eq]:${encodeURIComponent(emailDomain)}`
         );
         const item = extractFirstItem(existing);
-        if (item && !item.deletedAt && typeof item.id === "string") {
-          companyId = item.id;
-          console.log(`[CRM] Bestaande company hergebruikt op domain: ${emailDomain}`);
+        if (item) {
+          const dom = item.domainName as Record<string, unknown> | undefined;
+          // Verifieer dat het record echt het juiste domein heeft
+          if (dom?.primaryLinkUrl === emailDomain && !item.deletedAt && typeof item.id === "string") {
+            companyId = item.id;
+            console.log(`[CRM] Bestaande company hergebruikt op domain: ${emailDomain} (id=${companyId})`);
+          } else {
+            console.warn(`[CRM] Company filter retourneerde verkeerde match (verwacht domain ${emailDomain}, kreeg ${dom?.primaryLinkUrl}). Genegeerd.`);
+          }
         }
       } catch {
         // lookup-fout is niet fataal, we maken zo nodig een nieuwe company
@@ -518,16 +514,18 @@ export async function pushLeadToTwenty(
         companyBody.domainName = { primaryLinkUrl: emailDomain };
       }
       try {
+        console.log(`[CRM] → POST /companies body=${JSON.stringify(companyBody)}`);
         const companyRes = await twentyREST(baseUrl, apiKey, "companies", companyBody);
         companyId = extractId(companyRes, "companies");
         if (companyId) {
-          console.log(`[CRM] Nieuwe company aangemaakt: ${lead.bedrijf} (${companyId})`);
+          console.log(`[CRM] ✓ Company aangemaakt: ${lead.bedrijf} (${companyId})`);
         } else {
-          console.warn(`[CRM] Company POST gaf 200 maar geen id, response:`, JSON.stringify(companyRes).slice(0, 500));
+          console.warn(`[CRM] ⚠️  Company POST 200 zonder id, response:`, JSON.stringify(companyRes).slice(0, 500));
         }
       } catch (err) {
         if (err instanceof TwentyDuplicateError) {
-          // Twenty matched op iets anders (bijv. domain in andere shape) — zoek nogmaals op naam
+          console.warn(`[CRM] Company duplicate hint van Twenty: ${err.message.slice(0, 250)}`);
+          // Twenty matched op iets anders (bijv. naam) — zoek nogmaals op naam
           try {
             const existing = await twentyGET(
               baseUrl,
@@ -537,13 +535,15 @@ export async function pushLeadToTwenty(
             );
             companyId = extractFirstId(existing);
             if (companyId) {
-              console.log(`[CRM] Bestaande company hergebruikt op naam: ${lead.bedrijf}`);
+              console.log(`[CRM] ✓ Company hergebruikt op naam: ${lead.bedrijf} (${companyId})`);
+            } else {
+              console.warn(`[CRM] ⚠️  Company duplicate maar lookup leeg — Twenty lijkt soft-deleted/ghost record te hebben. Probeer hard-delete via Twenty Settings → Data Model.`);
             }
           } catch (lookupErr) {
-            console.warn("[CRM] Company duplicate, lookup mislukt:", lookupErr);
+            console.warn("[CRM] Company duplicate + lookup mislukt:", lookupErr);
           }
         } else {
-          console.warn("[CRM] Company aanmaken mislukt, ga door zonder koppeling:", err);
+          console.warn("[CRM] ✗ Company aanmaken mislukt:", err);
         }
       }
     }
@@ -564,18 +564,26 @@ export async function pushLeadToTwenty(
 
     let personId: string | null = null;
     try {
+      console.log(`[CRM] → POST /people body=${JSON.stringify(personBody).slice(0, 300)}`);
       const personRes = await twentyREST(baseUrl, apiKey, "people", personBody);
       personId = extractId(personRes, "people");
+      if (personId) {
+        console.log(`[CRM] ✓ Person aangemaakt: ${lead.email} (${personId})`);
+      } else {
+        console.warn(`[CRM] ⚠️  Person POST 200 zonder id, response:`, JSON.stringify(personRes).slice(0, 500));
+      }
     } catch (err) {
       if (err instanceof TwentyDuplicateError) {
+        console.warn(`[CRM] Person duplicate hint van Twenty: ${err.message.slice(0, 250)}`);
         personId = await zoekPersonOpEmail(baseUrl, apiKey, lead.email);
       } else {
+        console.warn(`[CRM] ✗ Person aanmaken faalde (geen duplicate):`, err);
         throw err;
       }
     }
 
     if (!personId) {
-      console.warn(`[CRM] Person voor ${lead.email} niet aangemaakt en niet gevonden — note koppeling overgeslagen, company is wel bewaard`);
+      console.warn(`[CRM] ⚠️  Person voor ${lead.email} niet aangemaakt en niet gevonden — note overgeslagen. Tip: check Twenty UI Trash & Settings → Data Model voor ghost records.`);
       return;
     }
 
