@@ -24,7 +24,7 @@ export default function EuAiActPage() {
       <Nav />
       <main className="flex-1 pt-20">
         <section className="bg-white px-6 py-20 lg:py-28">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-6xl">
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#b2b2be]">
               Regelgeving
             </p>
@@ -63,10 +63,10 @@ export default function EuAiActPage() {
 
                 <div className="space-y-4">
                   <div className="border border-black/[0.06] bg-[#f2f3f5] p-5">
-                    <p className="mb-1 text-sm font-semibold text-[#1f1f1f]">
+                    <p className="mb-2 font-semibold text-[#1f1f1f]">
                       Onaanvaardbaar risico — verboden
                     </p>
-                    <p className="text-sm leading-relaxed text-[#575760]">
+                    <p className="leading-relaxed text-[#575760]">
                       AI-toepassingen die fundamentele rechten bedreigen zijn volledig verboden. Voorbeelden:
                       sociale scoringsystemen door overheden, realtime biometrische surveillance in de openbare
                       ruimte (met beperkte uitzonderingen voor rechtshandhaving), manipulatie van gedrag via
@@ -76,10 +76,10 @@ export default function EuAiActPage() {
                   </div>
 
                   <div className="border border-black/[0.06] bg-[#f2f3f5] p-5">
-                    <p className="mb-1 text-sm font-semibold text-[#1f1f1f]">
+                    <p className="mb-2 font-semibold text-[#1f1f1f]">
                       Hoog risico — strenge verplichtingen
                     </p>
-                    <p className="text-sm leading-relaxed text-[#575760]">
+                    <p className="leading-relaxed text-[#575760]">
                       AI-systemen in kritieke sectoren vallen onder de strengste eisen. Dit betreft onder andere
                       AI in kritieke infrastructuur (energie, water, transport), onderwijs (toelating, beoordeling),
                       werving en selectie van personeel, krediet- en verzekeringsbeoordeling van individuen,
@@ -90,10 +90,10 @@ export default function EuAiActPage() {
                   </div>
 
                   <div className="border border-black/[0.06] bg-[#f2f3f5] p-5">
-                    <p className="mb-1 text-sm font-semibold text-[#1f1f1f]">
+                    <p className="mb-2 font-semibold text-[#1f1f1f]">
                       Beperkt risico — transparantieverplichtingen
                     </p>
-                    <p className="text-sm leading-relaxed text-[#575760]">
+                    <p className="leading-relaxed text-[#575760]">
                       AI-systemen die rechtstreeks met mensen interageren moeten dit kenbaar maken. Zo moeten
                       chatbots duidelijk aangeven dat de gebruiker niet met een mens communiceert, en moeten
                       deepfakes of AI-gegenereerde inhoud als zodanig worden gelabeld.
@@ -101,10 +101,10 @@ export default function EuAiActPage() {
                   </div>
 
                   <div className="border border-black/[0.06] bg-[#f2f3f5] p-5">
-                    <p className="mb-1 text-sm font-semibold text-[#1f1f1f]">
+                    <p className="mb-2 font-semibold text-[#1f1f1f]">
                       Minimaal risico — geen specifieke verplichtingen
                     </p>
-                    <p className="text-sm leading-relaxed text-[#575760]">
+                    <p className="leading-relaxed text-[#575760]">
                       De meeste AI-toepassingen vallen in deze categorie. Denk aan spamfilters, AI in
                       videospellen of aanbevelingssystemen voor films. Er gelden geen verplichtingen vanuit de
                       AI Act, al blijft andere wet- en regelgeving (zoals de AVG) van toepassing.
@@ -121,7 +121,7 @@ export default function EuAiActPage() {
                 <p className="mb-4 leading-relaxed text-[#575760]">
                   De verordening is van toepassing op meerdere partijen in de keten:
                 </p>
-                <ul className="space-y-3 text-sm leading-relaxed text-[#575760]">
+                <ul className="space-y-3 leading-relaxed text-[#575760]">
                   <li className="flex gap-3">
                     <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
                     <span>
@@ -156,7 +156,7 @@ export default function EuAiActPage() {
                 <p className="mb-4 leading-relaxed text-[#575760]">
                   Voor aanbieders van hoog-risico AI-systemen gelden de meest uitgebreide eisen:
                 </p>
-                <ul className="space-y-3 text-sm leading-relaxed text-[#575760]">
+                <ul className="space-y-3 leading-relaxed text-[#575760]">
                   <li className="flex gap-3">
                     <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
                     <span>
@@ -225,7 +225,7 @@ export default function EuAiActPage() {
                 <p className="mb-4 leading-relaxed text-[#575760]">
                   Alle aanbieders van GPAI-modellen die in de EU beschikbaar zijn moeten:
                 </p>
-                <ul className="space-y-2 text-sm leading-relaxed text-[#575760]">
+                <ul className="space-y-2 leading-relaxed text-[#575760]">
                   <li className="flex gap-3">
                     <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
                     <span>Technische documentatie opstellen en bijhouden.</span>
@@ -258,7 +258,7 @@ export default function EuAiActPage() {
                   1 augustus 2024; daarna gelden de volgende deadlines:
                 </p>
                 <div className="overflow-x-auto">
-                  <table className="w-full border-collapse text-sm">
+                  <table className="w-full border-collapse">
                     <thead>
                       <tr className="border-b border-black/[0.08]">
                         <th className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Datum</th>
@@ -296,7 +296,7 @@ export default function EuAiActPage() {
                   De AI Act voorziet in aanzienlijke boetes:
                 </p>
                 <div className="overflow-x-auto">
-                  <table className="w-full border-collapse text-sm">
+                  <table className="w-full border-collapse">
                     <thead>
                       <tr className="border-b border-black/[0.08]">
                         <th className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Overtreding</th>
@@ -319,7 +319,7 @@ export default function EuAiActPage() {
                     </tbody>
                   </table>
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-[#575760]">
+                <p className="mt-4 leading-relaxed text-[#575760]">
                   Bij mkb-bedrijven en startups geldt het lagere bedrag van de twee grenzen. Bij grote ondernemingen geldt het hogere bedrag.
                 </p>
               </div>
@@ -332,7 +332,7 @@ export default function EuAiActPage() {
                 <p className="mb-4 leading-relaxed text-[#575760]">
                   Een eerste stap voor elk bedrijf dat AI inzet of ontwikkelt is een <strong className="text-[#1f1f1f]">AI-inventarisatie</strong>: breng in kaart welke AI-systemen je gebruikt, ontwikkelt of inzet en bepaal voor elk systeem in welke risicocategorie het valt.
                 </p>
-                <ul className="space-y-3 text-sm leading-relaxed text-[#575760]">
+                <ul className="space-y-3 leading-relaxed text-[#575760]">
                   <li className="flex gap-3">
                     <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
                     <span>
@@ -382,7 +382,7 @@ export default function EuAiActPage() {
                 <p className="mb-4 leading-relaxed text-[#575760]">
                   De officiële tekst van de verordening en aanvullende documenten zijn beschikbaar via:
                 </p>
-                <ul className="space-y-2 text-sm leading-relaxed text-[#575760]">
+                <ul className="space-y-2 leading-relaxed text-[#575760]">
                   <li className="flex gap-3">
                     <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
                     <span>
