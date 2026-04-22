@@ -18,14 +18,18 @@ interface CaptureLeadRequest {
 }
 
 const SECTOR_BENCHMARKS: Record<string, number> = {
-  productie: 32,
-  logistiek: 38,
-  zorg: 28,
-  retail: 42,
-  zakelijk_dienstverlening: 45,
   bouw: 24,
+  financieel: 48,
   horeca: 22,
-  overig: 35,
+  logistiek: 38,
+  onderwijs: 30,
+  overheid: 28,
+  productie: 32,
+  retail: 42,
+  technologie: 55,
+  zakelijk_dienstverlening: 45,
+  zorg: 28,
+  anders: 35,
 };
 
 function erf(x: number): number {

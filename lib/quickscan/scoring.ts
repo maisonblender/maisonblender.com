@@ -1,14 +1,18 @@
 import type { ScanAntwoorden, ScanResultaat, OpportunityMapItem } from "./types";
 
 const SECTOR_BENCHMARKS: Record<string, number> = {
-  productie: 32,
-  logistiek: 38,
-  zorg: 28,
-  retail: 42,
-  zakelijk_dienstverlening: 45,
   bouw: 24,
+  financieel: 48,
   horeca: 22,
-  overig: 35,
+  logistiek: 38,
+  onderwijs: 30,
+  overheid: 28,
+  productie: 32,
+  retail: 42,
+  technologie: 55,
+  zakelijk_dienstverlening: 45,
+  zorg: 28,
+  anders: 35,
 };
 
 function berekenBenchmarkPercentiel(score: number, sectorGemiddelde: number): number {
@@ -27,62 +31,83 @@ function erf(x: number): number {
   return sign * y;
 }
 
+// ─── AI Readiness Score ──────────────────────────────────────────────────
+// Score is opgebouwd uit 8 componenten (totaal 100 punten):
+// - Tech stack (20)
+// - AI maturiteit (20)
+// - Datakwaliteit (10) + Systeemintegratie (8) + IT-infrastructuur (6) = data-fundament (24)
+// - Budget bereidheid (10) + Implementatiesnelheid (6) = ambitie (16)
+// - Team sentiment (5) + Management betrokkenheid (8) = cultuur (13)
+// - Privacy beleid (4) + EU AI Act (3) = governance (7)
 export function berekenAiReadinessScore(antwoorden: ScanAntwoorden): number {
   let score = 0;
 
-  // Tech stack (max 25 punten)
+  // Tech stack (max 20)
   const techScores: Record<string, number> = {
     geen_systemen: 0,
-    basis_office: 6,
-    erp_crm: 13,
-    cloud_first: 20,
-    al_ai_gebruik: 25,
+    basis_office: 5,
+    erp_crm: 11,
+    cloud_first: 16,
+    al_ai_gebruik: 20,
   };
   score += techScores[antwoorden.techStack] ?? 0;
 
-  // AI maturiteit (max 30 punten)
+  // AI maturiteit (max 20) — nu 5 niveaus
   const maturiteitScores: Record<string, number> = {
     geen_ai: 0,
-    experimenteren: 10,
-    productief_gebruik: 20,
-    ai_core: 30,
+    bewust: 4,
+    experimenteel: 9,
+    gevorderd: 15,
+    expert: 20,
   };
   score += maturiteitScores[antwoorden.aiMaturiteit] ?? 0;
 
-  // Omvang (max 8 punten)
-  const omvangScores: Record<string, number> = {
-    "1-10": 3,
-    "11-50": 5,
-    "51-200": 7,
-    "200+": 8,
+  // Datakwaliteit (max 10) — nu 5 niveaus
+  const dataKwaliteitScores: Record<string, number> = {
+    chaotisch: 0,
+    basis: 3,
+    redelijk: 6,
+    goed: 8,
+    uitstekend: 10,
   };
-  score += omvangScores[antwoorden.omvang] ?? 0;
+  score += dataKwaliteitScores[antwoorden.dataKwaliteit] ?? 0;
 
-  // Budget bereidheid (max 12 punten)
+  // Systeem-integratie (max 8)
+  const integratieScores: Record<string, number> = {
+    nauwelijks: 0,
+    beperkt: 2,
+    gedeeltelijk: 4,
+    goed: 6,
+    uitstekend: 8,
+  };
+  score += integratieScores[antwoorden.systeemIntegratie] ?? 0;
+
+  // IT-infrastructuur (max 6)
+  const itInfraScores: Record<string, number> = {
+    cloud_based: 6,
+    hybride: 4,
+    on_premise: 2,
+    weet_niet: 1,
+  };
+  score += itInfraScores[antwoorden.itInfrastructuur] ?? 0;
+
+  // Budget bereidheid (max 10)
   const budgetScores: Record<string, number> = {
     laag: 2,
-    midden: 7,
-    hoog: 12,
+    midden: 6,
+    hoog: 10,
   };
   score += budgetScores[antwoorden.budgetBereidheid] ?? 0;
 
-  // Implementatiesnelheid (max 8 punten)
+  // Implementatiesnelheid (max 6)
   const snelheidScores: Record<string, number> = {
-    direct: 8,
-    kwartaal: 5,
+    direct: 6,
+    kwartaal: 4,
     jaar: 1,
   };
   score += snelheidScores[antwoorden.implementatieSnelheid] ?? 0;
 
-  // Datakwaliteit (max 8 punten) — nieuw
-  const dataKwaliteitScores: Record<string, number> = {
-    verspreid_inconsistent: 0,
-    structureel_geisoleerd: 4,
-    centraal_goed: 8,
-  };
-  score += dataKwaliteitScores[antwoorden.dataKwaliteit ?? "verspreid_inconsistent"] ?? 0;
-
-  // Team sentiment (max 5 punten) — nieuw
+  // Team sentiment (max 5)
   const sentimentScores: Record<string, number> = {
     enthousiast: 5,
     verdeeld: 3,
@@ -91,14 +116,42 @@ export function berekenAiReadinessScore(antwoorden: ScanAntwoorden): number {
   };
   score += sentimentScores[antwoorden.teamSentiment ?? "onbekend"] ?? 0;
 
-  // Privacy beleid (max 4 punten) — nieuw: goed beleid = betere AI-readiness
+  // Management betrokkenheid (max 8) — vervangt digitaleAgendasTrekker
+  const mgmtScores: Record<string, number> = {
+    niet_betrokken: 0,
+    bewust: 2,
+    geinteresseerd: 4,
+    actief: 6,
+    strategisch: 8,
+  };
+  score += mgmtScores[antwoorden.managementBetrokkenheid] ?? 0;
+
+  // Privacy beleid (max 4) — 5 niveaus
   const privacyScores: Record<string, number> = {
     geen_richtlijnen: 0,
     informele_afspraken: 1,
-    formeel_avg: 3,
-    iso_gecertificeerd: 4,
+    basisbeleid: 2,
+    formeel_ai_beleid: 3,
+    inclusief_toetsing: 4,
   };
-  score += privacyScores[antwoorden.privacyBeleid ?? "geen_richtlijnen"] ?? 0;
+  score += privacyScores[antwoorden.privacyBeleid] ?? 0;
+
+  // EU AI Act bekendheid (max 3)
+  const euAiActScores: Record<string, number> = {
+    nooit_gehoord: 0,
+    gehoord_onbekend: 1,
+    globaal_bekend: 1,
+    goed_bekend: 2,
+    volledig_compliant: 3,
+  };
+  score += euAiActScores[antwoorden.euAiActBekendheid] ?? 0;
+
+  // Bonus: hoge urgentie + bereidheid = readiness boost (max 3)
+  // Lage urgentie = geen extra punten.
+  const urgentie = antwoorden.urgentie ?? 5;
+  if (urgentie >= 8) score += 3;
+  else if (urgentie >= 6) score += 2;
+  else if (urgentie >= 4) score += 1;
 
   return Math.min(100, Math.round(score));
 }
@@ -122,33 +175,61 @@ export function bepaalScoreBeschrijving(score: number, label: ScanResultaat["sco
   return beschrijvingen[label];
 }
 
+// ─── Governance risico ───────────────────────────────────────────────────
+// Combineert: gevoelige data + bijzondere categorieën, privacy beleid,
+// EU AI Act-kennis, ingeschat risico ongecontroleerd gebruik.
 export function berekenGovernanceRisico(antwoorden: ScanAntwoorden): ScanResultaat["governanceRisico"] {
   let risicoPunten = 0;
 
-  // Gevoelige data zonder beleid = hoog risico
   const heeftGevoeligeData =
     antwoorden.gevoeligeData &&
     !antwoorden.gevoeligeData.includes("geen") &&
     antwoorden.gevoeligeData.length > 0;
+  if (heeftGevoeligeData) risicoPunten += 1;
 
-  if (heeftGevoeligeData) risicoPunten += 2;
+  // Hoog-risico data (AVG art. 9 + minderjarigen + IP) telt extra
+  const HOOG_RISICO_DATA = ["medisch", "intellectueel_eigendom", "minderjarigen"];
+  const hoogRisicoCount = (antwoorden.gevoeligeData ?? []).filter((d) =>
+    HOOG_RISICO_DATA.includes(d)
+  ).length;
+  risicoPunten += hoogRisicoCount;
 
+  // Privacy beleid (5 niveaus)
   const privacyRisico: Record<string, number> = {
     geen_richtlijnen: 3,
     informele_afspraken: 2,
-    formeel_avg: 0,
-    iso_gecertificeerd: 0,
+    basisbeleid: 1,
+    formeel_ai_beleid: 0,
+    inclusief_toetsing: 0,
   };
-  risicoPunten += privacyRisico[antwoorden.privacyBeleid ?? "geen_richtlijnen"] ?? 0;
+  risicoPunten += privacyRisico[antwoorden.privacyBeleid] ?? 0;
+
+  // EU AI Act onbekendheid is een risico
+  const euRisico: Record<string, number> = {
+    nooit_gehoord: 2,
+    gehoord_onbekend: 1,
+    globaal_bekend: 1,
+    goed_bekend: 0,
+    volledig_compliant: 0,
+  };
+  risicoPunten += euRisico[antwoorden.euAiActBekendheid] ?? 0;
+
+  // Eigen risico-inschatting (1-10)
+  const eigenRisico = antwoorden.risicoOngecontroleerdAi ?? 0;
+  if (eigenRisico >= 8) risicoPunten += 3;
+  else if (eigenRisico >= 6) risicoPunten += 2;
+  else if (eigenRisico >= 4) risicoPunten += 1;
 
   if (antwoorden.aiZorgen?.includes("dataveiligheid")) risicoPunten += 1;
   if (antwoorden.aiZorgen?.includes("compliance")) risicoPunten += 1;
 
-  if (risicoPunten >= 4) return "hoog";
-  if (risicoPunten >= 2) return "midden";
+  if (risicoPunten >= 7) return "hoog";
+  if (risicoPunten >= 3) return "midden";
   return "laag";
 }
 
+// ─── Cultuur readiness ───────────────────────────────────────────────────
+// Combineert: team sentiment, management betrokkenheid, trainingsbereidheid.
 export function berekenCultuurReadiness(antwoorden: ScanAntwoorden): ScanResultaat["cultuurReadiness"] {
   let punten = 0;
 
@@ -160,25 +241,34 @@ export function berekenCultuurReadiness(antwoorden: ScanAntwoorden): ScanResulta
   };
   punten += sentimentPunten[antwoorden.teamSentiment ?? "onbekend"] ?? 0;
 
-  const trekkerPunten: Record<string, number> = {
-    directie: 3,
-    it_manager: 2,
-    geen_centrale_trekker: 0,
+  const mgmtPunten: Record<string, number> = {
+    niet_betrokken: 0,
+    bewust: 1,
+    geinteresseerd: 2,
+    actief: 3,
+    strategisch: 4,
   };
-  punten += trekkerPunten[antwoorden.digitaleAgendasTrekker ?? "geen_centrale_trekker"] ?? 0;
+  punten += mgmtPunten[antwoorden.managementBetrokkenheid] ?? 0;
 
-  // Zorgen over banenverlies verlagen readiness
+  // Investering in training = cultuur readiness booster
+  const trainingCount = (antwoorden.trainingsbehoefte ?? []).filter(
+    (t) => t !== "geen_training_nodig"
+  ).length;
+  if (trainingCount >= 3) punten += 2;
+  else if (trainingCount >= 1) punten += 1;
+
   if (antwoorden.aiZorgen?.includes("banenverlies")) punten -= 1;
   if (antwoorden.aiZorgen?.includes("geen_zorgen")) punten += 1;
 
-  if (punten >= 5) return "hoog";
-  if (punten >= 3) return "midden";
+  if (punten >= 7) return "hoog";
+  if (punten >= 4) return "midden";
   return "laag";
 }
 
+// ─── Opportunity Heatmap ─────────────────────────────────────────────────
+// 8 bedrijfsfuncties — dekt alle bevraagde pijnpunten plus aanvullende
+// gebieden waar AI typisch grote impact heeft.
 export function berekenOpportunityMap(antwoorden: ScanAntwoorden): OpportunityMapItem[] {
-  // 8 bedrijfsfuncties — dekt alle bevraagde pijnpunten plus aanvullende gebieden
-  // waar AI typisch grote impact heeft.
   const map: OpportunityMapItem[] = [
     { gebied: "Klantenservice", potentieel: 0 },
     { gebied: "Sales & Marketing", potentieel: 0 },
@@ -190,74 +280,100 @@ export function berekenOpportunityMap(antwoorden: ScanAntwoorden): OpportunityMa
     { gebied: "Data & Rapportage", potentieel: 0 },
   ];
 
-  // Per pijnpunt: gebieden die gewogen mee scoren (gewicht 1.0 = primair, 0.6 = secundair).
+  // Per pijnpunt: gebieden met gewogen scores (1.0 = primair, 0.5-0.7 = secundair).
   const pijnpuntMapping: Record<string, Array<{ gebied: string; gewicht: number }>> = {
-    repetitief_handwerk: [
+    data_invoer_administratie: [
       { gebied: "Administratie", gewicht: 1.0 },
-      { gebied: "Operations", gewicht: 0.7 },
+      { gebied: "Operations", gewicht: 0.6 },
     ],
-    klantcommunicatie: [
+    rapportages_verslaglegging: [
+      { gebied: "Data & Rapportage", gewicht: 1.0 },
+      { gebied: "Administratie", gewicht: 0.5 },
+    ],
+    klantvragen: [
       { gebied: "Klantenservice", gewicht: 1.0 },
-      { gebied: "Sales & Marketing", gewicht: 0.6 },
+      { gebied: "Sales & Marketing", gewicht: 0.5 },
+    ],
+    email_verwerking: [
+      { gebied: "Klantenservice", gewicht: 0.7 },
+      { gebied: "Administratie", gewicht: 0.7 },
+    ],
+    planning_roostering: [
+      { gebied: "HR & Planning", gewicht: 1.0 },
+      { gebied: "Operations", gewicht: 0.6 },
+    ],
+    factuurverwerking: [
+      { gebied: "Administratie", gewicht: 1.0 },
+      { gebied: "Inkoop & Supply", gewicht: 0.4 },
+    ],
+    contentcreatie: [
+      { gebied: "Sales & Marketing", gewicht: 1.0 },
+    ],
+    hr_administratie: [
+      { gebied: "HR & Planning", gewicht: 1.0 },
     ],
     data_analyse: [
       { gebied: "Data & Rapportage", gewicht: 1.0 },
       { gebied: "Operations", gewicht: 0.5 },
     ],
-    documentverwerking: [
-      { gebied: "Administratie", gewicht: 1.0 },
-      { gebied: "Kwaliteit & Compliance", gewicht: 0.5 },
+    inkoop_leveranciers: [
+      { gebied: "Inkoop & Supply", gewicht: 1.0 },
+      { gebied: "Administratie", gewicht: 0.4 },
     ],
-    planning_roostering: [
-      { gebied: "HR & Planning", gewicht: 1.0 },
-      { gebied: "Operations", gewicht: 0.7 },
+    compliance_documentbeheer: [
+      { gebied: "Kwaliteit & Compliance", gewicht: 1.0 },
+      { gebied: "Administratie", gewicht: 0.4 },
     ],
     kwaliteitscontrole: [
       { gebied: "Kwaliteit & Compliance", gewicht: 1.0 },
       { gebied: "Operations", gewicht: 0.5 },
     ],
-    hr_recruitment: [
-      { gebied: "HR & Planning", gewicht: 1.0 },
-    ],
-    inkoop_leveranciers: [
-      { gebied: "Inkoop & Supply", gewicht: 1.0 },
-      { gebied: "Administratie", gewicht: 0.5 },
-    ],
-    marketing_content: [
-      { gebied: "Sales & Marketing", gewicht: 1.0 },
-    ],
+    anders: [],
   };
 
-  // Basisscore per pijnpunt = 35 punten primair, gewicht * 35 secundair.
   for (const pijnpunt of antwoorden.pijnpunten) {
     const gebieden = pijnpuntMapping[pijnpunt] ?? [];
     for (const { gebied, gewicht } of gebieden) {
       const item = map.find((m) => m.gebied === gebied);
-      if (item) item.potentieel += 35 * gewicht;
+      if (item) item.potentieel += 32 * gewicht;
     }
   }
 
-  // Baseline: elk gebied krijgt minimaal een baseline op basis van tech-volwassenheid
-  // zodat de heatmap niet pikzwart blijft als iemand weinig pijnpunten kiest.
+  // Baseline op basis van AI-maturiteit (5 niveaus).
   const baseline =
-    antwoorden.aiMaturiteit === "ai_core" ? 25 :
-    antwoorden.aiMaturiteit === "productief_gebruik" ? 18 :
-    antwoorden.aiMaturiteit === "experimenteren" ? 12 : 8;
+    antwoorden.aiMaturiteit === "expert" ? 28 :
+    antwoorden.aiMaturiteit === "gevorderd" ? 22 :
+    antwoorden.aiMaturiteit === "experimenteel" ? 15 :
+    antwoorden.aiMaturiteit === "bewust" ? 10 : 6;
 
-  // Tech & data-multiplier: betere stack = hogere realiseerbare opbrengst per gebied.
+  // Tech & data multipliers: betere stack = hogere realiseerbare opbrengst.
   const techMultiplier =
     antwoorden.techStack === "al_ai_gebruik" ? 1.25 :
     antwoorden.techStack === "cloud_first" ? 1.15 :
     antwoorden.techStack === "erp_crm" ? 1.05 :
     antwoorden.techStack === "basis_office" ? 0.9 : 0.75;
 
+  // Data-kwaliteit multiplier (5 niveaus)
   const dataMultiplier =
-    antwoorden.dataKwaliteit === "centraal_goed" ? 1.15 :
-    antwoorden.dataKwaliteit === "structureel_geisoleerd" ? 1.0 :
-    antwoorden.dataKwaliteit === "verspreid_inconsistent" ? 0.82 : 1.0;
+    antwoorden.dataKwaliteit === "uitstekend" ? 1.20 :
+    antwoorden.dataKwaliteit === "goed" ? 1.10 :
+    antwoorden.dataKwaliteit === "redelijk" ? 1.0 :
+    antwoorden.dataKwaliteit === "basis" ? 0.88 :
+    antwoorden.dataKwaliteit === "chaotisch" ? 0.75 : 1.0;
+
+  // Integratie multiplier — gekoppelde systemen versnellen AI-implementatie
+  const integratieMultiplier =
+    antwoorden.systeemIntegratie === "uitstekend" ? 1.10 :
+    antwoorden.systeemIntegratie === "goed" ? 1.05 :
+    antwoorden.systeemIntegratie === "gedeeltelijk" ? 1.0 :
+    antwoorden.systeemIntegratie === "beperkt" ? 0.92 :
+    antwoorden.systeemIntegratie === "nauwelijks" ? 0.85 : 1.0;
+
+  // Urgentie boost — als urgentie hoog is voelt het potentieel extra zwaar
+  const urgentieBoost = (antwoorden.urgentie ?? 5) >= 8 ? 1.10 : (antwoorden.urgentie ?? 5) >= 6 ? 1.05 : 1.0;
 
   return map.map((item) => {
-    const ruw = (item.potentieel + baseline) * techMultiplier * dataMultiplier;
+    const ruw = (item.potentieel + baseline) * techMultiplier * dataMultiplier * integratieMultiplier * urgentieBoost;
     return {
       ...item,
       potentieel: Math.min(100, Math.max(0, Math.round(ruw))),

@@ -1,15 +1,21 @@
+// ─── Sectoren (alfabetisch A-Z) ──────────────────────────────────────────
 export type Sector =
-  | "productie"
-  | "logistiek"
-  | "zorg"
-  | "retail"
-  | "zakelijk_dienstverlening"
+  | "anders"
   | "bouw"
+  | "financieel"
   | "horeca"
-  | "overig";
+  | "logistiek"
+  | "onderwijs"
+  | "overheid"
+  | "productie"
+  | "retail"
+  | "technologie"
+  | "zakelijk_dienstverlening"
+  | "zorg";
 
 export type Omvang = "1-10" | "11-50" | "51-200" | "200+";
 
+// ─── Digitale volwassenheid / tech stack ─────────────────────────────────
 export type TechStack =
   | "geen_systemen"
   | "basis_office"
@@ -17,70 +23,142 @@ export type TechStack =
   | "cloud_first"
   | "al_ai_gebruik";
 
+// ─── Functie/rol binnen organisatie ──────────────────────────────────────
 export type Rol =
-  | "eigenaar_directeur"
+  | "directeur_ceo"
   | "manager"
   | "it_verantwoordelijke"
+  | "operations"
+  | "hr_people"
+  | "finance"
+  | "marketing_sales"
   | "medewerker"
   | "anders";
 
+// ─── Pijnpunten / activiteiten met tijdverlies ───────────────────────────
 export type Pijnpunt =
-  | "repetitief_handwerk"
-  | "klantcommunicatie"
-  | "data_analyse"
-  | "documentverwerking"
+  | "data_invoer_administratie"
+  | "rapportages_verslaglegging"
+  | "klantvragen"
+  | "email_verwerking"
   | "planning_roostering"
-  | "kwaliteitscontrole"
-  | "hr_recruitment"
+  | "factuurverwerking"
+  | "contentcreatie"
+  | "hr_administratie"
+  | "data_analyse"
   | "inkoop_leveranciers"
-  | "marketing_content";
+  | "compliance_documentbeheer"
+  | "kwaliteitscontrole"
+  | "anders";
 
-export type UrenVerlies = "<5" | "5-15" | "15-30" | ">30";
+// ─── Uren-verlies per medewerker per week ────────────────────────────────
+export type UrenVerlies = "<2" | "2-5" | "5-10" | "10-20" | ">20";
 
+// ─── Urgentie van behoefte aan procesverbetering (1-10) ──────────────────
+export type UrgentieScore = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
+// ─── Kernapplicaties / systemen ──────────────────────────────────────────
 export type KernApplicatie =
+  | "microsoft365"
+  | "google_workspace"
   | "exact"
+  | "afas"
   | "sap"
   | "salesforce"
   | "hubspot"
-  | "microsoft365"
-  | "google_workspace"
   | "shopify"
   | "magento"
   | "woocommerce"
   | "lightspeed"
+  | "mailchimp"
+  | "klaviyo"
+  | "asana_monday"
+  | "slack_teams"
+  | "powerbi_tableau"
   | "eigen_maatwerk"
-  | "geen"
-  | "anders";
-
-export type DataKwaliteit =
-  | "verspreid_inconsistent"
-  | "structureel_geisoleerd"
-  | "centraal_goed";
-
-export type GevoeligeData =
-  | "klantdata"
-  | "financieel"
-  | "medisch"
-  | "intellectueel_eigendom"
+  | "branche_specifiek"
+  | "anders"
   | "geen";
 
+// ─── Datakwaliteit (5 niveaus) ───────────────────────────────────────────
+export type DataKwaliteit =
+  | "chaotisch"
+  | "basis"
+  | "redelijk"
+  | "goed"
+  | "uitstekend";
+
+// ─── Systeem-integratie (5 niveaus) ──────────────────────────────────────
+export type SysteemIntegratie =
+  | "nauwelijks"
+  | "beperkt"
+  | "gedeeltelijk"
+  | "goed"
+  | "uitstekend";
+
+// ─── IT-infrastructuur ───────────────────────────────────────────────────
+export type ITInfrastructuur =
+  | "cloud_based"
+  | "hybride"
+  | "on_premise"
+  | "weet_niet";
+
+// ─── Gevoelige data (multi-select met risico-badges) ─────────────────────
+export type GevoeligeData =
+  | "klantgegevens"
+  | "financieel"
+  | "medisch"
+  | "personeel"
+  | "juridisch"
+  | "intellectueel_eigendom"
+  | "minderjarigen"
+  | "geen";
+
+// ─── Team sentiment ──────────────────────────────────────────────────────
 export type TeamSentiment =
   | "enthousiast"
   | "verdeeld"
   | "sceptisch"
   | "onbekend";
 
-export type DigitaleAgendasTrekker =
-  | "directie"
-  | "it_manager"
-  | "geen_centrale_trekker";
+// ─── Management-betrokkenheid bij AI-agenda ──────────────────────────────
+export type ManagementBetrokkenheid =
+  | "niet_betrokken"
+  | "bewust"
+  | "geinteresseerd"
+  | "actief"
+  | "strategisch";
 
+// ─── Trainingsbehoefte (multi-select) ────────────────────────────────────
+export type Trainingsbehoefte =
+  | "basiskennis_ai"
+  | "prompt_engineering"
+  | "privacy_veilig_gebruik"
+  | "specifieke_tools"
+  | "change_management"
+  | "ai_strategie_leidinggevenden"
+  | "geen_training_nodig";
+
+// ─── Privacy / AI-gebruiksbeleid (5 niveaus) ─────────────────────────────
 export type PrivacyBeleid =
   | "geen_richtlijnen"
   | "informele_afspraken"
-  | "formeel_avg"
-  | "iso_gecertificeerd";
+  | "basisbeleid"
+  | "formeel_ai_beleid"
+  | "inclusief_toetsing";
 
+// ─── Bekendheid met EU AI Act ────────────────────────────────────────────
+export type EuAiActBekendheid =
+  | "nooit_gehoord"
+  | "gehoord_onbekend"
+  | "globaal_bekend"
+  | "goed_bekend"
+  | "volledig_compliant";
+
+// ─── Risico ongecontroleerd AI-gebruik (1-10) ────────────────────────────
+export type RisicoScore = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+
+// ─── Zorgen rond AI-implementatie ────────────────────────────────────────
 export type AiZorg =
   | "dataveiligheid"
   | "banenverlies"
@@ -89,32 +167,41 @@ export type AiZorg =
   | "kosten"
   | "geen_zorgen";
 
+// ─── AI-maturiteit (5 niveaus) ───────────────────────────────────────────
 export type AiMaturiteit =
   | "geen_ai"
-  | "experimenteren"
-  | "productief_gebruik"
-  | "ai_core";
+  | "bewust"
+  | "experimenteel"
+  | "gevorderd"
+  | "expert";
 
+// ─── Volledig antwoordmodel ──────────────────────────────────────────────
 export interface ScanAntwoorden {
-  // Stap 1: Bedrijfsprofiel
+  // Pijler 1: Bedrijfsprofiel
   sector: Sector;
   omvang: Omvang;
   rol: Rol;
   techStack: TechStack;
-  // Stap 2: Pijnpunten & Tijdvreters
+  // Pijler 2: Pijnpunten & Urgentie
   pijnpunten: Pijnpunt[];
   urenVerlies: UrenVerlies;
-  // Stap 3: Data & Systemen
+  urgentie: UrgentieScore;
+  // Pijler 3: Data & Systemen
   kernApplicaties: KernApplicatie[];
   dataKwaliteit: DataKwaliteit;
+  systeemIntegratie: SysteemIntegratie;
+  itInfrastructuur: ITInfrastructuur;
   gevoeligeData: GevoeligeData[];
-  // Stap 4: Cultuur & Governance
-  teamSentiment: TeamSentiment;
-  digitaleAgendasTrekker: DigitaleAgendasTrekker;
-  privacyBeleid: PrivacyBeleid;
-  aiZorgen: AiZorg[];
-  // Stap 5: AI Ambitie
+  // Pijler 4: Kennis, cultuur & governance
   aiMaturiteit: AiMaturiteit;
+  teamSentiment: TeamSentiment;
+  managementBetrokkenheid: ManagementBetrokkenheid;
+  trainingsbehoefte: Trainingsbehoefte[];
+  privacyBeleid: PrivacyBeleid;
+  euAiActBekendheid: EuAiActBekendheid;
+  risicoOngecontroleerdAi: RisicoScore;
+  aiZorgen: AiZorg[];
+  // Pijler 5: AI-ambitie & contact
   budgetBereidheid: "laag" | "midden" | "hoog";
   implementatieSnelheid: "direct" | "kwartaal" | "jaar";
 }

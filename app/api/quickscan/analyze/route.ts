@@ -53,10 +53,20 @@ export async function POST(request: NextRequest) {
   const governanceRisico = berekenGovernanceRisico(antwoorden);
   const cultuurReadiness = berekenCultuurReadiness(antwoorden);
 
-  // Sectorgemiddelde (importeer direct om circulaire deps te vermijden)
+  // Sectorgemiddelde (in sync met scoring.ts; inline om circulaire deps te vermijden)
   const SECTOR_BENCHMARKS: Record<string, number> = {
-    productie: 32, logistiek: 38, zorg: 28, retail: 42,
-    zakelijk_dienstverlening: 45, bouw: 24, horeca: 22, overig: 35,
+    bouw: 24,
+    financieel: 48,
+    horeca: 22,
+    logistiek: 38,
+    onderwijs: 30,
+    overheid: 28,
+    productie: 32,
+    retail: 42,
+    technologie: 55,
+    zakelijk_dienstverlening: 45,
+    zorg: 28,
+    anders: 35,
   };
   const sectorBenchmark = SECTOR_BENCHMARKS[antwoorden.sector] ?? 35;
 

@@ -7,31 +7,49 @@ import type {
   UrenVerlies,
   KernApplicatie,
   DataKwaliteit,
+  SysteemIntegratie,
+  ITInfrastructuur,
   GevoeligeData,
   TeamSentiment,
-  DigitaleAgendasTrekker,
+  ManagementBetrokkenheid,
+  Trainingsbehoefte,
   PrivacyBeleid,
+  EuAiActBekendheid,
   AiZorg,
   AiMaturiteit,
 } from "./types";
+
+export type BadgeTone = "positive" | "warning" | "danger" | "neutral";
+
+export interface OptionBadge {
+  label: string;
+  tone: BadgeTone;
+}
 
 export interface VraagOptie<T extends string = string> {
   value: T;
   label: string;
   beschrijving?: string;
+  badge?: OptionBadge;
 }
 
-// ─── Stap 1: Bedrijfsprofiel ───────────────────────────────────────────────
+// ─── Pijler 1: Bedrijfsprofiel ────────────────────────────────────────────
 
+// Sectoren — alfabetisch A-Z; AI-potentieel-badges op sectoren met bewezen
+// hoge AI-impact (bron: McKinsey/PwC AI-adoptierapportages 2024-2025).
 export const sectorOpties: VraagOptie<Sector>[] = [
-  { value: "productie", label: "Productie & Industrie" },
-  { value: "logistiek", label: "Logistiek & Transport" },
-  { value: "zorg", label: "Zorg & Welzijn" },
-  { value: "retail", label: "Retail & E-commerce" },
-  { value: "zakelijk_dienstverlening", label: "Zakelijke Dienstverlening" },
   { value: "bouw", label: "Bouw & Installatietechniek" },
+  { value: "financieel", label: "Financiële dienstverlening", badge: { label: "Hoog AI-potentieel", tone: "positive" } },
   { value: "horeca", label: "Horeca & Recreatie" },
-  { value: "overig", label: "Overig" },
+  { value: "logistiek", label: "Logistiek & Transport" },
+  { value: "onderwijs", label: "Onderwijs & Onderzoek" },
+  { value: "overheid", label: "Overheid & Non-profit" },
+  { value: "productie", label: "Productie & Industrie" },
+  { value: "retail", label: "Retail & E-commerce", badge: { label: "Hoog AI-potentieel", tone: "positive" } },
+  { value: "technologie", label: "Technologie & Software", badge: { label: "Hoog AI-potentieel", tone: "positive" } },
+  { value: "zakelijk_dienstverlening", label: "Zakelijke dienstverlening", badge: { label: "Hoog AI-potentieel", tone: "positive" } },
+  { value: "zorg", label: "Zorg & Welzijn", badge: { label: "Hoog AI-potentieel", tone: "positive" } },
+  { value: "anders", label: "Anders" },
 ];
 
 export const omvangOpties: VraagOptie<Omvang>[] = [
@@ -42,9 +60,13 @@ export const omvangOpties: VraagOptie<Omvang>[] = [
 ];
 
 export const rolOpties: VraagOptie<Rol>[] = [
-  { value: "eigenaar_directeur", label: "Eigenaar / Directeur", beschrijving: "Eindverantwoordelijke van de organisatie" },
+  { value: "directeur_ceo", label: "Directeur / CEO / Eigenaar", beschrijving: "Eindverantwoordelijke van de organisatie" },
   { value: "manager", label: "Manager / Teamleider", beschrijving: "Verantwoordelijk voor een afdeling of team" },
-  { value: "it_verantwoordelijke", label: "IT / Digitalisering", beschrijving: "Verantwoordelijk voor technologie en systemen" },
+  { value: "it_verantwoordelijke", label: "IT / Technologie verantwoordelijke", beschrijving: "Verantwoordelijk voor systemen en infrastructuur" },
+  { value: "operations", label: "Operations / Processen", beschrijving: "Verantwoordelijk voor de operationele processen" },
+  { value: "hr_people", label: "HR / People & Culture", beschrijving: "Personeel, training en organisatieontwikkeling" },
+  { value: "finance", label: "Finance / Controlling", beschrijving: "Financiën, planning en rapportage" },
+  { value: "marketing_sales", label: "Marketing / Sales", beschrijving: "Commerciële verantwoordelijkheid" },
   { value: "medewerker", label: "Medewerker", beschrijving: "Operationele rol binnen de organisatie" },
   { value: "anders", label: "Anders", beschrijving: "Andere functie of rol" },
 ];
@@ -57,33 +79,41 @@ export const techStackOpties: VraagOptie<TechStack>[] = [
   { value: "al_ai_gebruik", label: "Al AI in gebruik", beschrijving: "ChatGPT, Copilot of eigen AI-tools" },
 ];
 
-// ─── Stap 2: Pijnpunten & Tijdvreters ────────────────────────────────────
+// ─── Pijler 2: Pijnpunten & Urgentie ─────────────────────────────────────
 
+// Pijnpunten met "Quick win"-badge op activiteiten die met huidige LLM-/RPA-
+// stack in 4-8 weken getransformeerd kunnen worden.
 export const pijnpuntOpties: VraagOptie<Pijnpunt>[] = [
-  { value: "repetitief_handwerk", label: "Repetitief handmatig werk", beschrijving: "Data invoer, kopiëren, verwerken" },
-  { value: "klantcommunicatie", label: "Klantcommunicatie & support", beschrijving: "Vragen beantwoorden, afspraken plannen" },
-  { value: "data_analyse", label: "Data analyse & rapportage", beschrijving: "Inzichten uit cijfers halen" },
-  { value: "documentverwerking", label: "Document- & factuurverwerking", beschrijving: "Offertes, contracten, facturen" },
+  { value: "data_invoer_administratie", label: "Data-invoer & administratie", beschrijving: "Invoeren, kopiëren en verwerken van data", badge: { label: "Quick win", tone: "positive" } },
+  { value: "rapportages_verslaglegging", label: "Rapportages & verslaglegging", beschrijving: "Periodieke rapporten, notulen, samenvattingen", badge: { label: "Quick win", tone: "positive" } },
+  { value: "klantvragen", label: "Beantwoorden van klantvragen", beschrijving: "Standaardvragen, support, FAQ", badge: { label: "Quick win", tone: "positive" } },
+  { value: "email_verwerking", label: "E-mail verwerking & communicatie", beschrijving: "Triage, beantwoorden, samenvatten", badge: { label: "Quick win", tone: "positive" } },
   { value: "planning_roostering", label: "Planning & roostering", beschrijving: "Resources en capaciteit afstemmen" },
-  { value: "kwaliteitscontrole", label: "Kwaliteitscontrole & compliance", beschrijving: "Controleren en toetsen aan normen" },
-  { value: "hr_recruitment", label: "HR & recruitment", beschrijving: "Vacatures, sollicitaties, onboarding" },
+  { value: "factuurverwerking", label: "Factuurverwerking & boekhouding", beschrijving: "Facturen uitlezen, boeken, controleren", badge: { label: "Quick win", tone: "positive" } },
+  { value: "contentcreatie", label: "Contentcreatie & marketing", beschrijving: "Teksten, social media, campagnes", badge: { label: "Quick win", tone: "positive" } },
+  { value: "hr_administratie", label: "HR-administratie & onboarding", beschrijving: "Vacatures, contracten, onboardingflows" },
+  { value: "data_analyse", label: "Data-analyse & rapportage", beschrijving: "Inzichten uit cijfers halen" },
   { value: "inkoop_leveranciers", label: "Inkoop & leveranciersbeheer", beschrijving: "Offertes, bestellingen, leverancierscommunicatie" },
-  { value: "marketing_content", label: "Marketing & contentcreatie", beschrijving: "Teksten, social media, campagnes" },
+  { value: "compliance_documentbeheer", label: "Compliance & documentbeheer", beschrijving: "Contracten, certificaten, archief" },
+  { value: "kwaliteitscontrole", label: "Kwaliteitscontrole", beschrijving: "Controleren en toetsen aan normen" },
+  { value: "anders", label: "Anders" },
 ];
 
 export const urenVerliesOpties: VraagOptie<UrenVerlies>[] = [
-  { value: "<5", label: "Minder dan 5 uur per week", beschrijving: "Beperkte tijdverspilling" },
-  { value: "5-15", label: "5 tot 15 uur per week", beschrijving: "Merkbare tijdverspilling" },
-  { value: "15-30", label: "15 tot 30 uur per week", beschrijving: "Aanzienlijk tijdsverlies" },
-  { value: ">30", label: "Meer dan 30 uur per week", beschrijving: "Kritieke bottleneck" },
+  { value: "<2", label: "Minder dan 2 uur", beschrijving: "Per medewerker per week" },
+  { value: "2-5", label: "2-5 uur", beschrijving: "Per medewerker per week" },
+  { value: "5-10", label: "5-10 uur", beschrijving: "Per medewerker per week", badge: { label: "Significant", tone: "warning" } },
+  { value: "10-20", label: "10-20 uur", beschrijving: "Per medewerker per week", badge: { label: "Hoog potentieel", tone: "positive" } },
+  { value: ">20", label: "Meer dan 20 uur", beschrijving: "Per medewerker per week", badge: { label: "Urgent", tone: "danger" } },
 ];
 
-// ─── Stap 3: Data & Systemen ──────────────────────────────────────────────
+// ─── Pijler 3: Data & Systemen ────────────────────────────────────────────
 
 export const kernApplicatieOpties: VraagOptie<KernApplicatie>[] = [
   { value: "microsoft365", label: "Microsoft 365", beschrijving: "Teams, SharePoint, Outlook, Office" },
   { value: "google_workspace", label: "Google Workspace", beschrijving: "Gmail, Drive, Docs, Sheets" },
   { value: "exact", label: "Exact", beschrijving: "ERP / boekhouding" },
+  { value: "afas", label: "AFAS", beschrijving: "ERP / HR / financiën" },
   { value: "sap", label: "SAP", beschrijving: "Enterprise resource planning" },
   { value: "salesforce", label: "Salesforce", beschrijving: "CRM & sales platform" },
   { value: "hubspot", label: "HubSpot", beschrijving: "CRM & marketing automation" },
@@ -91,38 +121,62 @@ export const kernApplicatieOpties: VraagOptie<KernApplicatie>[] = [
   { value: "magento", label: "Magento / Adobe Commerce", beschrijving: "E-commerce platform" },
   { value: "woocommerce", label: "WooCommerce", beschrijving: "E-commerce op WordPress" },
   { value: "lightspeed", label: "Lightspeed", beschrijving: "POS & e-commerce voor retail/horeca" },
-  { value: "eigen_maatwerk", label: "Eigen / maatwerk systeem", beschrijving: "Intern ontwikkelde software" },
+  { value: "mailchimp", label: "Mailchimp", beschrijving: "E-mail marketing" },
+  { value: "klaviyo", label: "Klaviyo", beschrijving: "E-mail & SMS marketing voor e-commerce" },
+  { value: "asana_monday", label: "Asana / Monday / ClickUp", beschrijving: "Projectmanagement" },
+  { value: "slack_teams", label: "Slack / MS Teams", beschrijving: "Team-communicatie" },
+  { value: "powerbi_tableau", label: "Power BI / Tableau / Looker", beschrijving: "Business Intelligence" },
+  { value: "branche_specifiek", label: "Branchespecifieke software", beschrijving: "Vakgebied-specifieke pakketten" },
+  { value: "eigen_maatwerk", label: "Eigen / maatwerk software", beschrijving: "Intern ontwikkeld" },
   { value: "anders", label: "Andere software", beschrijving: "Niet in de lijst" },
   { value: "geen", label: "Geen specifieke systemen", beschrijving: "Voornamelijk handmatig / spreadsheets" },
 ];
 
 export const dataKwaliteitOpties: VraagOptie<DataKwaliteit>[] = [
-  {
-    value: "verspreid_inconsistent",
-    label: "Verspreid & inconsistent",
-    beschrijving: "Data staat in losse bestanden, e-mails en systemen die niet communiceren",
-  },
-  {
-    value: "structureel_geisoleerd",
-    label: "Structureel maar geïsoleerd",
-    beschrijving: "Data is gestructureerd per systeem maar niet gekoppeld of centraal beschikbaar",
-  },
-  {
-    value: "centraal_goed",
-    label: "Centraal & goed gestructureerd",
-    beschrijving: "Data is gecentraliseerd, up-to-date en toegankelijk voor analyses",
-  },
+  { value: "chaotisch", label: "Chaotisch", beschrijving: "Data staat overal verspreid" },
+  { value: "basis", label: "Basis", beschrijving: "Data is aanwezig maar niet gestructureerd" },
+  { value: "redelijk", label: "Redelijk", beschrijving: "Data is grotendeels gestructureerd" },
+  { value: "goed", label: "Goed", beschrijving: "Data is gestructureerd en consistent", badge: { label: "AI-ready", tone: "positive" } },
+  { value: "uitstekend", label: "Uitstekend", beschrijving: "Data is clean, gecentraliseerd en goed gedocumenteerd", badge: { label: "AI-ready", tone: "positive" } },
 ];
 
+export const systeemIntegratieOpties: VraagOptie<SysteemIntegratie>[] = [
+  { value: "nauwelijks", label: "Nauwelijks", beschrijving: "Systemen staan los van elkaar" },
+  { value: "beperkt", label: "Beperkt", beschrijving: "Enkele handmatige koppelingen" },
+  { value: "gedeeltelijk", label: "Gedeeltelijk", beschrijving: "Sommige systemen zijn gekoppeld" },
+  { value: "goed", label: "Goed", beschrijving: "De meeste systemen communiceren met elkaar" },
+  { value: "uitstekend", label: "Uitstekend", beschrijving: "Volledig geïntegreerd ecosysteem", badge: { label: "AI-ready", tone: "positive" } },
+];
+
+export const itInfrastructuurOpties: VraagOptie<ITInfrastructuur>[] = [
+  { value: "cloud_based", label: "Volledig cloud-based", beschrijving: "Alles in SaaS / cloudplatformen", badge: { label: "AI-ready", tone: "positive" } },
+  { value: "hybride", label: "Hybride (cloud + on-premise)", beschrijving: "Mix van cloud en eigen servers" },
+  { value: "on_premise", label: "Voornamelijk on-premise", beschrijving: "Eigen servers, lokale installaties" },
+  { value: "weet_niet", label: "Weet ik niet", beschrijving: "Geen zicht op de infrastructuur" },
+];
+
+// Gevoelige data — hoog risico = bijzondere persoonsgegevens (AVG art. 9) +
+// minderjarigen + IP. Vereist extra waarborgen voor AI-implementaties.
 export const gevoeligeDataOpties: VraagOptie<GevoeligeData>[] = [
-  { value: "klantdata", label: "Klant- en persoonsgegevens", beschrijving: "Namen, adressen, contactgegevens (AVG)" },
+  { value: "klantgegevens", label: "Klantgegevens & contactinformatie", beschrijving: "NAW, e-mail, telefoonnummers (AVG)" },
   { value: "financieel", label: "Financiële gegevens", beschrijving: "Omzet, marges, bankgegevens" },
-  { value: "medisch", label: "Medische of gezondheidsdata", beschrijving: "Bijzondere persoonsgegevens (AVG)" },
-  { value: "intellectueel_eigendom", label: "Intellectueel eigendom", beschrijving: "Bedrijfsgeheimen, R&D, formules" },
-  { value: "geen", label: "Geen bijzonder gevoelige data", beschrijving: "Standaard bedrijfsdata" },
+  { value: "medisch", label: "Medische / gezondheidsgegevens", beschrijving: "Bijzondere persoonsgegevens (AVG art. 9)", badge: { label: "Hoog risico", tone: "danger" } },
+  { value: "personeel", label: "Personeelsgegevens", beschrijving: "HR-data, contracten, beoordelingen" },
+  { value: "juridisch", label: "Juridische documenten & contracten", beschrijving: "Vertrouwelijke overeenkomsten" },
+  { value: "intellectueel_eigendom", label: "Intellectueel eigendom & bedrijfsgeheimen", beschrijving: "R&D, formules, processen", badge: { label: "Hoog risico", tone: "danger" } },
+  { value: "minderjarigen", label: "Gegevens van minderjarigen", beschrijving: "Vereist extra waarborgen (AVG)", badge: { label: "Hoog risico", tone: "danger" } },
+  { value: "geen", label: "Geen bijzondere categorieën", beschrijving: "Alleen standaard bedrijfsdata" },
 ];
 
-// ─── Stap 4: Cultuur & Governance ────────────────────────────────────────
+// ─── Pijler 4: Kennis, cultuur & governance ──────────────────────────────
+
+export const aiMaturiteitOpties: VraagOptie<AiMaturiteit>[] = [
+  { value: "geen_ai", label: "Geen — AI is een onbekend terrein", beschrijving: "We hebben nog niets met AI gedaan" },
+  { value: "bewust", label: "Bewust — gehoord maar niet mee gewerkt", beschrijving: "We weten dat het bestaat" },
+  { value: "experimenteel", label: "Experimenteel — enkele medewerkers gebruiken AI-tools", beschrijving: "ChatGPT, Copilot ad hoc" },
+  { value: "gevorderd", label: "Gevorderd — meerdere AI-tools in gebruik", beschrijving: "AI maakt deel uit van werkprocessen" },
+  { value: "expert", label: "Expert — AI is geïntegreerd in werkprocessen", beschrijving: "Geautomatiseerde AI-workflows actief", badge: { label: "AI-ready", tone: "positive" } },
+];
 
 export const teamSentimentOpties: VraagOptie<TeamSentiment>[] = [
   { value: "enthousiast", label: "Enthousiast & nieuwsgierig", beschrijving: "Het team omarmt nieuwe technologie" },
@@ -131,17 +185,38 @@ export const teamSentimentOpties: VraagOptie<TeamSentiment>[] = [
   { value: "onbekend", label: "Onbekend / niet gemeten", beschrijving: "We hebben dit nog niet gepeild" },
 ];
 
-export const digitaleAgendasTrekkerOpties: VraagOptie<DigitaleAgendasTrekker>[] = [
-  { value: "directie", label: "Directie / eigenaar", beschrijving: "Digitalisering is strategische prioriteit van bovenaf" },
-  { value: "it_manager", label: "IT of digitaliserings­manager", beschrijving: "Er is een aangewezen persoon voor tech & innovatie" },
-  { value: "geen_centrale_trekker", label: "Geen centrale trekker", beschrijving: "Initiatieven zijn ad hoc of liggen stil" },
+export const managementBetrokkenheidOpties: VraagOptie<ManagementBetrokkenheid>[] = [
+  { value: "niet_betrokken", label: "Niet betrokken — AI staat niet op de agenda", beschrijving: "Geen aandacht vanuit het management" },
+  { value: "bewust", label: "Bewust — men erkent het belang maar er is geen actie", beschrijving: "AI is een gespreksonderwerp" },
+  { value: "geinteresseerd", label: "Geïnteresseerd — er zijn gesprekken gaande", beschrijving: "Verkennende fase" },
+  { value: "actief", label: "Actief — management stuurt op AI-adoptie", beschrijving: "Concrete initiatieven en eigenaarschap" },
+  { value: "strategisch", label: "Strategisch — AI is kernonderdeel van de bedrijfsstrategie", beschrijving: "AI is een prioriteit op directieniveau", badge: { label: "Ideaal", tone: "positive" } },
+];
+
+export const trainingsbehoefteOpties: VraagOptie<Trainingsbehoefte>[] = [
+  { value: "basiskennis_ai", label: "Basiskennis AI & automatisering", beschrijving: "Wat is AI en hoe werkt het" },
+  { value: "prompt_engineering", label: "Prompt engineering & effectief AI-gebruik", beschrijving: "Beter resultaat uit AI-tools halen" },
+  { value: "privacy_veilig_gebruik", label: "Privacy & veilig gebruik van AI-tools", beschrijving: "AVG-conform en datasecure werken" },
+  { value: "specifieke_tools", label: "Specifieke tool-trainingen (Copilot, ChatGPT)", beschrijving: "Hands-on werken met concrete tools" },
+  { value: "change_management", label: "Change management & adoptie", beschrijving: "Verandering begeleiden in het team" },
+  { value: "ai_strategie_leidinggevenden", label: "AI-strategie voor leidinggevenden", beschrijving: "Strategische besluitvorming rond AI" },
+  { value: "geen_training_nodig", label: "Geen training nodig", beschrijving: "Het team beheerst AI al voldoende" },
 ];
 
 export const privacyBeleidOpties: VraagOptie<PrivacyBeleid>[] = [
-  { value: "geen_richtlijnen", label: "Geen richtlijnen", beschrijving: "Medewerkers gebruiken tools naar eigen inzicht" },
-  { value: "informele_afspraken", label: "Informele afspraken", beschrijving: "Er zijn mondelinge of losse schriftelijke afspraken" },
-  { value: "formeel_avg", label: "Formeel AVG-beleid", beschrijving: "Privacyverklaring, verwerkersovereenkomsten en procedures aanwezig" },
-  { value: "iso_gecertificeerd", label: "ISO / NEN gecertificeerd", beschrijving: "Formeel gecertificeerd informatiebeveiligingsbeleid" },
+  { value: "geen_richtlijnen", label: "Nee, helemaal niet", beschrijving: "Medewerkers gebruiken tools naar eigen inzicht" },
+  { value: "informele_afspraken", label: "Informeel — er zijn mondelinge afspraken", beschrijving: "Geen formeel beleid" },
+  { value: "basisbeleid", label: "Gedeeltelijk — er is een basisbeleid", beschrijving: "Hoofdlijnen op papier" },
+  { value: "formeel_ai_beleid", label: "Ja — er is een formeel AI-gebruiksbeleid", beschrijving: "Vastgelegd, gecommuniceerd, getekend" },
+  { value: "inclusief_toetsing", label: "Ja — inclusief toetsing en handhaving", beschrijving: "Periodieke audits en handhavingsmechanismen", badge: { label: "Ideaal", tone: "positive" } },
+];
+
+export const euAiActBekendheidOpties: VraagOptie<EuAiActBekendheid>[] = [
+  { value: "nooit_gehoord", label: "Nee, nog nooit van gehoord", beschrijving: "Onbekend met de wetgeving" },
+  { value: "gehoord_onbekend", label: "Heb ervan gehoord maar weet niet wat het betekent", beschrijving: "Globaal bewust" },
+  { value: "globaal_bekend", label: "Globaal bekend — we moeten er nog mee aan de slag", beschrijving: "We weten dat het er aan komt" },
+  { value: "goed_bekend", label: "Goed bekend — we zijn al bezig met compliance", beschrijving: "Actief bezig met implementatie" },
+  { value: "volledig_compliant", label: "Volledig compliant — we voldoen aan alle vereisten", beschrijving: "Audits, documentatie en governance op orde", badge: { label: "Ideaal", tone: "positive" } },
 ];
 
 export const aiZorgOpties: VraagOptie<AiZorg>[] = [
@@ -153,14 +228,7 @@ export const aiZorgOpties: VraagOptie<AiZorg>[] = [
   { value: "geen_zorgen", label: "Geen specifieke zorgen", beschrijving: "We zien AI als kans" },
 ];
 
-// ─── Stap 5: AI Ambitie ───────────────────────────────────────────────────
-
-export const aiMaturiteitOpties: VraagOptie<AiMaturiteit>[] = [
-  { value: "geen_ai", label: "Geen AI in gebruik", beschrijving: "We hebben nog niet met AI gewerkt" },
-  { value: "experimenteren", label: "Experimenteren", beschrijving: "We proberen soms ChatGPT of Copilot" },
-  { value: "productief_gebruik", label: "Productief gebruik", beschrijving: "AI maakt deel uit van ons dagelijks werk" },
-  { value: "ai_core", label: "AI is kern van ons proces", beschrijving: "Meerdere geautomatiseerde AI-workflows actief" },
-];
+// ─── Pijler 5: AI Ambitie ────────────────────────────────────────────────
 
 export const budgetOpties: VraagOptie<"laag" | "midden" | "hoog">[] = [
   { value: "laag", label: "Tot €5.000 per jaar", beschrijving: "Kleine investering, snelle quick wins" },

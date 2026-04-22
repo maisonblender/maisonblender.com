@@ -12,45 +12,96 @@ import {
   urenVerliesOpties,
   kernApplicatieOpties,
   dataKwaliteitOpties,
+  systeemIntegratieOpties,
+  itInfrastructuurOpties,
   gevoeligeDataOpties,
-  teamSentimentOpties,
-  digitaleAgendasTrekkerOpties,
-  privacyBeleidOpties,
-  aiZorgOpties,
   aiMaturiteitOpties,
+  teamSentimentOpties,
+  managementBetrokkenheidOpties,
+  trainingsbehoefteOpties,
+  privacyBeleidOpties,
+  euAiActBekendheidOpties,
+  aiZorgOpties,
   budgetOpties,
   snelheidOpties,
+  type OptionBadge,
 } from "@/lib/quickscan/questions";
-import type { ScanAntwoorden, LeadGegevens, Pijnpunt, KernApplicatie, GevoeligeData, AiZorg } from "@/lib/quickscan/types";
+import type {
+  ScanAntwoorden,
+  LeadGegevens,
+  Pijnpunt,
+  KernApplicatie,
+  GevoeligeData,
+  AiZorg,
+  Trainingsbehoefte,
+  UrgentieScore,
+  RisicoScore,
+} from "@/lib/quickscan/types";
 
 const STAP_TITELS = [
   "Vertel ons over je bedrijf",
   "Waar verlies je nu de meeste tijd?",
-  "Data & systemen in kaart",
-  "Cultuur, kennis & governance",
+  "Data, systemen & infrastructuur",
+  "Kennis, cultuur & governance",
   "AI-ambitie & jouw gegevens",
 ];
 
 const STAP_SUBTITELS = [
   "Pijler 1 van 5 — Bedrijfsprofiel",
-  "Pijler 2 van 5 — Pijnpunten & tijdvreters",
+  "Pijler 2 van 5 — Pijnpunten & urgentie",
   "Pijler 3 van 5 — Technisch fundament",
-  "Pijler 4 van 5 — Veranderbereidheid & risico",
+  "Pijler 4 van 5 — Kennis, cultuur & risico",
   "Pijler 5 van 5 — Ambitie & contact",
 ];
 
 type PartialAntwoorden = Partial<ScanAntwoorden>;
+
+// Badge-tone → Tailwind classes. Yellow/lime = positive, amber = warning,
+// rose = danger, slate = neutral.
+const BADGE_CLASSES: Record<OptionBadge["tone"], { active: string; idle: string }> = {
+  positive: {
+    idle: "border-lime-400 text-lime-700 bg-lime-50",
+    active: "border-lime-300 text-lime-100 bg-lime-500/20",
+  },
+  warning: {
+    idle: "border-amber-400 text-amber-700 bg-amber-50",
+    active: "border-amber-300 text-amber-100 bg-amber-500/20",
+  },
+  danger: {
+    idle: "border-rose-400 text-rose-700 bg-rose-50",
+    active: "border-rose-300 text-rose-100 bg-rose-500/20",
+  },
+  neutral: {
+    idle: "border-gray-300 text-gray-600 bg-gray-50",
+    active: "border-white/40 text-white bg-white/10",
+  },
+};
+
+function Badge({ badge, selected }: { badge: OptionBadge; selected: boolean }) {
+  const cls = BADGE_CLASSES[badge.tone];
+  return (
+    <span
+      className={`inline-flex items-center px-2.5 py-1 rounded-md border text-[11px] font-mono uppercase tracking-wide whitespace-nowrap ${
+        selected ? cls.active : cls.idle
+      }`}
+    >
+      {badge.label}
+    </span>
+  );
+}
 
 function OptionButton({
   selected,
   onClick,
   children,
   multi,
+  badge,
 }: {
   selected: boolean;
   onClick: () => void;
   children: React.ReactNode;
   multi?: boolean;
+  badge?: OptionBadge;
 }) {
   return (
     <button
@@ -78,17 +129,62 @@ function OptionButton({
             </svg>
           )}
         </div>
-        {children}
+        <div className="flex-1 min-w-0">{children}</div>
+        {badge && <Badge badge={badge} selected={selected} />}
       </div>
     </button>
   );
 }
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children, hint }: { children: React.ReactNode; hint?: string }) {
   return (
-    <label className="block text-lg md:text-xl font-bold text-[#1f1f1f] mb-4 leading-snug">
-      {children}
-    </label>
+    <div className="mb-4">
+      <label className="block text-lg md:text-xl font-bold text-[#1f1f1f] leading-snug">
+        {children}
+      </label>
+      {hint && <p className="text-sm text-gray-500 mt-1">{hint}</p>}
+    </div>
+  );
+}
+
+// ─── 1-10 nummerschaal (urgentie / risico) ──────────────────────────────
+function NumberScale({
+  value,
+  onChange,
+  lowLabel,
+  highLabel,
+}: {
+  value: number | undefined;
+  onChange: (n: number) => void;
+  lowLabel: string;
+  highLabel: string;
+}) {
+  return (
+    <div>
+      <div className="grid grid-cols-10 gap-1.5 sm:gap-2">
+        {Array.from({ length: 10 }, (_, i) => i + 1).map((n) => {
+          const selected = value === n;
+          return (
+            <button
+              key={n}
+              type="button"
+              onClick={() => onChange(n)}
+              className={`aspect-square rounded-lg border-2 flex items-center justify-center text-sm font-semibold transition-all ${
+                selected
+                  ? "bg-lime-400 border-lime-500 text-black"
+                  : "bg-white border-gray-200 text-gray-700 hover:border-gray-400"
+              }`}
+            >
+              {n}
+            </button>
+          );
+        })}
+      </div>
+      <div className="flex justify-between text-xs text-gray-400 mt-2">
+        <span>1 — {lowLabel}</span>
+        <span>10 — {highLabel}</span>
+      </div>
+    </div>
   );
 }
 
@@ -99,7 +195,6 @@ export default function ScanForm() {
 
   const naarStap = useCallback((nieuweStap: number) => {
     setStap(nieuweStap);
-    // Scroll de pagina én de container naar boven
     topRef.current?.scrollIntoView({ behavior: "instant" });
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
@@ -110,6 +205,7 @@ export default function ScanForm() {
     kernApplicaties: [],
     gevoeligeData: [],
     aiZorgen: [],
+    trainingsbehoefte: [],
   });
   const [lead, setLead] = useState<Partial<LeadGegevens>>({});
   const [loading, setLoading] = useState(false);
@@ -121,6 +217,7 @@ export default function ScanForm() {
     aiZorgen: "geen_zorgen",
     gevoeligeData: "geen",
     kernApplicaties: "geen",
+    trainingsbehoefte: "geen_training_nodig",
   };
 
   function toggleMulti<T extends string>(
@@ -136,10 +233,8 @@ export default function ScanForm() {
     if (alGeselecteerd) {
       nieuw = huidig.filter((v) => v !== value);
     } else if (isExclusief) {
-      // Klikt op exclusieve optie -> alleen die overhouden
       nieuw = [value];
     } else if (exclusief) {
-      // Klikt op gewone optie -> exclusieve verwijderen, deze toevoegen
       nieuw = [...huidig.filter((v) => v !== exclusief), value];
     } else {
       nieuw = [...huidig, value];
@@ -152,14 +247,32 @@ export default function ScanForm() {
       case 1:
         return !!(antwoorden.sector && antwoorden.omvang && antwoorden.rol && antwoorden.techStack);
       case 2:
-        return (antwoorden.pijnpunten?.length ?? 0) >= 1 && !!antwoorden.urenVerlies;
+        return (
+          (antwoorden.pijnpunten?.length ?? 0) >= 1 &&
+          !!antwoorden.urenVerlies &&
+          !!antwoorden.urgentie
+        );
       case 3:
-        return (antwoorden.kernApplicaties?.length ?? 0) >= 1 && !!antwoorden.dataKwaliteit && (antwoorden.gevoeligeData?.length ?? 0) >= 1;
+        return (
+          (antwoorden.kernApplicaties?.length ?? 0) >= 1 &&
+          !!antwoorden.dataKwaliteit &&
+          !!antwoorden.systeemIntegratie &&
+          !!antwoorden.itInfrastructuur &&
+          (antwoorden.gevoeligeData?.length ?? 0) >= 1
+        );
       case 4:
-        return !!(antwoorden.teamSentiment && antwoorden.digitaleAgendasTrekker && antwoorden.privacyBeleid) && (antwoorden.aiZorgen?.length ?? 0) >= 1;
-      case 5:
         return !!(
           antwoorden.aiMaturiteit &&
+          antwoorden.teamSentiment &&
+          antwoorden.managementBetrokkenheid &&
+          (antwoorden.trainingsbehoefte?.length ?? 0) >= 1 &&
+          antwoorden.privacyBeleid &&
+          antwoorden.euAiActBekendheid &&
+          antwoorden.risicoOngecontroleerdAi &&
+          (antwoorden.aiZorgen?.length ?? 0) >= 1
+        );
+      case 5:
+        return !!(
           antwoorden.budgetBereidheid &&
           antwoorden.implementatieSnelheid &&
           lead.voornaam?.trim() &&
@@ -183,8 +296,6 @@ export default function ScanForm() {
       const volledigeAntwoorden = antwoorden as ScanAntwoorden;
       const volledigeLead = lead as LeadGegevens;
 
-      // Capture lead in CRM vóór de resultaten getoond worden.
-      // Faalt deze stap, dan blokkeert het de flow NIET — lead wordt later via email-step alsnog geprobeerd.
       try {
         await fetch("/api/quickscan/capture-lead", {
           method: "POST",
@@ -231,7 +342,6 @@ export default function ScanForm() {
               transition={{ duration: 0.4, ease: "easeInOut" }}
             />
           </div>
-          {/* Step indicators */}
           <div className="flex justify-between mt-3">
             {[1, 2, 3, 4, 5].map((s) => (
               <div
@@ -278,12 +388,13 @@ export default function ScanForm() {
                 <div className="space-y-6">
                   <div>
                     <SectionLabel>In welke sector is jouw bedrijf actief?</SectionLabel>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="space-y-3">
                       {sectorOpties.map((opt) => (
                         <OptionButton
                           key={opt.value}
                           selected={antwoorden.sector === opt.value}
                           onClick={() => setAntwoorden((p) => ({ ...p, sector: opt.value }))}
+                          badge={opt.badge}
                         >
                           <span className="font-medium">{opt.label}</span>
                         </OptionButton>
@@ -310,7 +421,7 @@ export default function ScanForm() {
                   </div>
 
                   <div>
-                    <SectionLabel>Wat is jouw rol binnen de organisatie?</SectionLabel>
+                    <SectionLabel>Wat is jouw functie binnen de organisatie?</SectionLabel>
                     <div className="space-y-3">
                       {rolOpties.map((opt) => (
                         <OptionButton
@@ -347,11 +458,13 @@ export default function ScanForm() {
                 </div>
               )}
 
-              {/* ── Stap 2: Pijnpunten ── */}
+              {/* ── Stap 2: Pijnpunten & Urgentie ── */}
               {stap === 2 && (
                 <div className="space-y-6">
                   <div>
-                    <SectionLabel>Welke processen kosten jullie de meeste tijd? <span className="font-normal text-gray-400">(meerdere mogelijk)</span></SectionLabel>
+                    <SectionLabel hint="Meerdere antwoorden mogelijk">
+                      Welke activiteiten kosten jullie de meeste tijd?
+                    </SectionLabel>
                     <div className="space-y-3">
                       {pijnpuntOpties.map((opt) => (
                         <OptionButton
@@ -359,6 +472,7 @@ export default function ScanForm() {
                           selected={(antwoorden.pijnpunten ?? []).includes(opt.value)}
                           onClick={() => toggleMulti<Pijnpunt>("pijnpunten", opt.value)}
                           multi
+                          badge={opt.badge}
                         >
                           <div>
                             <span className="font-medium block">{opt.label}</span>
@@ -369,19 +483,20 @@ export default function ScanForm() {
                     </div>
                     {(antwoorden.pijnpunten?.length ?? 0) > 0 && (
                       <p className="text-sm text-gray-500 mt-2">
-                        {antwoorden.pijnpunten?.length} uitdaging{(antwoorden.pijnpunten?.length ?? 0) !== 1 ? "en" : ""} geselecteerd
+                        {antwoorden.pijnpunten?.length} activiteit{(antwoorden.pijnpunten?.length ?? 0) !== 1 ? "en" : ""} geselecteerd
                       </p>
                     )}
                   </div>
 
                   <div>
-                    <SectionLabel>Hoeveel uur per week gaat er verloren aan repetitief of handmatig werk?</SectionLabel>
+                    <SectionLabel>Hoeveel uur per week gaat er gemiddeld verloren aan repetitieve taken (per medewerker)?</SectionLabel>
                     <div className="space-y-3">
                       {urenVerliesOpties.map((opt) => (
                         <OptionButton
                           key={opt.value}
                           selected={antwoorden.urenVerlies === opt.value}
                           onClick={() => setAntwoorden((p) => ({ ...p, urenVerlies: opt.value }))}
+                          badge={opt.badge}
                         >
                           <div>
                             <span className="font-medium block">{opt.label}</span>
@@ -391,14 +506,30 @@ export default function ScanForm() {
                       ))}
                     </div>
                   </div>
+
+                  <div>
+                    <SectionLabel hint="Hoe sterk is de wens om processen efficiënter te maken?">
+                      Hoe urgent voelt de behoefte aan procesverbetering en automatisering?
+                    </SectionLabel>
+                    <NumberScale
+                      value={antwoorden.urgentie}
+                      onChange={(n) =>
+                        setAntwoorden((p) => ({ ...p, urgentie: n as UrgentieScore }))
+                      }
+                      lowLabel="Geen urgentie"
+                      highLabel="Zeer urgent"
+                    />
+                  </div>
                 </div>
               )}
 
-              {/* ── Stap 3: Data & Systemen ── */}
+              {/* ── Stap 3: Data, Systemen & Infrastructuur ── */}
               {stap === 3 && (
                 <div className="space-y-6">
                   <div>
-                    <SectionLabel>Welke software of systemen gebruiken jullie? <span className="font-normal text-gray-400">(meerdere mogelijk)</span></SectionLabel>
+                    <SectionLabel hint="Meerdere antwoorden mogelijk">
+                      Welke software of systemen gebruiken jullie?
+                    </SectionLabel>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {kernApplicatieOpties.map((opt) => (
                         <OptionButton
@@ -417,13 +548,14 @@ export default function ScanForm() {
                   </div>
 
                   <div>
-                    <SectionLabel>Hoe is de kwaliteit en toegankelijkheid van jullie data?</SectionLabel>
+                    <SectionLabel>Hoe zou je de kwaliteit en toegankelijkheid van jullie data omschrijven?</SectionLabel>
                     <div className="space-y-3">
                       {dataKwaliteitOpties.map((opt) => (
                         <OptionButton
                           key={opt.value}
                           selected={antwoorden.dataKwaliteit === opt.value}
                           onClick={() => setAntwoorden((p) => ({ ...p, dataKwaliteit: opt.value }))}
+                          badge={opt.badge}
                         >
                           <div>
                             <span className="font-medium block">{opt.label}</span>
@@ -435,7 +567,47 @@ export default function ScanForm() {
                   </div>
 
                   <div>
-                    <SectionLabel>Welke soorten gevoelige data verwerken jullie? <span className="font-normal text-gray-400">(meerdere mogelijk)</span></SectionLabel>
+                    <SectionLabel>Hoe goed zijn jullie systemen met elkaar geïntegreerd?</SectionLabel>
+                    <div className="space-y-3">
+                      {systeemIntegratieOpties.map((opt) => (
+                        <OptionButton
+                          key={opt.value}
+                          selected={antwoorden.systeemIntegratie === opt.value}
+                          onClick={() => setAntwoorden((p) => ({ ...p, systeemIntegratie: opt.value }))}
+                          badge={opt.badge}
+                        >
+                          <div>
+                            <span className="font-medium block">{opt.label}</span>
+                            {opt.beschrijving && <span className="text-xs opacity-70">{opt.beschrijving}</span>}
+                          </div>
+                        </OptionButton>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <SectionLabel>Hoe is jullie IT-infrastructuur ingericht?</SectionLabel>
+                    <div className="space-y-3">
+                      {itInfrastructuurOpties.map((opt) => (
+                        <OptionButton
+                          key={opt.value}
+                          selected={antwoorden.itInfrastructuur === opt.value}
+                          onClick={() => setAntwoorden((p) => ({ ...p, itInfrastructuur: opt.value }))}
+                          badge={opt.badge}
+                        >
+                          <div>
+                            <span className="font-medium block">{opt.label}</span>
+                            {opt.beschrijving && <span className="text-xs opacity-70">{opt.beschrijving}</span>}
+                          </div>
+                        </OptionButton>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <SectionLabel hint="Dit bepaalt welke AI-tools veilig ingezet kunnen worden. Meerdere antwoorden mogelijk.">
+                      Welke gevoelige data verwerkt jullie organisatie?
+                    </SectionLabel>
                     <div className="space-y-3">
                       {gevoeligeDataOpties.map((opt) => (
                         <OptionButton
@@ -443,6 +615,7 @@ export default function ScanForm() {
                           selected={(antwoorden.gevoeligeData ?? []).includes(opt.value)}
                           onClick={() => toggleMulti<GevoeligeData>("gevoeligeData", opt.value)}
                           multi
+                          badge={opt.badge}
                         >
                           <div>
                             <span className="font-medium block">{opt.label}</span>
@@ -455,9 +628,28 @@ export default function ScanForm() {
                 </div>
               )}
 
-              {/* ── Stap 4: Cultuur & Governance ── */}
+              {/* ── Stap 4: Kennis, Cultuur & Governance ── */}
               {stap === 4 && (
                 <div className="space-y-6">
+                  <div>
+                    <SectionLabel>Wat is het huidige kennisniveau van AI binnen jullie organisatie?</SectionLabel>
+                    <div className="space-y-3">
+                      {aiMaturiteitOpties.map((opt) => (
+                        <OptionButton
+                          key={opt.value}
+                          selected={antwoorden.aiMaturiteit === opt.value}
+                          onClick={() => setAntwoorden((p) => ({ ...p, aiMaturiteit: opt.value }))}
+                          badge={opt.badge}
+                        >
+                          <div>
+                            <span className="font-medium block">{opt.label}</span>
+                            {opt.beschrijving && <span className="text-xs opacity-70">{opt.beschrijving}</span>}
+                          </div>
+                        </OptionButton>
+                      ))}
+                    </div>
+                  </div>
+
                   <div>
                     <SectionLabel>Hoe staat het team tegenover AI en nieuwe technologie?</SectionLabel>
                     <div className="space-y-3">
@@ -477,13 +669,14 @@ export default function ScanForm() {
                   </div>
 
                   <div>
-                    <SectionLabel>Wie trekt de digitale en innovatieagenda in jouw organisatie?</SectionLabel>
+                    <SectionLabel>Hoe betrokken is het management bij de AI-agenda?</SectionLabel>
                     <div className="space-y-3">
-                      {digitaleAgendasTrekkerOpties.map((opt) => (
+                      {managementBetrokkenheidOpties.map((opt) => (
                         <OptionButton
                           key={opt.value}
-                          selected={antwoorden.digitaleAgendasTrekker === opt.value}
-                          onClick={() => setAntwoorden((p) => ({ ...p, digitaleAgendasTrekker: opt.value }))}
+                          selected={antwoorden.managementBetrokkenheid === opt.value}
+                          onClick={() => setAntwoorden((p) => ({ ...p, managementBetrokkenheid: opt.value }))}
+                          badge={opt.badge}
                         >
                           <div>
                             <span className="font-medium block">{opt.label}</span>
@@ -495,13 +688,35 @@ export default function ScanForm() {
                   </div>
 
                   <div>
-                    <SectionLabel>Hoe is het gesteld met privacy- en datarichtlijnen?</SectionLabel>
+                    <SectionLabel hint="Meerdere antwoorden mogelijk">
+                      Welke trainingsbehoeften zie je voor jullie medewerkers?
+                    </SectionLabel>
+                    <div className="space-y-3">
+                      {trainingsbehoefteOpties.map((opt) => (
+                        <OptionButton
+                          key={opt.value}
+                          selected={(antwoorden.trainingsbehoefte ?? []).includes(opt.value)}
+                          onClick={() => toggleMulti<Trainingsbehoefte>("trainingsbehoefte", opt.value)}
+                          multi
+                        >
+                          <div>
+                            <span className="font-medium block">{opt.label}</span>
+                            {opt.beschrijving && <span className="text-xs opacity-70">{opt.beschrijving}</span>}
+                          </div>
+                        </OptionButton>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <SectionLabel>Heeft jullie organisatie al richtlijnen voor het gebruik van AI-tools door medewerkers?</SectionLabel>
                     <div className="space-y-3">
                       {privacyBeleidOpties.map((opt) => (
                         <OptionButton
                           key={opt.value}
                           selected={antwoorden.privacyBeleid === opt.value}
                           onClick={() => setAntwoorden((p) => ({ ...p, privacyBeleid: opt.value }))}
+                          badge={opt.badge}
                         >
                           <div>
                             <span className="font-medium block">{opt.label}</span>
@@ -513,7 +728,44 @@ export default function ScanForm() {
                   </div>
 
                   <div>
-                    <SectionLabel>Wat zijn jullie grootste zorgen bij AI-implementatie? <span className="font-normal text-gray-400">(meerdere mogelijk)</span></SectionLabel>
+                    <SectionLabel hint="De EU AI Act is per augustus 2024 van kracht en stelt eisen aan het gebruik van AI-systemen.">
+                      Ben je bekend met de EU AI Act en de implicaties voor jullie organisatie?
+                    </SectionLabel>
+                    <div className="space-y-3">
+                      {euAiActBekendheidOpties.map((opt) => (
+                        <OptionButton
+                          key={opt.value}
+                          selected={antwoorden.euAiActBekendheid === opt.value}
+                          onClick={() => setAntwoorden((p) => ({ ...p, euAiActBekendheid: opt.value }))}
+                          badge={opt.badge}
+                        >
+                          <div>
+                            <span className="font-medium block">{opt.label}</span>
+                            {opt.beschrijving && <span className="text-xs opacity-70">{opt.beschrijving}</span>}
+                          </div>
+                        </OptionButton>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <SectionLabel hint="Bijv. medewerkers die zelf gevoelige data in AI-tools plakken zonder beleid.">
+                      Hoe groot schat je het risico in van ongecontroleerd AI-gebruik binnen jullie organisatie?
+                    </SectionLabel>
+                    <NumberScale
+                      value={antwoorden.risicoOngecontroleerdAi}
+                      onChange={(n) =>
+                        setAntwoorden((p) => ({ ...p, risicoOngecontroleerdAi: n as RisicoScore }))
+                      }
+                      lowLabel="Geen risico"
+                      highLabel="Zeer hoog risico"
+                    />
+                  </div>
+
+                  <div>
+                    <SectionLabel hint="Meerdere antwoorden mogelijk">
+                      Wat zijn jullie grootste zorgen bij AI-implementatie?
+                    </SectionLabel>
                     <div className="space-y-3">
                       {aiZorgOpties.map((opt) => (
                         <OptionButton
@@ -536,26 +788,7 @@ export default function ScanForm() {
               {/* ── Stap 5: AI Ambitie + Lead Gate ── */}
               {stap === 5 && (
                 <div className="space-y-8">
-                  {/* AI Ambitie */}
                   <div className="space-y-6">
-                    <div>
-                      <SectionLabel>Hoe staat het bedrijf momenteel met AI?</SectionLabel>
-                      <div className="space-y-3">
-                        {aiMaturiteitOpties.map((opt) => (
-                          <OptionButton
-                            key={opt.value}
-                            selected={antwoorden.aiMaturiteit === opt.value}
-                            onClick={() => setAntwoorden((p) => ({ ...p, aiMaturiteit: opt.value }))}
-                          >
-                            <div>
-                              <span className="font-medium block">{opt.label}</span>
-                              {opt.beschrijving && <span className="text-xs opacity-70">{opt.beschrijving}</span>}
-                            </div>
-                          </OptionButton>
-                        ))}
-                      </div>
-                    </div>
-
                     <div>
                       <SectionLabel>Wat is het jaarlijkse budget voor AI-implementatie?</SectionLabel>
                       <div className="space-y-3">
@@ -575,7 +808,7 @@ export default function ScanForm() {
                     </div>
 
                     <div>
-                      <SectionLabel>Hoe snel wil je aan de slag met AI?</SectionLabel>
+                      <SectionLabel>Hoe snel willen jullie aan de slag met AI?</SectionLabel>
                       <div className="space-y-3">
                         {snelheidOpties.map((opt) => (
                           <OptionButton
@@ -603,7 +836,6 @@ export default function ScanForm() {
                     </div>
 
                     <div className="space-y-4">
-                      {/* Voornaam + Achternaam */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
@@ -631,7 +863,6 @@ export default function ScanForm() {
                         </div>
                       </div>
 
-                      {/* Bedrijfsnaam */}
                       <div>
                         <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
                           Bedrijfsnaam <span className="text-red-500">*</span>
@@ -645,7 +876,6 @@ export default function ScanForm() {
                         />
                       </div>
 
-                      {/* E-mail + Telefoon naast elkaar */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
                           <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">

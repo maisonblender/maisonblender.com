@@ -12,14 +12,18 @@
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "./types";
 
 const SECTOR_LABELS: Record<string, string> = {
-  productie: "Productie & Industrie",
-  logistiek: "Logistiek & Transport",
-  zorg: "Zorg & Welzijn",
-  retail: "Retail & E-commerce",
-  zakelijk_dienstverlening: "Zakelijke Dienstverlening",
   bouw: "Bouw & Installatietechniek",
+  financieel: "Financiële dienstverlening",
   horeca: "Horeca & Recreatie",
-  overig: "Overig",
+  logistiek: "Logistiek & Transport",
+  onderwijs: "Onderwijs & Onderzoek",
+  overheid: "Overheid & Non-profit",
+  productie: "Productie & Industrie",
+  retail: "Retail & E-commerce",
+  technologie: "Technologie & Software",
+  zakelijk_dienstverlening: "Zakelijke dienstverlening",
+  zorg: "Zorg & Welzijn",
+  anders: "Anders",
 };
 
 const SCORE_LABELS: Record<string, string> = {
@@ -31,61 +35,104 @@ const SCORE_LABELS: Record<string, string> = {
 };
 
 const ROL_LABELS: Record<string, string> = {
-  eigenaar_directeur: "Eigenaar / Directeur",
+  directeur_ceo: "Directeur / CEO / Eigenaar",
   manager: "Manager / Teamleider",
-  it_verantwoordelijke: "IT / Digitalisering verantwoordelijke",
+  it_verantwoordelijke: "IT / Technologie verantwoordelijke",
+  operations: "Operations / Processen",
+  hr_people: "HR / People & Culture",
+  finance: "Finance / Controlling",
+  marketing_sales: "Marketing / Sales",
   medewerker: "Medewerker",
   anders: "Anders",
 };
 
 const TECHSTACK_LABELS: Record<string, string> = {
-  basaal: "Basaal — losse tools, weinig integratie",
-  modern: "Modern — kernsystemen geïntegreerd",
-  geavanceerd: "Geavanceerd — automation en API's actief",
+  geen_systemen: "Voornamelijk handmatige processen",
+  basis_office: "Basis Office & e-mail",
+  erp_crm: "ERP en/of CRM systeem",
+  cloud_first: "Cloud-first & API-gedreven",
+  al_ai_gebruik: "Al AI in gebruik",
 };
 
 const PIJNPUNT_LABELS: Record<string, string> = {
-  repetitief_handwerk: "Repetitief handmatig werk",
-  klantcommunicatie: "Klantcommunicatie & support",
-  data_analyse: "Data analyse & rapportage",
-  documentverwerking: "Document- & factuurverwerking",
+  data_invoer_administratie: "Data-invoer & administratie",
+  rapportages_verslaglegging: "Rapportages & verslaglegging",
+  klantvragen: "Beantwoorden van klantvragen",
+  email_verwerking: "E-mail verwerking & communicatie",
   planning_roostering: "Planning & roostering",
-  kwaliteitscontrole: "Kwaliteitscontrole & compliance",
-  hr_recruitment: "HR & recruitment",
+  factuurverwerking: "Factuurverwerking & boekhouding",
+  contentcreatie: "Contentcreatie & marketing",
+  hr_administratie: "HR-administratie & onboarding",
+  data_analyse: "Data-analyse & rapportage",
   inkoop_leveranciers: "Inkoop & leveranciersbeheer",
-  marketing_content: "Marketing & contentcreatie",
+  compliance_documentbeheer: "Compliance & documentbeheer",
+  kwaliteitscontrole: "Kwaliteitscontrole",
+  anders: "Anders",
 };
 
 const UREN_LABELS: Record<string, string> = {
-  "<5": "Minder dan 5 uur per week",
-  "5-15": "5 tot 15 uur per week",
-  "15-30": "15 tot 30 uur per week",
-  ">30": "Meer dan 30 uur per week",
+  "<2": "Minder dan 2 uur per medewerker per week",
+  "2-5": "2 tot 5 uur per medewerker per week",
+  "5-10": "5 tot 10 uur per medewerker per week",
+  "10-20": "10 tot 20 uur per medewerker per week",
+  ">20": "Meer dan 20 uur per medewerker per week",
 };
 
 const KERNAPP_LABELS: Record<string, string> = {
-  microsoft365: "Microsoft 365 / SharePoint",
+  microsoft365: "Microsoft 365",
   google_workspace: "Google Workspace",
-  crm_erp: "CRM / ERP (Salesforce, Exact, Afas, etc.)",
-  boekhouding: "Boekhoudsoftware",
+  exact: "Exact",
+  afas: "AFAS",
+  sap: "SAP",
+  salesforce: "Salesforce",
+  hubspot: "HubSpot",
+  shopify: "Shopify",
+  magento: "Magento / Adobe Commerce",
+  woocommerce: "WooCommerce",
+  lightspeed: "Lightspeed",
+  mailchimp: "Mailchimp",
+  klaviyo: "Klaviyo",
+  asana_monday: "Asana / Monday / ClickUp",
+  slack_teams: "Slack / MS Teams",
+  powerbi_tableau: "Power BI / Tableau / Looker",
   branche_specifiek: "Branchespecifieke software",
-  custom_software: "Eigen / maatwerk software",
-  voornamelijk_papier: "Voornamelijk papier en losse bestanden",
+  eigen_maatwerk: "Eigen / maatwerk software",
+  anders: "Andere software",
+  geen: "Geen specifieke systemen",
 };
 
 const DATA_KWALITEIT_LABELS: Record<string, string> = {
-  verspreid_inconsistent: "Verspreid & inconsistent",
-  structureel_geisoleerd: "Structureel maar geïsoleerd per systeem",
-  centraal_goed: "Centraal & goed gestructureerd",
+  chaotisch: "Chaotisch — data staat overal verspreid",
+  basis: "Basis — data is aanwezig maar niet gestructureerd",
+  redelijk: "Redelijk — data is grotendeels gestructureerd",
+  goed: "Goed — data is gestructureerd en consistent",
+  uitstekend: "Uitstekend — data is clean, gecentraliseerd en goed gedocumenteerd",
+};
+
+const SYSTEEM_INTEGRATIE_LABELS: Record<string, string> = {
+  nauwelijks: "Nauwelijks — systemen staan los van elkaar",
+  beperkt: "Beperkt — enkele handmatige koppelingen",
+  gedeeltelijk: "Gedeeltelijk — sommige systemen zijn gekoppeld",
+  goed: "Goed — de meeste systemen communiceren met elkaar",
+  uitstekend: "Uitstekend — volledig geïntegreerd ecosysteem",
+};
+
+const IT_INFRA_LABELS: Record<string, string> = {
+  cloud_based: "Volledig cloud-based",
+  hybride: "Hybride (cloud + on-premise)",
+  on_premise: "Voornamelijk on-premise",
+  weet_niet: "Weet ik niet",
 };
 
 const GEVOELIGE_DATA_LABELS: Record<string, string> = {
-  klantgegevens: "Klantgegevens (NAW, contact)",
-  financiele_data: "Financiële data",
-  medische_data: "Medische / gezondheidsgegevens",
-  hr_personeelsdata: "HR & personeelsdata",
-  bedrijfsgeheimen: "Bedrijfsgeheimen / IP",
-  geen: "Geen gevoelige data",
+  klantgegevens: "Klantgegevens & contactinformatie",
+  financieel: "Financiële gegevens",
+  medisch: "Medische / gezondheidsgegevens",
+  personeel: "Personeelsgegevens",
+  juridisch: "Juridische documenten & contracten",
+  intellectueel_eigendom: "Intellectueel eigendom & bedrijfsgeheimen",
+  minderjarigen: "Gegevens van minderjarigen",
+  geen: "Geen bijzondere categorieën",
 };
 
 const SENTIMENT_LABELS: Record<string, string> = {
@@ -95,33 +142,55 @@ const SENTIMENT_LABELS: Record<string, string> = {
   onbekend: "Onbekend — niet gemeten",
 };
 
-const TREKKER_LABELS: Record<string, string> = {
-  directie: "Directie / eigenaar",
-  it_manager: "IT- of digitaliseringsmanager",
-  geen_centrale_trekker: "Geen centrale trekker",
+const MGMT_LABELS: Record<string, string> = {
+  niet_betrokken: "Niet betrokken — AI staat niet op de agenda",
+  bewust: "Bewust — erkent het belang maar er is geen actie",
+  geinteresseerd: "Geïnteresseerd — er zijn gesprekken gaande",
+  actief: "Actief — management stuurt op AI-adoptie",
+  strategisch: "Strategisch — AI is kernonderdeel van de bedrijfsstrategie",
+};
+
+const TRAINING_LABELS: Record<string, string> = {
+  basiskennis_ai: "Basiskennis AI & automatisering",
+  prompt_engineering: "Prompt engineering & effectief AI-gebruik",
+  privacy_veilig_gebruik: "Privacy & veilig gebruik van AI-tools",
+  specifieke_tools: "Specifieke tool-trainingen (Copilot, ChatGPT)",
+  change_management: "Change management & adoptie",
+  ai_strategie_leidinggevenden: "AI-strategie voor leidinggevenden",
+  geen_training_nodig: "Geen training nodig",
 };
 
 const PRIVACY_LABELS: Record<string, string> = {
-  geen_richtlijnen: "Geen richtlijnen",
-  informele_afspraken: "Informele afspraken",
-  formeel_avg: "Formeel AVG-beleid",
-  iso_gecertificeerd: "ISO/NEN gecertificeerd",
+  geen_richtlijnen: "Nee, helemaal niet",
+  informele_afspraken: "Informeel — er zijn mondelinge afspraken",
+  basisbeleid: "Gedeeltelijk — er is een basisbeleid",
+  formeel_ai_beleid: "Ja — er is een formeel AI-gebruiksbeleid",
+  inclusief_toetsing: "Ja — inclusief toetsing en handhaving",
+};
+
+const EU_AI_ACT_LABELS: Record<string, string> = {
+  nooit_gehoord: "Nog nooit van gehoord",
+  gehoord_onbekend: "Gehoord van — maar weet niet wat het betekent",
+  globaal_bekend: "Globaal bekend — moet er nog mee aan de slag",
+  goed_bekend: "Goed bekend — al bezig met compliance",
+  volledig_compliant: "Volledig compliant",
 };
 
 const AI_ZORG_LABELS: Record<string, string> = {
-  privacy_data_lekken: "Privacy & datalekken",
-  verkeerde_output: "Onjuiste of misleidende output",
-  baan_zekerheid: "Baanzekerheid medewerkers",
-  kosten_complexiteit: "Kosten & complexiteit",
-  afhankelijkheid_leverancier: "Afhankelijkheid van leveranciers",
+  dataveiligheid: "Dataveiligheid & privacy",
+  banenverlies: "Impact op medewerkers",
+  kwaliteitscontrole: "Kwaliteit & betrouwbaarheid",
+  compliance: "Compliance & wetgeving",
+  kosten: "Kosten & ROI",
   geen_zorgen: "Geen specifieke zorgen",
 };
 
 const MATURITY_LABELS: Record<string, string> = {
-  geen_ai: "Geen AI in gebruik",
-  experimenteren: "Experimenteert met AI (bijv. ChatGPT)",
-  productief_gebruik: "AI productief in gebruik",
-  ai_core: "AI is kern van processen",
+  geen_ai: "Geen — AI is een onbekend terrein",
+  bewust: "Bewust — gehoord van AI maar nog niet mee gewerkt",
+  experimenteel: "Experimenteel — enkele medewerkers gebruiken AI-tools",
+  gevorderd: "Gevorderd — meerdere AI-tools in gebruik",
+  expert: "Expert — AI is geïntegreerd in werkprocessen",
 };
 
 const BUDGET_LABELS: Record<string, string> = {
@@ -131,9 +200,9 @@ const BUDGET_LABELS: Record<string, string> = {
 };
 
 const SNELHEID_LABELS: Record<string, string> = {
-  voorzichtig: "Voorzichtig — eerst onderzoeken",
-  gebalanceerd: "Gebalanceerd — gefaseerde uitrol",
-  agressief: "Agressief — snel resultaten",
+  direct: "Zo snel mogelijk",
+  kwartaal: "Binnen dit kwartaal",
+  jaar: "Op termijn verkennen",
 };
 
 function label(map: Record<string, string>, key: string | undefined | null, fallback = "niet opgegeven"): string {
@@ -184,6 +253,9 @@ function bouwScanSamenvatting(
   });
   const volledigeNaam = `${lead.voornaam} ${lead.achternaam}`.trim();
 
+  const urgentie = antwoorden.urgentie ? `${antwoorden.urgentie}/10` : "niet opgegeven";
+  const risico = antwoorden.risicoOngecontroleerdAi ? `${antwoorden.risicoOngecontroleerdAi}/10` : "niet opgegeven";
+
   return `# AI Readiness Intake — ${datum}
 
 ## Resultaat
@@ -201,50 +273,68 @@ ${label(SECTOR_LABELS, antwoorden.sector)}
 **Hoeveel medewerkers heeft jouw bedrijf?**
 ${antwoorden.omvang ?? "niet opgegeven"} medewerkers
 
-**Wat is jouw rol binnen de organisatie?**
+**Wat is jouw functie binnen de organisatie?**
 ${label(ROL_LABELS, antwoorden.rol)}
 
 **Hoe omschrijf je de digitale volwassenheid van jouw bedrijf?**
 ${label(TECHSTACK_LABELS, antwoorden.techStack)}
 
-## Pijler 2 — Pijnpunten & tijdvreters
-**Welke processen kosten jullie de meeste tijd?**
+## Pijler 2 — Pijnpunten & urgentie
+**Welke activiteiten kosten jullie de meeste tijd?**
 ${labelList(PIJNPUNT_LABELS, antwoorden.pijnpunten, "geen geselecteerd")}
 
-**Hoeveel uur per week gaat er verloren aan repetitief of handmatig werk?**
+**Hoeveel uur per week gaat er gemiddeld verloren aan repetitieve taken (per medewerker)?**
 ${label(UREN_LABELS, antwoorden.urenVerlies)}
 
-## Pijler 3 — Data & systemen
+**Hoe urgent voelt de behoefte aan procesverbetering en automatisering?**
+${urgentie}
+
+## Pijler 3 — Data, systemen & infrastructuur
 **Welke software of systemen gebruiken jullie?**
 ${labelList(KERNAPP_LABELS, antwoorden.kernApplicaties)}
 
 **Hoe is de kwaliteit en toegankelijkheid van jullie data?**
 ${label(DATA_KWALITEIT_LABELS, antwoorden.dataKwaliteit)}
 
-**Welke soorten gevoelige data verwerken jullie?**
+**Hoe goed zijn jullie systemen met elkaar geïntegreerd?**
+${label(SYSTEEM_INTEGRATIE_LABELS, antwoorden.systeemIntegratie)}
+
+**Hoe is jullie IT-infrastructuur ingericht?**
+${label(IT_INFRA_LABELS, antwoorden.itInfrastructuur)}
+
+**Welke gevoelige data verwerkt jullie organisatie?**
 ${labelList(GEVOELIGE_DATA_LABELS, antwoorden.gevoeligeData)}
 
-## Pijler 4 — Cultuur, kennis & governance
+## Pijler 4 — Kennis, cultuur & governance
+**Wat is het huidige kennisniveau van AI binnen jullie organisatie?**
+${label(MATURITY_LABELS, antwoorden.aiMaturiteit)}
+
 **Hoe staat het team tegenover AI en nieuwe technologie?**
 ${label(SENTIMENT_LABELS, antwoorden.teamSentiment)}
 
-**Wie trekt de digitale agenda binnen jullie organisatie?**
-${label(TREKKER_LABELS, antwoorden.digitaleAgendasTrekker)}
+**Hoe betrokken is het management bij de AI-agenda?**
+${label(MGMT_LABELS, antwoorden.managementBetrokkenheid)}
 
-**Welk privacy- en databeleid hanteren jullie nu?**
+**Welke trainingsbehoeften zien jullie voor de medewerkers?**
+${labelList(TRAINING_LABELS, antwoorden.trainingsbehoefte, "geen opgegeven")}
+
+**Heeft jullie organisatie al richtlijnen voor het gebruik van AI-tools door medewerkers?**
 ${label(PRIVACY_LABELS, antwoorden.privacyBeleid)}
 
-**Wat zijn jullie grootste zorgen bij het inzetten van AI?**
+**Bent u bekend met de EU AI Act en de implicaties voor de organisatie?**
+${label(EU_AI_ACT_LABELS, antwoorden.euAiActBekendheid)}
+
+**Hoe groot wordt het risico van ongecontroleerd AI-gebruik ingeschat?**
+${risico}
+
+**Wat zijn jullie grootste zorgen bij AI-implementatie?**
 ${labelList(AI_ZORG_LABELS, antwoorden.aiZorgen, "geen specifieke zorgen")}
 
 ## Pijler 5 — AI-ambitie & contact
-**Wat is jullie huidige AI-maturiteit?**
-${label(MATURITY_LABELS, antwoorden.aiMaturiteit)}
-
-**Wat is jullie jaarlijkse budget voor AI-initiatieven?**
+**Wat is het jaarlijkse budget voor AI-implementatie?**
 ${label(BUDGET_LABELS, antwoorden.budgetBereidheid)}
 
-**Welke implementatiesnelheid past bij jullie?**
+**Hoe snel willen jullie aan de slag met AI?**
 ${label(SNELHEID_LABELS, antwoorden.implementatieSnelheid)}
 
 ## Contactgegevens
