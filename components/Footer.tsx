@@ -11,8 +11,8 @@ export default function Footer() {
             className="h-5 w-auto"
           />
           <div className="mt-5 space-y-1 text-sm leading-relaxed text-[#1f1f1f]">
-            <p className="font-medium">MAISON BLNDR</p>
-            <p>Sittard, Nederland</p>
+            <p>Burgemeester Coonenplein 37</p>
+            <p>6141BZ Sittard, NL</p>
             <p>BTW: NL001832932B87</p>
           </div>
         </div>
