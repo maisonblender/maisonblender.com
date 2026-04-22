@@ -220,8 +220,22 @@ export async function pushLeadToTwenty(
 
   const baseUrl = normaliseerBaseUrl(rawBaseUrl);
 
-  // Email-domain als unieke company identifier — applemooz.nl ≠ applemooz.com
-  const emailDomain = lead.email.split("@")[1]?.toLowerCase() ?? "";
+  // Email-domain als unieke company identifier — applemooz.nl ≠ applemooz.com.
+  // BELANGRIJK: gratis email providers (gmail, outlook, etc.) zijn GEEN bedrijfsdomein —
+  // anders zouden alle gmail-gebruikers onder één "gmail.com" company belanden.
+  // Voor die gevallen vallen we terug op match-by-name + nieuwe company per scan.
+  const FREE_EMAIL_DOMAINS = new Set([
+    "gmail.com", "googlemail.com",
+    "outlook.com", "outlook.nl", "hotmail.com", "hotmail.nl", "live.com", "live.nl", "msn.com",
+    "yahoo.com", "yahoo.nl", "ymail.com",
+    "icloud.com", "me.com", "mac.com",
+    "ziggo.nl", "kpnmail.nl", "planet.nl", "xs4all.nl", "telfort.nl", "home.nl", "online.nl",
+    "proton.me", "protonmail.com", "tutanota.com",
+    "aol.com", "gmx.com", "gmx.nl", "mail.com",
+  ]);
+  const rawDomain = lead.email.split("@")[1]?.toLowerCase() ?? "";
+  const isBusinessDomain = rawDomain !== "" && !FREE_EMAIL_DOMAINS.has(rawDomain);
+  const emailDomain = isBusinessDomain ? rawDomain : "";
 
   try {
     // 1. Company aanmaken — of bestaande hergebruiken op basis van domain (niet alleen naam,
