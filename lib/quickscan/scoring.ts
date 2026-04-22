@@ -177,54 +177,92 @@ export function berekenCultuurReadiness(antwoorden: ScanAntwoorden): ScanResulta
 }
 
 export function berekenOpportunityMap(antwoorden: ScanAntwoorden): OpportunityMapItem[] {
+  // 8 bedrijfsfuncties — dekt alle bevraagde pijnpunten plus aanvullende gebieden
+  // waar AI typisch grote impact heeft.
   const map: OpportunityMapItem[] = [
     { gebied: "Klantenservice", potentieel: 0 },
-    { gebied: "Administratie", potentieel: 0 },
     { gebied: "Sales & Marketing", potentieel: 0 },
+    { gebied: "Administratie", potentieel: 0 },
     { gebied: "Operations", potentieel: 0 },
+    { gebied: "Inkoop & Supply", potentieel: 0 },
     { gebied: "HR & Planning", potentieel: 0 },
+    { gebied: "Kwaliteit & Compliance", potentieel: 0 },
     { gebied: "Data & Rapportage", potentieel: 0 },
   ];
 
-  const pijnpuntMapping: Record<string, string[]> = {
-    repetitief_handwerk: ["Administratie", "Operations"],
-    klantcommunicatie: ["Klantenservice", "Sales & Marketing"],
-    data_analyse: ["Data & Rapportage", "Operations"],
-    documentverwerking: ["Administratie", "Operations"],
-    planning_roostering: ["HR & Planning", "Operations"],
-    kwaliteitscontrole: ["Operations", "Administratie"],
-    hr_recruitment: ["HR & Planning"],
-    inkoop_leveranciers: ["Operations", "Administratie"],
-    marketing_content: ["Sales & Marketing"],
+  // Per pijnpunt: gebieden die gewogen mee scoren (gewicht 1.0 = primair, 0.6 = secundair).
+  const pijnpuntMapping: Record<string, Array<{ gebied: string; gewicht: number }>> = {
+    repetitief_handwerk: [
+      { gebied: "Administratie", gewicht: 1.0 },
+      { gebied: "Operations", gewicht: 0.7 },
+    ],
+    klantcommunicatie: [
+      { gebied: "Klantenservice", gewicht: 1.0 },
+      { gebied: "Sales & Marketing", gewicht: 0.6 },
+    ],
+    data_analyse: [
+      { gebied: "Data & Rapportage", gewicht: 1.0 },
+      { gebied: "Operations", gewicht: 0.5 },
+    ],
+    documentverwerking: [
+      { gebied: "Administratie", gewicht: 1.0 },
+      { gebied: "Kwaliteit & Compliance", gewicht: 0.5 },
+    ],
+    planning_roostering: [
+      { gebied: "HR & Planning", gewicht: 1.0 },
+      { gebied: "Operations", gewicht: 0.7 },
+    ],
+    kwaliteitscontrole: [
+      { gebied: "Kwaliteit & Compliance", gewicht: 1.0 },
+      { gebied: "Operations", gewicht: 0.5 },
+    ],
+    hr_recruitment: [
+      { gebied: "HR & Planning", gewicht: 1.0 },
+    ],
+    inkoop_leveranciers: [
+      { gebied: "Inkoop & Supply", gewicht: 1.0 },
+      { gebied: "Administratie", gewicht: 0.5 },
+    ],
+    marketing_content: [
+      { gebied: "Sales & Marketing", gewicht: 1.0 },
+    ],
   };
 
+  // Basisscore per pijnpunt = 35 punten primair, gewicht * 35 secundair.
   for (const pijnpunt of antwoorden.pijnpunten) {
     const gebieden = pijnpuntMapping[pijnpunt] ?? [];
-    for (const gebied of gebieden) {
+    for (const { gebied, gewicht } of gebieden) {
       const item = map.find((m) => m.gebied === gebied);
-      if (item) item.potentieel = Math.min(100, item.potentieel + 28);
+      if (item) item.potentieel += 35 * gewicht;
     }
   }
 
-  // Schaal op basis van tech stack en datakwaliteit
+  // Baseline: elk gebied krijgt minimaal een baseline op basis van tech-volwassenheid
+  // zodat de heatmap niet pikzwart blijft als iemand weinig pijnpunten kiest.
+  const baseline =
+    antwoorden.aiMaturiteit === "ai_core" ? 25 :
+    antwoorden.aiMaturiteit === "productief_gebruik" ? 18 :
+    antwoorden.aiMaturiteit === "experimenteren" ? 12 : 8;
+
+  // Tech & data-multiplier: betere stack = hogere realiseerbare opbrengst per gebied.
   const techMultiplier =
-    antwoorden.techStack === "cloud_first" || antwoorden.techStack === "al_ai_gebruik"
-      ? 1.2
-      : antwoorden.techStack === "erp_crm"
-        ? 1.0
-        : 0.75;
+    antwoorden.techStack === "al_ai_gebruik" ? 1.25 :
+    antwoorden.techStack === "cloud_first" ? 1.15 :
+    antwoorden.techStack === "erp_crm" ? 1.05 :
+    antwoorden.techStack === "basis_office" ? 0.9 : 0.75;
 
   const dataMultiplier =
-    antwoorden.dataKwaliteit === "centraal_goed"
-      ? 1.15
-      : antwoorden.dataKwaliteit === "structureel_geisoleerd"
-        ? 1.0
-        : 0.8;
+    antwoorden.dataKwaliteit === "centraal_goed" ? 1.15 :
+    antwoorden.dataKwaliteit === "structureel_geisoleerd" ? 1.0 :
+    antwoorden.dataKwaliteit === "verspreid_inconsistent" ? 0.82 : 1.0;
 
-  return map.map((item) => ({
-    ...item,
-    potentieel: Math.min(100, Math.round(item.potentieel * techMultiplier * dataMultiplier)),
-  }));
+  return map.map((item) => {
+    const ruw = (item.potentieel + baseline) * techMultiplier * dataMultiplier;
+    return {
+      ...item,
+      potentieel: Math.min(100, Math.max(0, Math.round(ruw))),
+    };
+  });
 }
 
 export function berekenResultaat(antwoorden: ScanAntwoorden): Omit<ScanResultaat, "topKansen" | "aanbevelingen"> {

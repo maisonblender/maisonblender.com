@@ -115,14 +115,35 @@ export default function ScanForm() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Velden waarbij één optie wederzijds exclusief is met de rest
+  // (bijv. "geen specifieke zorgen" sluit alle andere zorgen uit en omgekeerd).
+  const EXCLUSIVE_OPTIONS: Partial<Record<keyof PartialAntwoorden, string>> = {
+    aiZorgen: "geen_zorgen",
+    gevoeligeData: "geen",
+    kernApplicaties: "geen",
+  };
+
   function toggleMulti<T extends string>(
     field: keyof PartialAntwoorden,
     value: T
   ) {
     const huidig = (antwoorden[field] as T[]) ?? [];
-    const nieuw = huidig.includes(value)
-      ? huidig.filter((v) => v !== value)
-      : [...huidig, value];
+    const exclusief = EXCLUSIVE_OPTIONS[field] as T | undefined;
+    const isExclusief = exclusief && value === exclusief;
+    const alGeselecteerd = huidig.includes(value);
+
+    let nieuw: T[];
+    if (alGeselecteerd) {
+      nieuw = huidig.filter((v) => v !== value);
+    } else if (isExclusief) {
+      // Klikt op exclusieve optie -> alleen die overhouden
+      nieuw = [value];
+    } else if (exclusief) {
+      // Klikt op gewone optie -> exclusieve verwijderen, deze toevoegen
+      nieuw = [...huidig.filter((v) => v !== exclusief), value];
+    } else {
+      nieuw = [...huidig, value];
+    }
     setAntwoorden((prev) => ({ ...prev, [field]: nieuw }));
   }
 

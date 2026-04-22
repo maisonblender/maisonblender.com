@@ -197,7 +197,16 @@ ${resultaat.topKansen.map((k, i) => `### ${i + 1}. ${k.functie}\n[Concrete aanpa
 [Week 1-4: Quick win selectie en voorbereiding | Week 5-8: Eerste implementatie | Week 9-12: Evaluatie en opschaling]
 
 ## Investering & Rendement
-[ROI berekening, terugverdientijd, businesscase voor ${klantNaam} met concrete getallen]
+Toon dit verplicht als een markdown-tabel in exact deze vorm (vul de bedragen specifiek voor ${klantNaam} in op basis van de scanresultaten — geen placeholders):
+
+| Post | Bedrag |
+|---|---|
+| Verwacht jaarrendement | €[bedrag] |
+| Tijdsbesparing | [uur]/week (~[uur*52] uur/jaar) |
+| Geschatte implementatiekosten | €[laag]–€[hoog] éénmalig |
+| Terugverdientijd | [aantal] tot [aantal] maanden |
+
+Voeg na de tabel één korte alinea (max 2 zinnen) toe met de businesscase-context voor ${klantNaam}.
 
 ## Volgende Stap
 [Concrete eerste actie voor ${klantNaam} — wat doen ze morgen? Plan een strategiegesprek met MAISON BLNDR.]

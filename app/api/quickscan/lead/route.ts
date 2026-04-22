@@ -28,32 +28,92 @@ function stripAiHeaders(text: string): string {
     .join("\n");
 }
 
+function inlineMarkdown(text: string): string {
+  return text
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, "<em>$1</em>");
+}
+
+function splitTableRow(line: string): string[] {
+  // Verwijder leading/trailing pipe en split op pipe
+  const trimmed = line.trim().replace(/^\|/, "").replace(/\|$/, "");
+  return trimmed.split("|").map((c) => c.trim());
+}
+
+function isTableSeparator(line: string): boolean {
+  // bv. |---|---| of | :---: | ---: |
+  return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+}
+
 function actieplanToHtml(text: string): string {
   const lines = text.replace(/—/g, "-").split("\n");
   let html = "";
+  let i = 0;
 
-  for (let i = 0; i < lines.length; i++) {
-    const line = lines[i].trim();
-    if (!line) continue;
+  while (i < lines.length) {
+    const raw = lines[i];
+    const line = raw.trim();
+
+    if (!line) {
+      i++;
+      continue;
+    }
+
+    // Markdown tabel detectie: huidige regel begint met | en volgende regel is separator
+    if (line.startsWith("|") && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+      const headerCells = splitTableRow(line);
+      i += 2; // header + separator
+      const bodyRows: string[][] = [];
+      while (i < lines.length && lines[i].trim().startsWith("|")) {
+        const cells = splitTableRow(lines[i]);
+        if (cells.some((c) => c.length > 0)) bodyRows.push(cells);
+        i++;
+      }
+
+      html += `<table cellpadding="0" cellspacing="0" style="width:100%; border-collapse:separate; border-spacing:0; margin: 14px 0 18px; background:#ffffff; border:1px solid rgba(0,0,0,0.08); border-radius:10px; overflow:hidden; font-size:14px;">`;
+      html += `<thead><tr>`;
+      headerCells.forEach((cell, idx) => {
+        const borderLeft = idx === 0 ? "" : "border-left:1px solid rgba(0,0,0,0.06);";
+        html += `<th style="text-align:left; padding:12px 16px; background:#1f1f1f; color:#ffffff; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; ${borderLeft}">${inlineMarkdown(cell)}</th>`;
+      });
+      html += `</tr></thead><tbody>`;
+      bodyRows.forEach((row, rIdx) => {
+        const rowBg = rIdx % 2 === 0 ? "#ffffff" : "#f8f8fa";
+        const borderTop = rIdx === 0 ? "" : "border-top:1px solid rgba(0,0,0,0.05);";
+        html += `<tr>`;
+        row.forEach((cell, idx) => {
+          const isLabel = idx === 0;
+          const borderLeft = idx === 0 ? "" : "border-left:1px solid rgba(0,0,0,0.05);";
+          const align = idx === row.length - 1 && row.length > 1 ? "right" : "left";
+          html += `<td style="padding:12px 16px; background:${rowBg}; ${borderTop} ${borderLeft} text-align:${align}; color:${isLabel ? "#1f1f1f" : "#3a3a42"}; font-weight:${isLabel ? "600" : "500"}; line-height:1.5;">${inlineMarkdown(cell)}</td>`;
+        });
+        html += `</tr>`;
+      });
+      html += `</tbody></table>`;
+      continue;
+    }
 
     const headingMatch = line.match(/^#{1,3}\s+(.+)$/) || line.match(/^\*\*(.+?)\*\*:?\s*$/);
     if (headingMatch) {
       const heading = headingMatch[1].replace(/\*\*/g, "");
       html += `<h3 style="margin: 20px 0 6px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1f1f1f;">${heading}</h3>`;
+      i++;
       continue;
     }
 
     if (/^[-*]\s+/.test(line)) {
-      const item = line.replace(/^[-*]\s+/, "").replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+      const item = inlineMarkdown(line.replace(/^[-*]\s+/, ""));
       html += `<div style="display: flex; gap: 8px; margin-bottom: 6px; font-size: 14px; color: #575760; line-height: 1.6;">
         <span style="margin-top: 8px; width: 4px; height: 4px; border-radius: 50%; background: #b2b2be; flex-shrink: 0; display: inline-block;"></span>
         <span>${item}</span>
       </div>`;
+      i++;
       continue;
     }
 
-    const para = line.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+    const para = inlineMarkdown(line);
     html += `<p style="margin: 0 0 12px; font-size: 14px; color: #575760; line-height: 1.7;">${para}</p>`;
+    i++;
   }
 
   return html;
@@ -176,7 +236,7 @@ export async function POST(request: NextRequest) {
               <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${lead.voornaam},</p>
               <p style="margin: 0; font-size: 15px; color: #575760; line-height: 1.7;">
                 Bedankt voor het invullen van de AI Readiness Intake voor <strong>${lead.bedrijf}</strong>.
-                Op basis van jouw uitgebreide profiel heeft onze AI een gepersonaliseerde AI Kansenkaart en actieplan samengesteld.
+                Op basis van jouw uitgebreide profiel hebben we een gepersonaliseerde AI Kansenkaart en actieplan samengesteld.
               </p>
             </td>
           </tr>

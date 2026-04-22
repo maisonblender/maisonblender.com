@@ -14,6 +14,14 @@ const SCORE_LABELS = {
   koploper: { kleur: "text-orange-600", bg: "bg-orange-50", label: "Koploper" },
 };
 
+function splitTableRow(line: string): string[] {
+  return line.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map((c) => c.trim());
+}
+
+function isTableSeparator(line: string): boolean {
+  return /^\s*\|?\s*:?-{3,}:?\s*(\|\s*:?-{3,}:?\s*)+\|?\s*$/.test(line);
+}
+
 // Render markdown-like text as styled HTML elements with color indicators.
 // Sections whose heading matches warning keywords get orange; positive keywords get green.
 function renderAnalyse(text: string): React.ReactNode[] {
@@ -36,11 +44,58 @@ function renderAnalyse(text: string): React.ReactNode[] {
   while (i < lines.length) {
     const line = lines[i];
 
+    // Markdown tabel
+    if (line.trim().startsWith("|") && i + 1 < lines.length && isTableSeparator(lines[i + 1])) {
+      const headerCells = splitTableRow(line);
+      i += 2;
+      const bodyRows: string[][] = [];
+      while (i < lines.length && lines[i].trim().startsWith("|")) {
+        const cells = splitTableRow(lines[i]);
+        if (cells.some((c) => c.length > 0)) bodyRows.push(cells);
+        i++;
+      }
+      nodes.push(
+        <div key={key++} className="overflow-x-auto my-4">
+          <table className="w-full text-sm border border-black/10 rounded-lg overflow-hidden bg-white">
+            <thead>
+              <tr>
+                {headerCells.map((cell, idx) => (
+                  <th
+                    key={idx}
+                    className={`text-left px-4 py-3 bg-[#1f1f1f] text-white text-[11px] font-bold uppercase tracking-wider ${idx > 0 ? "border-l border-white/10" : ""}`}
+                    dangerouslySetInnerHTML={{ __html: inlineFormat(cell) }}
+                  />
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {bodyRows.map((row, rIdx) => (
+                <tr key={rIdx} className={rIdx % 2 === 1 ? "bg-[#f8f8fa]" : "bg-white"}>
+                  {row.map((cell, cIdx) => {
+                    const isLabel = cIdx === 0;
+                    const align = cIdx === row.length - 1 && row.length > 1 ? "text-right" : "text-left";
+                    return (
+                      <td
+                        key={cIdx}
+                        className={`px-4 py-3 ${align} ${isLabel ? "font-semibold text-[#1f1f1f]" : "text-[#3a3a42]"} ${cIdx > 0 ? "border-l border-black/[0.05]" : ""} ${rIdx > 0 ? "border-t border-black/[0.05]" : ""}`}
+                        dangerouslySetInnerHTML={{ __html: inlineFormat(cell) }}
+                      />
+                    );
+                  })}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+      continue;
+    }
+
     // Bold headings: **Heading** or ## Heading or ### Heading
     const boldHeadingMatch = line.match(/^\*\*(.+?)\*\*:?\s*$/) || line.match(/^#{1,3}\s+(.+)$/);
     if (boldHeadingMatch) {
       const heading = boldHeadingMatch[1].replace(/\*\*/g, "");
-      const { border, dot } = sectionColor(heading);
+      const { dot } = sectionColor(heading);
       nodes.push(
         <div key={key++} className={`flex items-center gap-2 mt-6 mb-2`}>
           <span className={`w-2 h-2 rounded-full shrink-0 ${dot}`} />
@@ -96,30 +151,91 @@ function inlineFormat(text: string): string {
     .replace(/\*(.+?)\*/g, "<em>$1</em>");
 }
 
-function OpportunityHeatmap({ data }: { data: ScanResultaat["opportunityMapData"] }) {
-  function heatmapColors(potentieel: number): { bg: string; border: string; text: string } {
-    if (potentieel >= 70) return { bg: "rgba(22, 163, 74, 0.12)", border: "rgba(22, 163, 74, 0.3)", text: "#15803d" };
-    if (potentieel >= 40) return { bg: "rgba(234, 88, 12, 0.10)", border: "rgba(234, 88, 12, 0.25)", text: "#c2410c" };
-    return { bg: "rgba(220, 38, 38, 0.10)", border: "rgba(220, 38, 38, 0.25)", text: "#b91c1c" };
+// Vloeiende kleurschaal: rood (laag) → oranje (midden) → groen (hoog).
+// Geeft per percentage een tint terug die meeloopt met de waarde, plus een
+// passende donkere tekstkleur die altijd leesbaar blijft op de achtergrond.
+function heatmapColors(potentieel: number): {
+  bg: string;
+  border: string;
+  text: string;
+  bar: string;
+} {
+  const p = Math.max(0, Math.min(100, potentieel));
+  // Hue interpoleren over rood (0) → oranje (32) → groen (138)
+  let hue: number;
+  if (p <= 50) {
+    hue = (p / 50) * 32; // 0..32
+  } else {
+    hue = 32 + ((p - 50) / 50) * (138 - 32); // 32..138
   }
+  const sat = 78;
+  const lightBg = 92 - (p * 0.18); // van 92% (lichtroze) naar ~74% (lichtgroen)
+  const lightBorder = 70 - (p * 0.1);
+  const lightText = 30 + (p * 0.06); // donkerder voor laag, iets lichter voor hoog
+  const lightBar = 45;
+  return {
+    bg: `hsl(${hue}, ${sat}%, ${lightBg}%)`,
+    border: `hsl(${hue}, ${sat}%, ${lightBorder}%)`,
+    text: `hsl(${hue}, ${sat - 10}%, ${lightText}%)`,
+    bar: `hsl(${hue}, ${sat}%, ${lightBar}%)`,
+  };
+}
+
+function OpportunityHeatmap({ data }: { data: ScanResultaat["opportunityMapData"] }) {
+  // Sorteer aflopend zodat de meest kansrijke gebieden bovenaan staan.
+  const gesorteerd = [...data].sort((a, b) => b.potentieel - a.potentieel);
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-      {data.map((item) => {
-        const { bg, border, text } = heatmapColors(item.potentieel);
-        return (
-          <div
-            key={item.gebied}
-            className="rounded-xl p-4 text-center"
-            style={{ backgroundColor: bg, border: `1px solid ${border}` }}
-          >
-            <div className="text-2xl font-bold mb-1" style={{ color: text }}>
-              {item.potentieel}%
-            </div>
-            <div className="text-xs font-medium" style={{ color: text }}>{item.gebied}</div>
-          </div>
-        );
-      })}
+    <div className="space-y-5">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        {gesorteerd.map((item, idx) => {
+          const { bg, border, text, bar } = heatmapColors(item.potentieel);
+          return (
+            <motion.div
+              key={item.gebied}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.05 * idx }}
+              className="rounded-xl p-4 flex flex-col gap-2"
+              style={{ backgroundColor: bg, border: `1px solid ${border}` }}
+            >
+              <div className="flex items-baseline justify-between">
+                <div className="text-2xl font-bold leading-none" style={{ color: text }}>
+                  {item.potentieel}%
+                </div>
+                <span
+                  className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded"
+                  style={{ color: text, backgroundColor: "rgba(255,255,255,0.55)" }}
+                >
+                  {item.potentieel >= 70 ? "Hot" : item.potentieel >= 45 ? "Warm" : item.potentieel >= 25 ? "Tepid" : "Koud"}
+                </span>
+              </div>
+              <div className="text-xs font-medium leading-tight" style={{ color: text }}>
+                {item.gebied}
+              </div>
+              <div className="h-1.5 rounded-full overflow-hidden" style={{ backgroundColor: "rgba(255,255,255,0.55)" }}>
+                <div
+                  className="h-full rounded-full transition-all"
+                  style={{ width: `${item.potentieel}%`, backgroundColor: bar }}
+                />
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
+      {/* Legenda met kleurverloop */}
+      <div className="flex items-center gap-3 pt-2">
+        <span className="text-xs text-[#575760] whitespace-nowrap">Laag potentieel</span>
+        <div
+          className="h-2 flex-1 rounded-full"
+          style={{
+            background:
+              "linear-gradient(to right, hsl(0,78%,82%), hsl(20,78%,80%), hsl(35,78%,78%), hsl(70,78%,76%), hsl(110,78%,74%), hsl(138,78%,72%))",
+          }}
+        />
+        <span className="text-xs text-[#575760] whitespace-nowrap">Hoog potentieel</span>
+      </div>
     </div>
   );
 }
@@ -528,7 +644,7 @@ export default function ResultatenDashboard() {
         >
           <h2 className="font-bold text-lg mb-2 text-[#1f1f1f]">AI Opportunity Map</h2>
           <p className="text-sm text-[#575760] mb-6">
-            Heatmap van AI-potentieel per bedrijfsfunctie - donkerder = hoger potentieel
+            AI-potentieel per bedrijfsfunctie — rood = laag, groen = hoog. Gebieden zijn gerangschikt op kansrijkheid.
           </p>
           <OpportunityHeatmap data={resultaat.opportunityMapData} />
         </motion.div>
