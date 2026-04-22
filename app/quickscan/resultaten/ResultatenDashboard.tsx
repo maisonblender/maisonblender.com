@@ -199,16 +199,8 @@ function OpportunityHeatmap({ data }: { data: ScanResultaat["opportunityMapData"
               className="rounded-xl p-4 flex flex-col gap-2"
               style={{ backgroundColor: bg, border: `1px solid ${border}` }}
             >
-              <div className="flex items-baseline justify-between">
-                <div className="text-2xl font-bold leading-none" style={{ color: text }}>
-                  {item.potentieel}%
-                </div>
-                <span
-                  className="text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded"
-                  style={{ color: text, backgroundColor: "rgba(255,255,255,0.55)" }}
-                >
-                  {item.potentieel >= 70 ? "Hot" : item.potentieel >= 45 ? "Warm" : item.potentieel >= 25 ? "Tepid" : "Koud"}
-                </span>
+              <div className="text-2xl font-bold leading-none" style={{ color: text }}>
+                {item.potentieel}%
               </div>
               <div className="text-xs font-medium leading-tight" style={{ color: text }}>
                 {item.gebied}
