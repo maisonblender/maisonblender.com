@@ -523,7 +523,7 @@ export default function ScanForm() {
                     </div>
 
                     <div>
-                      <SectionLabel>Wat is het beschikbare budget voor AI-implementatie?</SectionLabel>
+                      <SectionLabel>Wat is het jaarlijkse budget voor AI-implementatie?</SectionLabel>
                       <div className="space-y-3">
                         {budgetOpties.map((opt) => (
                           <OptionButton

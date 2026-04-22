@@ -159,9 +159,9 @@ export const aiMaturiteitOpties: VraagOptie<AiMaturiteit>[] = [
 ];
 
 export const budgetOpties: VraagOptie<"laag" | "midden" | "hoog">[] = [
-  { value: "laag", label: "Tot €5.000", beschrijving: "Kleine investering, snelle winst" },
-  { value: "midden", label: "€5.000 – €25.000", beschrijving: "Serieuze implementatie" },
-  { value: "hoog", label: "Meer dan €25.000", beschrijving: "Strategisch AI-programma" },
+  { value: "laag", label: "Tot €5.000 per jaar", beschrijving: "Kleine investering, snelle quick wins" },
+  { value: "midden", label: "€5.000 – €25.000 per jaar", beschrijving: "Serieuze implementatie met meerdere use cases" },
+  { value: "hoog", label: "Meer dan €25.000 per jaar", beschrijving: "Strategisch AI-programma op organisatieniveau" },
 ];
 
 export const snelheidOpties: VraagOptie<"direct" | "kwartaal" | "jaar">[] = [
