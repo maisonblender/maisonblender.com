@@ -92,7 +92,7 @@ async function twentyGQL<T>(
   query: string,
   variables?: Record<string, unknown>
 ): Promise<T> {
-  const res = await fetch(`${baseUrl}/api`, {
+  const res = await fetch(`${baseUrl}/graphql`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
