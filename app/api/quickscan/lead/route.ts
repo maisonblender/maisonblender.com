@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
 import { buildActieplanPrompt } from "@/lib/quickscan/prompt";
+import { addNoteForLead } from "@/lib/quickscan/crm";
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
 
 interface LeadRequest {
@@ -118,8 +119,19 @@ export async function POST(request: NextRequest) {
     actieplanTekst = `## AI Actieplan — ${lead.bedrijf}\n\nAI Readiness Score: ${resultaat.aiReadinessScore}/100\nROI Potentieel: €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar\nTijdsbesparing: ${resultaat.tijdsbesparingTotaal} uur/week`;
   }
 
-  // CRM push gebeurt al in /api/quickscan/capture-lead vóór de resultaten.
-  // Hier alleen nog email versturen — geen dubbele push.
+  // CRM push (lead+companies+intake-note) gebeurt al in /api/quickscan/capture-lead.
+  // Hier voegen we het AI-actieplan dat per email gaat als losse note toe in Twenty.
+  if (actieplanTekst.trim()) {
+    const datum = new Date().toLocaleString("nl-NL", { dateStyle: "long", timeStyle: "short" });
+    const noteBody = `# AI Actieplan (per email verstuurd) — ${datum}\n\n${stripAiHeaders(actieplanTekst)}\n\n---\n*Verzonden naar ${lead.email} — Score ${resultaat.aiReadinessScore}/100*`;
+    addNoteForLead(
+      lead.email,
+      `AI Actieplan (email) — ${lead.bedrijf} — ${datum}`,
+      noteBody
+    ).catch((err) => {
+      console.warn("[Lead] Actieplan-note pushen naar Twenty mislukt:", err);
+    });
+  }
 
   // Stuur e-mail via Resend
   if (resendKey) {

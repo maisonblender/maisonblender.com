@@ -4,21 +4,26 @@ import Anthropic from "@anthropic-ai/sdk";
 import { berekenAiReadinessScore, bepaalScoreLabel, bepaalScoreBeschrijving, berekenOpportunityMap, berekenGovernanceRisico, berekenCultuurReadiness } from "@/lib/quickscan/scoring";
 import { berekenTopKansen, berekenTotaalROI } from "@/lib/quickscan/roi";
 import { buildAnalysePrompt } from "@/lib/quickscan/prompt";
+import { addNoteForLead } from "@/lib/quickscan/crm";
 import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
 
 export async function POST(request: NextRequest) {
-  let payload: ScanAntwoorden | { antwoorden: ScanAntwoorden; bedrijf?: string };
+  let payload:
+    | ScanAntwoorden
+    | { antwoorden: ScanAntwoorden; bedrijf?: string; email?: string };
   try {
     payload = await request.json();
   } catch {
     return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
   }
 
-  // Backwards compat: payload kan direct ScanAntwoorden zijn, of { antwoorden, bedrijf }
+  // Backwards compat: payload kan direct ScanAntwoorden zijn, of { antwoorden, bedrijf, email }
   const antwoorden: ScanAntwoorden =
     "antwoorden" in payload ? payload.antwoorden : (payload as ScanAntwoorden);
   const bedrijf: string | undefined =
     "antwoorden" in payload ? payload.bedrijf : undefined;
+  const email: string | undefined =
+    "antwoorden" in payload ? payload.email : undefined;
 
   if (!antwoorden.sector || !antwoorden.omvang || !antwoorden.techStack || !antwoorden.pijnpunten?.length || !antwoorden.aiMaturiteit) {
     return Response.json({ error: "Vul alle stappen in." }, { status: 400 });
@@ -103,6 +108,8 @@ export async function POST(request: NextRequest) {
       const metaChunk = `data: ${JSON.stringify({ type: "meta", resultaat })}\n\n`;
       controller.enqueue(encoder.encode(metaChunk));
 
+      let volledigeTekst = "";
+
       try {
         const anthropicStream = await client.messages.stream({
           model: "claude-sonnet-4-6",
@@ -115,6 +122,7 @@ export async function POST(request: NextRequest) {
             event.type === "content_block_delta" &&
             event.delta.type === "text_delta"
           ) {
+            volledigeTekst += event.delta.text;
             const textChunk = `data: ${JSON.stringify({ type: "text", delta: event.delta.text })}\n\n`;
             controller.enqueue(encoder.encode(textChunk));
           }
@@ -128,6 +136,19 @@ export async function POST(request: NextRequest) {
         );
       } finally {
         controller.close();
+
+        // Bewaar de gegenereerde scherm-analyse als note in Twenty (best-effort).
+        if (email && volledigeTekst.trim()) {
+          const datum = new Date().toLocaleString("nl-NL", { dateStyle: "long", timeStyle: "short" });
+          const noteBody = `# AI Analyse op scherm — ${datum}\n\n${volledigeTekst}\n\n---\n*Gegenereerd door Claude voor ${bedrijf ?? "klant"} — Score ${resultaat.aiReadinessScore}/100*`;
+          addNoteForLead(
+            email,
+            `AI Analyse (scherm) — ${bedrijf ?? "klant"} — ${datum}`,
+            noteBody
+          ).catch((noteErr) => {
+            console.warn("[Analyze] Note pushen naar Twenty mislukt:", noteErr);
+          });
+        }
       }
     },
   });

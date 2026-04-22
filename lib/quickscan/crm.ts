@@ -30,6 +30,126 @@ const SCORE_LABELS: Record<string, string> = {
   koploper: "Koploper",
 };
 
+const ROL_LABELS: Record<string, string> = {
+  eigenaar_directeur: "Eigenaar / Directeur",
+  manager: "Manager / Teamleider",
+  it_verantwoordelijke: "IT / Digitalisering verantwoordelijke",
+  medewerker: "Medewerker",
+  anders: "Anders",
+};
+
+const TECHSTACK_LABELS: Record<string, string> = {
+  basaal: "Basaal — losse tools, weinig integratie",
+  modern: "Modern — kernsystemen geïntegreerd",
+  geavanceerd: "Geavanceerd — automation en API's actief",
+};
+
+const PIJNPUNT_LABELS: Record<string, string> = {
+  repetitief_handwerk: "Repetitief handmatig werk",
+  klantcommunicatie: "Klantcommunicatie & support",
+  data_analyse: "Data analyse & rapportage",
+  documentverwerking: "Document- & factuurverwerking",
+  planning_roostering: "Planning & roostering",
+  kwaliteitscontrole: "Kwaliteitscontrole & compliance",
+  hr_recruitment: "HR & recruitment",
+  inkoop_leveranciers: "Inkoop & leveranciersbeheer",
+  marketing_content: "Marketing & contentcreatie",
+};
+
+const UREN_LABELS: Record<string, string> = {
+  "<5": "Minder dan 5 uur per week",
+  "5-15": "5 tot 15 uur per week",
+  "15-30": "15 tot 30 uur per week",
+  ">30": "Meer dan 30 uur per week",
+};
+
+const KERNAPP_LABELS: Record<string, string> = {
+  microsoft365: "Microsoft 365 / SharePoint",
+  google_workspace: "Google Workspace",
+  crm_erp: "CRM / ERP (Salesforce, Exact, Afas, etc.)",
+  boekhouding: "Boekhoudsoftware",
+  branche_specifiek: "Branchespecifieke software",
+  custom_software: "Eigen / maatwerk software",
+  voornamelijk_papier: "Voornamelijk papier en losse bestanden",
+};
+
+const DATA_KWALITEIT_LABELS: Record<string, string> = {
+  verspreid_inconsistent: "Verspreid & inconsistent",
+  structureel_geisoleerd: "Structureel maar geïsoleerd per systeem",
+  centraal_goed: "Centraal & goed gestructureerd",
+};
+
+const GEVOELIGE_DATA_LABELS: Record<string, string> = {
+  klantgegevens: "Klantgegevens (NAW, contact)",
+  financiele_data: "Financiële data",
+  medische_data: "Medische / gezondheidsgegevens",
+  hr_personeelsdata: "HR & personeelsdata",
+  bedrijfsgeheimen: "Bedrijfsgeheimen / IP",
+  geen: "Geen gevoelige data",
+};
+
+const SENTIMENT_LABELS: Record<string, string> = {
+  enthousiast: "Enthousiast & nieuwsgierig",
+  verdeeld: "Verdeeld — deel enthousiast, deel sceptisch",
+  sceptisch: "Overwegend sceptisch of weerstand",
+  onbekend: "Onbekend — niet gemeten",
+};
+
+const TREKKER_LABELS: Record<string, string> = {
+  directie: "Directie / eigenaar",
+  it_manager: "IT- of digitaliseringsmanager",
+  geen_centrale_trekker: "Geen centrale trekker",
+};
+
+const PRIVACY_LABELS: Record<string, string> = {
+  geen_richtlijnen: "Geen richtlijnen",
+  informele_afspraken: "Informele afspraken",
+  formeel_avg: "Formeel AVG-beleid",
+  iso_gecertificeerd: "ISO/NEN gecertificeerd",
+};
+
+const AI_ZORG_LABELS: Record<string, string> = {
+  privacy_data_lekken: "Privacy & datalekken",
+  verkeerde_output: "Onjuiste of misleidende output",
+  baan_zekerheid: "Baanzekerheid medewerkers",
+  kosten_complexiteit: "Kosten & complexiteit",
+  afhankelijkheid_leverancier: "Afhankelijkheid van leveranciers",
+  geen_zorgen: "Geen specifieke zorgen",
+};
+
+const MATURITY_LABELS: Record<string, string> = {
+  geen_ai: "Geen AI in gebruik",
+  experimenteren: "Experimenteert met AI (bijv. ChatGPT)",
+  productief_gebruik: "AI productief in gebruik",
+  ai_core: "AI is kern van processen",
+};
+
+const BUDGET_LABELS: Record<string, string> = {
+  laag: "Tot €5.000 per jaar",
+  midden: "€5.000 – €25.000 per jaar",
+  hoog: "Meer dan €25.000 per jaar",
+};
+
+const SNELHEID_LABELS: Record<string, string> = {
+  voorzichtig: "Voorzichtig — eerst onderzoeken",
+  gebalanceerd: "Gebalanceerd — gefaseerde uitrol",
+  agressief: "Agressief — snel resultaten",
+};
+
+function label(map: Record<string, string>, key: string | undefined | null, fallback = "niet opgegeven"): string {
+  if (!key) return fallback;
+  return map[key] ?? key;
+}
+
+function labelList(
+  map: Record<string, string>,
+  keys: string[] | undefined | null,
+  fallback = "niet opgegeven"
+): string {
+  if (!keys || keys.length === 0) return fallback;
+  return keys.map((k) => map[k] ?? k).join(", ");
+}
+
 function normaliseerTelefoon(raw: string | undefined): string | null {
   if (!raw) return null;
   const cleaned = raw.replace(/[\s\-().]/g, "");
@@ -58,42 +178,81 @@ function bouwScanSamenvatting(
   antwoorden: ScanAntwoorden,
   resultaat: ScanResultaat
 ): string {
-  const pijnpunten = antwoorden.pijnpunten.join(", ");
-  const applicaties = (antwoorden.kernApplicaties ?? []).join(", ") || "niet opgegeven";
-  const zorgen = (antwoorden.aiZorgen ?? []).join(", ") || "geen";
+  const datum = new Date().toLocaleString("nl-NL", {
+    dateStyle: "long",
+    timeStyle: "short",
+  });
   const volledigeNaam = `${lead.voornaam} ${lead.achternaam}`.trim();
 
-  return `**AI Readiness Intake — ${new Date().toLocaleDateString("nl-NL")}**
+  return `# AI Readiness Intake — ${datum}
 
-**Score:** ${resultaat.aiReadinessScore}/100 — ${SCORE_LABELS[resultaat.scoreLabel] ?? resultaat.scoreLabel}
-**Sector:** ${SECTOR_LABELS[antwoorden.sector] ?? antwoorden.sector}
-**Omvang:** ${antwoorden.omvang} medewerkers
-**Rol:** ${antwoorden.rol ?? "niet opgegeven"}
-**Benchmark:** beter dan ${resultaat.benchmarkPercentiel}% van de sector
+## Resultaat
+- **AI Readiness Score:** ${resultaat.aiReadinessScore}/100 — ${SCORE_LABELS[resultaat.scoreLabel] ?? resultaat.scoreLabel}
+- **Benchmark:** beter dan ${resultaat.benchmarkPercentiel}% van de sector (sectorgemiddelde: ${resultaat.sectorBenchmark}/100)
+- **ROI potentieel:** €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar
+- **Tijdsbesparing:** ${resultaat.tijdsbesparingTotaal} uur/week
+- **Governance risico:** ${resultaat.governanceRisico}
+- **Cultuur readiness:** ${resultaat.cultuurReadiness}
 
-**ROI Potentieel:** €${resultaat.roiTotaal.toLocaleString("nl-NL")}/jaar
-**Tijdsbesparing:** ${resultaat.tijdsbesparingTotaal} uur/week
+## Pijler 1 — Bedrijfsprofiel
+**In welke sector is jouw bedrijf actief?**
+${label(SECTOR_LABELS, antwoorden.sector)}
 
-**Pijnpunten:** ${pijnpunten}
-**Uren verlies/week:** ${antwoorden.urenVerlies ?? "niet opgegeven"}
+**Hoeveel medewerkers heeft jouw bedrijf?**
+${antwoorden.omvang ?? "niet opgegeven"} medewerkers
 
-**Systemen:** ${applicaties}
-**Datakwaliteit:** ${antwoorden.dataKwaliteit ?? "niet opgegeven"}
-**Gevoelige data:** ${(antwoorden.gevoeligeData ?? []).join(", ") || "geen"}
+**Wat is jouw rol binnen de organisatie?**
+${label(ROL_LABELS, antwoorden.rol)}
 
-**Team sentiment:** ${antwoorden.teamSentiment ?? "niet opgegeven"}
-**Privacy beleid:** ${antwoorden.privacyBeleid ?? "niet opgegeven"}
-**Governance risico:** ${resultaat.governanceRisico}
-**Cultuur readiness:** ${resultaat.cultuurReadiness}
-**AI Zorgen:** ${zorgen}
+**Hoe omschrijf je de digitale volwassenheid van jouw bedrijf?**
+${label(TECHSTACK_LABELS, antwoorden.techStack)}
 
-**Budget:** ${antwoorden.budgetBereidheid ?? "niet opgegeven"}
-**Snelheid:** ${antwoorden.implementatieSnelheid ?? "niet opgegeven"}
-**AI maturiteit:** ${antwoorden.aiMaturiteit ?? "niet opgegeven"}
+## Pijler 2 — Pijnpunten & tijdvreters
+**Welke processen kosten jullie de meeste tijd?**
+${labelList(PIJNPUNT_LABELS, antwoorden.pijnpunten, "geen geselecteerd")}
 
-**Naam:** ${volledigeNaam}
-**Telefoon:** ${lead.telefoon ?? "niet opgegeven"}
-**Toestemming verleend:** ja`;
+**Hoeveel uur per week gaat er verloren aan repetitief of handmatig werk?**
+${label(UREN_LABELS, antwoorden.urenVerlies)}
+
+## Pijler 3 — Data & systemen
+**Welke software of systemen gebruiken jullie?**
+${labelList(KERNAPP_LABELS, antwoorden.kernApplicaties)}
+
+**Hoe is de kwaliteit en toegankelijkheid van jullie data?**
+${label(DATA_KWALITEIT_LABELS, antwoorden.dataKwaliteit)}
+
+**Welke soorten gevoelige data verwerken jullie?**
+${labelList(GEVOELIGE_DATA_LABELS, antwoorden.gevoeligeData)}
+
+## Pijler 4 — Cultuur, kennis & governance
+**Hoe staat het team tegenover AI en nieuwe technologie?**
+${label(SENTIMENT_LABELS, antwoorden.teamSentiment)}
+
+**Wie trekt de digitale agenda binnen jullie organisatie?**
+${label(TREKKER_LABELS, antwoorden.digitaleAgendasTrekker)}
+
+**Welk privacy- en databeleid hanteren jullie nu?**
+${label(PRIVACY_LABELS, antwoorden.privacyBeleid)}
+
+**Wat zijn jullie grootste zorgen bij het inzetten van AI?**
+${labelList(AI_ZORG_LABELS, antwoorden.aiZorgen, "geen specifieke zorgen")}
+
+## Pijler 5 — AI-ambitie & contact
+**Wat is jullie huidige AI-maturiteit?**
+${label(MATURITY_LABELS, antwoorden.aiMaturiteit)}
+
+**Wat is jullie jaarlijkse budget voor AI-initiatieven?**
+${label(BUDGET_LABELS, antwoorden.budgetBereidheid)}
+
+**Welke implementatiesnelheid past bij jullie?**
+${label(SNELHEID_LABELS, antwoorden.implementatieSnelheid)}
+
+## Contactgegevens
+- **Naam:** ${volledigeNaam}
+- **Bedrijf:** ${lead.bedrijf}
+- **E-mail:** ${lead.email}
+- **Telefoon:** ${lead.telefoon ?? "niet opgegeven"}
+- **Toestemming gegevensverwerking:** verleend op ${datum}`;
 }
 
 class TwentyDuplicateError extends Error {}
@@ -335,46 +494,132 @@ export async function pushLeadToTwenty(
       throw new Error("Person ID niet teruggekregen van Twenty (ook geen bestaand record gevonden)");
     }
 
-    // 3. Note aanmaken met scan samenvatting.
-    // Twenty Note object gebruikt bodyV2 (rich text) met markdown-subfield, niet body.
-    const noteSamenvatting = bouwScanSamenvatting(lead, antwoorden, resultaat);
-    const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
-      title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100 — ${lead.bedrijf}`,
-      bodyV2: { markdown: noteSamenvatting },
-    });
-
-    // 4. Note koppelen aan person én company via aparte noteTarget records
-    const noteId = extractId(noteRes, "notes");
-    if (!noteId) {
-      console.warn("[CRM] Note aangemaakt maar id niet gevonden — koppeling overgeslagen");
-    } else {
-      // Person koppeling
-      try {
-        await twentyREST(baseUrl, apiKey, "noteTargets", {
-          noteId,
-          personId,
-        });
-        console.log(`[CRM] Note ${noteId} gekoppeld aan person ${personId}`);
-      } catch (err) {
-        console.warn(`[CRM] Note→Person koppeling mislukt:`, err);
-      }
-
-      // Company koppeling
-      if (companyId) {
-        try {
-          await twentyREST(baseUrl, apiKey, "noteTargets", {
-            noteId,
-            companyId,
-          });
-          console.log(`[CRM] Note ${noteId} gekoppeld aan company ${companyId}`);
-        } catch (err) {
-          console.warn(`[CRM] Note→Company koppeling mislukt:`, err);
-        }
-      }
-    }
+    // 3. Note met scan samenvatting (Q&A) aanmaken en koppelen
+    await maakNoteEnKoppel(
+      baseUrl,
+      apiKey,
+      `AI Readiness Intake — Score ${resultaat.aiReadinessScore}/100 — ${lead.bedrijf}`,
+      bouwScanSamenvatting(lead, antwoorden, resultaat),
+      personId,
+      companyId
+    );
 
     console.log(`[CRM] Lead verwerkt in Twenty: ${lead.voornaam} ${lead.achternaam} (${lead.email}), score ${resultaat.aiReadinessScore}, company=${companyId ?? "geen"}, person=${personId}`);
   } catch (err) {
     console.error("[CRM] Twenty push mislukt (lead bewaard via e-mail):", err);
   }
+}
+
+/**
+ * Maak een note aan in Twenty en koppel die aan een person en (optioneel) company.
+ * Faalt silent — Twenty CRM is een nice-to-have voor logging, niet kritiek voor de flow.
+ */
+async function maakNoteEnKoppel(
+  baseUrl: string,
+  apiKey: string,
+  title: string,
+  markdownBody: string,
+  personId: string,
+  companyId: string | null
+): Promise<void> {
+  let noteId: string | null = null;
+  try {
+    const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
+      title,
+      bodyV2: { markdown: markdownBody },
+    });
+    noteId = extractId(noteRes, "notes");
+  } catch (err) {
+    console.warn(`[CRM] Note aanmaken mislukt (${title}):`, err);
+    return;
+  }
+
+  if (!noteId) {
+    console.warn(`[CRM] Note aangemaakt maar id niet gevonden (${title})`);
+    return;
+  }
+
+  try {
+    await twentyREST(baseUrl, apiKey, "noteTargets", { noteId, personId });
+  } catch (err) {
+    console.warn(`[CRM] Note→Person koppeling mislukt (${title}):`, err);
+  }
+
+  if (companyId) {
+    try {
+      await twentyREST(baseUrl, apiKey, "noteTargets", { noteId, companyId });
+    } catch (err) {
+      console.warn(`[CRM] Note→Company koppeling mislukt (${title}):`, err);
+    }
+  }
+
+  console.log(`[CRM] Note "${title}" toegevoegd (note=${noteId}, person=${personId}, company=${companyId ?? "geen"})`);
+}
+
+/**
+ * Voeg een extra note toe voor een bestaande lead (gevonden via email).
+ * Wordt gebruikt om de AI-analyse en het email-actieplan los te bewaren.
+ */
+export async function addNoteForLead(
+  email: string,
+  title: string,
+  markdownBody: string
+): Promise<void> {
+  const rawBaseUrl = process.env.TWENTY_BASE_URL;
+  const apiKey = process.env.TWENTY_API_KEY;
+
+  if (!rawBaseUrl || !apiKey) {
+    console.log(`[CRM] Twenty niet geconfigureerd — note "${title}" overgeslagen`);
+    return;
+  }
+
+  const baseUrl = normaliseerBaseUrl(rawBaseUrl);
+
+  // Person opzoeken via email
+  let personId: string | null = null;
+  try {
+    const personLookup = await twentyGET(
+      baseUrl,
+      apiKey,
+      "people",
+      `filter=emails.primaryEmail[eq]:${encodeURIComponent(email)}`
+    );
+    personId = extractFirstId(personLookup);
+  } catch (err) {
+    console.warn(`[CRM] Person lookup mislukt voor ${email}:`, err);
+    return;
+  }
+
+  if (!personId) {
+    console.warn(`[CRM] Geen person gevonden voor ${email} — note "${title}" overgeslagen`);
+    return;
+  }
+
+  // Company afleiden via email-domain (alleen voor zakelijke domeinen)
+  let companyId: string | null = null;
+  const FREE_EMAIL_DOMAINS = new Set([
+    "gmail.com", "googlemail.com",
+    "outlook.com", "outlook.nl", "hotmail.com", "hotmail.nl", "live.com", "live.nl", "msn.com",
+    "yahoo.com", "yahoo.nl", "ymail.com",
+    "icloud.com", "me.com", "mac.com",
+    "ziggo.nl", "kpnmail.nl", "planet.nl", "xs4all.nl", "telfort.nl", "home.nl", "online.nl",
+    "proton.me", "protonmail.com", "tutanota.com",
+    "aol.com", "gmx.com", "gmx.nl", "mail.com",
+  ]);
+  const rawDomain = email.split("@")[1]?.toLowerCase() ?? "";
+  if (rawDomain && !FREE_EMAIL_DOMAINS.has(rawDomain)) {
+    try {
+      const companyLookup = await twentyGET(
+        baseUrl,
+        apiKey,
+        "companies",
+        `filter=domainName.primaryLinkUrl[eq]:${encodeURIComponent(rawDomain)}`
+      );
+      companyId = extractFirstId(companyLookup);
+    } catch {
+      // niet fataal — note alleen aan person koppelen
+    }
+  }
+
+  await maakNoteEnKoppel(baseUrl, apiKey, title, markdownBody, personId, companyId);
 }

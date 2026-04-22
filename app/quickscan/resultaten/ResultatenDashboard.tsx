@@ -295,11 +295,16 @@ export default function ResultatenDashboard() {
 
     setAnalysing(true);
 
-    // Start streaming analyse — bedrijfsnaam meesturen voor persoonlijkere AI-tekst
+    // Start streaming analyse — bedrijfsnaam + email meesturen
+    // (email wordt aan server-side gebruikt om de analyse als note in Twenty op te slaan)
     fetch("/api/quickscan/analyze", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ antwoorden: parsedAntwoorden, bedrijf: parsedLead?.bedrijf }),
+      body: JSON.stringify({
+        antwoorden: parsedAntwoorden,
+        bedrijf: parsedLead?.bedrijf,
+        email: parsedLead?.email,
+      }),
     }).then(async (res) => {
       if (!res.ok || !res.body) {
         setAnalysing(false);
