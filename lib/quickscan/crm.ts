@@ -613,12 +613,12 @@ async function tryNoteTarget(
   context: string
 ): Promise<void> {
   const variants: Record<string, unknown>[] = [
-    // Shape 1: relatie als nested object
+    // Shape 1: Prisma-style connect (Twenty's vereiste vorm)
+    { note: { connect: { id: noteId } }, [relType]: { connect: { id: relId } } },
+    // Shape 2: nested id object
     { note: { id: noteId }, [relType]: { id: relId } },
-    // Shape 2: id-velden zonder wrapper
+    // Shape 3: flat id velden
     { noteId, [`${relType}Id`]: relId },
-    // Shape 3: alleen note als nested + relId los
-    { note: { id: noteId }, [`${relType}Id`]: relId },
   ];
 
   for (let i = 0; i < variants.length; i++) {
