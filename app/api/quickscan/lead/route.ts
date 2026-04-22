@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
       const prompt = buildActieplanPrompt(antwoorden, resultaat, { naam: `${lead.voornaam} ${lead.achternaam}`.trim(), bedrijf: lead.bedrijf });
       const response = await client.messages.create({
         model: "claude-haiku-4-5-20251001",
-        max_tokens: 1500,
+        max_tokens: 3000,
         messages: [{ role: "user", content: prompt }],
       });
       actieplanTekst = response.content
