@@ -335,11 +335,12 @@ export async function pushLeadToTwenty(
       throw new Error("Person ID niet teruggekregen van Twenty (ook geen bestaand record gevonden)");
     }
 
-    // 3. Note aanmaken met scan samenvatting
+    // 3. Note aanmaken met scan samenvatting.
+    // Twenty Note object gebruikt bodyV2 (rich text) met markdown-subfield, niet body.
     const noteSamenvatting = bouwScanSamenvatting(lead, antwoorden, resultaat);
     const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
       title: `AI Readiness Scan — Score ${resultaat.aiReadinessScore}/100 — ${lead.bedrijf}`,
-      body: noteSamenvatting,
+      bodyV2: { markdown: noteSamenvatting },
     });
 
     // 4. Note koppelen aan person én company via aparte noteTarget records
