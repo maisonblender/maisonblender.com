@@ -104,7 +104,8 @@ function actieplanToHtml(text: string): string {
 
     const headingMatch = line.match(/^#{1,3}\s+(.+)$/) || line.match(/^\*\*(.+?)\*\*:?\s*$/);
     if (headingMatch) {
-      const heading = headingMatch[1].replace(/\*\*/g, "");
+      // Heading komt uit AI-output → escape voor we het in HTML zetten.
+      const heading = escapeHtml(headingMatch[1].replace(/\*\*/g, ""));
       html += `<h3 style="margin: 20px 0 6px; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #1f1f1f;">${heading}</h3>`;
       i++;
       continue;
@@ -224,6 +225,22 @@ export async function POST(request: NextRequest) {
     const veiligCultuurReadiness = escapeHtml(resultaat.cultuurReadiness);
     void veiligTelefoon; // gereserveerd voor toekomstige telefoonregel in template
 
+    // Numerieke velden komen uit de POST body en zijn TypeScript-typed als number,
+    // maar runtime kan een aanvaller een string sturen. Force naar number en
+    // fallback naar 0 om type-confusion XSS in de email te blokkeren.
+    const veiligScore = Number.isFinite(Number(resultaat.aiReadinessScore))
+      ? Math.round(Number(resultaat.aiReadinessScore))
+      : 0;
+    const veiligRoi = Number.isFinite(Number(resultaat.roiTotaal))
+      ? Number(resultaat.roiTotaal)
+      : 0;
+    const veiligUren = Number.isFinite(Number(resultaat.tijdsbesparingTotaal))
+      ? Math.round(Number(resultaat.tijdsbesparingTotaal))
+      : 0;
+    const veiligPercentiel = Number.isFinite(Number(resultaat.benchmarkPercentiel))
+      ? Math.round(Number(resultaat.benchmarkPercentiel))
+      : 0;
+
     const emailHtml = `<!DOCTYPE html>
 <html lang="nl">
 <head>
@@ -263,7 +280,7 @@ export async function POST(request: NextRequest) {
                     <table width="100%" cellpadding="0" cellspacing="0">
                       <tr>
                         <td style="width: 25%; text-align: center; padding: 0 8px 0 0;">
-                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${resultaat.aiReadinessScore}</div>
+                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${veiligScore}</div>
                           <div style="font-size: 11px; color: #575760; margin-top: 4px;">Readiness Score</div>
                         </td>
                         <td style="width: 25%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
@@ -271,11 +288,11 @@ export async function POST(request: NextRequest) {
                           <div style="font-size: 11px; color: #575760; margin-top: 4px;">Niveau</div>
                         </td>
                         <td style="width: 25%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
-                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">€${(resultaat.roiTotaal / 1000).toFixed(0)}K</div>
+                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">€${(veiligRoi / 1000).toFixed(0)}K</div>
                           <div style="font-size: 11px; color: #575760; margin-top: 4px;">ROI potentieel/jaar</div>
                         </td>
                         <td style="width: 25%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
-                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${resultaat.tijdsbesparingTotaal}u</div>
+                          <div style="font-size: 28px; font-weight: 700; color: #1f1f1f; line-height: 1;">${veiligUren}u</div>
                           <div style="font-size: 11px; color: #575760; margin-top: 4px;">Besparing/week</div>
                         </td>
                       </tr>
@@ -291,7 +308,7 @@ export async function POST(request: NextRequest) {
                           <div style="font-size: 11px; color: #575760; margin-top: 2px;">Cultuur readiness</div>
                         </td>
                         <td style="width: 33%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
-                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${resultaat.benchmarkPercentiel}%</div>
+                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${veiligPercentiel}%</div>
                           <div style="font-size: 11px; color: #575760; margin-top: 2px;">Beter dan sector</div>
                         </td>
                       </tr>
@@ -351,7 +368,7 @@ export async function POST(request: NextRequest) {
     // Sanitize subject — strip CR/LF zodat lead.bedrijf geen extra headers
     // kan injecteren in de payload naar Resend.
     const safeSubjectBedrijf = sanitizeHeader(lead.bedrijf, 120);
-    const subject = `AI Kansenkaart ${safeSubjectBedrijf} — Score ${resultaat.aiReadinessScore}/100 | MAISON BLNDR`;
+    const subject = `AI Kansenkaart ${safeSubjectBedrijf} — Score ${veiligScore}/100 | MAISON BLNDR`;
 
     try {
       const res = await fetch("https://api.resend.com/emails", {
