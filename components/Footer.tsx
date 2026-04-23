@@ -41,6 +41,7 @@ export default function Footer() {
             <a href="/labs" className="hover:text-black transition-colors font-medium">Labs →</a>
             <a href="/privacybeleid" className="hover:text-black transition-colors">Privacybeleid</a>
             <a href="/eu-ai-act" className="hover:text-black transition-colors">EU AI Act</a>
+            <a href="/toegankelijkheidsaudit" className="hover:text-black transition-colors">Toegankelijkheidsaudit</a>
           </nav>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { runAudit, AuditError } from "@/lib/a11y/audit";
 import { sendAuditEmailToLead, sendInternalLeadNotification } from "@/lib/a11y/email";
-import { pushAuditLeadToTwenty } from "@/lib/a11y/crm";
+import { pushAuditLeadToTwenty, type TwentyPushResult } from "@/lib/a11y/crm";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import type { AuditLead } from "@/lib/a11y/types";
 
@@ -88,28 +88,57 @@ export async function POST(request: NextRequest) {
 
   // 2. Twenty + e-mails parallel — geen van deze mag de gebruiker tegenhouden.
   //    Twenty/Resend kunnen falen zonder dat we de UX breken; we loggen alleen.
-  const sideEffects = Promise.allSettled([
-    pushAuditLeadToTwenty(lead, report),
+  //    Twenty isoleren we wél, zodat we de status mee kunnen sturen in de response
+  //    (handig voor diagnose vanuit de browser zonder Vercel-logs te openen).
+  const twentyPromise = pushAuditLeadToTwenty(lead, report).catch(
+    (err): TwentyPushResult => ({
+      status: "exception",
+      error: err instanceof Error ? err.message : String(err),
+    })
+  );
+  const emailsPromise = Promise.allSettled([
     sendAuditEmailToLead(lead, report),
     sendInternalLeadNotification(lead, report),
   ]);
 
   // We wachten kort: maximaal 8s zodat de UI niet eindeloos hangt als Twenty traag is.
   const TIMEOUT_MS = 8000;
-  await Promise.race([
-    sideEffects,
-    new Promise((resolve) => setTimeout(resolve, TIMEOUT_MS)),
-  ]);
+  const timeout = new Promise<"timeout">((resolve) =>
+    setTimeout(() => resolve("timeout"), TIMEOUT_MS)
+  );
 
-  // Logging zodra alles klaar is, ook als we al hebben geantwoord (best-effort)
-  sideEffects.then((results) => {
+  const twentyResult = await Promise.race([twentyPromise, timeout]);
+
+  // Emails afwachten met dezelfde grenstijd
+  await Promise.race([emailsPromise, timeout]);
+
+  // Best-effort vervolg-log voor wat na het timeout-venster nog binnenkomt
+  emailsPromise.then((results) => {
     results.forEach((r, i) => {
       if (r.status === "rejected") {
-        const labels = ["twenty", "email-lead", "email-intern"];
+        const labels = ["email-lead", "email-intern"];
         console.warn(`[a11y/lead] side-effect ${labels[i]} faalde:`, r.reason);
       }
     });
   });
+  twentyPromise.then((res) => {
+    if (res.status !== "ok") {
+      console.warn(`[a11y/lead] Twenty status=${res.status}`, res.error ?? "");
+    }
+  });
 
-  return Response.json({ ok: true, report });
+  const twentyStatus =
+    typeof twentyResult === "string" ? "timeout" : twentyResult.status;
+  const twentyNoteId =
+    typeof twentyResult === "string" ? null : twentyResult.noteId ?? null;
+
+  return Response.json(
+    { ok: true, report, twenty: { status: twentyStatus, noteId: twentyNoteId } },
+    {
+      headers: {
+        "X-Twenty-Status": twentyStatus,
+        ...(twentyNoteId ? { "X-Twenty-Note-Id": twentyNoteId } : {}),
+      },
+    }
+  );
 }

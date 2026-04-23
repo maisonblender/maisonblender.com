@@ -253,7 +253,7 @@ export default function AuditDashboard() {
                     >
                       Welke pagina wil je toetsen?
                     </h2>
-                    <p className="mt-2 text-sm text-[#575760] max-w-lg">
+                    <p className="mt-3 max-w-lg leading-relaxed text-[#575760]">
                       Plak een publiek bereikbare URL — bijvoorbeeld de homepage of een
                       kritiek conversiepad.
                     </p>
@@ -321,7 +321,7 @@ export default function AuditDashboard() {
                     >
                       Naar welk e-mailadres mogen we je rapport sturen?
                     </h2>
-                    <p className="mt-2 max-w-lg text-sm text-[#575760]">
+                    <p className="mt-3 max-w-lg leading-relaxed text-[#575760]">
                       Je ontvangt direct het volledige auditrapport — én een PDF-vriendelijke
                       e-mailversie met de prioriteitenlijst, klaar om met je team te delen.
                     </p>
@@ -386,7 +386,7 @@ export default function AuditDashboard() {
                       )}
 
                       <div className="flex flex-col-reverse gap-3 pt-2 sm:flex-row sm:items-center sm:justify-between">
-                        <p className="text-xs text-[#b2b2be] max-w-sm leading-relaxed">
+                        <p className="max-w-sm text-sm leading-relaxed text-[#b2b2be]">
                           We delen je gegevens met niemand. Lees ons{" "}
                           <Link href="/privacybeleid" className="underline hover:text-[#1f1f1f]">
                             privacybeleid
@@ -435,7 +435,7 @@ export default function AuditDashboard() {
                           {loadingLabel}
                         </motion.p>
                       </AnimatePresence>
-                      <p className="mt-2 text-xs text-[#575760] max-w-sm mx-auto">
+                      <p className="mx-auto mt-2 max-w-sm text-sm leading-relaxed text-[#575760]">
                         We sturen je rapport tegelijk naar {lead.email}.
                       </p>
                     </div>
@@ -452,8 +452,8 @@ export default function AuditDashboard() {
                   >
                     <Mail className="mt-0.5 h-4 w-4 shrink-0" />
                     <div>
-                      <p className="font-semibold">Rapport verzonden naar {lead.email}.</p>
-                      <p className="mt-0.5 text-emerald-700/80">
+                      <p className="font-semibold leading-relaxed">Rapport verzonden naar {lead.email}.</p>
+                      <p className="mt-1 leading-relaxed text-emerald-700/80">
                         Het volledige interactieve dashboard staat hieronder.
                       </p>
                     </div>
@@ -481,7 +481,7 @@ export default function AuditDashboard() {
                   <SpecRow value="9.x" label="EN 301 549 v3.2.1" />
                   <SpecRow value="< 12s" label="Doorlooptijd" />
                 </div>
-                <div className="mt-6 border-t border-white/10 pt-5 text-xs leading-relaxed text-white/70">
+                <div className="mt-6 border-t border-white/10 pt-5 text-sm leading-relaxed text-white/70">
                   Server-side fetch · regex-gebaseerde parsing · gewogen scoring per impact.
                   De audit is deterministisch — dezelfde URL geeft altijd hetzelfde rapport.
                 </div>
@@ -644,7 +644,7 @@ function ConsentRow({
       >
         {checked && <Check className="h-2.5 w-2.5 text-white" strokeWidth={3} />}
       </span>
-      <span className="text-xs leading-relaxed text-[#575760]">
+      <span className="text-sm leading-relaxed text-[#575760]">
         Ik geef MAISON BLNDR toestemming om mijn gegevens te verwerken voor het toezenden
         van dit auditrapport en eventuele opvolging. Geen verkoop aan derden.
       </span>
@@ -683,7 +683,7 @@ function ReportHeader({ report }: { report: AuditReport }) {
             <span className="truncate">{report.finalUrl}</span>
             <ExternalLink className="h-3.5 w-3.5 shrink-0 text-[#b2b2be]" />
           </a>
-          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 text-xs text-[#575760]">
+          <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-[#575760]">
             <span>
               <span className="text-[#b2b2be]">Uitgevoerd:</span>{" "}
               {new Date(report.fetchedAt).toLocaleString("nl-NL")}
@@ -733,7 +733,7 @@ function Scorecard({ report }: { report: AuditReport }) {
             className={`h-full ${c.bar}`}
           />
         </div>
-        <p className="mt-4 text-xs leading-relaxed text-[#575760]">
+        <p className="mt-5 leading-relaxed text-[#575760]">
           Gewogen score op basis van geslaagde regels en gewogen impact-aftrek
           (kritiek 12, hoog 8, middel 4, laag 2 punten per voorkomen, max 5 per regel).
         </p>
@@ -1016,9 +1016,9 @@ function PrioritiesList({
       </div>
 
       {failingOnly.length === 0 ? (
-        <div className="mt-4 flex items-center gap-3 border border-emerald-200 bg-emerald-50 px-5 py-6 text-sm text-emerald-700">
+        <div className="mt-4 flex items-center gap-3 border border-emerald-200 bg-emerald-50 px-5 py-6 text-emerald-700">
           <CheckCircle2 className="h-5 w-5 shrink-0" />
-          <p>
+          <p className="leading-relaxed">
             Geen geautomatiseerd detecteerbare WCAG 2.1 AA-issues binnen dit filter.
             Voer aanvullend handmatig toetswerk uit voor een volledig oordeel.
           </p>
@@ -1038,59 +1038,72 @@ function FindingCard({ finding, index }: { finding: AuditFinding; index: number 
   const [open, setOpen] = useState(index === 1);
   const [copied, setCopied] = useState(false);
   const Icon = IMPACT_ICON[finding.result.impact];
+  const guide = finding.rule.guide;
 
   const copyFix = useCallback(() => {
-    const text = [
-      `${finding.rule.title}`,
-      `WCAG ${finding.rule.wcag.sc} ${finding.rule.wcag.name} (${finding.rule.wcag.level})`,
-      `EN 301 549 § ${finding.rule.en301549}`,
+    const lines = [
+      `[${finding.priority}] ${finding.rule.title}`,
+      `WCAG ${finding.rule.wcag.sc} ${finding.rule.wcag.name} (${finding.rule.wcag.level}) · EN 301 549 § ${finding.rule.en301549}`,
+      `${finding.result.count}× gevonden · impact: ${IMPACT_LABEL[finding.result.impact]}`,
       "",
-      "Fix:",
-      finding.result.fixHint || finding.rule.fix,
-    ].join("\n");
-    navigator.clipboard.writeText(text).then(() => {
+      "WAT IS ER MIS",
+      guide.problem,
+      "",
+      "WAAROM HET ERTOE DOET",
+      guide.impactExplanation,
+      "",
+      "HOE LOS JE HET OP",
+      ...guide.steps.map((s, i) => `${i + 1}. ${s}`),
+      "",
+      "VOORBEELD — FOUT",
+      guide.example.bad,
+      "",
+      "VOORBEELD — GOED",
+      guide.example.good,
+    ];
+    navigator.clipboard.writeText(lines.join("\n")).then(() => {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     });
-  }, [finding]);
+  }, [finding, guide]);
 
   return (
     <li className="border border-black/[0.06] bg-white">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="flex w-full items-start gap-4 px-5 py-4 text-left"
+        className="flex w-full items-start gap-4 px-5 py-5 text-left"
       >
         <div className="flex shrink-0 flex-col items-center gap-1">
-          <span className={`inline-flex h-7 w-7 items-center justify-center rounded-md text-[10px] font-mono font-semibold ${priorityBadge(finding.priority)}`}>
+          <span className={`inline-flex h-8 w-8 items-center justify-center rounded-md text-xs font-mono font-semibold ${priorityBadge(finding.priority)}`}>
             {finding.priority}
           </span>
-          <span className="text-[10px] font-mono text-[#b2b2be]">#{String(index).padStart(2, "0")}</span>
+          <span className="text-[11px] font-mono text-[#b2b2be]">#{String(index).padStart(2, "0")}</span>
         </div>
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">
             <span
-              className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider ${impactBadge(
+              className={`inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider ${impactBadge(
                 finding.result.impact
               )}`}
             >
               <Icon className="h-3 w-3" /> {IMPACT_LABEL[finding.result.impact]}
             </span>
-            <span className="rounded-md border border-black/[0.06] bg-[#f2f3f5] px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-[#575760]">
+            <span className="rounded-md border border-black/[0.06] bg-[#f2f3f5] px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-[#575760]">
               WCAG {finding.rule.wcag.sc}
             </span>
-            <span className="rounded-md border border-black/[0.06] bg-[#f2f3f5] px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-[#575760]">
+            <span className="rounded-md border border-black/[0.06] bg-[#f2f3f5] px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-[#575760]">
               EN § {finding.rule.en301549}
             </span>
-            <span className="rounded-md border border-black/[0.06] bg-[#f2f3f5] px-2 py-0.5 text-[10px] font-mono uppercase tracking-wider text-[#575760]">
+            <span className="rounded-md border border-black/[0.06] bg-[#f2f3f5] px-2 py-0.5 text-[11px] font-mono uppercase tracking-wider text-[#575760]">
               {finding.result.count}× gevonden
             </span>
           </div>
-          <p className="mt-2 text-sm font-semibold text-[#1f1f1f]">{finding.rule.title}</p>
-          <p className="mt-1 text-xs leading-relaxed text-[#575760]">{finding.rule.description}</p>
+          <p className="mt-3 text-base font-semibold text-[#1f1f1f]">{finding.rule.title}</p>
+          <p className="mt-1 leading-relaxed text-[#575760]">{finding.rule.description}</p>
         </div>
         <span className={`shrink-0 self-center text-[#b2b2be] transition-transform ${open ? "rotate-180" : ""}`}>
-          <svg className="h-4 w-4" viewBox="0 0 12 12" fill="none">
+          <svg className="h-5 w-5" viewBox="0 0 12 12" fill="none">
             <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </span>
@@ -1105,34 +1118,83 @@ function FindingCard({ finding, index }: { finding: AuditFinding; index: number 
             transition={{ duration: 0.2 }}
             className="overflow-hidden border-t border-black/[0.06]"
           >
-            <div className="space-y-5 px-5 py-5 lg:px-7">
-              <div className="border-l-2 border-emerald-500 bg-emerald-50/40 px-4 py-3">
-                <p className="mb-1 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-emerald-700">
-                  <Wrench className="h-3 w-3" /> Concrete fix
-                </p>
-                <p className="text-sm leading-relaxed text-[#1f1f1f]">
-                  {finding.result.fixHint || finding.rule.fix}
-                </p>
-              </div>
+            <div className="space-y-7 px-5 py-6 lg:px-7 lg:py-7">
 
+              {/* 1. Wat is er mis */}
+              <FixSection
+                eyebrow="Wat is er mis"
+                Icon={AlertOctagon}
+                tone="rose"
+              >
+                <p className="leading-relaxed text-[#1f1f1f]">{guide.problem}</p>
+                <p className="mt-2 leading-relaxed text-[#575760]">{guide.impactExplanation}</p>
+              </FixSection>
+
+              {/* 2. Voorbeelden uit je pagina */}
               {finding.result.examples.length > 0 && (
-                <div>
-                  <p className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-[#575760]">
-                    <Code2 className="h-3 w-3" /> Voorbeelden uit je pagina
-                  </p>
+                <FixSection
+                  eyebrow={`Aangetroffen op je pagina (${finding.result.count}× totaal)`}
+                  Icon={Code2}
+                  tone="slate"
+                >
                   <div className="space-y-2">
                     {finding.result.examples.map((ex, i) => (
                       <pre
                         key={i}
-                        className="overflow-x-auto whitespace-pre-wrap break-all rounded-md border border-black/[0.06] bg-[#1f1f1f] px-3 py-2.5 text-[11px] leading-relaxed text-emerald-300"
+                        className="overflow-x-auto whitespace-pre-wrap break-all rounded-md border border-black/[0.06] bg-[#1f1f1f] px-4 py-3 font-mono text-[13px] leading-relaxed text-rose-300"
                       >
                         {ex}
                       </pre>
                     ))}
                   </div>
-                </div>
+                </FixSection>
               )}
 
+              {/* 3. Hoe los je het op */}
+              <FixSection
+                eyebrow="Hoe los je het op"
+                Icon={Wrench}
+                tone="emerald"
+              >
+                <ol className="space-y-3">
+                  {guide.steps.map((step, i) => (
+                    <li key={i} className="flex gap-3 leading-relaxed text-[#1f1f1f]">
+                      <span className="inline-flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-xs font-semibold text-white">
+                        {i + 1}
+                      </span>
+                      <span>{step}</span>
+                    </li>
+                  ))}
+                </ol>
+              </FixSection>
+
+              {/* 4. Code-voorbeeld bad → good */}
+              <FixSection
+                eyebrow="Code-voorbeeld"
+                Icon={Code2}
+                tone="slate"
+              >
+                <div className="grid gap-4 lg:grid-cols-2">
+                  <div>
+                    <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-rose-600">
+                      <XCircle className="h-3.5 w-3.5" /> Fout
+                    </p>
+                    <pre className="overflow-x-auto whitespace-pre rounded-md border border-rose-200 bg-rose-50/60 px-4 py-3 font-mono text-[13px] leading-relaxed text-[#1f1f1f]">
+                      {guide.example.bad}
+                    </pre>
+                  </div>
+                  <div>
+                    <p className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-emerald-600">
+                      <CheckCircle2 className="h-3.5 w-3.5" /> Goed
+                    </p>
+                    <pre className="overflow-x-auto whitespace-pre rounded-md border border-emerald-200 bg-emerald-50/60 px-4 py-3 font-mono text-[13px] leading-relaxed text-[#1f1f1f]">
+                      {guide.example.good}
+                    </pre>
+                  </div>
+                </div>
+              </FixSection>
+
+              {/* 5. Mapping op standaarden */}
               <div className="grid gap-3 sm:grid-cols-2">
                 <MappingCell
                   label="WCAG 2.1"
@@ -1150,15 +1212,15 @@ function FindingCard({ finding, index }: { finding: AuditFinding; index: number 
                 <button
                   type="button"
                   onClick={copyFix}
-                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3.5 py-1.5 text-xs font-medium text-[#575760] hover:border-[#1f1f1f] hover:text-[#1f1f1f]"
+                  className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-4 py-2 text-sm font-medium text-[#575760] hover:border-[#1f1f1f] hover:text-[#1f1f1f]"
                 >
                   {copied ? (
                     <>
-                      <Check className="h-3.5 w-3.5 text-emerald-600" /> Gekopieerd
+                      <Check className="h-4 w-4 text-emerald-600" /> Gekopieerd
                     </>
                   ) : (
                     <>
-                      <ClipboardCopy className="h-3.5 w-3.5" /> Kopieer ticket
+                      <ClipboardCopy className="h-4 w-4" /> Kopieer als ticket
                     </>
                   )}
                 </button>
@@ -1168,6 +1230,32 @@ function FindingCard({ finding, index }: { finding: AuditFinding; index: number 
         )}
       </AnimatePresence>
     </li>
+  );
+}
+
+function FixSection({
+  eyebrow,
+  Icon,
+  tone,
+  children,
+}: {
+  eyebrow: string;
+  Icon: React.ComponentType<{ className?: string; strokeWidth?: number }>;
+  tone: "rose" | "emerald" | "slate";
+  children: React.ReactNode;
+}) {
+  const colors = {
+    rose: "text-rose-700",
+    emerald: "text-emerald-700",
+    slate: "text-[#575760]",
+  }[tone];
+  return (
+    <div>
+      <p className={`mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest ${colors}`}>
+        <Icon className="h-3.5 w-3.5" strokeWidth={2} /> {eyebrow}
+      </p>
+      {children}
+    </div>
   );
 }
 
@@ -1199,35 +1287,31 @@ function SectionHeader({
       >
         {title}
       </h2>
-      {subtitle && <p className="max-w-2xl text-sm leading-relaxed text-[#575760]">{subtitle}</p>}
+      {subtitle && <p className="leading-relaxed text-[#575760]">{subtitle}</p>}
     </div>
   );
 }
 
 function Disclaimer({ report }: { report: AuditReport }) {
+  const items = [
+    <>Of alt-tekst <strong className="text-[#1f1f1f]">betekenisvol</strong> is voor het beeld in context.</>,
+    <>Of de <strong className="text-[#1f1f1f]">focusvolgorde</strong> logisch is bij toetsenbordnavigatie.</>,
+    <>Kleurcontrast in <strong className="text-[#1f1f1f]">dynamische states</strong> (hover, focus, error).</>,
+    <>Of foutmeldingen, transcripten en ondertitels <strong className="text-[#1f1f1f]">inhoudelijk correct</strong> zijn.</>,
+  ];
   return (
     <div className="border border-amber-200 bg-amber-50/60 p-5 lg:p-6">
-      <p className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-widest text-amber-700">
+      <p className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-amber-700">
         <AlertTriangle className="h-3.5 w-3.5" /> Wat deze audit niet kan zien
       </p>
-      <p className="text-sm leading-relaxed text-[#3a3a42]">{report.disclaimer}</p>
-      <ul className="mt-3 space-y-1.5 text-sm text-[#575760]">
-        <li className="flex gap-2">
-          <span className="text-amber-600">—</span>
-          <span>Of alt-tekst <strong className="text-[#1f1f1f]">betekenisvol</strong> is voor het beeld in context.</span>
-        </li>
-        <li className="flex gap-2">
-          <span className="text-amber-600">—</span>
-          <span>Of de <strong className="text-[#1f1f1f]">focusvolgorde</strong> logisch is bij toetsenbordnavigatie.</span>
-        </li>
-        <li className="flex gap-2">
-          <span className="text-amber-600">—</span>
-          <span>Kleurcontrast in <strong className="text-[#1f1f1f]">dynamische states</strong> (hover, focus, error).</span>
-        </li>
-        <li className="flex gap-2">
-          <span className="text-amber-600">—</span>
-          <span>Of foutmeldingen, transcripten en ondertitels <strong className="text-[#1f1f1f]">inhoudelijk correct</strong> zijn.</span>
-        </li>
+      <p className="leading-relaxed text-[#3a3a42]">{report.disclaimer}</p>
+      <ul className="mt-4 space-y-2 text-[#575760]">
+        {items.map((it, i) => (
+          <li key={i} className="flex items-start gap-3 leading-relaxed">
+            <span className="mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
+            <span>{it}</span>
+          </li>
+        ))}
       </ul>
     </div>
   );
@@ -1240,11 +1324,11 @@ function ContactCta() {
         <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-white/40 mb-2">
           {"// Volledige WCAG/EN 301 549-audit nodig?"}
         </p>
-        <p className="text-base font-semibold">
+        <p className="text-lg font-semibold leading-snug">
           Wij combineren deze automatische scan met handmatig en gebruikersonderzoek
           tot een formele toegankelijkheidsverklaring.
         </p>
-        <p className="mt-1 text-sm text-white/60">
+        <p className="mt-2 leading-relaxed text-white/60">
           Inclusief remediatieroadmap, ontwikkelaar-tickets en een herhaaltest na fixes.
         </p>
       </div>
@@ -1335,11 +1419,11 @@ function CoverageCard({
         : "bg-[#1f1f1f]";
   return (
     <div className={`border border-black/[0.06] bg-white p-6 border-l-2 ${accent}`}>
-      <p className="text-sm font-semibold text-[#1f1f1f] mb-4">{title}</p>
-      <ul className="space-y-2">
+      <p className="mb-4 text-base font-semibold text-[#1f1f1f]">{title}</p>
+      <ul className="space-y-2.5">
         {items.map((it) => (
-          <li key={it} className="flex items-start gap-2 text-xs leading-relaxed text-[#575760]">
-            <span className={`mt-1.5 h-1 w-1 shrink-0 rounded-full ${dot}`} />
+          <li key={it} className="flex items-start gap-3 leading-relaxed text-[#575760]">
+            <span className={`mt-[0.55rem] h-1.5 w-1.5 shrink-0 rounded-full ${dot}`} />
             <span>{it}</span>
           </li>
         ))}

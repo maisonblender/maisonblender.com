@@ -257,7 +257,7 @@ async function maakNoteEnKoppel(
   markdownBody: string,
   personId: string,
   companyId: string | null
-): Promise<void> {
+): Promise<string | null> {
   let noteId: string | null = null;
   try {
     const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
@@ -267,9 +267,12 @@ async function maakNoteEnKoppel(
     noteId = extractId(noteRes, "notes");
   } catch (err) {
     console.warn(`[CRM/a11y] Note aanmaken mislukt (${title}):`, err);
-    return;
+    return null;
   }
-  if (!noteId) return;
+  if (!noteId) {
+    console.warn(`[CRM/a11y] Note aangemaakt maar id niet gevonden (${title})`);
+    return null;
+  }
 
   const koppel = async (relType: "person" | "company", relId: string) => {
     const targetField = relType === "person" ? "targetPersonId" : "targetCompanyId";
@@ -281,12 +284,33 @@ async function maakNoteEnKoppel(
   };
   await koppel("person", personId);
   if (companyId) await koppel("company", companyId);
+  console.log(`[CRM/a11y] ✓ Note "${title}" gekoppeld (note=${noteId}, person=${personId}, company=${companyId ?? "—"})`);
+  return noteId;
+}
+
+/**
+ * Compacte status-uitkomst zodat de API-route direct in de response kan
+ * laten zien of de Twenty-push geslaagd is — zonder Vercel-logs te openen.
+ */
+export type TwentyPushStatus =
+  | "ok"
+  | "missing-env"
+  | "person-failed"
+  | "note-failed"
+  | "exception";
+
+export interface TwentyPushResult {
+  status: TwentyPushStatus;
+  personId?: string;
+  companyId?: string;
+  noteId?: string;
+  error?: string;
 }
 
 export async function pushAuditLeadToTwenty(
   lead: AuditLead,
   report: AuditReport
-): Promise<void> {
+): Promise<TwentyPushResult> {
   const rawBaseUrl = process.env.TWENTY_BASE_URL;
   const apiKey = process.env.TWENTY_API_KEY;
 
@@ -298,8 +322,14 @@ export async function pushAuditLeadToTwenty(
       url: report.finalUrl,
       score: report.score,
     });
-    return;
+    return { status: "missing-env" };
   }
+
+  const looksLikeJwt = apiKey.startsWith("eyJ") && apiKey.length > 100;
+  console.log(
+    `[CRM/a11y] → Twenty: ${rawBaseUrl.slice(0, 60)} | API key ${apiKey.length} chars` +
+      (looksLikeJwt ? " (JWT ✓)" : " ⚠️ geen JWT-format (verwacht 'eyJ...' van 200+ chars)")
+  );
 
   const baseUrl = normaliseerBaseUrl(rawBaseUrl);
   const rawDomain = lead.email.split("@")[1]?.toLowerCase() ?? "";
@@ -376,13 +406,13 @@ export async function pushAuditLeadToTwenty(
 
     if (!personId) {
       console.warn(`[CRM/a11y] Geen personId voor ${lead.email} — note overgeslagen.`);
-      return;
+      return { status: "person-failed", companyId: companyId ?? undefined };
     }
 
     let host = "site";
     try { host = new URL(report.finalUrl).host; } catch { /* noop */ }
     const noteTitle = `Toegankelijkheidsaudit — ${host} — Score ${report.score}/100`;
-    await maakNoteEnKoppel(
+    const noteId = await maakNoteEnKoppel(
       baseUrl,
       apiKey,
       noteTitle,
@@ -391,10 +421,29 @@ export async function pushAuditLeadToTwenty(
       companyId
     );
 
+    if (!noteId) {
+      return {
+        status: "note-failed",
+        personId,
+        companyId: companyId ?? undefined,
+      };
+    }
+
     console.log(
-      `[CRM/a11y] ✓ Lead verwerkt: ${lead.email} → person=${personId} company=${companyId ?? "—"} score=${report.score}`
+      `[CRM/a11y] ✓ Lead verwerkt: ${lead.email} → person=${personId} company=${companyId ?? "—"} note=${noteId} score=${report.score}`
     );
+
+    return {
+      status: "ok",
+      personId,
+      companyId: companyId ?? undefined,
+      noteId,
+    };
   } catch (err) {
     console.error("[CRM/a11y] Twenty push mislukt:", err);
+    return {
+      status: "exception",
+      error: err instanceof Error ? err.message : String(err),
+    };
   }
 }

@@ -23,7 +23,7 @@ export default function AuditIntro() {
           <span className="font-exposure">is geen optie meer.</span>
         </h1>
 
-        <p className="max-w-3xl text-base leading-relaxed text-[#575760] sm:text-lg">
+        <p className="max-w-3xl leading-relaxed text-[#575760]">
           Sinds <strong className="text-[#1f1f1f]">28 juni 2025</strong> verplicht
           de <strong className="text-[#1f1f1f]">Europese Toegankelijkheidsrichtlijn (EAA)</strong>
           {" "}een groot deel van de bedrijven met digitale producten en diensten in de EU
@@ -72,7 +72,7 @@ export default function AuditIntro() {
           >
             Een transparante, deterministische check tegen WCAG 2.1 AA én EN 301 549.
           </h2>
-          <p className="max-w-3xl text-sm leading-relaxed text-[#575760]">
+          <p className="max-w-3xl leading-relaxed text-[#575760]">
             De scanner is een <strong className="text-[#1f1f1f]">automated static audit</strong>:
             we halen de HTML van je pagina server-side op, parseren de DOM en draaien dertien
             deterministische regels die de meest voorkomende AA-failures detecteren. Iedere
@@ -109,8 +109,8 @@ export default function AuditIntro() {
         </div>
 
         {/* Eerlijke disclaimer */}
-        <div className="mt-10 flex items-start gap-4 border-l-2 border-amber-400 bg-amber-50/50 px-5 py-4 text-sm text-[#3a3a42]">
-          <Eye className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" strokeWidth={1.5} />
+        <div className="mt-10 flex items-start gap-4 border-l-2 border-amber-400 bg-amber-50/50 px-5 py-4 text-[#3a3a42]">
+          <Eye className="mt-1 h-5 w-5 shrink-0 text-amber-600" strokeWidth={1.5} />
           <p className="leading-relaxed">
             <strong className="text-[#1f1f1f]">Eerlijk over wat we niet kunnen.</strong>{" "}
             Geen automatische tool kan een toegankelijkheidsverklaring vervangen. Onderwerpen als
@@ -145,8 +145,8 @@ function LawCard({
           {badge}
         </span>
       </div>
-      <p className="text-sm font-semibold text-[#1f1f1f] leading-snug mb-2">{title}</p>
-      <p className="text-xs leading-relaxed text-[#575760]">{body}</p>
+      <p className="mb-2 text-base font-semibold leading-snug text-[#1f1f1f]">{title}</p>
+      <p className="leading-relaxed text-[#575760]">{body}</p>
     </div>
   );
 }
@@ -168,8 +168,8 @@ function StepCard({
         <span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#b2b2be]">{n}</span>
         <Icon className="h-4 w-4 text-[#1f1f1f]" strokeWidth={1.5} />
       </div>
-      <p className="text-sm font-semibold text-[#1f1f1f] leading-snug mb-2">{title}</p>
-      <p className="text-xs leading-relaxed text-[#575760]">{body}</p>
+      <p className="mb-2 text-base font-semibold leading-snug text-[#1f1f1f]">{title}</p>
+      <p className="leading-relaxed text-[#575760]">{body}</p>
     </div>
   );
 }

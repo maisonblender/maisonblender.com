@@ -19,6 +19,18 @@ export type Category =
   | "understandable"
   | "robust";
 
+/** Concrete uitleg van probleem + oplossing met code-voorbeeld. */
+export interface FixGuide {
+  /** Wat is er fundamenteel mis (in één heldere zin). */
+  problem: string;
+  /** Wie wordt er door uitgesloten of waarom is het belangrijk. */
+  impactExplanation: string;
+  /** Concrete stappen om het op te lossen. */
+  steps: string[];
+  /** Code-voorbeeld: foute én correcte versie. */
+  example: { bad: string; good: string };
+}
+
 /** Statische definitie van een regel (zonder runtime data). */
 export interface RuleDefinition {
   id: string;
@@ -31,8 +43,10 @@ export interface RuleDefinition {
   en301549: string;
   /** Standaard impact wanneer de regel faalt. */
   impact: Impact;
-  /** Korte fix-aanwijzing (algemeen). */
+  /** Korte fix-aanwijzing (algemeen, één-regel-samenvatting). */
   fix: string;
+  /** Diepe gids met probleem, stappen en code-voorbeeld. */
+  guide: FixGuide;
 }
 
 /** Resultaat van één regel-check op een specifieke pagina. */
