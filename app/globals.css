@@ -11,8 +11,11 @@
 :root {
   --background: #f2f3f5;
   --foreground: #1f1f1f;
+  /* Body text on #f2f3f5 / white: AA 4.5:1+ */
   --muted: #575760;
-  --muted-light: #b2b2be;
+  --muted-light: #6b6b75;
+  /* Decorative only (non-text): dots, dividers */
+  --decoration: #b2b2be;
   --surface: #ffffff;
   --surface-2: #ecedf0;
   --border: rgba(0, 0, 0, 0.08);
@@ -31,6 +34,71 @@
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* WCAG 2.4.7 Focus Visible — keyboard only */
+:focus {
+  outline: none;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 2px;
+}
+
+/* Visually hidden, available to AT (WCAG 1.3.1) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip link: hidden until keyboard focus (WCAG 2.4.1) */
+.mb-skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.mb-skip-link:focus,
+.mb-skip-link:focus-visible {
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
 }
 
 body {

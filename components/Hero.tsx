@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SiteImage from "@/components/SiteImage";
 
 export default function Hero() {
@@ -27,25 +28,25 @@ export default function Hero() {
           </h1>
 
           <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-            Geen demo's, geen pilots die nergens op uitlopen. MAISON BLNDR bouwt AI die je team
+            Geen demo&apos;s, geen pilots die nergens op uitlopen. MAISON BLNDR bouwt AI die je team
             dagelijks inzet - agents voor factuurverwerking, chatbots voor klantenservice,
             automatisering voor de processen die nu te veel tijd kosten. Gevestigd in Sittard.
             Actief door heel Nederland.
           </p>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <a
+            <Link
               href="/strategiegesprek"
               className="rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg"
             >
               Plan een strategiegesprek
-            </a>
-            <a
+            </Link>
+            <Link
               href="/#diensten"
               className="rounded-full border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:bg-[#f2f3f5]"
             >
               Bekijk onze diensten
-            </a>
+            </Link>
           </div>
 
           <div className="grid grid-cols-3 gap-4 border-t border-black/[0.06] pt-6 text-center sm:gap-6 md:text-left">

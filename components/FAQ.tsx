@@ -93,9 +93,11 @@ export default function FAQ() {
           {faqs.map((faq, i) => (
             <div key={i} className="border-b border-black/[0.08]">
               <button
+                type="button"
                 onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="flex w-full items-start justify-between gap-6 py-6 text-left"
+                className="flex w-full items-start justify-between gap-6 py-6 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a7a5c] focus-visible:ring-offset-2"
                 aria-expanded={openIndex === i}
+                aria-controls={`faq-panel-${i}`}
               >
                 <span className="text-base font-semibold text-[#1f1f1f] leading-snug">
                   {faq.question}
@@ -107,11 +109,11 @@ export default function FAQ() {
                   +
                 </span>
               </button>
-              {openIndex === i && (
-                <p className="pb-6 text-[#575760] leading-relaxed text-sm sm:text-base">
-                  {faq.answer}
-                </p>
-              )}
+              <div id={`faq-panel-${i}`} role="region" hidden={openIndex !== i}>
+                {openIndex === i && (
+                  <p className="pb-6 text-sm leading-relaxed text-[#575760] sm:text-base">{faq.answer}</p>
+                )}
+              </div>
             </div>
           ))}
         </div>

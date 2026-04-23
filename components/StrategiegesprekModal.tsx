@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { MessageSquare, Cpu, Code2, Compass, HelpCircle, ExternalLink, Mail, MapPin, Monitor } from "lucide-react";
+import { useFocusTrap } from "@/lib/a11y/useFocusTrap";
 
 const CALENDAR_BOOKING_URL = "https://calendar.google.com/calendar/u/0/appointments/schedules/AcZssZ2r1GurynCuZKWNZ2LANHLHlc7cbHzbeI3NRwVZJNCj5hrzqsuhRr-SLBbidFplYf1lb_8lHOw5";
 
@@ -42,12 +43,24 @@ interface Props {
 export default function StrategiegesprekModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>("uitdaging");
   const [answers, setAnswers] = useState<Answers>({});
+  const panelRef = useRef<HTMLDivElement>(null);
+  const onEscape = useCallback(() => {
+    onClose();
+  }, [onClose]);
+
+  useFocusTrap({
+    active: open,
+    containerRef: panelRef,
+    onEscape,
+    restoreFocus: true,
+  });
 
   useEffect(() => {
-    if (open) {
-      setStep("uitdaging");
-      setAnswers({});
-    }
+    if (!open) return;
+    /* eslint-disable react-hooks/set-state-in-effect -- reset wizard bij openen dialoog */
+    setStep("uitdaging");
+    setAnswers({});
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [open]);
 
   useEffect(() => {
@@ -56,7 +69,9 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
     } else {
       document.body.style.overflow = "";
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [open]);
 
   if (!open) return null;
@@ -92,12 +107,18 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
 
   return (
     <div
+      ref={panelRef}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
       role="dialog"
       aria-modal="true"
-      aria-label="Start strategiegesprek"
+      aria-labelledby="strategiegesprek-title"
     >
-      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} aria-hidden="true" />
+      <div
+        role="presentation"
+        tabIndex={-1}
+        className="absolute inset-0 z-0 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
+      />
 
       <div className="relative z-10 w-full max-w-lg bg-[#f2f3f5] shadow-2xl">
         {/* Header */}
@@ -120,8 +141,9 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
             )}
           </div>
           <button
+            type="button"
             onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center text-[#575760] hover:text-[#1f1f1f] transition-colors"
+            className="flex min-h-11 min-w-11 items-center justify-center rounded-md text-[#575760] transition-colors hover:text-[#1f1f1f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a7a5c] focus-visible:ring-offset-2"
             aria-label="Sluiten"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -146,6 +168,7 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
                 { label: "Ik weet het nog niet", Icon: HelpCircle },
               ].map(({ label, Icon }) => (
                 <button
+                  type="button"
                   key={label}
                   className={`${optionClass} ${answers.uitdaging === label ? selectedClass : ""}`}
                   onClick={() => pick("uitdaging", label)}
@@ -163,8 +186,9 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
               title="Hoe groot is je bedrijf?"
               subtitle="Dit helpt ons inschatten welke aanpak het beste past."
             >
-              {["1 - 10 medewerkers", "11 - 50 medewerkers", "51 - 200 medewerkers", "200+ medewerkers"].map((label) => (
+              {["1 - 10 medewerkers", "11 - 50 medewerkers", "51 - 200 medewerkers", "200+ medewerkers"              ].map((label) => (
                 <button
+                  type="button"
                   key={label}
                   className={`${optionClass} ${answers.bedrijfsgrootte === label ? selectedClass : ""}`}
                   onClick={() => pick("bedrijfsgrootte", label)}
@@ -182,8 +206,9 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
               title="Wat is je beschikbare budget?"
               subtitle="Wees gerust eerlijk - zo kunnen we de juiste verwachtingen scheppen."
             >
-              {["< €1.000", "€1.000 - €5.000", "€5.000 - €25.000", "> €25.000"].map((label) => (
+              {["< €1.000", "€1.000 - €5.000", "€5.000 - €25.000", "> €25.000"              ].map((label) => (
                 <button
+                  type="button"
                   key={label}
                   className={`${optionClass} ${answers.budget === label ? selectedClass : ""}`}
                   onClick={() => pick("budget", label)}
@@ -231,6 +256,7 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
                 { label: "Nog aan het verkennen", sub: "Geen harde deadline" },
               ].map(({ label, sub }) => (
                 <button
+                  type="button"
                   key={label}
                   className={`${optionClass} ${answers.timeline === label ? selectedClass : ""}`}
                   onClick={() => pick("timeline", label)}
@@ -252,6 +278,7 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
               
             >
               <button
+                type="button"
                 className={`${optionClass} ${answers.vergadertype === "Op locatie" ? selectedClass : ""}`}
                 onClick={() => pick("vergadertype", "Op locatie")}
               >
@@ -259,6 +286,7 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
                 <span className="text-black/30 group-hover:text-black/60 transition-colors">→</span>
               </button>
               <button
+                type="button"
                 className={`${optionClass} ${answers.vergadertype === "Online via Google Meet" ? selectedClass : ""}`}
                 onClick={() => pick("vergadertype", "Online via Google Meet")}
               >
@@ -283,7 +311,7 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
         {/* Back navigation */}
         {step !== "uitdaging" && step !== "budget-laag" && step !== "boek" && (
           <div className="border-t border-black/8 px-6 py-4">
-            <button onClick={back} className="text-xs text-[#575760] hover:text-[#1f1f1f] transition-colors">
+            <button type="button" onClick={back} className="text-xs text-[#575760] transition-colors hover:text-[#1f1f1f]">
               ← Vorige stap
             </button>
           </div>
@@ -303,7 +331,13 @@ function StepCard({ eyebrow, title, subtitle, children }: {
     <div className="flex flex-col gap-5">
       <div className="flex flex-col gap-1">
         <span className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">{eyebrow}</span>
-        <h2 className="text-xl font-black tracking-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>{title}</h2>
+        <h2
+          id="strategiegesprek-title"
+          className="text-xl font-black tracking-tight text-[#1f1f1f]"
+          style={{ letterSpacing: "-0.5px" }}
+        >
+          {title}
+        </h2>
         {subtitle && <p className="text-sm text-[#575760] leading-relaxed">{subtitle}</p>}
       </div>
       <div className="flex flex-col gap-2">{children}</div>
@@ -321,16 +355,23 @@ function ContactStep({ answers, setAnswers, totalSteps, onNext }: {
   const [email, setEmail] = useState(answers.email ?? "");
   const [bedrijf, setBedrijf] = useState(answers.bedrijf ?? "");
   const [error, setError] = useState("");
+  const hasError = Boolean(error);
 
   function handleNext() {
-    if (!naam.trim() || !email.trim()) { setError("Vul je naam en e-mailadres in."); return; }
-    if (!email.includes("@")) { setError("Vul een geldig e-mailadres in."); return; }
+    if (!naam.trim() || !email.trim()) {
+      setError("Vul je naam en e-mailadres in.");
+      return;
+    }
+    if (!email.includes("@")) {
+      setError("Vul een geldig e-mailadres in.");
+      return;
+    }
     setAnswers({ ...answers, naam, email, bedrijf });
     onNext();
   }
 
   const inputClass =
-    "w-full border border-black/10 bg-white px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] outline-none focus:border-[#1f1f1f] transition-colors";
+    "w-full border border-black/10 bg-white px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#6b6b75] outline-none focus:border-[#1f1f1f] transition-colors";
 
   return (
     <div className="flex flex-col gap-5">
@@ -338,33 +379,74 @@ function ContactStep({ answers, setAnswers, totalSteps, onNext }: {
         <span className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">
           Stap {totalSteps} van {totalSteps}
         </span>
-        <h2 className="text-xl font-black tracking-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
+        <h2
+          id="strategiegesprek-title"
+          className="text-xl font-black tracking-tight text-[#1f1f1f]"
+          style={{ letterSpacing: "-0.5px" }}
+        >
           Met wie spreken we?
         </h2>
       </div>
       <div className="flex flex-col gap-3">
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">
-              Naam <span className="text-[#b2b2be]">*</span>
+            <label htmlFor="strategie-contact-naam" className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">
+              Naam <span className="text-[#6b6b75]">*</span>
             </label>
-            <input type="text" value={naam} onChange={(e) => setNaam(e.target.value)} placeholder="Jan de Vries" className={inputClass} />
+            <input
+              id="strategie-contact-naam"
+              type="text"
+              value={naam}
+              onChange={(e) => setNaam(e.target.value)}
+              placeholder="Jan de Vries"
+              className={inputClass}
+              aria-invalid={hasError}
+              aria-describedby={hasError ? "strategie-contact-error" : undefined}
+              autoComplete="name"
+            />
           </div>
           <div className="flex flex-col gap-1.5">
-            <label className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">Bedrijf</label>
-            <input type="text" value={bedrijf} onChange={(e) => setBedrijf(e.target.value)} placeholder="Bedrijfsnaam" className={inputClass} />
+            <label htmlFor="strategie-contact-bedrijf" className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">
+              Bedrijf
+            </label>
+            <input
+              id="strategie-contact-bedrijf"
+              type="text"
+              value={bedrijf}
+              onChange={(e) => setBedrijf(e.target.value)}
+              placeholder="Bedrijfsnaam"
+              className={inputClass}
+              aria-invalid={hasError}
+              aria-describedby={hasError ? "strategie-contact-error" : undefined}
+              autoComplete="organization"
+            />
           </div>
         </div>
         <div className="flex flex-col gap-1.5">
-          <label className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">
-            E-mail <span className="text-[#b2b2be]">*</span>
+          <label htmlFor="strategie-contact-email" className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">
+            E-mail <span className="text-[#6b6b75]">*</span>
           </label>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="jan@bedrijf.nl" className={inputClass} />
+          <input
+            id="strategie-contact-email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="jan@bedrijf.nl"
+            className={inputClass}
+            aria-invalid={hasError}
+            aria-describedby={hasError ? "strategie-contact-error" : undefined}
+            autoComplete="email"
+          />
         </div>
-        {error && <p className="text-xs text-red-600">{error}</p>}
+        {error && (
+          <p id="strategie-contact-error" role="alert" className="text-xs text-red-600">
+            {error}
+          </p>
+        )}
         <button
+          type="button"
           onClick={handleNext}
-          className="mt-1 w-full rounded-full bg-[#1f1f1f] px-6 py-4 text-sm font-bold text-white transition-all hover:bg-[#3a3a42] hover:shadow-md"
+          className="mt-1 w-full rounded-full bg-[#1f1f1f] px-6 py-4 text-sm font-bold text-white transition-all hover:bg-[#3a3a42] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#f2f3f5]"
         >
           Doorgaan →
         </button>
@@ -374,6 +456,7 @@ function ContactStep({ answers, setAnswers, totalSteps, onNext }: {
 }
 
 function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void }) {
+  void onClose;
   const isOnline = answers.vergadertype === "Online via Google Meet";
 
   const emailBody = [
@@ -390,7 +473,11 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-1">
         <span className="text-[10px] font-medium uppercase tracking-widest text-[#575760]">Klaar</span>
-        <h2 className="text-xl font-black tracking-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
+        <h2
+          id="strategiegesprek-title"
+          className="text-xl font-black tracking-tight text-[#1f1f1f]"
+          style={{ letterSpacing: "-0.5px" }}
+        >
           Plan je gratis strategiegesprek
         </h2>
         <p className="text-sm text-[#575760] leading-relaxed">
@@ -441,7 +528,7 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
         </a>
       </div>
 
-      <p className="text-xs text-[#b2b2be]">Geen verplichtingen. Geen pitch. Gewoon eerlijk advies.</p>
+      <p className="text-xs text-[#6b6b75]">Geen verplichtingen. Geen pitch. Gewoon eerlijk advies.</p>
     </div>
   );
 }

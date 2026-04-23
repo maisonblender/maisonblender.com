@@ -133,7 +133,7 @@ export default async function DienstenPage({
         />
         <Nav />
 
-        <main className="pt-[72px]">
+        <main id="main" tabIndex={-1} className="pt-[72px] outline-none">
           {/* Hero */}
           <section className="px-6 py-20 lg:py-32 bg-[#f2f3f5]">
             <div className="mx-auto max-w-6xl">
@@ -478,7 +478,7 @@ export default async function DienstenPage({
       />
       <Nav />
 
-      <main className="pt-[72px]">
+      <main id="main" tabIndex={-1} className="pt-[72px] outline-none">
         {/* Hero */}
         <section className="px-6 py-20 lg:py-32 bg-[#f2f3f5]">
           <div className="mx-auto max-w-6xl">

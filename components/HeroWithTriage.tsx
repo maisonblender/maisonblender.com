@@ -40,8 +40,9 @@ export default function HeroWithTriage() {
 
             <div className="flex flex-col gap-3 sm:flex-row">
               <button
+                type="button"
                 onClick={() => setModalOpen(true)}
-                className="rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg"
+                className="rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a7a5c] focus-visible:ring-offset-2"
               >
                 Plan een strategiegesprek
               </button>

@@ -31,7 +31,7 @@ export default function QuickscanPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1">
+      <main id="main" tabIndex={-1} className="flex-1 outline-none">
         {/* Hero */}
         <section className="relative flex flex-col items-center justify-center overflow-hidden px-6 py-28 text-center">
           <div
@@ -149,7 +149,7 @@ export default function QuickscanPage() {
               style={{ letterSpacing: "-0.3px" }}
             >
               &quot;De intake maakte in één oogopslag duidelijk waar we het meeste tijd verspillen en waar de
-              grootste governance-risico's zitten. Binnen 6 weken hadden we de eerste automatisering live.&quot;
+              grootste governance-risico&apos;s zitten. Binnen 6 weken hadden we de eerste automatisering live.&quot;
             </blockquote>
             <p className="text-sm text-[#575760]">- Directeur, productiebedrijf Sittard</p>
           </div>

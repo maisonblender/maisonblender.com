@@ -17,14 +17,20 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
-  return [
-    {
-      url: "https://maisonblender.com",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-    ...servicePages,
-    ...tagPageEntries,
+  const staticPages: MetadataRoute.Sitemap = [
+    { url: "https://maisonblender.com", lastModified: new Date(), changeFrequency: "monthly", priority: 1 },
+    { url: "https://maisonblender.com/quickscan", lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: "https://maisonblender.com/strategiegesprek", lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: "https://maisonblender.com/brand-ambassador", lastModified: new Date(), changeFrequency: "monthly", priority: 0.8 },
+    { url: "https://maisonblender.com/privacybeleid", lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
+    { url: "https://maisonblender.com/eu-ai-act", lastModified: new Date(), changeFrequency: "yearly", priority: 0.5 },
+    { url: "https://maisonblender.com/toegankelijkheidsaudit", lastModified: new Date(), changeFrequency: "monthly", priority: 0.75 },
+    { url: "https://maisonblender.com/toegankelijkheidsverklaring", lastModified: new Date(), changeFrequency: "yearly", priority: 0.6 },
+    { url: "https://maisonblender.com/labs", lastModified: new Date(), changeFrequency: "weekly", priority: 0.75 },
+    { url: "https://maisonblender.com/labs/tools-vergelijker", lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: "https://maisonblender.com/labs/prompt-starter-kit", lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: "https://maisonblender.com/labs/kennisbank", lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
   ];
+
+  return [...staticPages, ...servicePages, ...tagPageEntries];
 }

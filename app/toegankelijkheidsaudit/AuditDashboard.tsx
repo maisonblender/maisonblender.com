@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef, useCallback } from "react";
+import { useState, useMemo, useRef, useCallback, useId } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -607,18 +607,21 @@ function FieldInput({
   type?: string;
   required?: boolean;
 }) {
+  const inputId = useId();
   return (
     <div>
-      <label className="mb-1 block text-[10px] font-mono uppercase tracking-[0.18em] text-[#575760]">
+      <label htmlFor={inputId} className="mb-1 block text-[10px] font-mono uppercase tracking-[0.18em] text-[#575760]">
         {label}
         {required && <span className="text-rose-500"> *</span>}
       </label>
       <input
+        id={inputId}
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full border border-black/10 bg-white px-4 py-3 text-sm text-[#1f1f1f] placeholder:text-[#b2b2be] focus:border-[#1f1f1f] focus:outline-none"
+        required={required}
+        className="w-full border border-black/10 bg-white px-4 py-3 text-sm text-[#1f1f1f] placeholder:text-[#6b6b75] focus:border-[#1f1f1f] focus:outline-none"
       />
     </div>
   );
@@ -631,24 +634,21 @@ function ConsentRow({
   checked: boolean;
   onChange: (v: boolean) => void;
 }) {
+  const consentId = useId();
   return (
-    <button
-      type="button"
-      onClick={() => onChange(!checked)}
-      className="flex w-full items-start gap-3 border border-black/[0.06] bg-[#f8f8fa] px-4 py-3 text-left transition-colors hover:bg-[#f2f3f5]"
-    >
-      <span
-        className={`mt-0.5 inline-flex h-4 w-4 shrink-0 items-center justify-center rounded border-2 transition-colors ${
-          checked ? "border-[#1f1f1f] bg-[#1f1f1f]" : "border-[#b2b2be] bg-white"
-        }`}
-      >
-        {checked && <Check className="h-2.5 w-2.5 text-white" strokeWidth={3} />}
-      </span>
-      <span className="text-sm leading-relaxed text-[#575760]">
-        Ik geef MAISON BLNDR toestemming om mijn gegevens te verwerken voor het toezenden
-        van dit auditrapport en eventuele opvolging. Geen verkoop aan derden.
-      </span>
-    </button>
+    <div className="flex w-full items-start gap-3 border border-black/[0.06] bg-[#f8f8fa] px-4 py-3 transition-colors hover:bg-[#f2f3f5]">
+      <input
+        id={consentId}
+        type="checkbox"
+        checked={checked}
+        onChange={(e) => onChange(e.target.checked)}
+        className="mt-1 h-4 w-4 shrink-0 rounded border-2 border-[#b2b2be] accent-[#1f1f1f]"
+      />
+      <label htmlFor={consentId} className="cursor-pointer text-sm leading-relaxed text-[#575760]">
+        Ik geef MAISON BLNDR toestemming om mijn gegevens te verwerken voor het toezenden van dit auditrapport en eventuele
+        opvolging. Geen verkoop aan derden.
+      </label>
+    </div>
   );
 }
 
@@ -872,14 +872,41 @@ function RuleMatrix({ report }: { report: AuditReport }) {
       />
       <div className="mt-6 overflow-x-auto border border-black/[0.06] bg-white">
         <table className="w-full text-sm">
+          <caption className="sr-only">
+            Regelmatrix: per auditregel status, WCAG 2.1 criterium, EN 301 549 clausule, aantal issues en impact.
+          </caption>
           <thead>
             <tr className="bg-[#1f1f1f] text-white">
-              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest">Status</th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest">Regel</th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest border-l border-white/10">WCAG 2.1</th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest border-l border-white/10">EN 301 549</th>
-              <th className="px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-widest border-l border-white/10">Issues</th>
-              <th className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest border-l border-white/10">Impact</th>
+              <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest">
+                Status
+              </th>
+              <th scope="col" className="px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest">
+                Regel
+              </th>
+              <th
+                scope="col"
+                className="border-l border-white/10 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest"
+              >
+                WCAG 2.1
+              </th>
+              <th
+                scope="col"
+                className="border-l border-white/10 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest"
+              >
+                EN 301 549
+              </th>
+              <th
+                scope="col"
+                className="border-l border-white/10 px-4 py-3 text-right text-[11px] font-semibold uppercase tracking-widest"
+              >
+                Issues
+              </th>
+              <th
+                scope="col"
+                className="border-l border-white/10 px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-widest"
+              >
+                Impact
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -891,12 +918,12 @@ function RuleMatrix({ report }: { report: AuditReport }) {
                 <td className="px-4 py-3 align-top">
                   <StatusBadge status={f.result.status} />
                 </td>
-                <td className="px-4 py-3 align-top text-[#1f1f1f]">
+                <th scope="row" className="px-4 py-3 align-top text-left font-normal text-[#1f1f1f]">
                   <p className="font-medium">{f.rule.title}</p>
                   <p className="mt-0.5 text-xs text-[#575760]">
                     {categoryLabel(f.rule.category)}
                   </p>
-                </td>
+                </th>
                 <td className="px-4 py-3 align-top text-xs text-[#575760] border-l border-black/[0.05]">
                   <p className="font-mono text-[#1f1f1f]">{f.rule.wcag.sc}</p>
                   <p className="mt-0.5">

@@ -21,7 +21,7 @@ export default function PrivacybeleidPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 pt-20">
+      <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
         <section className="bg-white px-6 py-20 lg:py-28">
           <div className="mx-auto max-w-3xl">
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#b2b2be]">
@@ -106,7 +106,7 @@ export default function PrivacybeleidPage() {
                 <h3 className="mb-2 text-sm font-semibold text-[#1f1f1f]">Websitebezoek en analytics</h3>
                 <p className="leading-relaxed text-[#575760]">
                   Bij elk bezoek aan onze website worden automatisch technische gegevens vastgelegd:
-                  IP-adres (geanonimiseerd), browsertype, bezochte pagina's en tijdstip van bezoek.
+                  IP-adres (geanonimiseerd), browsertype, bezochte pagina&apos;s en tijdstip van bezoek.
                   Wij gebruiken Google Analytics (meetingscode G-27QXGGLZ07) voor websitestatistieken.
                   Zie sectie 6 voor meer informatie over cookies.
                 </p>
@@ -119,31 +119,46 @@ export default function PrivacybeleidPage() {
                 </h2>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse text-sm">
+                    <caption className="sr-only">Doel en rechtsgrondslag van gegevensverwerking</caption>
                     <thead>
                       <tr className="border-b border-black/[0.08]">
-                        <th className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Doel</th>
-                        <th className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Rechtsgrondslag</th>
+                        <th scope="col" className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">
+                          Doel
+                        </th>
+                        <th scope="col" className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">
+                          Rechtsgrondslag
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-black/[0.06] text-[#575760]">
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Beantwoorden van contactverzoeken</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Beantwoorden van contactverzoeken
+                        </th>
                         <td className="py-3 leading-relaxed">Gerechtvaardigd belang (art. 6 lid 1 sub f AVG)</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Uitvoering AI Impact Scan en sessies</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Uitvoering AI Impact Scan en sessies
+                        </th>
                         <td className="py-3 leading-relaxed">Uitvoering overeenkomst (art. 6 lid 1 sub b AVG)</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Verzenden van de nieuwsbrief</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Verzenden van de nieuwsbrief
+                        </th>
                         <td className="py-3 leading-relaxed">Toestemming (art. 6 lid 1 sub a AVG)</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Websitestatistieken via Google Analytics</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Websitestatistieken via Google Analytics
+                        </th>
                         <td className="py-3 leading-relaxed">Gerechtvaardigd belang (art. 6 lid 1 sub f AVG)</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Voldoen aan wettelijke verplichtingen</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Voldoen aan wettelijke verplichtingen
+                        </th>
                         <td className="py-3 leading-relaxed">Wettelijke verplichting (art. 6 lid 1 sub c AVG)</td>
                       </tr>
                     </tbody>
@@ -228,7 +243,7 @@ export default function PrivacybeleidPage() {
 
                 <h3 className="mb-2 text-sm font-semibold text-[#1f1f1f]">Analytische cookies</h3>
                 <p className="mb-4 leading-relaxed text-[#575760]">
-                  Google Analytics plaatst cookies om anoniem websitegebruik te meten (pagina's bekeken,
+                  Google Analytics plaatst cookies om anoniem websitegebruik te meten (pagina&apos;s bekeken,
                   duur van het bezoek, herkomst van bezoekers). IP-adressen worden geanonimiseerd
                   voordat ze worden opgeslagen. Er wordt geen gekoppeld profiel aangemaakt.
                 </p>
@@ -263,7 +278,9 @@ export default function PrivacybeleidPage() {
                   </li>
                   <li className="flex gap-3">
                     <span className="mt-1 shrink-0 text-[#b2b2be]">-</span>
-                    <span><strong className="text-[#1f1f1f]">Recht op verwijdering ('recht op vergetelheid'):</strong> je kunt vragen jouw gegevens te wissen, tenzij wij een wettelijke bewaarplicht hebben.</span>
+                    <span>
+                      <strong className="text-[#1f1f1f]">Recht op verwijdering (&apos;recht op vergetelheid&apos;):</strong> je kunt vragen jouw gegevens te wissen, tenzij wij een wettelijke bewaarplicht hebben.
+                    </span>
                   </li>
                   <li className="flex gap-3">
                     <span className="mt-1 shrink-0 text-[#b2b2be]">-</span>

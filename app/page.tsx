@@ -13,19 +13,25 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <main className="flex flex-col flex-1 bg-[#f2f3f5] text-[#1f1f1f]">
+    <>
       <Nav />
-      <HeroWithTriage />
-      <QuickscanBanner />
-      <Services />
-      <Sectoren />
-      <BrandAmbassadorSection />
-      <Process />
-      <About />
-      <Testimonials />
-      <FAQ />
-      <Contact />
+      <main
+        id="main"
+        tabIndex={-1}
+        className="flex flex-col flex-1 bg-[#f2f3f5] text-[#1f1f1f] outline-none"
+      >
+        <HeroWithTriage />
+        <QuickscanBanner />
+        <Services />
+        <Sectoren />
+        <BrandAmbassadorSection />
+        <Process />
+        <About />
+        <Testimonials />
+        <FAQ />
+        <Contact />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

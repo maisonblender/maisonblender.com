@@ -29,7 +29,7 @@ export default function NewsletterForm() {
         setStatus('error');
         setMessage(data.error || 'Er ging iets mis, probeer het opnieuw');
       }
-    } catch (error) {
+    } catch {
       setStatus('error');
       setMessage('Er ging iets mis, probeer het opnieuw');
     }
@@ -40,16 +40,31 @@ export default function NewsletterForm() {
       <p className="text-sm font-semibold text-[#1f1f1f] mb-1">Schrijf je in</p>
       <p className="text-xs text-[#575760] mb-6">Gratis · Maandelijks · Altijd afmeldbaar</p>
       
-      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row">
-        <input
-          type="email"
-          placeholder="jouw@email.nl"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          disabled={status === 'loading' || status === 'success'}
-          className="flex-1 rounded-xl border border-black/[0.1] bg-[#f2f3f5] px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#b2b2be] focus:outline-none focus:ring-2 focus:ring-[#22c55e] disabled:opacity-50"
-        />
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3 sm:flex-row" noValidate aria-label="Nieuwsbrief aanmelding">
+        <div className="flex min-w-0 flex-1 flex-col gap-1">
+          <label htmlFor="labs-nieuwsbrief-email" className="sr-only">
+            E-mailadres
+          </label>
+          <input
+            id="labs-nieuwsbrief-email"
+            type="email"
+            name="email"
+            placeholder="jouw@email.nl"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            disabled={status === "loading" || status === "success"}
+            aria-invalid={status === "error"}
+            aria-describedby={
+              message ? "labs-nieuwsbrief-hint labs-nieuwsbrief-status" : "labs-nieuwsbrief-hint"
+            }
+            className="flex-1 rounded-xl border border-black/[0.1] bg-[#f2f3f5] px-4 py-3 text-sm text-[#1f1f1f] placeholder-[#6b6b75] focus:outline-none focus:ring-2 focus:ring-[#22c55e] disabled:opacity-50"
+          />
+          <span id="labs-nieuwsbrief-hint" className="sr-only">
+            Verplicht veld. Gratis, maandelijks, afmeldbaar.
+          </span>
+        </div>
         <button
           type="submit"
           disabled={status === 'loading' || status === 'success'}
@@ -60,12 +75,17 @@ export default function NewsletterForm() {
       </form>
 
       {message && (
-        <p className={`mt-3 text-sm ${status === 'success' ? 'text-[#22c55e]' : 'text-red-600'}`}>
+        <p
+          id="labs-nieuwsbrief-status"
+          role={status === "error" ? "alert" : "status"}
+          aria-live="polite"
+          className={`mt-3 text-sm ${status === "success" ? "text-[#22c55e]" : "text-red-600"}`}
+        >
           {message}
         </p>
       )}
 
-      <p className="mt-3 text-xs text-[#b2b2be]">
+      <p className="mt-3 text-xs text-[#6b6b75]">
         Door je in te schrijven ga je akkoord met onze privacyverklaring. Je ontvangt maximaal één e-mail per maand.
       </p>
     </div>

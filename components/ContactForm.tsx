@@ -42,19 +42,25 @@ export default function ContactForm() {
   }
 
   const inputClass =
-    "w-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-white/30 transition-colors";
+    "w-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-white/55 outline-none focus:border-white/30 transition-colors";
+  const invalid = formState === "error";
 
   if (formState === "success") {
     return (
-      <div className="flex flex-col items-center gap-4 py-12 text-center">
-        <div className="text-3xl">✓</div>
+      <div
+        className="flex flex-col items-center gap-4 py-12 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <div className="text-3xl" aria-hidden="true">
+          ✓
+        </div>
         <p className="text-lg font-semibold text-white">Bedankt voor je bericht!</p>
-        <p className="text-sm text-white/60">
-          Wij nemen binnen één werkdag contact met je op.
-        </p>
+        <p className="text-sm text-white/70">Wij nemen binnen één werkdag contact met je op.</p>
         <button
+          type="button"
           onClick={() => setFormState("idle")}
-          className="mt-4 text-sm text-white/50 underline hover:text-white transition-colors"
+          className="mt-4 text-sm text-white/70 underline transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#2c3e50]"
         >
           Nog een bericht sturen
         </button>
@@ -66,8 +72,8 @@ export default function ContactForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="naam" className="text-xs font-medium uppercase tracking-widest text-white/50">
-            Naam <span className="text-white/30">*</span>
+          <label htmlFor="naam" className="text-xs font-medium uppercase tracking-widest text-white/70">
+            Naam <span className="text-white/55">*</span>
           </label>
           <input
             id="naam"
@@ -76,10 +82,12 @@ export default function ContactForm() {
             required
             placeholder="Jan de Vries"
             className={inputClass}
+            aria-invalid={invalid}
+            aria-describedby={invalid ? "contact-form-error" : undefined}
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="bedrijf" className="text-xs font-medium uppercase tracking-widest text-white/50">
+          <label htmlFor="bedrijf" className="text-xs font-medium uppercase tracking-widest text-white/70">
             Bedrijf
           </label>
           <input
@@ -88,13 +96,15 @@ export default function ContactForm() {
             type="text"
             placeholder="Je bedrijfsnaam"
             className={inputClass}
+            aria-invalid={invalid}
+            aria-describedby={invalid ? "contact-form-error" : undefined}
           />
         </div>
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="email" className="text-xs font-medium uppercase tracking-widest text-white/50">
-          E-mail <span className="text-white/30">*</span>
+        <label htmlFor="email" className="text-xs font-medium uppercase tracking-widest text-white/70">
+          E-mail <span className="text-white/55">*</span>
         </label>
         <input
           id="email"
@@ -103,12 +113,14 @@ export default function ContactForm() {
           required
           placeholder="jan@bedrijf.nl"
           className={inputClass}
+          aria-invalid={invalid}
+          aria-describedby={invalid ? "contact-form-error" : undefined}
         />
       </div>
 
       <div className="flex flex-col gap-1.5">
-        <label htmlFor="bericht" className="text-xs font-medium uppercase tracking-widest text-white/50">
-          Bericht <span className="text-white/30">*</span>
+        <label htmlFor="bericht" className="text-xs font-medium uppercase tracking-widest text-white/70">
+          Bericht <span className="text-white/55">*</span>
         </label>
         <textarea
           id="bericht"
@@ -117,11 +129,15 @@ export default function ContactForm() {
           rows={5}
           placeholder="Beschrijf je vraag of situatie..."
           className={inputClass + " resize-none"}
+          aria-invalid={invalid}
+          aria-describedby={invalid ? "contact-form-error" : undefined}
         />
       </div>
 
       {formState === "error" && (
-        <p className="text-sm text-red-400">{errorMsg}</p>
+        <p id="contact-form-error" role="alert" className="text-sm text-red-400">
+          {errorMsg}
+        </p>
       )}
 
       <button

@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieBanner from "@/components/CookieBanner";
+import SkipLink from "@/components/SkipLink";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -259,9 +260,10 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full flex flex-col">
+        <SkipLink />
         <GoogleAnalytics />
-        {children}
         <CookieBanner />
+        {children}
       </body>
     </html>
   );

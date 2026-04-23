@@ -157,30 +157,45 @@ export default function ArticlePage() {
             </h2>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-sm border-collapse">
+              <table className="w-full border-collapse text-sm">
+                <caption className="sr-only">Prijsvergelijking ChatGPT, Claude en Gemini 2026</caption>
                 <thead>
                   <tr className="bg-[#f2f3f5]">
-                    <th className="text-left p-3 font-semibold text-[#1f1f1f] border border-black/[0.08]">Tool</th>
-                    <th className="text-left p-3 font-semibold text-[#1f1f1f] border border-black/[0.08]">Gratis versie</th>
-                    <th className="text-left p-3 font-semibold text-[#1f1f1f] border border-black/[0.08]">Betaalde versie</th>
-                    <th className="text-left p-3 font-semibold text-[#1f1f1f] border border-black/[0.08]">Prijs per maand</th>
+                    <th scope="col" className="border border-black/[0.08] p-3 text-left font-semibold text-[#1f1f1f]">
+                      Tool
+                    </th>
+                    <th scope="col" className="border border-black/[0.08] p-3 text-left font-semibold text-[#1f1f1f]">
+                      Gratis versie
+                    </th>
+                    <th scope="col" className="border border-black/[0.08] p-3 text-left font-semibold text-[#1f1f1f]">
+                      Betaalde versie
+                    </th>
+                    <th scope="col" className="border border-black/[0.08] p-3 text-left font-semibold text-[#1f1f1f]">
+                      Prijs per maand
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td className="p-3 border border-black/[0.08] font-medium text-[#1f1f1f]">ChatGPT</td>
+                    <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
+                      ChatGPT
+                    </th>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">GPT-4o (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">ChatGPT Plus</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">20 euro</td>
                   </tr>
                   <tr className="bg-[#f2f3f5]/50">
-                    <td className="p-3 border border-black/[0.08] font-medium text-[#1f1f1f]">Claude</td>
+                    <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
+                      Claude
+                    </th>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Claude (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Claude Pro</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">18 euro</td>
                   </tr>
                   <tr>
-                    <td className="p-3 border border-black/[0.08] font-medium text-[#1f1f1f]">Gemini</td>
+                    <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
+                      Gemini
+                    </th>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Gemini (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Gemini Advanced</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">22 euro</td>

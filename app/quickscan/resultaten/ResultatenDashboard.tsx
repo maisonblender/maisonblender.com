@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
@@ -55,14 +56,16 @@ function renderAnalyse(text: string): React.ReactNode[] {
         i++;
       }
       nodes.push(
-        <div key={key++} className="overflow-x-auto my-4">
-          <table className="w-full text-sm border border-black/10 rounded-lg overflow-hidden bg-white">
+        <div key={key++} className="my-4 overflow-x-auto">
+          <table className="w-full overflow-hidden rounded-lg border border-black/10 bg-white text-sm">
+            <caption className="sr-only">Tabel uit de AI-analyse</caption>
             <thead>
               <tr>
                 {headerCells.map((cell, idx) => (
                   <th
                     key={idx}
-                    className={`text-left px-4 py-3 bg-[#1f1f1f] text-white text-[11px] font-bold uppercase tracking-wider ${idx > 0 ? "border-l border-white/10" : ""}`}
+                    scope="col"
+                    className={`bg-[#1f1f1f] px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wider text-white ${idx > 0 ? "border-l border-white/10" : ""}`}
                     dangerouslySetInnerHTML={{ __html: inlineFormat(cell) }}
                   />
                 ))}
@@ -74,9 +77,12 @@ function renderAnalyse(text: string): React.ReactNode[] {
                   {row.map((cell, cIdx) => {
                     const isLabel = cIdx === 0;
                     const align = cIdx === row.length - 1 && row.length > 1 ? "text-right" : "text-left";
+                    const CellTag = isLabel ? "th" : "td";
+                    const scopeProps = isLabel ? { scope: "row" as const } : {};
                     return (
-                      <td
+                      <CellTag
                         key={cIdx}
+                        {...scopeProps}
                         className={`px-4 py-3 ${align} ${isLabel ? "font-semibold text-[#1f1f1f]" : "text-[#3a3a42]"} ${cIdx > 0 ? "border-l border-black/[0.05]" : ""} ${rIdx > 0 ? "border-t border-black/[0.05]" : ""}`}
                         dangerouslySetInnerHTML={{ __html: inlineFormat(cell) }}
                       />
@@ -368,11 +374,11 @@ export default function ResultatenDashboard() {
   const [lead, setLead] = useState<LeadGegevens | null>(null);
   const [analysetekst, setAnalysetekst] = useState("");
   const [analysing, setAnalysing] = useState(false);
-  const [analyseKlaar, setAnalyseKlaar] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const analyseRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    /* eslint-disable react-hooks/set-state-in-effect -- client-only hydrate uit sessionStorage na mount */
     const opgeslagen = sessionStorage.getItem("quickscan_antwoorden");
     if (!opgeslagen) {
       router.replace("/quickscan/scan");
@@ -441,7 +447,6 @@ export default function ResultatenDashboard() {
               setAnalysetekst((prev) => prev + event.delta);
             } else if (event.type === "done") {
               setAnalysing(false);
-              setAnalyseKlaar(true);
             } else if (event.type === "error") {
               setAnalysing(false);
             }
@@ -452,8 +457,8 @@ export default function ResultatenDashboard() {
       }
 
       setAnalysing(false);
-      setAnalyseKlaar(true);
     }).catch(() => setAnalysing(false));
+    /* eslint-enable react-hooks/set-state-in-effect */
   }, [router]);
 
   if (!antwoorden || !resultaat) {
@@ -479,12 +484,14 @@ export default function ResultatenDashboard() {
       {/* Header */}
       <header className="bg-white border-b border-black/[0.06] px-6 py-4">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <a href="/" className="font-bold text-lg text-[#1f1f1f]">MAISON BLNDR</a>
+          <Link href="/" className="text-lg font-bold text-[#1f1f1f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a7a5c] focus-visible:ring-offset-2">
+            MAISON BLNDR
+          </Link>
           <span className="text-[#575760] text-sm">AI Quickscan Resultaten</span>
         </div>
       </header>
 
-      <main className="max-w-4xl mx-auto px-6 py-10 space-y-6">
+      <main id="main" tabIndex={-1} className="mx-auto max-w-4xl space-y-6 px-6 py-10 outline-none">
 
         {/* Score card */}
         <motion.div

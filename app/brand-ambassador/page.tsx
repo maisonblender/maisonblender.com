@@ -51,7 +51,7 @@ export default function BrandAmbassadorPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 pt-20">
+      <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
         {/* Hero */}
         <section className="relative bg-[#1f1f1f] px-6 py-28 text-white overflow-hidden">
           <div

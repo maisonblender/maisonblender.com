@@ -22,7 +22,7 @@ export default function ToegankelijkheidsauditPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1">
+      <main id="main" tabIndex={-1} className="flex-1 outline-none">
         <AuditIntro />
         <AuditDashboard />
       </main>

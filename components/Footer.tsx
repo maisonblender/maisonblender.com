@@ -43,6 +43,9 @@ export default function Footer() {
             <Link href="/#contact" className="hover:text-black transition-colors">Contact</Link>
             <Link href="/labs" className="hover:text-black transition-colors font-medium">Labs →</Link>
             <Link href="/privacybeleid" className="hover:text-black transition-colors">Privacybeleid</Link>
+            <Link href="/toegankelijkheidsverklaring" className="hover:text-black transition-colors">
+              Toegankelijkheidsverklaring
+            </Link>
             <Link href="/eu-ai-act" className="hover:text-black transition-colors">EU AI Act</Link>
             <Link href="/toegankelijkheidsaudit" className="hover:text-black transition-colors">Toegankelijkheidsaudit</Link>
           </nav>

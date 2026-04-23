@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useCallback, useRef } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import {
   sectorOpties,
   omvangOpties,
@@ -139,10 +140,8 @@ function OptionButton({
 function SectionLabel({ children, hint }: { children: React.ReactNode; hint?: string }) {
   return (
     <div className="mb-4">
-      <label className="block text-lg md:text-xl font-bold text-[#1f1f1f] leading-snug">
-        {children}
-      </label>
-      {hint && <p className="text-sm text-gray-500 mt-1">{hint}</p>}
+      <h3 className="block text-lg font-bold leading-snug text-[#1f1f1f] md:text-xl">{children}</h3>
+      {hint && <p className="mt-1 text-sm text-gray-500">{hint}</p>}
     </div>
   );
 }
@@ -190,6 +189,7 @@ function NumberScale({
 
 export default function ScanForm() {
   const router = useRouter();
+  const reduceMotion = useReducedMotion();
   const [stap, setStap] = useState(1);
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -321,9 +321,11 @@ export default function ScanForm() {
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <div ref={topRef} />
       {/* Header */}
-      <header className="bg-black text-white px-6 py-4">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <a href="/" className="font-bold text-lg">MAISON BLNDR</a>
+      <header className="bg-black px-6 py-4 text-white">
+        <div className="mx-auto flex max-w-2xl items-center justify-between">
+          <Link href="/" className="text-lg font-bold focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-black">
+            MAISON BLNDR
+          </Link>
           <span className="text-white/50 text-sm">AI Readiness Intake</span>
         </div>
       </header>
@@ -337,9 +339,9 @@ export default function ScanForm() {
           </div>
           <div className="h-1.5 bg-gray-100 rounded-full overflow-hidden">
             <motion.div
-              className="h-full bg-black rounded-full"
+              className="h-full rounded-full bg-black"
               animate={{ width: `${((stap - 1) / 5) * 100}%` }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
+              transition={{ duration: reduceMotion ? 0 : 0.4, ease: "easeInOut" }}
             />
           </div>
           <div className="flex justify-between mt-3">
@@ -365,22 +367,23 @@ export default function ScanForm() {
         </div>
       </div>
 
-      {/* Content */}
-      <div className="flex-1 py-10 px-6">
-        <div className="max-w-2xl mx-auto">
+      <main id="main" tabIndex={-1} className="flex-1 px-6 py-10 outline-none">
+        <h1 className="sr-only">AI Readiness Intake</h1>
+        <div className="mx-auto max-w-2xl">
           <AnimatePresence mode="wait">
             <motion.div
               key={stap}
-              initial={{ opacity: 0, x: 20 }}
+              aria-live="polite"
+              initial={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.3 }}
+              exit={reduceMotion ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+              transition={{ duration: reduceMotion ? 0 : 0.3 }}
             >
               <div className="mb-8">
-                <div className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
+                <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
                   {STAP_SUBTITELS[stap - 1]}
-                </div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{STAP_TITELS[stap - 1]}</h1>
+                </p>
+                <h2 className="text-2xl font-bold text-gray-900 md:text-3xl">{STAP_TITELS[stap - 1]}</h2>
               </div>
 
               {/* ── Stap 1: Bedrijfsprofiel ── */}
@@ -829,7 +832,7 @@ export default function ScanForm() {
                   {/* Lead Gate */}
                   <div className="border-t-2 border-gray-100 pt-8">
                     <div className="mb-6">
-                      <h2 className="text-xl font-bold text-gray-900 mb-2">Ontvang jouw AI Kansenkaart</h2>
+                      <h2 className="mb-2 text-xl font-bold text-gray-900">Ontvang jouw AI Kansenkaart</h2>
                       <p className="text-sm text-gray-500">
                         Vul je gegevens in om de volledige analyse, AI Readiness Score en gepersonaliseerd actieplan te ontvangen.
                       </p>
@@ -838,90 +841,96 @@ export default function ScanForm() {
                     <div className="space-y-4">
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                          <label htmlFor="scan-lead-voornaam" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">
                             Voornaam <span className="text-red-500">*</span>
                           </label>
                           <input
+                            id="scan-lead-voornaam"
                             type="text"
                             value={lead.voornaam ?? ""}
                             onChange={(e) => setLead((p) => ({ ...p, voornaam: e.target.value }))}
                             placeholder="Jan"
-                            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
+                            autoComplete="given-name"
+                            className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-black focus:outline-none"
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                          <label htmlFor="scan-lead-achternaam" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">
                             Achternaam <span className="text-red-500">*</span>
                           </label>
                           <input
+                            id="scan-lead-achternaam"
                             type="text"
                             value={lead.achternaam ?? ""}
                             onChange={(e) => setLead((p) => ({ ...p, achternaam: e.target.value }))}
                             placeholder="de Vries"
-                            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
+                            autoComplete="family-name"
+                            className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-black focus:outline-none"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                        <label htmlFor="scan-lead-bedrijf" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">
                           Bedrijfsnaam <span className="text-red-500">*</span>
                         </label>
                         <input
+                          id="scan-lead-bedrijf"
                           type="text"
                           value={lead.bedrijf ?? ""}
                           onChange={(e) => setLead((p) => ({ ...p, bedrijf: e.target.value }))}
                           placeholder="Bedrijf BV"
-                          className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
+                          autoComplete="organization"
+                          className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-black focus:outline-none"
                         />
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
+                          <label htmlFor="scan-lead-email" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">
                             E-mailadres <span className="text-red-500">*</span>
                           </label>
                           <input
+                            id="scan-lead-email"
                             type="email"
                             value={lead.email ?? ""}
                             onChange={(e) => setLead((p) => ({ ...p, email: e.target.value }))}
                             placeholder="jij@bedrijf.nl"
-                            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
+                            autoComplete="email"
+                            className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-black focus:outline-none"
                           />
                         </div>
                         <div>
-                          <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">
-                            Telefoon <span className="text-gray-400 font-normal normal-case">(optioneel)</span>
+                          <label htmlFor="scan-lead-telefoon" className="mb-1 block text-xs font-semibold uppercase tracking-wide text-gray-500">
+                            Telefoon <span className="font-normal normal-case text-gray-400">(optioneel)</span>
                           </label>
                           <input
+                            id="scan-lead-telefoon"
                             type="tel"
                             value={lead.telefoon ?? ""}
                             onChange={(e) => setLead((p) => ({ ...p, telefoon: e.target.value }))}
                             placeholder="+31 6 12345678"
-                            className="w-full border-2 border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-black transition-colors"
+                            autoComplete="tel"
+                            className="w-full rounded-xl border-2 border-gray-200 px-4 py-3 text-sm text-gray-900 placeholder-gray-400 transition-colors focus:border-black focus:outline-none"
                           />
                         </div>
                       </div>
 
                       <div className="flex items-start gap-3 pt-2">
-                        <button
-                          type="button"
-                          onClick={() => setLead((p) => ({ ...p, toestemming: !p.toestemming }))}
-                          className={`mt-0.5 w-5 h-5 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
-                            lead.toestemming ? "bg-black border-black" : "border-gray-300"
-                          }`}
-                        >
-                          {lead.toestemming && (
-                            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                          )}
-                        </button>
-                        <p className="text-xs text-gray-500 leading-relaxed">
+                        <input
+                          id="quickscan-toestemming"
+                          type="checkbox"
+                          checked={Boolean(lead.toestemming)}
+                          onChange={(e) => setLead((p) => ({ ...p, toestemming: e.target.checked }))}
+                          className="mt-0.5 h-5 w-5 shrink-0 rounded border-2 border-gray-300 accent-black"
+                        />
+                        <label htmlFor="quickscan-toestemming" className="text-xs leading-relaxed text-gray-500">
                           Ik geef toestemming aan MAISON BLNDR om mijn gegevens te verwerken voor het toezenden van de AI Kansenkaart en een eventuele opvolging. Gegevens worden niet gedeeld met derden. Zie onze{" "}
-                          <a href="/privacy" className="underline hover:text-gray-800" target="_blank">privacyverklaring</a>.{" "}
-                          <span className="text-red-500">*</span>
-                        </p>
+                          <a href="/privacybeleid" className="underline hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-black focus-visible:ring-offset-2">
+                            privacyverklaring
+                          </a>
+                          . <span className="text-red-500">*</span>
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -979,7 +988,7 @@ export default function ScanForm() {
             )}
           </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

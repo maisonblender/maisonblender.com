@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -22,7 +23,7 @@ export default function EuAiActPage() {
   return (
     <>
       <Nav />
-      <main className="flex-1 pt-20">
+      <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
         <section className="bg-white px-6 py-20 lg:py-28">
           <div className="mx-auto max-w-6xl">
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#b2b2be]">
@@ -160,7 +161,7 @@ export default function EuAiActPage() {
                   <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
                     <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
-                      <strong className="text-[#1f1f1f]">Risicomanagementsysteem:</strong> een doorlopend systeem om risico's te identificeren, analyseren en te beheersen gedurende de volledige levenscyclus van het AI-systeem.
+                      <strong className="text-[#1f1f1f]">Risicomanagementsysteem:</strong> een doorlopend systeem om risico&apos;s te identificeren, analyseren en te beheersen gedurende de volledige levenscyclus van het AI-systeem.
                     </span>
                   </li>
                   <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
@@ -259,27 +260,40 @@ export default function EuAiActPage() {
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
+                    <caption className="sr-only">Tijdlijn van inwerkingtreding EU AI Act</caption>
                     <thead>
                       <tr className="border-b border-black/[0.08]">
-                        <th className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Datum</th>
-                        <th className="py-3 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Wat treedt in werking</th>
+                        <th scope="col" className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">
+                          Datum
+                        </th>
+                        <th scope="col" className="py-3 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">
+                          Wat treedt in werking
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-black/[0.06] text-[#575760]">
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed font-medium text-[#1f1f1f] whitespace-nowrap">2 februari 2025</td>
+                        <th scope="row" className="whitespace-nowrap py-3 pr-6 text-left font-medium leading-relaxed text-[#1f1f1f]">
+                          2 februari 2025
+                        </th>
                         <td className="py-3 leading-relaxed">Verbod op onaanvaardbare AI-praktijken (artikelen 5 en 6 van de verordening).</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed font-medium text-[#1f1f1f] whitespace-nowrap">2 augustus 2025</td>
+                        <th scope="row" className="whitespace-nowrap py-3 pr-6 text-left font-medium leading-relaxed text-[#1f1f1f]">
+                          2 augustus 2025
+                        </th>
                         <td className="py-3 leading-relaxed">Verplichtingen voor GPAI-modellen en de governance-structuur (toezichthouders per lidstaat).</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed font-medium text-[#1f1f1f] whitespace-nowrap">2 augustus 2026</td>
+                        <th scope="row" className="whitespace-nowrap py-3 pr-6 text-left font-medium leading-relaxed text-[#1f1f1f]">
+                          2 augustus 2026
+                        </th>
                         <td className="py-3 leading-relaxed">Verplichtingen voor hoog-risico AI-systemen (het merendeel van de verordening) en transparantie-eisen voor beperkt-risico systemen.</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed font-medium text-[#1f1f1f] whitespace-nowrap">2 augustus 2027</td>
+                        <th scope="row" className="whitespace-nowrap py-3 pr-6 text-left font-medium leading-relaxed text-[#1f1f1f]">
+                          2 augustus 2027
+                        </th>
                         <td className="py-3 leading-relaxed">Uitgebreide deadline voor hoog-risico AI-systemen die als veiligheidscomponent zijn opgenomen in producten die al onder andere EU-productwetgeving vallen (Bijlage I).</td>
                       </tr>
                     </tbody>
@@ -297,23 +311,34 @@ export default function EuAiActPage() {
                 </p>
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
+                    <caption className="sr-only">Sancties bij overtredingen EU AI Act</caption>
                     <thead>
                       <tr className="border-b border-black/[0.08]">
-                        <th className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Overtreding</th>
-                        <th className="py-3 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">Maximale boete</th>
+                        <th scope="col" className="py-3 pr-6 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">
+                          Overtreding
+                        </th>
+                        <th scope="col" className="py-3 text-left text-xs font-semibold uppercase tracking-widest text-[#575760]">
+                          Maximale boete
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-black/[0.06] text-[#575760]">
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Verboden AI-praktijken (onaanvaardbaar risico)</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Verboden AI-praktijken (onaanvaardbaar risico)
+                        </th>
                         <td className="py-3 leading-relaxed">€ 35 miljoen of 7% van de wereldwijde jaarlijkse omzet</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Overige overtredingen (o.a. hoog-risico verplichtingen)</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Overige overtredingen (o.a. hoog-risico verplichtingen)
+                        </th>
                         <td className="py-3 leading-relaxed">€ 15 miljoen of 3% van de wereldwijde jaarlijkse omzet</td>
                       </tr>
                       <tr>
-                        <td className="py-3 pr-6 leading-relaxed">Verstrekken van onjuiste of misleidende informatie aan toezichthouders</td>
+                        <th scope="row" className="py-3 pr-6 text-left font-normal leading-relaxed">
+                          Verstrekken van onjuiste of misleidende informatie aan toezichthouders
+                        </th>
                         <td className="py-3 leading-relaxed">€ 7,5 miljoen of 1,5% van de wereldwijde jaarlijkse omzet</td>
                       </tr>
                     </tbody>
@@ -419,12 +444,12 @@ export default function EuAiActPage() {
                     info@maisonblender.com
                   </a>
                   {" "}of vraag een{" "}
-                  <a
+                  <Link
                     href="/#contact"
-                    className="text-[#1f1f1f] underline underline-offset-2 hover:text-[#575760] transition-colors"
+                    className="text-[#1f1f1f] underline underline-offset-2 transition-colors hover:text-[#575760]"
                   >
                     vrijblijvend gesprek
-                  </a>{" "}
+                  </Link>{" "}
                   aan.
                 </p>
                 <p className="mt-4 text-xs leading-relaxed text-[#b2b2be]">

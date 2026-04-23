@@ -30,10 +30,12 @@ export default function About() {
                 Daarom beginnen wij altijd met je processen. Dan pas met de code.
               </p>
               <p>
-                Wij bouwen met tools die al bewezen zijn: <strong>OpenAI</strong>, <strong>Anthropic Claude</strong>{" "}
-                en <strong>LangChain</strong> voor intelligente agents; <strong>n8n</strong>,{" "}
-                <strong>Make.com</strong> en <strong>Zapier</strong> voor robuuste koppelingen met je bestaande
-                systemen. Geen evangelisatie van de nieuwste hype - keuze voor wat werkt.
+                Wij bouwen met tools die al bewezen zijn:{" "}
+                <span lang="en">
+                  <strong>OpenAI</strong>, <strong>Anthropic Claude</strong> en <strong>LangChain</strong> voor intelligente agents;{" "}
+                  <strong>n8n</strong>, <strong>Make.com</strong> en <strong>Zapier</strong>
+                </span>{" "}
+                voor robuuste koppelingen met je bestaande systemen. Geen evangelisatie van de nieuwste hype - keuze voor wat werkt.
               </p>
               <p>
                 Gevestigd in Sittard. Actief door heel Nederland. Geen callcenter, geen wisselende
@@ -49,7 +51,7 @@ export default function About() {
                 { label: "Doelgroep", value: "Operationeel NL" },
               ].map((item) => (
                 <div key={item.label} className="flex flex-col gap-1 border-l-2 border-black/20 pl-4">
-                  <span className="text-xs text-[#b2b2be] uppercase tracking-widest">{item.label}</span>
+                  <span className="text-xs uppercase tracking-widest text-[#6b6b75]">{item.label}</span>
                   <span className="text-sm font-medium text-[#1f1f1f]">{item.value}</span>
                 </div>
               ))}
