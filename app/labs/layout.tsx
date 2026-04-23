@@ -3,7 +3,8 @@ import Link from "next/link";
 import LabsHeader from "./LabsHeader";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://labs.maisonblender.com"),
+  // metadataBase wordt geërfd van app/layout.tsx (https://maisonblender.com).
+  // Labs draait als subfolder onder het hoofddomein voor SEO-consolidatie.
   title: {
     default: "Limburg AI Labs - AI kennis voor Zuid-Limburg",
     template: "%s | Limburg AI Labs",

@@ -11,6 +11,18 @@ const REDIRECT_HOSTS = new Set<string>([
 
 const PRIMARY_HOST = "https://maisonblender.com";
 
+// Hosts die het labs-gedeelte serveren (bv. labs.maisonblender.com en
+// preview-subdomeinen die met "labs." beginnen). Deze worden permanent
+// (301) doorgestuurd naar /labs/* op het hoofddomein zodat alle SEO-authority
+// op één canonical URL geconsolideerd wordt.
+function isLabsHost(hostname: string): boolean {
+  return (
+    hostname === "labs.maisonblender.com" ||
+    hostname.startsWith("labs.maisonblender.") ||
+    hostname.startsWith("labs.")
+  );
+}
+
 export function middleware(request: NextRequest) {
   const hostname = (request.headers.get("host") ?? "").toLowerCase();
 
@@ -22,19 +34,16 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(target, 301);
   }
 
-  const isLabsSubdomain =
-    hostname === "labs.maisonblender.com" ||
-    hostname.startsWith("labs.maisonblender.") ||
-    hostname.startsWith("labs.");
+  if (isLabsHost(hostname)) {
+    const pathname = request.nextUrl.pathname;
+    // Map labs.maisonblender.com/<path> -> maisonblender.com/labs/<path>.
+    // Voorkomt dubbele /labs prefix als een legacy link al /labs bevat.
+    const labsPath = pathname.startsWith("/labs")
+      ? pathname
+      : `/labs${pathname === "/" ? "" : pathname}`;
 
-  if (isLabsSubdomain) {
-    const url = request.nextUrl.clone();
-    const pathname = url.pathname;
-
-    if (!pathname.startsWith("/labs")) {
-      url.pathname = `/labs${pathname === "/" ? "" : pathname}`;
-      return NextResponse.rewrite(url);
-    }
+    const target = new URL(labsPath + request.nextUrl.search, PRIMARY_HOST);
+    return NextResponse.redirect(target, 301);
   }
 
   return NextResponse.next();

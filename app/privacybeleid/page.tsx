@@ -97,9 +97,9 @@ export default function PrivacybeleidPage() {
                   e-mailadres, bedrijfsnaam en je vraagstelling.
                 </p>
 
-                <h3 className="mb-2 text-sm font-semibold text-[#1f1f1f]">Nieuwsbrief (labs.maisonblender.com)</h3>
+                <h3 className="mb-2 text-sm font-semibold text-[#1f1f1f]">Nieuwsbrief (Limburg AI Labs)</h3>
                 <p className="mb-4 leading-relaxed text-[#575760]">
-                  Via het nieuwsbriefformulier op labs.maisonblender.com verwerken wij je e-mailadres.
+                  Via het nieuwsbriefformulier op maisonblender.com/labs/nieuwsbrief verwerken wij je e-mailadres.
                   Afmelden kan altijd via de afmeldlink onderaan elke nieuwsbrief of per e-mail aan ons.
                 </p>
 

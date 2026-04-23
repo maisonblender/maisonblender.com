@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Hoe een Sittardse accountant 8 uur per week bespaart met AI - Limburg AI Labs",
   description:
     "Een accountantskantoor in Sittard automatiseerde factuurverwerking en won 8 uur per week terug. Praktische case met kosten, aanpak en valkuilen.",
-  alternates: { canonical: "https://labs.maisonblender.com/kennisbank/sittardse-accountant-8-uur-besparen-ai" },
+  alternates: { canonical: "https://maisonblender.com/labs/kennisbank/sittardse-accountant-8-uur-besparen-ai" },
 };
 
 export default function ArticlePage() {

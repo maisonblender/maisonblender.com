@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Limburg AI Labs - AI kennis voor Zuid-Limburg",
   description:
     "Limburg AI Labs deelt praktische AI-kennis met Limburgse ondernemers. Gratis webinars, tools, cases en een kennisbank. Een initiatief van MAISON BLNDR.",
-  alternates: { canonical: "https://labs.maisonblender.com" },
+  alternates: { canonical: "https://maisonblender.com/labs" },
 };
 
 const tools = [

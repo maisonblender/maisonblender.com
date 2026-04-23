@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Wat kost AI automatisering voor een MKB-bedrijf in 2026? - Limburg AI Labs",
   description:
     "Realistische kosten, terugverdientijd en total cost of ownership voor AI-automatisering in het MKB. Op basis van Limburgse praktijkdata.",
-  alternates: { canonical: "https://labs.maisonblender.com/kennisbank/kosten-ai-automatisering-mkb-2026" },
+  alternates: { canonical: "https://maisonblender.com/labs/kennisbank/kosten-ai-automatisering-mkb-2026" },
 };
 
 export default function ArticlePage() {

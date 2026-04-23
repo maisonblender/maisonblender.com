@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "ChatGPT vs. Claude vs. Gemini: wat kies je als Limburgse ondernemer? - Limburg AI Labs",
   description:
     "ChatGPT, Claude of Gemini? Eerlijke vergelijking zonder jargon. Wat kost het, wat kan het en welke AI-tool past bij jouw bedrijf?",
-  alternates: { canonical: "https://labs.maisonblender.com/kennisbank/chatgpt-vs-claude-vs-gemini" },
+  alternates: { canonical: "https://maisonblender.com/labs/kennisbank/chatgpt-vs-claude-vs-gemini" },
 };
 
 export default function ArticlePage() {

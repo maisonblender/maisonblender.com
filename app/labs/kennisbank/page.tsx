@@ -1,63 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { kennisbankPosts } from "@/lib/kennisbank";
 
 export const metadata: Metadata = {
   title: "Kennisbank - AI-gidsen en cases voor Limburgse ondernemers",
   description:
     "Praktische AI-gidsen, cases uit Limburgse bedrijven en how-to's zonder jargon. Gratis toegankelijk via Limburg AI Labs.",
-  alternates: { canonical: "https://labs.maisonblender.com/kennisbank" },
+  alternates: { canonical: "https://maisonblender.com/labs/kennisbank" },
 };
 
-const posts = [
-  {
-    tag: "Case study",
-    title: "Hoe een Sittardse accountant 8 uur per week bespaart met AI",
-    excerpt:
-      "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd - inclusief de valkuilen en wat het werkelijk kostte.",
-    readTime: "6 min",
-    href: "/labs/kennisbank/sittardse-accountant-8-uur-besparen-ai",
-  },
-  {
-    tag: "Gids",
-    title: "ChatGPT vs. Claude vs. Gemini: wat kies je als Limburgse ondernemer?",
-    excerpt:
-      "Geen tech-jargon. Gewoon: welke tool doet wat, voor wie is welke tool geschikt, en wat zijn de echte kosten?",
-    readTime: "8 min",
-    href: "/labs/kennisbank/chatgpt-vs-claude-vs-gemini",
-  },
-  {
-    tag: "How-to",
-    title: "Je eerste AI-prompt schrijven: een stappenplan voor niet-techneuten",
-    excerpt:
-      "Van blanco pagina naar een prompt die echt werkt. Met voorbeelden voor offertes, e-mails en analyses.",
-    readTime: "5 min",
-    href: "/labs/kennisbank/eerste-ai-prompt-schrijven",
-  },
-  {
-    tag: "Case study",
-    title: "AI in een Maastrichtse zorginstelling: wat werkt en wat (nog) niet",
-    excerpt:
-      "Een eerlijk verslag van een pilot met AI-ondersteunde intake - de successen, de compliance-uitdagingen en de lessen.",
-    readTime: "7 min",
-    href: "/labs/kennisbank/ai-maastrichtse-zorginstelling",
-  },
-  {
-    tag: "Achtergrond",
-    title: "Wat kost AI automatisering voor een MKB-bedrijf in 2026?",
-    excerpt:
-      "Een realistische kijk op investering, terugverdientijd en total cost of ownership - op basis van Limburgse praktijkdata.",
-    readTime: "6 min",
-    href: "/labs/kennisbank/kosten-ai-automatisering-mkb-2026",
-  },
-  {
-    tag: "Gids",
-    title: "AVG en AI: wat mag je automatiseren en wat niet?",
-    excerpt:
-      "De belangrijkste vragen over privacy, dataverwerking en AI - beantwoord voor MKB-ondernemers zonder juridisch jargon.",
-    readTime: "9 min",
-    href: "/labs/kennisbank/avg-en-ai-automatiseren",
-  },
-];
+const posts = kennisbankPosts.map((p) => ({
+  tag: p.tag,
+  title: p.title,
+  excerpt: p.excerpt,
+  readTime: p.readTime,
+  href: `/labs/kennisbank/${p.slug}`,
+}));
 
 export default function KennisbankPage() {
   return (

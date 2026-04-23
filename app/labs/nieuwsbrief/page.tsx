@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Nieuwsbrief - Maandelijkse AI-update voor Limburgse ondernemers",
   description:
     "Schrijf je in voor de Limburg AI Labs nieuwsbrief. Elke maand één concreet inzicht, één gratis tool en één voorbeeld uit de regio. Geen spam.",
-  alternates: { canonical: "https://labs.maisonblender.com/nieuwsbrief" },
+  alternates: { canonical: "https://maisonblender.com/labs/nieuwsbrief" },
 };
 
 export default function NieuwsbriefPage() {

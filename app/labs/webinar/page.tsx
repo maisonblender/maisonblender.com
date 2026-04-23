@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Webinars over AI voor Limburgse ondernemers",
   description:
     "Gratis live webinars en terugkijkarchief over AI voor het MKB. Praktisch, zonder jargon, voor ondernemers in Zuid-Limburg. Aanmelden voor de volgende editie.",
-  alternates: { canonical: "https://labs.maisonblender.com/webinar" },
+  alternates: { canonical: "https://maisonblender.com/labs/webinar" },
 };
 
 const upcoming = {

@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "Je eerste AI-prompt schrijven: stappenplan voor niet-techneuten - Limburg AI Labs",
   description:
     "Van blanco pagina naar een prompt die echt werkt. Praktisch stappenplan met voorbeelden voor offertes, e-mails en analyses. Geen technische kennis vereist.",
-  alternates: { canonical: "https://labs.maisonblender.com/kennisbank/eerste-ai-prompt-schrijven" },
+  alternates: { canonical: "https://maisonblender.com/labs/kennisbank/eerste-ai-prompt-schrijven" },
 };
 
 export default function ArticlePage() {

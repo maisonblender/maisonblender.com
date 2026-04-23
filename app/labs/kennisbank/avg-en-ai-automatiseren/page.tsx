@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "AVG en AI: wat mag je automatiseren en wat niet? - Limburg AI Labs",
   description:
     "Wat zegt de AVG over AI-gebruik in het MKB? Praktische gids over persoonsgegevens, dataverwerking en wat je wel en niet mag automatiseren.",
-  alternates: { canonical: "https://labs.maisonblender.com/kennisbank/avg-en-ai-automatiseren" },
+  alternates: { canonical: "https://maisonblender.com/labs/kennisbank/avg-en-ai-automatiseren" },
 };
 
 export default function ArticlePage() {

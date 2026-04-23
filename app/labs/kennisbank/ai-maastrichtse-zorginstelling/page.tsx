@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: "AI in een Maastrichtse zorginstelling: wat werkt en wat (nog) niet? - Limburg AI Labs",
   description:
     "Een eerlijk verslag van een AI-pilot in een Maastrichtse zorginstelling. Successen, AVG-uitdagingen en de lessen die anderen kunnen gebruiken.",
-  alternates: { canonical: "https://labs.maisonblender.com/kennisbank/ai-maastrichtse-zorginstelling" },
+  alternates: { canonical: "https://maisonblender.com/labs/kennisbank/ai-maastrichtse-zorginstelling" },
 };
 
 export default function ArticlePage() {
