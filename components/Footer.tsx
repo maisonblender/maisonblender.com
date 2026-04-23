@@ -42,20 +42,27 @@ export default function Footer() {
           <nav className="mt-4 flex flex-col gap-3 text-sm text-[#1f1f1f]">
             <Link href="/#contact" className="hover:text-black transition-colors">Contact</Link>
             <Link href="/labs" className="hover:text-black transition-colors font-medium">Labs →</Link>
-            <Link href="/privacybeleid" className="hover:text-black transition-colors">Privacybeleid</Link>
-            <Link href="/toegankelijkheidsverklaring" className="hover:text-black transition-colors">
-              Toegankelijkheidsverklaring
-            </Link>
             <Link href="/eu-ai-act" className="hover:text-black transition-colors">EU AI Act</Link>
             <Link href="/toegankelijkheidsaudit" className="hover:text-black transition-colors">Toegankelijkheidsaudit</Link>
           </nav>
         </div>
       </div>
 
-      <div className="mx-auto mt-12 max-w-6xl border-t border-black/[0.08] pt-6">
+      <div className="mx-auto mt-12 flex max-w-6xl flex-col gap-3 border-t border-black/[0.08] pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm text-[#1f1f1f]">
           © {year} MAISON BLNDR · Alle rechten voorbehouden.
         </p>
+        <nav
+          aria-label="Juridisch"
+          className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-[#575760]"
+        >
+          <Link href="/privacybeleid" className="hover:text-[#1f1f1f] transition-colors">
+            Privacybeleid
+          </Link>
+          <Link href="/toegankelijkheidsverklaring" className="hover:text-[#1f1f1f] transition-colors">
+            Toegankelijkheidsverklaring
+          </Link>
+        </nav>
       </div>
     </footer>
   );

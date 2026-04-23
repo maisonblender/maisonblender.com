@@ -22,15 +22,23 @@ export default function ToegankelijkheidsverklaringPage() {
   return (
     <>
       <Nav />
-      <main id="main" tabIndex={-1} className="flex-1 bg-white pt-20 outline-none">
-        <article className="mx-auto max-w-3xl px-6 py-16 lg:py-24">
-          <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#575760]">Juridisch</p>
-          <h1 className="mb-4 text-[28px] font-normal leading-[1.15] tracking-tight text-[#1f1f1f] sm:text-[36px]" style={{ letterSpacing: "-0.95px" }}>
-            Toegankelijkheidsverklaring
-          </h1>
-          <p className="mb-12 text-sm text-[#6b6b75]">Laatst bijgewerkt: {EVALUATION_DATE}</p>
+      <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
+        <section className="bg-white px-6 py-20 lg:py-28">
+          <div className="mx-auto max-w-6xl">
+            <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#b2b2be]">
+              Juridisch
+            </p>
+            <h1
+              className="mb-4 text-[28px] font-normal leading-[1.15] tracking-tight text-[#1f1f1f] sm:text-[36px]"
+              style={{ letterSpacing: "-0.95px" }}
+            >
+              Toegankelijkheidsverklaring
+            </h1>
+            <p className="mb-12 text-sm text-[#b2b2be]">
+              Laatst bijgewerkt: {EVALUATION_DATE}
+            </p>
 
-          <div className="prose-custom space-y-10 text-[#1f1f1f]">
+            <div className="prose-custom space-y-10 text-[#1f1f1f]">
             <section className="space-y-3">
               <h2 className="text-base font-semibold uppercase tracking-widest text-[#575760]">1. Status</h2>
               <p className="leading-relaxed text-[#575760]">
@@ -174,8 +182,9 @@ export default function ToegankelijkheidsverklaringPage() {
                 <strong className="text-[#1f1f1f]">Karl</strong>, {EVALUATION_DATE}.
               </p>
             </section>
+            </div>
           </div>
-        </article>
+        </section>
       </main>
       <Footer />
     </>
