@@ -131,14 +131,37 @@ export async function POST(request: NextRequest) {
     typeof twentyResult === "string" ? "timeout" : twentyResult.status;
   const twentyNoteId =
     typeof twentyResult === "string" ? null : twentyResult.noteId ?? null;
+  const personLink =
+    typeof twentyResult === "string" ? undefined : twentyResult.personLinked;
+  const companyLink =
+    typeof twentyResult === "string" ? undefined : twentyResult.companyLinked;
+  const companyId =
+    typeof twentyResult === "string" ? undefined : twentyResult.companyId;
+
+  // Compacte representatie: ✓ = aangemaakt, ✗ = POST mislukte, skip = overgeslagen
+  const linkChar = (v: boolean | null | undefined): string =>
+    v === true ? "ok" : v === false ? "fail" : v === null ? "skip" : "n/a";
+
+  const headers: Record<string, string> = {
+    "X-Twenty-Status": twentyStatus,
+    "X-Twenty-Note-Person-Link": linkChar(personLink),
+    "X-Twenty-Note-Company-Link": linkChar(companyLink),
+  };
+  if (twentyNoteId) headers["X-Twenty-Note-Id"] = twentyNoteId;
+  if (companyId) headers["X-Twenty-Company-Id"] = companyId;
 
   return Response.json(
-    { ok: true, report, twenty: { status: twentyStatus, noteId: twentyNoteId } },
     {
-      headers: {
-        "X-Twenty-Status": twentyStatus,
-        ...(twentyNoteId ? { "X-Twenty-Note-Id": twentyNoteId } : {}),
+      ok: true,
+      report,
+      twenty: {
+        status: twentyStatus,
+        noteId: twentyNoteId,
+        companyId: companyId ?? null,
+        personLinked: personLink ?? null,
+        companyLinked: companyLink ?? null,
       },
-    }
+    },
+    { headers }
   );
 }

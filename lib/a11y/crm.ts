@@ -264,6 +264,13 @@ ${failing.length > 20 ? `_+ nog ${failing.length - 20} bevindingen — zie onlin
 _Gegenereerd door MAISON BLNDR · automated static audit (WCAG 2.1 AA + EN 301 549 v3.2.1) — handmatige beoordeling blijft nodig voor formele toetsing._`;
 }
 
+interface NoteCoupleResult {
+  noteId: string | null;
+  /** true = noteTarget aangemaakt, false = POST mislukte, null = overgeslagen (bv. geen companyId). */
+  personLinked: boolean | null;
+  companyLinked: boolean | null;
+}
+
 async function maakNoteEnKoppel(
   baseUrl: string,
   apiKey: string,
@@ -271,7 +278,7 @@ async function maakNoteEnKoppel(
   markdownBody: string,
   personId: string,
   companyId: string | null
-): Promise<string | null> {
+): Promise<NoteCoupleResult> {
   let noteId: string | null = null;
   try {
     const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
@@ -282,25 +289,56 @@ async function maakNoteEnKoppel(
     noteId = extractId(noteRes, "notes");
   } catch (err) {
     console.warn(`[CRM/a11y] Note aanmaken mislukt (${title}):`, err);
-    return null;
+    return { noteId: null, personLinked: null, companyLinked: null };
   }
   if (!noteId) {
     console.warn(`[CRM/a11y] Note aangemaakt maar id niet gevonden (${title})`);
-    return null;
+    return { noteId: null, personLinked: null, companyLinked: null };
   }
 
-  const koppel = async (relType: "person" | "company", relId: string) => {
+  // Twenty noteTarget velden (sinds v1.17 morph-migratie):
+  //   noteId + targetPersonId / targetCompanyId / targetOpportunityId
+  // Bron: github.com/twentyhq/twenty/issues/16910
+  const koppel = async (
+    relType: "person" | "company",
+    relId: string
+  ): Promise<boolean> => {
     const targetField = relType === "person" ? "targetPersonId" : "targetCompanyId";
     try {
-      await twentyREST(baseUrl, apiKey, "noteTargets", { noteId, [targetField]: relId });
+      const res = await twentyREST(baseUrl, apiKey, "noteTargets", {
+        noteId,
+        [targetField]: relId,
+      });
+      const targetId = extractId(res, "noteTargets");
+      console.log(
+        `[CRM/a11y] ✓ noteTarget aangemaakt (note=${noteId} ${targetField}=${relId} → noteTargetId=${targetId ?? "?"})`
+      );
+      return true;
     } catch (err) {
-      console.warn(`[CRM/a11y] Note→${relType} koppeling mislukt:`, err);
+      console.warn(
+        `[CRM/a11y] ✗ noteTarget POST mislukt (${targetField}=${relId}):`,
+        err instanceof Error ? err.message : String(err)
+      );
+      return false;
     }
   };
-  await koppel("person", personId);
-  if (companyId) await koppel("company", companyId);
-  console.log(`[CRM/a11y] ✓ Note "${title}" gekoppeld (note=${noteId}, person=${personId}, company=${companyId ?? "—"})`);
-  return noteId;
+
+  const personLinked = await koppel("person", personId);
+  let companyLinked: boolean | null = null;
+  if (companyId) {
+    companyLinked = await koppel("company", companyId);
+  } else {
+    console.warn(
+      `[CRM/a11y] ⚠ Geen companyId — note "${title}" wordt niet aan een company gekoppeld. Controleer of de company-lookup/aanmaak slaagde.`
+    );
+  }
+
+  console.log(
+    `[CRM/a11y] Note "${title}" samenvatting: note=${noteId} person=${personLinked ? "✓" : "✗"} company=${
+      companyLinked === null ? "skip" : companyLinked ? "✓" : "✗"
+    }`
+  );
+  return { noteId, personLinked, companyLinked };
 }
 
 /**
@@ -319,6 +357,9 @@ export interface TwentyPushResult {
   personId?: string;
   companyId?: string;
   noteId?: string;
+  /** true=link aangemaakt, false=POST mislukte, null=skipped (bv. companyId ontbrak). */
+  personLinked?: boolean | null;
+  companyLinked?: boolean | null;
   error?: string;
 }
 
@@ -367,11 +408,26 @@ export async function pushAuditLeadToTwenty(
           const dom = item.domainName as Record<string, unknown> | undefined;
           if (dom?.primaryLinkUrl === emailDomain && !item.deletedAt && typeof item.id === "string") {
             companyId = item.id;
+            console.log(
+              `[CRM/a11y] Company gevonden via domain "${emailDomain}" → ${companyId} (${lead.bedrijf})`
+            );
           }
         }
-      } catch {
-        // niet fataal
+        if (!companyId) {
+          console.log(
+            `[CRM/a11y] Geen company met domain "${emailDomain}" gevonden — probeer aanmaken/lookup-op-naam`
+          );
+        }
+      } catch (err) {
+        console.warn(
+          `[CRM/a11y] Company domain-lookup faalde voor "${emailDomain}":`,
+          err instanceof Error ? err.message : String(err)
+        );
       }
+    } else {
+      console.log(
+        `[CRM/a11y] Free-mail / leeg domain — overslaan domain-lookup (companyId blijft leeg of via naam)`
+      );
     }
 
     if (!companyId) {
@@ -383,6 +439,11 @@ export async function pushAuditLeadToTwenty(
       try {
         const companyRes = await twentyREST(baseUrl, apiKey, "companies", companyBody);
         companyId = extractId(companyRes, "companies");
+        if (companyId) {
+          console.log(
+            `[CRM/a11y] Company aangemaakt: "${lead.bedrijf}" → ${companyId}`
+          );
+        }
       } catch (err) {
         if (err instanceof TwentyDuplicateError) {
           try {
@@ -393,6 +454,15 @@ export async function pushAuditLeadToTwenty(
               `filter=name[eq]:${encodeURIComponent(lead.bedrijf)}`
             );
             companyId = extractFirstId(existing);
+            if (companyId) {
+              console.log(
+                `[CRM/a11y] Company hergebruikt op naam "${lead.bedrijf}" → ${companyId}`
+              );
+            } else {
+              console.warn(
+                `[CRM/a11y] Company duplicate maar naam-lookup leverde niets op (mogelijk soft-deleted ghost record).`
+              );
+            }
           } catch (lookupErr) {
             console.warn("[CRM/a11y] Company duplicate + lookup mislukt:", lookupErr);
           }
@@ -400,6 +470,12 @@ export async function pushAuditLeadToTwenty(
           console.warn("[CRM/a11y] Company aanmaken mislukt:", err);
         }
       }
+    }
+
+    if (!companyId) {
+      console.warn(
+        `[CRM/a11y] ⚠ companyId blijft leeg na lookup + aanmaak — note wordt straks NIET aan een company gekoppeld.`
+      );
     }
 
     const personBody: Record<string, unknown> = {
@@ -431,7 +507,7 @@ export async function pushAuditLeadToTwenty(
     let host = "site";
     try { host = new URL(report.finalUrl).host; } catch { /* noop */ }
     const noteTitle = `Toegankelijkheidsaudit — ${host} — Score ${report.score}/100`;
-    const noteId = await maakNoteEnKoppel(
+    const noteRes = await maakNoteEnKoppel(
       baseUrl,
       apiKey,
       noteTitle,
@@ -440,23 +516,30 @@ export async function pushAuditLeadToTwenty(
       companyId
     );
 
-    if (!noteId) {
+    if (!noteRes.noteId) {
       return {
         status: "note-failed",
         personId,
         companyId: companyId ?? undefined,
+        personLinked: noteRes.personLinked,
+        companyLinked: noteRes.companyLinked,
       };
     }
 
     console.log(
-      `[CRM/a11y] ✓ Lead verwerkt: ${lead.email} → person=${personId} company=${companyId ?? "—"} note=${noteId} score=${report.score} | createdBy="${CREATED_BY.name}"`
+      `[CRM/a11y] ✓ Lead verwerkt: ${lead.email} → person=${personId} company=${companyId ?? "—"} note=${noteRes.noteId} ` +
+        `personLink=${noteRes.personLinked ? "✓" : "✗"} companyLink=${
+          noteRes.companyLinked === null ? "skip" : noteRes.companyLinked ? "✓" : "✗"
+        } score=${report.score} | createdBy="${CREATED_BY.name}"`
     );
 
     return {
       status: "ok",
       personId,
       companyId: companyId ?? undefined,
-      noteId,
+      noteId: noteRes.noteId,
+      personLinked: noteRes.personLinked,
+      companyLinked: noteRes.companyLinked,
     };
   } catch (err) {
     console.error("[CRM/a11y] Twenty push mislukt:", err);
