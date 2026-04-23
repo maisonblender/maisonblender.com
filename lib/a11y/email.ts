@@ -7,6 +7,7 @@
  */
 
 import type { AuditLead, AuditReport, Impact } from "./types";
+import { escapeHtml, sanitizeHeader } from "@/lib/security/escape";
 
 const FROM = "MAISON BLNDR <website@maisonblender.com>";
 const REPLY_TO = "info@maisonblender.com";
@@ -25,14 +26,6 @@ const CONFORMANCE_LABEL: Record<AuditReport["conformance"], string> = {
   substantial: "Grotendeels conform",
   conformant: "Conform (indicatief)",
 };
-
-function escapeHtml(s: string): string {
-  return s
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
-}
 
 function scoreColor(score: number): string {
   if (score >= 90) return "#059669";
@@ -263,7 +256,10 @@ export async function sendAuditEmailToLead(
     console.log("[a11y/email] RESEND_API_KEY ontbreekt — e-mail naar lead overgeslagen.");
     return false;
   }
-  const subject = `Toegankelijkheidsaudit voor ${safeHost(report.finalUrl)} · score ${report.score}/100`;
+  const subject = sanitizeHeader(
+    `Toegankelijkheidsaudit voor ${safeHost(report.finalUrl)} · score ${report.score}/100`,
+    180
+  );
   return sendResend({
     from: FROM,
     to: [lead.email],
@@ -306,7 +302,10 @@ Volledig rapport in Twenty (note bij person + company).`;
     from: FROM,
     to: [INTERN_TO],
     reply_to: lead.email,
-    subject: `Nieuwe a11y-audit lead: ${lead.bedrijf} (score ${report.score})`,
+    subject: sanitizeHeader(
+      `Nieuwe a11y-audit lead: ${lead.bedrijf} (score ${report.score})`,
+      180
+    ),
     text,
   });
 }

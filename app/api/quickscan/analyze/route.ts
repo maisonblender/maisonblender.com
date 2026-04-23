@@ -6,23 +6,30 @@ import { berekenAiReadinessScore, bepaalScoreLabel, bepaalScoreBeschrijving, ber
 import { berekenTopKansen, berekenTotaalROI } from "@/lib/quickscan/roi";
 import { buildAnalysePrompt } from "@/lib/quickscan/prompt";
 import { addNoteForLead } from "@/lib/quickscan/crm";
+import { checkOrigin } from "@/lib/security/origin";
+import { readJsonBody } from "@/lib/security/json";
+import { stripForPrompt } from "@/lib/security/escape";
 import type { ScanAntwoorden, ScanResultaat } from "@/lib/quickscan/types";
 
 export async function POST(request: NextRequest) {
-  let payload:
+  const originErr = checkOrigin(request);
+  if (originErr) return originErr;
+
+  type AnalyzePayload =
     | ScanAntwoorden
     | { antwoorden: ScanAntwoorden; bedrijf?: string; email?: string };
-  try {
-    payload = await request.json();
-  } catch {
-    return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
-  }
+  const parsed = await readJsonBody<AnalyzePayload>(request, 64 * 1024);
+  if (!parsed.ok) return parsed.response;
+  const payload = parsed.data;
 
   // Backwards compat: payload kan direct ScanAntwoorden zijn, of { antwoorden, bedrijf, email }
   const antwoorden: ScanAntwoorden =
     "antwoorden" in payload ? payload.antwoorden : (payload as ScanAntwoorden);
+  // bedrijf gaat in de AI-prompt — strip alle HTML/control-chars om prompt-
+  // injection naar XSS-payloads te voorkomen (defense-in-depth bovenop de
+  // sanitization in de UI).
   const bedrijf: string | undefined =
-    "antwoorden" in payload ? payload.bedrijf : undefined;
+    "antwoorden" in payload ? stripForPrompt(payload.bedrijf, 120) || undefined : undefined;
   const email: string | undefined =
     "antwoorden" in payload ? payload.email : undefined;
 

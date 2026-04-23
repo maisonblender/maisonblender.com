@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
 import StrategiegesprekModal from "@/components/StrategiegesprekModal";
+import { safeInlineMarkdown } from "@/lib/security/escape";
 
 const SCORE_LABELS = {
   beginner: { kleur: "text-gray-600", bg: "bg-gray-100", label: "Beginner" },
@@ -149,13 +150,11 @@ function renderAnalyse(text: string): React.ReactNode[] {
   return nodes;
 }
 
-// Convert inline **bold** to <strong> and remove stray markdown chars
-function inlineFormat(text: string): string {
-  return text
-    .replace(/—/g, "-")
-    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*(.+?)\*/g, "<em>$1</em>");
-}
+// Veilige markdown→HTML voor de AI-stream: escape eerst alle HTML, daarna pas
+// de **bold** / *italic* substitutions. Voorkomt dat een prompt-injection in de
+// AI-output (bv. via een vijandige bedrijfsnaam) script tags executable maakt
+// als deze met dangerouslySetInnerHTML wordt gerenderd.
+const inlineFormat = safeInlineMarkdown;
 
 // Vloeiende kleurschaal: rood (laag) → oranje (midden) → groen (hoog).
 // Geeft per percentage een tint terug die meeloopt met de waarde, plus een

@@ -1,9 +1,17 @@
 /**
- * In-memory IP-based rate limiter for quickscan endpoints.
- * Limits requests per IP within a sliding window.
+ * In-memory IP-based rate limiter voor publieke API endpoints.
  *
- * Vercel reuses warm function instances so this provides meaningful protection.
- * For multi-region or high-scale deployments, swap for an Upstash Redis rate limiter.
+ * BELANGRIJK — Vercel deployment caveat:
+ *   Vercel kan bij hogere load meerdere parallelle warm-instances draaien.
+ *   Deze limiter werkt per instance, dus iemand met geluk kan 2-3× over de
+ *   limiet komen. Voor productie-strength rate limiting: gebruik Upstash Redis
+ *   (`@upstash/ratelimit`). Zie de comment onderaan dit bestand.
+ *
+ * IP-bron — XFF spoofing-bescherming:
+ *   We trusten alleen `x-vercel-forwarded-for` (door Vercel zelf gezet en kan
+ *   niet door de client gespoofed worden). De `x-forwarded-for` header van een
+ *   externe client wordt door Vercel overschreven, maar als we ooit op een
+ *   andere host draaien (b.v. self-hosted), gebruiken we eerst de Vercel header.
  */
 
 interface RateLimitEntry {
@@ -13,7 +21,7 @@ interface RateLimitEntry {
 
 const store = new Map<string, RateLimitEntry>();
 
-/** Remove expired entries to prevent unbounded memory growth. */
+/** Verwijder verlopen entries om memory-bloat te voorkomen. */
 function pruneExpired(windowMs: number) {
   const now = Date.now();
   for (const [key, entry] of store.entries()) {
@@ -24,22 +32,21 @@ function pruneExpired(windowMs: number) {
 }
 
 /**
- * Check and record a request for a given key (typically `endpoint:ip`).
- * Returns `{ allowed: true }` or `{ allowed: false, retryAfterSeconds: number }`.
+ * Check en registreer een request voor een gegeven key (typisch `endpoint:ip`).
+ * Returns `{ allowed: true }` of `{ allowed: false, retryAfterSeconds: number }`.
  */
 export function checkRateLimit(
   key: string,
   maxRequests: number,
   windowMs: number
 ): { allowed: true } | { allowed: false; retryAfterSeconds: number } {
-  // Prune occasionally to avoid memory bloat
+  // Prune occasioneel om memory-bloat te voorkomen.
   if (Math.random() < 0.05) pruneExpired(windowMs);
 
   const now = Date.now();
   const entry = store.get(key);
 
   if (!entry || now - entry.windowStart > windowMs) {
-    // Fresh window
     store.set(key, { count: 1, windowStart: now });
     return { allowed: true };
   }
@@ -53,9 +60,45 @@ export function checkRateLimit(
   return { allowed: true };
 }
 
-/** Extract the real client IP from Next.js request headers. */
+/**
+ * Extract de echte client-IP uit Vercel-specifieke headers eerst, daarna
+ * generieke proxies. Vermijdt blind vertrouwen op `x-forwarded-for` (kan
+ * door clients ingevuld worden bij self-hosted/non-Vercel deploys).
+ */
 export function getClientIp(request: Request): string {
+  // Vercel zet deze altijd zelf, niet te spoofen door client.
+  const vercel = request.headers.get("x-vercel-forwarded-for");
+  if (vercel) return vercel.split(",")[0].trim();
+
+  // Vercel zet deze ook altijd; betrouwbaar binnen Vercel's edge.
+  const realIp = request.headers.get("x-real-ip");
+  if (realIp) return realIp.trim();
+
+  // Generieke fallback — alleen vertrouwen als we niet op Vercel draaien.
+  // Op Vercel wordt dit door de proxy overschreven, dus veilig om te gebruiken.
   const forwarded = request.headers.get("x-forwarded-for");
   if (forwarded) return forwarded.split(",")[0].trim();
-  return request.headers.get("x-real-ip") ?? "unknown";
+
+  return "unknown";
 }
+
+/*
+ * --- Upstash Redis upgrade (production hardening) ---
+ *
+ * Voor multi-instance correctness, voeg toe aan .env:
+ *   UPSTASH_REDIS_REST_URL=...
+ *   UPSTASH_REDIS_REST_TOKEN=...
+ *
+ * Installeer:
+ *   npm i @upstash/ratelimit @upstash/redis
+ *
+ * Vervang `checkRateLimit` met:
+ *   import { Ratelimit } from "@upstash/ratelimit";
+ *   import { Redis } from "@upstash/redis";
+ *   const limiter = new Ratelimit({
+ *     redis: Redis.fromEnv(),
+ *     limiter: Ratelimit.slidingWindow(maxRequests, `${windowMs} ms`),
+ *     analytics: true,
+ *   });
+ *   const { success, reset } = await limiter.limit(key);
+ */

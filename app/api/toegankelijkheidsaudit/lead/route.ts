@@ -3,6 +3,8 @@ import { runAudit, AuditError } from "@/lib/a11y/audit";
 import { sendAuditEmailToLead, sendInternalLeadNotification } from "@/lib/a11y/email";
 import { pushAuditLeadToTwenty, type TwentyPushResult } from "@/lib/a11y/crm";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
+import { checkOrigin } from "@/lib/security/origin";
+import { readJsonBody } from "@/lib/security/json";
 import type { AuditLead } from "@/lib/a11y/types";
 
 export const runtime = "nodejs";
@@ -44,12 +46,12 @@ function validateLead(raw: Partial<AuditLead> | undefined): AuditLead | string {
 }
 
 export async function POST(request: NextRequest) {
-  let body: LeadRequest;
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
-  }
+  const originErr = checkOrigin(request);
+  if (originErr) return originErr;
+
+  const parsed = await readJsonBody<LeadRequest>(request, 8 * 1024);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const url = (body.url ?? "").toString().trim();
   if (!url) {

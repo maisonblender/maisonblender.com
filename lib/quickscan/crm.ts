@@ -10,6 +10,12 @@
  */
 
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "./types";
+import { loadTwentyConfig } from "@/lib/security/twenty-config";
+
+const isDev = process.env.NODE_ENV !== "production";
+function devLog(...args: unknown[]) {
+  if (isDev) console.log(...args);
+}
 
 const SECTOR_LABELS: Record<string, string> = {
   bouw: "Bouw & Installatietechniek",
@@ -229,19 +235,6 @@ function normaliseerTelefoon(raw: string | undefined): string | null {
   return "+31" + cleaned;
 }
 
-function normaliseerBaseUrl(raw: string): string {
-  let url = raw.trim().replace(/\/+$/, "");
-  if (url.includes("://")) {
-    const scheme = url.split("://")[0].toLowerCase();
-    if (scheme !== "http" && scheme !== "https") {
-      url = "https://" + url.split("://").slice(1).join("://");
-    }
-  } else {
-    url = `https://${url}`;
-  }
-  return url;
-}
-
 function bouwScanSamenvatting(
   lead: LeadGegevens,
   antwoorden: ScanAntwoorden,
@@ -426,7 +419,7 @@ async function zoekPersonOpEmail(
     if (item) {
       const emails = item.emails as Record<string, unknown> | undefined;
       if (emails?.primaryEmail === email && !item.deletedAt && typeof item.id === "string") {
-        console.log(`[CRM] ✓ Person gevonden via filter: ${email} (${item.id})`);
+        devLog(`[CRM] ✓ Person gevonden via filter: ${email} (${item.id})`);
         return item.id;
       }
       if (emails?.primaryEmail !== email) {
@@ -453,7 +446,7 @@ async function zoekPersonOpEmail(
               const it = item as Record<string, unknown>;
               const emails = it.emails as Record<string, unknown> | undefined;
               if (emails?.primaryEmail === email && !it.deletedAt && typeof it.id === "string") {
-                console.log(`[CRM] ✓ Person gevonden via fallback scan: ${email} (${it.id})`);
+                devLog(`[CRM] ✓ Person gevonden via fallback scan: ${email} (${it.id})`);
                 return it.id;
               }
             }
@@ -537,29 +530,18 @@ export async function pushLeadToTwenty(
   antwoorden: ScanAntwoorden,
   resultaat: ScanResultaat
 ): Promise<void> {
-  const rawBaseUrl = process.env.TWENTY_BASE_URL;
-  const apiKey = process.env.TWENTY_API_KEY;
-
-  if (!rawBaseUrl || !apiKey) {
-    console.log("[CRM] Twenty niet geconfigureerd — lead lokaal gelogd:", {
-      naam: `${lead.voornaam} ${lead.achternaam}`,
-      bedrijf: lead.bedrijf,
-      email: lead.email,
-      score: resultaat.aiReadinessScore,
-    });
-    return;
+  const cfg = loadTwentyConfig();
+  if (!cfg.ok) {
+    if (cfg.reason === "missing-env") {
+      devLog("[CRM] Twenty niet geconfigureerd — lead lokaal gelogd (score:", resultaat.aiReadinessScore, ")");
+      return;
+    }
+    // Hard-fail: misconfiguratie moet zichtbaar zijn — anders renderen we silent
+    // 401's bij elke CRM call zonder dat iemand het merkt.
+    console.error(`[CRM] FATAL: Twenty config invalid (${cfg.reason}): ${cfg.message}`);
+    throw new Error(`Twenty CRM misconfigured: ${cfg.message}`);
   }
-
-  // Twenty API keys zijn JWT tokens (typisch 200+ chars beginnend met "eyJ").
-  // Een korte string (< 50 chars) is meestal de workspace ID i.p.v. de API key.
-  const looksLikeJwt = apiKey.startsWith("eyJ") && apiKey.length > 100;
-  console.log(
-    `[CRM] Verbinding naar: ${rawBaseUrl.slice(0, 50)} | API key: ${apiKey.length} chars` +
-      (looksLikeJwt ? " (JWT format ✓)" : " ⚠️  geen JWT format — verwacht 'eyJ...' van 200+ chars")
-  );
-
-
-  const baseUrl = normaliseerBaseUrl(rawBaseUrl);
+  const { baseUrl, apiKey } = cfg.config;
 
   // Email-domain als unieke company identifier — applemooz.nl ≠ applemooz.com.
   // BELANGRIJK: gratis email providers (gmail, outlook, etc.) zijn GEEN bedrijfsdomein —
@@ -599,7 +581,7 @@ export async function pushLeadToTwenty(
           // Verifieer dat het record echt het juiste domein heeft
           if (dom?.primaryLinkUrl === emailDomain && !item.deletedAt && typeof item.id === "string") {
             companyId = item.id;
-            console.log(`[CRM] Bestaande company hergebruikt op domain: ${emailDomain} (id=${companyId})`);
+            devLog(`[CRM] Bestaande company hergebruikt op domain: ${emailDomain} (id=${companyId})`);
           } else {
             console.warn(`[CRM] Company filter retourneerde verkeerde match (verwacht domain ${emailDomain}, kreeg ${dom?.primaryLinkUrl}). Genegeerd.`);
           }
@@ -619,11 +601,11 @@ export async function pushLeadToTwenty(
         companyBody.domainName = { primaryLinkUrl: emailDomain };
       }
       try {
-        console.log(`[CRM] → POST /companies body=${JSON.stringify(companyBody)}`);
+        devLog(`[CRM] → POST /companies body=${JSON.stringify(companyBody)}`);
         const companyRes = await twentyREST(baseUrl, apiKey, "companies", companyBody);
         companyId = extractId(companyRes, "companies");
         if (companyId) {
-          console.log(`[CRM] ✓ Company aangemaakt: ${lead.bedrijf} (${companyId})`);
+          devLog(`[CRM] ✓ Company aangemaakt: ${lead.bedrijf} (${companyId})`);
         } else {
           console.warn(`[CRM] ⚠️  Company POST 200 zonder id, response:`, JSON.stringify(companyRes).slice(0, 500));
         }
@@ -640,7 +622,7 @@ export async function pushLeadToTwenty(
             );
             companyId = extractFirstId(existing);
             if (companyId) {
-              console.log(`[CRM] ✓ Company hergebruikt op naam: ${lead.bedrijf} (${companyId})`);
+              devLog(`[CRM] ✓ Company hergebruikt op naam: ${lead.bedrijf} (${companyId})`);
             } else {
               console.warn(`[CRM] ⚠️  Company duplicate maar lookup leeg — Twenty lijkt soft-deleted/ghost record te hebben. Probeer hard-delete via Twenty Settings → Data Model.`);
             }
@@ -670,11 +652,11 @@ export async function pushLeadToTwenty(
 
     let personId: string | null = null;
     try {
-      console.log(`[CRM] → POST /people body=${JSON.stringify(personBody).slice(0, 300)}`);
+      devLog(`[CRM] → POST /people body=${JSON.stringify(personBody).slice(0, 300)}`);
       const personRes = await twentyREST(baseUrl, apiKey, "people", personBody);
       personId = extractId(personRes, "people");
       if (personId) {
-        console.log(`[CRM] ✓ Person aangemaakt: ${lead.email} (${personId})`);
+        devLog(`[CRM] ✓ Person aangemaakt: ${lead.email} (${personId})`);
       } else {
         console.warn(`[CRM] ⚠️  Person POST 200 zonder id, response:`, JSON.stringify(personRes).slice(0, 500));
       }
@@ -703,7 +685,7 @@ export async function pushLeadToTwenty(
       companyId
     );
 
-    console.log(`[CRM] Lead verwerkt in Twenty: ${lead.voornaam} ${lead.achternaam} (${lead.email}), score ${resultaat.aiReadinessScore}, company=${companyId ?? "geen"}, person=${personId}`);
+    devLog(`[CRM] Lead verwerkt in Twenty: ${lead.voornaam} ${lead.achternaam} (${lead.email}), score ${resultaat.aiReadinessScore}, company=${companyId ?? "geen"}, person=${personId}`);
   } catch (err) {
     console.error("[CRM] Twenty push mislukt (lead bewaard via e-mail):", err);
   }
@@ -746,7 +728,7 @@ async function maakNoteEnKoppel(
     await koppelNoteTarget(baseUrl, apiKey, noteId, "company", companyId, title);
   }
 
-  console.log(`[CRM] ✓ Note "${title}" gekoppeld (note=${noteId}, person=${personId}, company=${companyId ?? "geen"})`);
+  devLog(`[CRM] ✓ Note "${title}" gekoppeld (note=${noteId}, person=${personId}, company=${companyId ?? "geen"})`);
 }
 
 async function koppelNoteTarget(
@@ -774,15 +756,16 @@ export async function addNoteForLead(
   title: string,
   markdownBody: string
 ): Promise<void> {
-  const rawBaseUrl = process.env.TWENTY_BASE_URL;
-  const apiKey = process.env.TWENTY_API_KEY;
-
-  if (!rawBaseUrl || !apiKey) {
-    console.log(`[CRM] Twenty niet geconfigureerd — note "${title}" overgeslagen`);
-    return;
+  const cfg = loadTwentyConfig();
+  if (!cfg.ok) {
+    if (cfg.reason === "missing-env") {
+      devLog(`[CRM] Twenty niet geconfigureerd — note overgeslagen`);
+      return;
+    }
+    console.error(`[CRM] FATAL: Twenty config invalid (${cfg.reason}): ${cfg.message}`);
+    throw new Error(`Twenty CRM misconfigured: ${cfg.message}`);
   }
-
-  const baseUrl = normaliseerBaseUrl(rawBaseUrl);
+  const { baseUrl, apiKey } = cfg.config;
 
   // Person opzoeken via email (robuste lookup met meerdere filter-shapes)
   const personId = await zoekPersonOpEmail(baseUrl, apiKey, email);

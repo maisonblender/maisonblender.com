@@ -459,7 +459,9 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
   void onClose;
   const isOnline = answers.vergadertype === "Online via Google Meet";
 
-  const emailBody = [
+  // Lijnen op '\n' joinen en daarna URL-encoden — anders breekt elk '&' in de
+  // user-input de mailto-link of voegt een onbedoelde nieuwe parameter toe.
+  const emailBodyRaw = [
     `Naam: ${answers.naam ?? ""}`,
     `Bedrijf: ${answers.bedrijf ?? ""}`,
     `Uitdaging: ${answers.uitdaging ?? ""}`,
@@ -467,7 +469,12 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
     `Budget: ${answers.budget ?? ""}`,
     `Timeline: ${answers.timeline ?? ""}`,
     `Vergadervoorkeur: ${answers.vergadertype ?? ""}`,
-  ].join("%0A");
+  ].join("\n");
+  const emailBody = encodeURIComponent(emailBodyRaw);
+  const emailSubject = encodeURIComponent(
+    `Strategiegesprek aanvraag${answers.bedrijf ? ` - ${answers.bedrijf}` : ""}`
+  );
+  const mailtoHref = `mailto:info@maisonblender.com?subject=${emailSubject}&body=${emailBody}`;
 
   return (
     <div className="flex flex-col gap-6">
@@ -512,7 +519,7 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
         </div>
 
         <a
-          href={`mailto:info@maisonblender.com?subject=Strategiegesprek aanvraag${answers.bedrijf ? ` - ${answers.bedrijf}` : ""}&body=${emailBody}`}
+          href={mailtoHref}
           className="group flex w-full items-center justify-between border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:shadow-sm"
         >
           <span>Stuur een e-mail</span>

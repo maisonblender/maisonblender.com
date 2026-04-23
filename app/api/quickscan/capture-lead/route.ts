@@ -10,6 +10,8 @@ import {
 } from "@/lib/quickscan/scoring";
 import { berekenTopKansen, berekenTotaalROI } from "@/lib/quickscan/roi";
 import { pushLeadToTwenty } from "@/lib/quickscan/crm";
+import { checkOrigin } from "@/lib/security/origin";
+import { readJsonBody } from "@/lib/security/json";
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
 
 interface CaptureLeadRequest {
@@ -78,14 +80,12 @@ function berekenVolledigResultaat(antwoorden: ScanAntwoorden): ScanResultaat {
 }
 
 export async function POST(request: NextRequest) {
-  let body: CaptureLeadRequest;
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
-  }
+  const originErr = checkOrigin(request);
+  if (originErr) return originErr;
 
-  const { lead, antwoorden } = body;
+  const parsed = await readJsonBody<CaptureLeadRequest>(request, 96 * 1024);
+  if (!parsed.ok) return parsed.response;
+  const { lead, antwoorden } = parsed.data;
 
   if (!lead?.email || !lead?.voornaam || !lead?.achternaam || !lead?.bedrijf || !antwoorden) {
     return Response.json(

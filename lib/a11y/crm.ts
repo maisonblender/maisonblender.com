@@ -12,6 +12,12 @@
  */
 
 import type { AuditLead, AuditReport, Impact } from "./types";
+import { loadTwentyConfig } from "@/lib/security/twenty-config";
+
+const isDev = process.env.NODE_ENV !== "production";
+function devLog(...args: unknown[]) {
+  if (isDev) console.log(...args);
+}
 
 /**
  * Bron-attributie voor Twenty's `createdBy`-veld. Door dit expliciet mee te sturen
@@ -52,19 +58,6 @@ const CONFORMANCE_LABEL: Record<AuditReport["conformance"], string> = {
 };
 
 class TwentyDuplicateError extends Error {}
-
-function normaliseerBaseUrl(raw: string): string {
-  let url = raw.trim().replace(/\/+$/, "");
-  if (url.includes("://")) {
-    const scheme = url.split("://")[0].toLowerCase();
-    if (scheme !== "http" && scheme !== "https") {
-      url = "https://" + url.split("://").slice(1).join("://");
-    }
-  } else {
-    url = `https://${url}`;
-  }
-  return url;
-}
 
 function normaliseerTelefoon(raw: string | undefined): string | null {
   if (!raw) return null;
@@ -367,27 +360,16 @@ export async function pushAuditLeadToTwenty(
   lead: AuditLead,
   report: AuditReport
 ): Promise<TwentyPushResult> {
-  const rawBaseUrl = process.env.TWENTY_BASE_URL;
-  const apiKey = process.env.TWENTY_API_KEY;
-
-  if (!rawBaseUrl || !apiKey) {
-    console.log("[CRM/a11y] Twenty niet geconfigureerd — lead lokaal gelogd:", {
-      naam: `${lead.voornaam} ${lead.achternaam}`,
-      bedrijf: lead.bedrijf,
-      email: lead.email,
-      url: report.finalUrl,
-      score: report.score,
-    });
-    return { status: "missing-env" };
+  const cfg = loadTwentyConfig();
+  if (!cfg.ok) {
+    if (cfg.reason === "missing-env") {
+      devLog(`[CRM/a11y] Twenty niet geconfigureerd — lead lokaal gelogd (score ${report.score})`);
+      return { status: "missing-env" };
+    }
+    console.error(`[CRM/a11y] FATAL: Twenty config invalid (${cfg.reason}): ${cfg.message}`);
+    throw new Error(`Twenty CRM misconfigured: ${cfg.message}`);
   }
-
-  const looksLikeJwt = apiKey.startsWith("eyJ") && apiKey.length > 100;
-  console.log(
-    `[CRM/a11y] → Twenty: ${rawBaseUrl.slice(0, 60)} | API key ${apiKey.length} chars` +
-      (looksLikeJwt ? " (JWT ✓)" : " ⚠️ geen JWT-format (verwacht 'eyJ...' van 200+ chars)")
-  );
-
-  const baseUrl = normaliseerBaseUrl(rawBaseUrl);
+  const { baseUrl, apiKey } = cfg.config;
   const rawDomain = lead.email.split("@")[1]?.toLowerCase() ?? "";
   const isBusinessDomain = rawDomain !== "" && !FREE_EMAIL_DOMAINS.has(rawDomain);
   const emailDomain = isBusinessDomain ? rawDomain : "";

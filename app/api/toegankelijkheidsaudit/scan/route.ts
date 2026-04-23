@@ -1,17 +1,19 @@
 import type { NextRequest } from "next/server";
 import { runAudit, AuditError } from "@/lib/a11y/audit";
 import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
+import { checkOrigin } from "@/lib/security/origin";
+import { readJsonBody } from "@/lib/security/json";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
-  let body: { url?: string };
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
-  }
+  const originErr = checkOrigin(request);
+  if (originErr) return originErr;
+
+  const parsed = await readJsonBody<{ url?: string }>(request, 4 * 1024);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const url = (body?.url ?? "").toString();
   if (!url) {

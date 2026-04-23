@@ -4,7 +4,12 @@ import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import Anthropic from "@anthropic-ai/sdk";
 import { buildActieplanPrompt } from "@/lib/quickscan/prompt";
 import { addNoteForLead } from "@/lib/quickscan/crm";
+import { escapeHtml, sanitizeHeader } from "@/lib/security/escape";
+import { checkOrigin } from "@/lib/security/origin";
+import { readJsonBody } from "@/lib/security/json";
 import type { ScanAntwoorden, ScanResultaat, LeadGegevens } from "@/lib/quickscan/types";
+
+const isDev = process.env.NODE_ENV !== "production";
 
 interface LeadRequest {
   lead: LeadGegevens;
@@ -28,8 +33,12 @@ function stripAiHeaders(text: string): string {
     .join("\n");
 }
 
+// Veilige markdown-inline conversie: escape eerst alle HTML, dan pas markdown
+// substitutions. Voorkomt dat een AI-response (mogelijk beïnvloed door
+// prompt-injection in user input) HTML/script-tags injecteert in de email-HTML
+// of in de Twenty-note (stored XSS risico).
 function inlineMarkdown(text: string): string {
-  return text
+  return escapeHtml(text)
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/(?<!\*)\*([^*]+)\*(?!\*)/g, "<em>$1</em>");
 }
@@ -120,12 +129,13 @@ function actieplanToHtml(text: string): string {
 }
 
 export async function POST(request: NextRequest) {
-  let body: LeadRequest;
-  try {
-    body = await request.json();
-  } catch {
-    return Response.json({ error: "Ongeldige invoer." }, { status: 400 });
-  }
+  const originErr = checkOrigin(request);
+  if (originErr) return originErr;
+
+  // Quickscan payloads kunnen ~30 KB worden door alle antwoorden — 96 KB limit.
+  const parsed = await readJsonBody<LeadRequest>(request, 96 * 1024);
+  if (!parsed.ok) return parsed.response;
+  const body = parsed.data;
 
   const { lead, antwoorden, resultaat } = body;
 
@@ -202,14 +212,17 @@ export async function POST(request: NextRequest) {
 
   // Stuur e-mail via Resend
   if (resendKey) {
-    const scoreLabel = resultaat.scoreLabel.charAt(0).toUpperCase() + resultaat.scoreLabel.slice(1);
+    const scoreLabel = escapeHtml(
+      resultaat.scoreLabel.charAt(0).toUpperCase() + resultaat.scoreLabel.slice(1)
+    );
     const actieplanHtml = actieplanToHtml(stripAiHeaders(actieplanTekst));
-    const telefoonRegel = lead.telefoon
-      ? `<td style="width: 25%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
-           <div style="font-size: 18px; font-weight: 700; color: #1f1f1f; line-height: 1;">${lead.telefoon}</div>
-           <div style="font-size: 11px; color: #575760; margin-top: 4px;">Telefoonnummer</div>
-         </td>`
-      : "";
+    // Alle user-derived velden escapen voordat ze in de HTML belanden
+    const veiligVoornaam = escapeHtml(lead.voornaam);
+    const veiligBedrijf = escapeHtml(lead.bedrijf);
+    const veiligTelefoon = escapeHtml(lead.telefoon ?? "");
+    const veiligGovernanceRisico = escapeHtml(resultaat.governanceRisico);
+    const veiligCultuurReadiness = escapeHtml(resultaat.cultuurReadiness);
+    void veiligTelefoon; // gereserveerd voor toekomstige telefoonregel in template
 
     const emailHtml = `<!DOCTYPE html>
 <html lang="nl">
@@ -233,9 +246,9 @@ export async function POST(request: NextRequest) {
 
           <tr>
             <td style="background: #ffffff; padding: 40px 40px 32px;">
-              <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${lead.voornaam},</p>
+              <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${veiligVoornaam},</p>
               <p style="margin: 0; font-size: 15px; color: #575760; line-height: 1.7;">
-                Bedankt voor het invullen van de AI Readiness Intake voor <strong>${lead.bedrijf}</strong>.
+                Bedankt voor het invullen van de AI Readiness Intake voor <strong>${veiligBedrijf}</strong>.
                 Op basis van jouw uitgebreide profiel hebben we een gepersonaliseerde AI Kansenkaart en actieplan samengesteld.
               </p>
             </td>
@@ -270,11 +283,11 @@ export async function POST(request: NextRequest) {
                     <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(0,0,0,0.06);">
                       <tr>
                         <td style="width: 33%; text-align: center; padding: 0 8px 0 0;">
-                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${resultaat.governanceRisico}</div>
+                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${veiligGovernanceRisico}</div>
                           <div style="font-size: 11px; color: #575760; margin-top: 2px;">Governance risico</div>
                         </td>
                         <td style="width: 33%; text-align: center; padding: 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
-                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${resultaat.cultuurReadiness}</div>
+                          <div style="font-size: 14px; font-weight: 600; color: #1f1f1f;">${veiligCultuurReadiness}</div>
                           <div style="font-size: 11px; color: #575760; margin-top: 2px;">Cultuur readiness</div>
                         </td>
                         <td style="width: 33%; text-align: center; padding: 0 0 0 8px; border-left: 1px solid rgba(0,0,0,0.08);">
@@ -335,6 +348,11 @@ export async function POST(request: NextRequest) {
 </body>
 </html>`;
 
+    // Sanitize subject — strip CR/LF zodat lead.bedrijf geen extra headers
+    // kan injecteren in de payload naar Resend.
+    const safeSubjectBedrijf = sanitizeHeader(lead.bedrijf, 120);
+    const subject = `AI Kansenkaart ${safeSubjectBedrijf} — Score ${resultaat.aiReadinessScore}/100 | MAISON BLNDR`;
+
     try {
       const res = await fetch("https://api.resend.com/emails", {
         method: "POST",
@@ -346,7 +364,7 @@ export async function POST(request: NextRequest) {
           from: "quickscan@maisonblender.com",
           to: [lead.email],
           bcc: ["info@maisonblender.com"],
-          subject: `AI Kansenkaart ${lead.bedrijf} — Score ${resultaat.aiReadinessScore}/100 | MAISON BLNDR`,
+          subject,
           html: emailHtml,
           text: actieplanTekst,
         }),
@@ -360,8 +378,8 @@ export async function POST(request: NextRequest) {
       console.error("Resend fetch error:", err);
       return Response.json({ error: "E-mail verzenden mislukt." }, { status: 502 });
     }
-  } else {
-      console.log("Lead captured (no RESEND_API_KEY):", {
+  } else if (isDev) {
+    console.log("Lead captured (no RESEND_API_KEY):", {
       naam: `${lead.voornaam} ${lead.achternaam}`.trim(),
       bedrijf: lead.bedrijf,
       email: lead.email,
