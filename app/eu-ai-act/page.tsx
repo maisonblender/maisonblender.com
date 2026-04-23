@@ -122,20 +122,20 @@ export default function EuAiActPage() {
                   De verordening is van toepassing op meerdere partijen in de keten:
                 </p>
                 <ul className="space-y-3 leading-relaxed text-[#575760]">
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Aanbieders (providers):</strong> bedrijven of personen die een AI-systeem ontwikkelen en op de EU-markt brengen of in gebruik stellen, ook als ze buiten de EU zijn gevestigd maar hun systeem in de EU werkt.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Deployers (gebruikers):</strong> organisaties die een AI-systeem inzetten voor hun eigen bedrijfsactiviteiten binnen de EU, ook als het systeem door een derde is ontwikkeld.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Importeurs en distributeurs:</strong> partijen die AI-systemen van buiten de EU in de EU-markt brengen of verspreiden.
                     </span>
@@ -157,56 +157,56 @@ export default function EuAiActPage() {
                   Voor aanbieders van hoog-risico AI-systemen gelden de meest uitgebreide eisen:
                 </p>
                 <ul className="space-y-3 leading-relaxed text-[#575760]">
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Risicomanagementsysteem:</strong> een doorlopend systeem om risico's te identificeren, analyseren en te beheersen gedurende de volledige levenscyclus van het AI-systeem.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Datakwaliteit en datagovernance:</strong> trainings-, validatie- en testdata moeten voldoen aan kwaliteitscriteria en relevant zijn voor het beoogde gebruik.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Technische documentatie:</strong> uitgebreide documentatie vóór het in gebruik stellen, zodat toezichthouders de naleving kunnen beoordelen.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Automatische logging:</strong> het systeem moet activiteiten automatisch vastleggen zodat resultaten traceerbaar zijn.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Transparantie en gebruikersinformatie:</strong> deployers en gebruikers moeten voldoende informatie krijgen om het systeem correct en veilig te kunnen gebruiken.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Menselijk toezicht:</strong> het systeem moet zodanig zijn ontworpen dat een mens de werking kan monitoren, onderbreken of corrigeren.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Nauwkeurigheid, robuustheid en cyberveiligheid:</strong> het systeem moet een consistent prestatieniveau behalen en bestand zijn tegen fouten en aanvallen.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Conformiteitsbeoordeling en CE-markering:</strong> vóór marktintroductie moet een conformiteitsbeoordeling worden uitgevoerd. In veel gevallen kan de aanbieder dit zelf uitvoeren; voor sommige toepassingen is een notified body verplicht.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Registratie in EU-database:</strong> hoog-risico AI-systemen moeten worden geregistreerd in een door de EU beheerde openbare database vóór marktintroductie.
                     </span>
@@ -226,20 +226,20 @@ export default function EuAiActPage() {
                   Alle aanbieders van GPAI-modellen die in de EU beschikbaar zijn moeten:
                 </p>
                 <ul className="space-y-2 leading-relaxed text-[#575760]">
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>Technische documentatie opstellen en bijhouden.</span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>Informatie aan downstreamaanbieders beschikbaar stellen.</span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>Een beleid voeren dat Europees auteursrecht respecteert.</span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>Een samenvatting publiceren van de trainingsdata die voor auteursrechtelijk beschermd materiaal is gebruikt.</span>
                   </li>
                 </ul>
@@ -333,26 +333,26 @@ export default function EuAiActPage() {
                   Een eerste stap voor elk bedrijf dat AI inzet of ontwikkelt is een <strong className="text-[#1f1f1f]">AI-inventarisatie</strong>: breng in kaart welke AI-systemen je gebruikt, ontwikkelt of inzet en bepaal voor elk systeem in welke risicocategorie het valt.
                 </p>
                 <ul className="space-y-3 leading-relaxed text-[#575760]">
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Gebruik je uitsluitend minimaal-risico AI</strong> (bijv. spellingscorrectie, aanbevelingssystemen voor interne tools)? Dan gelden er vanuit de AI Act geen specifieke verplichtingen, maar controleer wel of andere wetgeving (AVG, sectorspecifiek) van toepassing is.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Zet je chatbots of andere AI-interfaces in</strong> richting klanten of medewerkers? Zorg dan voor duidelijke communicatie dat de gebruiker met een AI-systeem interageert (transparantieplicht, verplicht per 2 augustus 2026).
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Gebruik of ontwikkel je hoog-risico AI</strong> (bijv. voor cv-selectie, kredietbeoordeling of kritieke operationele beslissingen)? Start dan tijdig met de vereiste risicoanalyse, documentatie en governance. Dit vergt doorgaans meerdere maanden voorbereiding.
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <strong className="text-[#1f1f1f]">Bouw je AI-producten voor de markt</strong>? Dan ben je aanbieder en gelden de zwaarste verplichtingen. Zorg voor technische documentatie, een conformiteitsbeoordeling en registratie in de EU-database vóór marktintroductie.
                     </span>
@@ -383,8 +383,8 @@ export default function EuAiActPage() {
                   De officiële tekst van de verordening en aanvullende documenten zijn beschikbaar via:
                 </p>
                 <ul className="space-y-2 leading-relaxed text-[#575760]">
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <a
                         href="https://eur-lex.europa.eu/legal-content/NL/TXT/?uri=CELEX:32024R1689"
@@ -396,8 +396,8 @@ export default function EuAiActPage() {
                       </a>
                     </span>
                   </li>
-                  <li className="flex gap-3">
-                    <span className="mt-1 shrink-0 text-[#b2b2be]">—</span>
+                  <li className="grid grid-cols-[1.25rem_1fr] gap-x-2">
+                    <span className="text-[#b2b2be] leading-relaxed">—</span>
                     <span>
                       <a
                         href="https://digital-strategy.ec.europa.eu/nl/policies/regulatory-framework-ai"
