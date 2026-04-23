@@ -13,6 +13,20 @@
 
 import type { AuditLead, AuditReport, Impact } from "./types";
 
+/**
+ * Bron-attributie voor Twenty's `createdBy`-veld. Door dit expliciet mee te sturen
+ * krijgt elke company/person/note in Twenty bovenaan "Created by: Toegankelijkheidsaudit
+ * maisonblender.com" i.p.v. de algemene API-key-naam (die bv. "Quickscan
+ * maisonblender.com" zou laten zien als beide integraties dezelfde key delen).
+ *
+ * Twenty accepteert dit op alle standaard objecten als onderdeel van de
+ * composite "actor"-field (source/name/context).
+ */
+const CREATED_BY = {
+  source: "API" as const,
+  name: "Toegankelijkheidsaudit maisonblender.com",
+} as const;
+
 const FREE_EMAIL_DOMAINS = new Set([
   "gmail.com", "googlemail.com",
   "outlook.com", "outlook.nl", "hotmail.com", "hotmail.nl", "live.com", "live.nl", "msn.com",
@@ -263,6 +277,7 @@ async function maakNoteEnKoppel(
     const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
       title,
       bodyV2: { markdown: markdownBody },
+      createdBy: CREATED_BY,
     });
     noteId = extractId(noteRes, "notes");
   } catch (err) {
@@ -360,7 +375,10 @@ export async function pushAuditLeadToTwenty(
     }
 
     if (!companyId) {
-      const companyBody: Record<string, unknown> = { name: lead.bedrijf };
+      const companyBody: Record<string, unknown> = {
+        name: lead.bedrijf,
+        createdBy: CREATED_BY,
+      };
       if (emailDomain) companyBody.domainName = { primaryLinkUrl: emailDomain };
       try {
         const companyRes = await twentyREST(baseUrl, apiKey, "companies", companyBody);
@@ -387,6 +405,7 @@ export async function pushAuditLeadToTwenty(
     const personBody: Record<string, unknown> = {
       name: { firstName: lead.voornaam, lastName: lead.achternaam },
       emails: { primaryEmail: lead.email },
+      createdBy: CREATED_BY,
     };
     const tel = normaliseerTelefoon(lead.telefoon);
     if (tel) personBody.phones = { primaryPhoneNumber: tel };
@@ -430,7 +449,7 @@ export async function pushAuditLeadToTwenty(
     }
 
     console.log(
-      `[CRM/a11y] ✓ Lead verwerkt: ${lead.email} → person=${personId} company=${companyId ?? "—"} note=${noteId} score=${report.score}`
+      `[CRM/a11y] ✓ Lead verwerkt: ${lead.email} → person=${personId} company=${companyId ?? "—"} note=${noteId} score=${report.score} | createdBy="${CREATED_BY.name}"`
     );
 
     return {

@@ -347,6 +347,18 @@ ${label(SNELHEID_LABELS, antwoorden.implementatieSnelheid)}
 
 class TwentyDuplicateError extends Error {}
 
+/**
+ * Bron-attributie voor Twenty's `createdBy`-veld. Door dit expliciet mee te
+ * sturen krijgt elke company/person/note in Twenty bovenaan
+ * "Created by: Quickscan maisonblender.com" — onafhankelijk van welke
+ * API-key gebruikt wordt. Dit voorkomt dat leads van andere integraties
+ * (bv. de toegankelijkheidsaudit) per ongeluk als 'Quickscan' worden gelabeld.
+ */
+const CREATED_BY = {
+  source: "API" as const,
+  name: "Quickscan maisonblender.com",
+} as const;
+
 async function twentyREST(
   baseUrl: string,
   apiKey: string,
@@ -599,7 +611,10 @@ export async function pushLeadToTwenty(
 
     // 1b. Geen bestaande gevonden → nieuwe company aanmaken
     if (!companyId) {
-      const companyBody: Record<string, unknown> = { name: lead.bedrijf };
+      const companyBody: Record<string, unknown> = {
+        name: lead.bedrijf,
+        createdBy: CREATED_BY,
+      };
       if (emailDomain) {
         companyBody.domainName = { primaryLinkUrl: emailDomain };
       }
@@ -643,6 +658,7 @@ export async function pushLeadToTwenty(
       name: { firstName: lead.voornaam, lastName: lead.achternaam },
       emails: { primaryEmail: lead.email },
       jobTitle: antwoorden.rol ?? "",
+      createdBy: CREATED_BY,
     };
     const telefoonE164 = normaliseerTelefoon(lead.telefoon);
     if (telefoonE164) {
@@ -710,6 +726,7 @@ async function maakNoteEnKoppel(
     const noteRes = await twentyREST(baseUrl, apiKey, "notes", {
       title,
       bodyV2: { markdown: markdownBody },
+      createdBy: CREATED_BY,
     });
     noteId = extractId(noteRes, "notes");
   } catch (err) {
