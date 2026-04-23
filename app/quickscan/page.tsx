@@ -74,7 +74,7 @@ export default function QuickscanPage() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                 </svg>
               </Link>
-              <p className="text-[#575760] text-sm self-center">Gratis · Resultaten direct zichtbaar</p>
+              <p className="text-[#575760] self-center">Gratis · Resultaten direct zichtbaar</p>
             </div>
           </div>
         </section>
@@ -104,7 +104,7 @@ export default function QuickscanPage() {
                     <v.Icon className="h-5 w-5 shrink-0 text-[#1f1f1f]" strokeWidth={1.5} />
                     <h3 className="text-base font-bold text-[#1f1f1f]">{v.titel}</h3>
                   </div>
-                  <p className="text-sm leading-relaxed text-[#575760]">{v.tekst}</p>
+                  <p className="leading-relaxed text-[#575760]">{v.tekst}</p>
                 </div>
               ))}
             </div>
@@ -130,7 +130,7 @@ export default function QuickscanPage() {
               ].map((p) => (
                 <div key={p.nr} className="bg-[#1f1f1f] p-6 flex flex-col gap-2">
                   <span className="text-xs font-mono text-white/30">{p.nr}</span>
-                  <span className="font-semibold text-white text-sm">{p.titel}</span>
+                  <span className="font-semibold text-white">{p.titel}</span>
                   <span className="text-xs text-white/50 leading-relaxed">{p.sub}</span>
                 </div>
               ))}
@@ -160,7 +160,7 @@ export default function QuickscanPage() {
           <div className="max-w-6xl mx-auto flex flex-col items-center gap-4 bg-white p-10 text-center sm:flex-row sm:justify-between sm:text-left">
             <div className="flex flex-col gap-2">
               <p className="text-lg font-bold text-[#1f1f1f]">Klaar om jouw AI-kansen in kaart te brengen?</p>
-              <p className="text-sm text-[#575760]">10 minuten. Gratis. Direct inzicht in quick wins én governance.</p>
+              <p className="text-[#575760]">10 minuten. Gratis. Direct inzicht in quick wins én governance.</p>
             </div>
             <Link
               href="/quickscan/scan"
