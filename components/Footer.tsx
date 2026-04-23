@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Footer() {
   const year = new Date().getFullYear();
 
@@ -5,6 +7,7 @@ export default function Footer() {
     <footer className="border-t border-black/[0.08] bg-white px-6 py-14 text-[#1f1f1f]">
       <div className="mx-auto grid max-w-6xl grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
         <div className="lg:col-span-2">
+          {/* eslint-disable-next-line @next/next/no-img-element -- statisch SVG-logo, geen Image-optimalisatie nodig */}
           <img
             src="/maison-blender-logo-black.svg"
             alt="MAISON BLNDR"
@@ -26,22 +29,22 @@ export default function Footer() {
         <div>
           <h3 className="text-sm font-semibold text-[#1f1f1f]">Diensten</h3>
           <nav className="mt-4 flex flex-col gap-3 text-sm text-[#1f1f1f]">
-            <a href="/#diensten" className="hover:text-black transition-colors">Diensten</a>
-            <a href="/sessies" className="hover:text-black transition-colors">AI-op-Maat Sessies</a>
-            <a href="/brand-ambassador" className="hover:text-black transition-colors">Brand Ambassador</a>
-            <a href="/#sectoren" className="hover:text-black transition-colors">Sectoren</a>
-            <a href="/#aanpak" className="hover:text-black transition-colors">Aanpak</a>
+            <Link href="/#diensten" className="hover:text-black transition-colors">Diensten</Link>
+            <Link href="/sessies" className="hover:text-black transition-colors">AI-op-Maat Sessies</Link>
+            <Link href="/brand-ambassador" className="hover:text-black transition-colors">Brand Ambassador</Link>
+            <Link href="/#sectoren" className="hover:text-black transition-colors">Sectoren</Link>
+            <Link href="/#aanpak" className="hover:text-black transition-colors">Aanpak</Link>
           </nav>
         </div>
 
         <div>
           <h3 className="text-sm font-semibold text-[#1f1f1f]">Bedrijf</h3>
           <nav className="mt-4 flex flex-col gap-3 text-sm text-[#1f1f1f]">
-            <a href="/#contact" className="hover:text-black transition-colors">Contact</a>
-            <a href="/labs" className="hover:text-black transition-colors font-medium">Labs →</a>
-            <a href="/privacybeleid" className="hover:text-black transition-colors">Privacybeleid</a>
-            <a href="/eu-ai-act" className="hover:text-black transition-colors">EU AI Act</a>
-            <a href="/toegankelijkheidsaudit" className="hover:text-black transition-colors">Toegankelijkheidsaudit</a>
+            <Link href="/#contact" className="hover:text-black transition-colors">Contact</Link>
+            <Link href="/labs" className="hover:text-black transition-colors font-medium">Labs →</Link>
+            <Link href="/privacybeleid" className="hover:text-black transition-colors">Privacybeleid</Link>
+            <Link href="/eu-ai-act" className="hover:text-black transition-colors">EU AI Act</Link>
+            <Link href="/toegankelijkheidsaudit" className="hover:text-black transition-colors">Toegankelijkheidsaudit</Link>
           </nav>
         </div>
       </div>
