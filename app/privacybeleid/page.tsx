@@ -23,7 +23,7 @@ export default function PrivacybeleidPage() {
       <Nav />
       <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
         <section className="bg-white px-6 py-20 lg:py-28">
-          <div className="mx-auto max-w-3xl">
+          <div className="mx-auto max-w-6xl">
             <p className="mb-3 text-xs font-medium uppercase tracking-widest text-[#b2b2be]">
               Juridisch
             </p>
