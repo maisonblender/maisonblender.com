@@ -117,6 +117,92 @@ body {
   color: var(--foreground);
 }
 
+/* ─────────────────────────────────────────────────────────────
+   Liquid glass (light variant) — Apple-style frosted glass.
+   Layers: top sheen + transparent fill + heavy backdrop blur +
+   curved-edge gradient border + soft drop shadow. Looks best
+   when there is animated content (hero network) behind it.
+   ───────────────────────────────────────────────────────────── */
+.liquid-glass-light {
+  background:
+    /* Top→bottom specular sheen (mimics curved glass top edge) */
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.55) 0%,
+      rgba(255, 255, 255, 0.18) 35%,
+      rgba(255, 255, 255, 0.08) 70%,
+      rgba(255, 255, 255, 0.12) 100%
+    ),
+    rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  box-shadow:
+    /* inner top highlight */
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    /* inner bottom subtle dark line for depth */
+    inset 0 -1px 0 rgba(0, 0, 0, 0.04),
+    /* tight ambient */
+    0 1px 2px rgba(31, 31, 31, 0.05),
+    /* lifted shadow */
+    0 12px 36px -8px rgba(31, 31, 31, 0.18);
+  position: relative;
+  isolation: isolate;
+}
+
+/* Curved-edge gradient border — bright top-left → mint mid → dark bottom-right */
+.liquid-glass-light::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    140deg,
+    rgba(255, 255, 255, 0.95) 0%,
+    rgba(255, 255, 255, 0.5) 22%,
+    rgba(74, 240, 196, 0.45) 48%,
+    rgba(255, 255, 255, 0.1) 72%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* Subtle inner radial highlight (top-left) — refraction sparkle */
+.liquid-glass-light::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    ellipse 80% 60% at 20% 0%,
+    rgba(255, 255, 255, 0.35) 0%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  pointer-events: none;
+  z-index: -1;
+}
+
+.liquid-glass-light--scrolled {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.7) 0%,
+      rgba(255, 255, 255, 0.4) 35%,
+      rgba(255, 255, 255, 0.3) 100%
+    ),
+    rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.05),
+    0 2px 6px rgba(31, 31, 31, 0.06),
+    0 16px 40px -10px rgba(31, 31, 31, 0.22);
+}
+
 /* Prevent iOS Safari from auto-zooming when focusing form fields.
    iOS zooms in whenever an input/select/textarea has a computed font-size < 16px. */
 @media screen and (max-width: 767px) {
