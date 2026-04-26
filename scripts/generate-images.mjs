@@ -77,30 +77,41 @@ async function generateImage(name, prompt, aspectRatio = "16:9") {
   console.log(`✅  ${name}.png saved (${Math.round(buf.length / 1024)} KB)`);
 }
 
+// Shared visual style applied to every prompt.
+// Reference: hero-visual.png and about-visual.png — isometric/flat minimal,
+// very light gray background, teal glowing nodes, thin mesh lines, no text.
+const STYLE =
+  "STYLE: very light gray (#f2f3f5) background, near-white, airy and minimal. " +
+  "Isometric or flat 2D illustration. Teal (#4af0c4) glowing circular nodes and accent lines. " +
+  "Thin light-gray geometric mesh or triangular network lines. " +
+  "Soft drop shadows on 3D elements. Abundant white space. " +
+  "Professional Dutch B2B tech aesthetic. Absolutely no text, no labels, no numbers. " +
+  "High-contrast teal accents on a pale background only. No dark backgrounds.";
+
 const images = [
   {
     name: "hero-visual",
     aspectRatio: "4:3",
     prompt:
-      "Minimalist isometric illustration of an AI agent network — interconnected glowing teal nodes on a clean light gray (#f2f3f5) background. Abstract data flows between stylized server and brain icons. Professional Dutch B2B tech aesthetic. No text. Soft shadows, lots of white space. Hero section visual for an AI automation agency.",
+      `${STYLE} SUBJECT: Isometric illustration of an AI agent network — a central server stack on the left connected via glowing teal node clusters to a crystalline AI brain on the right. Triangular mesh lines form a sparse network across the composition. Soft isometric depth on the server and brain objects.`,
   },
   {
     name: "services-flow",
     aspectRatio: "16:9",
     prompt:
-      "Clean flat-design workflow diagram: a robot AI icon on the left sends data through 5 connected modules (chat bubble, gear cog, document, bar chart, lightbulb) to a satisfied business person on the right. Light gray (#f2f3f5) background, teal (#4af0c4) accent arrows. Professional, minimal, no text labels.",
+      `${STYLE} SUBJECT: Flat workflow diagram — a robot AI icon on the far left connected by teal arrows through 5 sequential circular node modules (chat bubble, gear cog, document, bar chart, lightbulb) to a business person silhouette on the right. Nodes connected by thin geometric lines.`,
   },
   {
     name: "process-steps",
     aspectRatio: "3:2",
     prompt:
-      "Minimal flat infographic showing 3 sequential steps connected by smooth curved lines: Step 1 blueprint with magnifying glass, Step 2 building blocks with lightning bolt, Step 3 rocket launching upward. Light off-white background, teal circular step markers, subtle drop shadows. Professional B2B style, no text.",
+      `${STYLE} SUBJECT: Three sequential isometric steps connected by smooth teal curved lines — Step 1: a clipboard with magnifying glass, Step 2: two abstract building blocks with a lightning bolt, Step 3: a rocket launching upward. Teal circular markers at each step junction.`,
   },
   {
     name: "about-visual",
     aspectRatio: "4:3",
     prompt:
-      "Elegant minimal illustration of the Netherlands province of Limburg as a subtle geographic outline with small glowing teal dot nodes scattered across it representing AI connectivity and digital infrastructure. Very light, mostly white space, delicate contour lines, professional and understated. Suitable as a company section background element. No text.",
+      `${STYLE} SUBJECT: The Netherlands province of Limburg as a delicate geographic outline. Small teal glowing circular nodes scattered across the interior representing connectivity. Thin triangular mesh lines connecting the nodes. One larger central node at Sittard. Vast white space around the outline.`,
   },
 
   // --- Service hero images (3:2) ---
@@ -108,63 +119,63 @@ const images = [
     name: "service-ai-chatbots",
     aspectRatio: "3:2",
     prompt:
-      "Minimalist isometric illustration of an AI chatbot interface — a clean smartphone and desktop screen side by side showing floating chat bubbles in teal (#4af0c4) and white. Abstract message flow lines connect a stylized AI brain icon to customer silhouettes. Light gray (#f2f3f5) background. WhatsApp and web chat icons subtly present. Professional Dutch B2B aesthetic, no text, lots of white space, soft shadows.",
+      `${STYLE} SUBJECT: Isometric smartphone and desktop screen side by side, each showing a chat interface with floating teal and white chat bubble shapes. Abstract message-flow lines radiate from a central AI brain node to both screens. Sparse triangular mesh in the background.`,
   },
   {
     name: "service-ai-agents",
     aspectRatio: "3:2",
     prompt:
-      "Minimalist isometric illustration of autonomous AI agents at work — a central glowing teal robot/AI core dispatching task arrows to three floating modules: a document scanner, a CRM database cylinder, and an email envelope. Clean light gray (#f2f3f5) background. Teal (#4af0c4) connection lines and highlights. Professional Dutch B2B tech aesthetic. No text, soft shadows, ample white space.",
+      `${STYLE} SUBJECT: Central glowing teal AI core node dispatching teal connector lines to three floating isometric modules: a document scanner, a cylindrical database, and an email envelope. Each module is a small 3D isometric object with soft shadow. Sparse triangular mesh background.`,
   },
   {
     name: "service-rpa-workflow",
     aspectRatio: "3:2",
     prompt:
-      "Minimalist flat-design illustration of a robotic process automation workflow — a stylized robot arm connecting three software interface windows via smooth teal (#4af0c4) curved connector lines. Icons represent data input, a gear process, and a checkmark output. Light gray (#f2f3f5) background. Professional Dutch B2B style. No text, clean layout, soft drop shadows.",
+      `${STYLE} SUBJECT: Isometric robotic arm connecting three floating software window panels via smooth teal curved lines. Left panel: data table. Center panel: rotating gear. Right panel: green checkmark. Soft isometric depth on each panel. Sparse mesh lines in background.`,
   },
   {
     name: "service-custom-software",
     aspectRatio: "3:2",
     prompt:
-      "Minimalist isometric illustration of a custom AI software portal — a sleek floating laptop/tablet showing a modern dashboard UI with teal (#4af0c4) accent graphs and modular interface panels. Abstract code brackets and API connection nodes surround it. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, abundant white space, soft shadows.",
+      `${STYLE} SUBJECT: Floating isometric laptop showing a modern dashboard UI with teal accent bar charts and modular panel layout. Surrounding the laptop: small API node circles connected by thin lines. Abstract code bracket shapes in the corners of the composition.`,
   },
   {
     name: "service-data-intelligence",
     aspectRatio: "3:2",
     prompt:
-      "Minimalist flat-design illustration of data intelligence — a central glowing database cylinder radiating clean lines to three floating analytics panels: a bar chart rising upward, a circular pie chart, and a line trend graph with teal (#4af0c4) highlights. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, lots of white space, soft shadows.",
+      `${STYLE} SUBJECT: Central isometric database cylinder with teal glow radiating thin lines to three floating analytics panels: a rising bar chart, a circular donut chart, and a line trend graph. All panels are flat 2D cards with teal accent highlights. Sparse triangular mesh.`,
   },
   {
     name: "service-ai-strategy",
     aspectRatio: "3:2",
     prompt:
-      "Minimalist isometric illustration of AI strategy and discovery — a stylized compass or roadmap unfolding on a clean surface, with small glowing teal (#4af0c4) milestone nodes along a path. A magnifying glass with an AI circuit pattern hovers above. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, lots of white space, subtle shadows.",
+      `${STYLE} SUBJECT: Isometric compass or unfolding roadmap on a flat surface with small teal glowing milestone nodes along a path. A magnifying glass with an AI circuit pattern hovers above the roadmap. Sparse triangular mesh lines extending from the milestone nodes.`,
   },
 
-  // --- New feature visuals ---
+  // --- Feature visuals ---
   {
     name: "sessies-visual",
     aspectRatio: "4:3",
     prompt:
-      "Minimalist flat-design illustration of an on-site AI workshop session — two professionals at a desk with a laptop, with glowing teal (#22c55e) workflow automation lines flowing between icons: a gear, a document, and a checkmark. Charcoal (#1f1f1f) background with subtle white dot grid. Warm professional atmosphere. No text, lots of breathing room, soft highlights.",
+      `${STYLE} SUBJECT: Two abstract professional silhouettes at an isometric desk with a laptop. Teal workflow lines flow from the laptop to three floating node icons: a gear, a document, and a checkmark. Sparse triangular mesh in background. Warm yet minimal.`,
   },
   {
     name: "sessies-steps",
     aspectRatio: "3:2",
     prompt:
-      "Clean minimal flat infographic showing 3 sequential workflow steps on a light gray (#f2f3f5) background: Step 1 a briefing clipboard with magnifying glass, Step 2 two people collaborating at a laptop with AI sparks, Step 3 a rocket or launch arrow with green (#22c55e) checkmark. Connected by smooth teal (#22c55e) curved lines with numbered square markers. Professional Dutch B2B style. No text, soft shadows.",
+      `${STYLE} SUBJECT: Three sequential flat steps connected by smooth teal curved lines — Step 1: a briefing clipboard with magnifying glass, Step 2: two abstract figures at a laptop with AI spark nodes, Step 3: a launch arrow with teal checkmark. Teal circular markers at each junction.`,
   },
   {
     name: "brand-ambassador-visual",
     aspectRatio: "4:3",
     prompt:
-      "Minimalist isometric illustration of an AI brand ambassador chat interface — a sleek smartphone and desktop screen side by side showing a branded chat window with a company avatar icon, floating teal (#22c55e) and white chat bubbles, and subtle brand colour accents. Abstract neural connection lines radiate from an AI core. Light gray (#f2f3f5) background. Professional Dutch B2B aesthetic. No text, ample white space, soft shadows.",
+      `${STYLE} SUBJECT: Isometric smartphone and desktop screen side by side, each displaying a branded chat window with a circular company avatar icon and floating teal and white chat bubbles. Abstract neural connection lines radiate from a central teal AI core node between the screens.`,
   },
   {
     name: "labs-hero",
     aspectRatio: "16:9",
     prompt:
-      "Elegant minimal flat illustration representing a regional AI knowledge hub — the province of Limburg as a subtle geographic outline in the center, with small glowing green (#22c55e) dot nodes representing connected communities (universities, businesses, municipalities). Thin teal connection lines create a network across the region. Very light off-white background (#f2f3f5), mostly white space, delicate contour lines. Professional and understated. No text.",
+      `${STYLE} SUBJECT: The Netherlands province of Limburg as a delicate geographic outline centered in the composition. Small teal glowing circular nodes represent connected towns and communities. Thin triangular mesh lines form a sparse network across the region. One prominent central node. Vast white space surrounding the outline.`,
   },
 ];
 
