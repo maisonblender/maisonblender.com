@@ -118,13 +118,16 @@ export default function Nav() {
               </button>
 
               {desktopDienstenOpen && (
-                <div id={desktopMenuId} className="absolute left-1/2 top-full z-50 w-72 -translate-x-1/2 pt-3">
-                  <div className="liquid-glass-light rounded-2xl py-2">
+                <div
+                  id={desktopMenuId}
+                  className="absolute left-1/2 top-full z-[60] w-72 -translate-x-1/2 pt-3"
+                >
+                  <div className="rounded-2xl border border-black/[0.08] bg-white py-2 shadow-[0_12px_36px_-8px_rgba(31,31,31,0.18),0_1px_2px_rgba(31,31,31,0.05)]">
                     {services.map((s) => (
                       <a
                         key={s.slug}
                         href={`/diensten/${s.slug}`}
-                        className={`block px-4 py-2.5 text-sm text-[#575760] transition-colors hover:bg-white/60 hover:text-[#1f1f1f] ${linkFocus}`}
+                        className={`block px-4 py-2.5 text-sm text-[#575760] transition-colors hover:bg-[#f2f3f5] hover:text-[#1f1f1f] ${linkFocus}`}
                         onClick={() => setDesktopDienstenOpen(false)}
                       >
                         {s.title}
@@ -177,17 +180,17 @@ export default function Nav() {
           </div>
         </div>
 
-        {/* Mobile dropdown panel — separate floating glass card below the pill */}
+        {/* Mobile dropdown panel — separate floating card below the pill */}
         {mobileOpen && (
           <div
             id={mobileMenuId}
             ref={mobileMenuRef}
-            className="liquid-glass-light mt-3 rounded-3xl p-3 md:hidden"
+            className="relative z-[60] mt-3 rounded-3xl border border-black/[0.08] bg-white p-3 shadow-[0_12px_36px_-8px_rgba(31,31,31,0.18),0_1px_2px_rgba(31,31,31,0.05)] md:hidden"
           >
             <nav aria-label="Mobiel menu" className="flex flex-col gap-1">
               <button
                 type="button"
-                className="flex w-full items-center justify-between rounded-2xl px-3 py-3 text-left text-sm font-medium text-[#575760] transition-colors hover:bg-white/60 hover:text-[#1f1f1f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a7a5c] focus-visible:ring-offset-2"
+                className="flex w-full items-center justify-between rounded-2xl px-3 py-3 text-left text-sm font-medium text-[#575760] transition-colors hover:bg-[#f2f3f5] hover:text-[#1f1f1f] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#0a7a5c] focus-visible:ring-offset-2"
                 onClick={() => setMobileDienstenOpen((v) => !v)}
                 aria-expanded={mobileDienstenOpen}
                 aria-controls="nav-mobile-diensten"
@@ -216,7 +219,7 @@ export default function Nav() {
                     <a
                       key={s.slug}
                       href={`/diensten/${s.slug}`}
-                      className={`rounded-xl px-3 py-2 text-sm text-[#575760] transition-colors hover:bg-white/60 hover:text-[#1f1f1f] ${linkFocus}`}
+                      className={`rounded-xl px-3 py-2 text-sm text-[#575760] transition-colors hover:bg-[#f2f3f5] hover:text-[#1f1f1f] ${linkFocus}`}
                       onClick={() => {
                         setMobileOpen(false);
                         setMobileDienstenOpen(false);
@@ -232,7 +235,7 @@ export default function Nav() {
                 <a
                   key={l.href}
                   href={l.href}
-                  className={`rounded-2xl px-3 py-3 text-sm font-medium text-[#575760] transition-colors hover:bg-white/60 hover:text-[#1f1f1f] ${linkFocus}`}
+                  className={`rounded-2xl px-3 py-3 text-sm font-medium text-[#575760] transition-colors hover:bg-[#f2f3f5] hover:text-[#1f1f1f] ${linkFocus}`}
                   onClick={() => setMobileOpen(false)}
                 >
                   {l.label}
