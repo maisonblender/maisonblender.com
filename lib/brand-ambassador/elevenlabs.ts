@@ -16,10 +16,15 @@ export const ELEVENLABS_API_BASE = "https://api.elevenlabs.io/v1";
 export const DEFAULT_VOICE_ID = "XB0fDUnXU5powFXDhCwa";
 
 /**
- * Multilingual v2 is het beste voor Nederlands + natuurlijke prosody.
- * Flash is sneller maar minder expressief.
+ * Flash v2.5 is 50% goedkoper dan multilingual v2 (0.5 vs 1 credit/char)
+ * en heeft ~75ms lagere latency. Ondersteunt Nederlands + 32 talen. Voor
+ * een conversational Ambassador is dit de sweet spot: goed genoeg in
+ * kwaliteit, snappier response, houdt credits in toom.
+ *
+ * Overschrijf met ELEVENLABS_MODEL_ID=eleven_multilingual_v2 voor
+ * maximale expressie (wel 2× zo duur per character).
  */
-export const DEFAULT_MODEL_ID = "eleven_multilingual_v2";
+export const DEFAULT_MODEL_ID = "eleven_flash_v2_5";
 
 export function getElevenLabsConfig() {
   const apiKey = process.env.ELEVENLABS_API_KEY;
