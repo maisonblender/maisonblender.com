@@ -5,6 +5,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieBanner from "@/components/CookieBanner";
 import SkipLink from "@/components/SkipLink";
 import ScrollToTop from "@/components/ScrollToTop";
+import { Analytics } from "@vercel/analytics/next";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -266,6 +267,7 @@ export default function RootLayout({
         <GoogleAnalytics />
         <CookieBanner />
         {children}
+        <Analytics />
       </body>
     </html>
   );
