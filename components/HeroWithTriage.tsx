@@ -56,12 +56,8 @@ export default function HeroWithTriage() {
 
             <div className="border-t border-black/[0.06] pt-6">
               <p className="text-xs leading-relaxed text-[#575760]">
-                <span className="font-semibold text-[#1f1f1f]">Bekend van Applemooz?</span>{" "}
-                Applemooz.nl is gerebrand naar MAISON BLNDR. We bouwen nog steeds websites en
-                e-commerce platforms — aangevuld met AI-automatisering en agents.{" "}
-                <a href="/studio" className="underline underline-offset-2 hover:text-[#1f1f1f] transition-colors">
-                  Lees meer over ons →
-                </a>
+                Applemooz is gerebrand naar MAISON BLNDR. We bouwen nog steeds websites en
+                e-commerce platforms, aangevuld met AI-automatisering en agents.
               </p>
             </div>
 
