@@ -127,7 +127,7 @@ export default function Sectoren() {
             <p className="text-sm text-[#575760]">
               AI-automatisering is niet sectorgebonden — het is procesgebonden. Als er taken zijn
               die herhaald worden, tijd kosten of gevoelig zijn voor fouten, is er waarschijnlijk
-              iets te doen. We kijken het graag met je mee.
+              iets te doen. We kijken graag met je mee.
             </p>
           </div>
           <a
