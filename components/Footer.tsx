@@ -24,6 +24,17 @@ export default function Footer() {
             </p>
             <p>BTW: NL001832932B87</p>
           </div>
+          <nav
+            aria-label="Over MAISON BLNDR"
+            className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-[#1f1f1f]"
+          >
+            <Link href="/studio" className="hover:text-black transition-colors">
+              Studio
+            </Link>
+            <Link href="/team" className="hover:text-black transition-colors">
+              Team
+            </Link>
+          </nav>
         </div>
 
         <div>

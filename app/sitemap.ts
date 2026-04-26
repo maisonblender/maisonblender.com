@@ -46,6 +46,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/quickscan`, lastModified: BUILD_TIME, changeFrequency: "monthly", priority: 0.85 },
     { url: `${SITE_URL}/strategiegesprek`, lastModified: BUILD_TIME, changeFrequency: "monthly", priority: 0.85 },
     { url: `${SITE_URL}/brand-ambassador`, lastModified: BUILD_TIME, changeFrequency: "monthly", priority: 0.8 },
+    { url: `${SITE_URL}/studio`, lastModified: BUILD_TIME, changeFrequency: "monthly", priority: 0.6 },
+    { url: `${SITE_URL}/team`, lastModified: BUILD_TIME, changeFrequency: "monthly", priority: 0.6 },
     { url: `${SITE_URL}/toegankelijkheidsaudit`, lastModified: BUILD_TIME, changeFrequency: "monthly", priority: 0.75 },
     { url: `${SITE_URL}/labs`, lastModified: BUILD_TIME, changeFrequency: "weekly", priority: 0.75 },
     { url: `${SITE_URL}/labs/kennisbank`, lastModified: BUILD_TIME, changeFrequency: "weekly", priority: 0.75 },
