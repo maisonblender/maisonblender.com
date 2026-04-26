@@ -185,7 +185,16 @@ export default function AmbassadorVoice({
   }, []);
 
   const ensureAudioContext = useCallback((): AudioContext | null => {
-    if (audioCtxRef.current) return audioCtxRef.current;
+    if (audioCtxRef.current) {
+      // Kan suspended zijn na tab-wissel of op iOS. Resume is een no-op
+      // als hij al loopt. We fire-and-forgetten — de caller gebruikt de
+      // context binnen een user-gesture dus autoplay policies triggeren
+      // vanzelf.
+      if (audioCtxRef.current.state === "suspended") {
+        audioCtxRef.current.resume().catch(() => void 0);
+      }
+      return audioCtxRef.current;
+    }
     if (typeof window === "undefined") return null;
     const AudioCtx =
       window.AudioContext ||
@@ -252,7 +261,17 @@ export default function AmbassadorVoice({
     if (!onAudioLevel) return;
     if (typeof navigator === "undefined" || !navigator.mediaDevices) return;
     navigator.mediaDevices
-      .getUserMedia({ audio: true })
+      .getUserMedia({
+        // Echo cancellation is essentieel voor barge-in: zonder deze pakt
+        // de mic de TTS-output uit de speakers op en "hoort" de Ambassador
+        // zichzelf. Noise suppression + auto gain maken de herkenning
+        // betrouwbaarder bij gematigde achtergrondruis.
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+          autoGainControl: true,
+        },
+      })
       .then((stream) => {
         streamRef.current = stream;
         const ctx = ensureAudioContext();
@@ -457,9 +476,14 @@ export default function AmbassadorVoice({
       recRef.current?.stop();
       return;
     }
-    // Stop any playing TTS first — otherwise Web Speech API picks up the
-    // Ambassador's own audio output and confuses it with user speech.
+    // Barge-in: user onderbreekt de Ambassador. We doen drie dingen:
+    //  1. stopPlayback → abort huidige TTS fetch + pauze audio
+    //  2. playedIdx = MAX → tryPlayNext returnt early, dus queue-resumption
+    //     is geblokt (zelfs als stream nog meer zinnen aanlevert). Nieuwe
+    //     user-turn bumpt session.id → reset playedIdx naar 0.
+    //  3. playing=false → staat klaar voor volgende session
     stopPlayback();
+    playedIdxRef.current = Number.MAX_SAFE_INTEGER;
     playingRef.current = false;
     startRecognition();
   }
@@ -524,10 +548,41 @@ export default function AmbassadorVoice({
     void tryPlayNext();
   }, [speakSession, enabled, tryPlayNext, stopPlayback]);
 
+  // Voice disable: stop alle lopende activiteit maar HOUD de AudioContext
+  // in leven. Die mag pas dicht bij unmount — anders werkt re-enable niet
+  // meer (Safari weigert createMediaStreamSource op een gesloten context).
   useEffect(() => {
-    if (!enabled) stopPlayback();
+    if (enabled) return;
+    stopPlayback();
+    playingRef.current = false;
+    // Abort een eventueel nog draaiende SpeechRecognition — zonder dit
+    // blijft er een stale instance hangen die een volgende start blokkeert.
+    if (recRef.current) {
+      try {
+        recRef.current.abort();
+      } catch {
+        // ignore
+      }
+      recRef.current = null;
+    }
+    setListening(false);
+    stopMicMonitoring();
+    // playedIdx resetten: fresh state voor de volgende keer.
+    playedIdxRef.current = 0;
+  }, [enabled, stopPlayback, stopMicMonitoring]);
+
+  // Unmount teardown: alle audio-infra vrijgeven.
+  useEffect(() => {
     return () => {
       stopPlayback();
+      if (recRef.current) {
+        try {
+          recRef.current.abort();
+        } catch {
+          // ignore
+        }
+        recRef.current = null;
+      }
       stopMicMonitoring();
       if (rafRef.current !== null) {
         cancelAnimationFrame(rafRef.current);
@@ -539,7 +594,8 @@ export default function AmbassadorVoice({
         audioCtxRef.current = null;
       }
     };
-  }, [enabled, stopPlayback, stopMicMonitoring]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (!supported) {
     return (
