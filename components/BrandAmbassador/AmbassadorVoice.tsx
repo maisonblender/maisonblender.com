@@ -283,6 +283,19 @@ export default function AmbassadorVoice({
       }
 
       if (!response.ok || !response.body) {
+        // Log de server-side detail zodat we in de browser console direct
+        // kunnen zien waarom ElevenLabs faalt (bijv. invalid voice_id,
+        // quota exceeded, auth issue).
+        try {
+          const body = await response.json();
+          console.warn(
+            `[BA-voice] TTS failed (${response.status}):`,
+            body,
+            body?.upstreamStatus ? `· ElevenLabs→${body.upstreamStatus}` : ""
+          );
+        } catch {
+          console.warn(`[BA-voice] TTS failed (${response.status}) · no body`);
+        }
         return false;
       }
 
