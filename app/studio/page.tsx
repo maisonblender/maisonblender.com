@@ -15,12 +15,6 @@ export const metadata: Metadata = {
   },
 };
 
-const stats = [
-  { value: "2016", label: "jaar gestart" },
-  { value: "40+", label: "uur bespaard per klant per week" },
-  { value: "4 wk", label: "gemiddeld naar live systeem" },
-  { value: "NL", label: "actief door heel Nederland" },
-];
 
 const process = [
   {
@@ -112,26 +106,6 @@ export default function StudioPage() {
           </div>
         </section>
 
-        {/* Stats */}
-        <section className="border-b border-black/[0.06] bg-white px-6 py-16">
-          <div className="mx-auto max-w-6xl">
-            <dl className="grid grid-cols-2 gap-8 text-center lg:grid-cols-4">
-              {stats.map((s) => (
-                <div key={s.label} className="flex flex-col gap-2">
-                  <dt
-                    className="font-exposure text-[40px] leading-none tracking-tight text-[#1f1f1f] sm:text-[52px]"
-                    style={{ letterSpacing: "-0.05em" }}
-                  >
-                    {s.value}
-                  </dt>
-                  <dd className="text-xs font-medium uppercase tracking-widest text-[#575760]">
-                    {s.label}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </section>
 
         {/* Waar we mee begonnen */}
         <section className="px-6 py-20 lg:py-28 bg-white">
