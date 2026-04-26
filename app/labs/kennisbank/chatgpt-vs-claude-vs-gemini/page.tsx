@@ -70,9 +70,10 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              De gratis versie (GPT-4o) is prima voor incidenteel gebruik. De betaalde versie (ChatGPT Plus,
-              20 euro per maand) geeft toegang tot geavanceerdere functies, hogere limieten en de mogelijkheid
-              om eigen instructies in te stellen zodat de tool jouw bedrijfsstijl en context onthoudt.
+              De gratis versie geeft toegang tot GPT-5.3 met beperkingen — prima voor incidenteel gebruik.
+              ChatGPT Plus (20 euro per maand) geeft volledige toegang tot de modelsuite inclusief geavanceerde
+              redeneer- en onderzoeksfuncties, hogere limieten en de mogelijkheid om eigen instructies in te stellen
+              zodat de tool jouw bedrijfsstijl en context onthoudt.
             </p>
 
             <p>
@@ -110,8 +111,10 @@ export default function ArticlePage() {
 
             <p>
               Claude is ook merkbaar beter in situaties waarbij de toon precies goed moet zijn: een lastige
-              brief aan een klant, een delicate interne communicatie of een nuanced advies. De gratis versie
-              heeft limieten, maar is al indrukwekkend. Claude Pro kost 18 euro per maand.
+              brief aan een klant, een delicate interne communicatie of een genuanceerd advies. De gratis versie
+              heeft limieten, maar is al indrukwekkend. Claude Pro kost 20 euro per maand en geeft toegang tot
+              de nieuwste modellen — momenteel Claude Sonnet 4.6 voor dagelijks gebruik en Opus 4.7 voor de
+              zwaarste taken.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">Geschikt voor:</h3>
@@ -138,8 +141,8 @@ export default function ArticlePage() {
             <p>
               Als pure tekstassistent scoort Gemini iets lager dan de andere twee - met name op nauwkeurigheid
               en nuance. Maar als productiviteitstool voor Google-gebruikers is het de sterkste keuze. Gemini
-              Advanced (via Google One AI Premium, 22 euro per maand) geeft toegang tot de meest geavanceerde
-              versie en diepe integraties.
+              AI Pro (circa 20 euro per maand) geeft toegang tot de meest geavanceerde versie — momenteel
+              Gemini 3.1 Pro — en diepe integraties met de volledige Google Workspace.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">Geschikt voor:</h3>
@@ -180,7 +183,7 @@ export default function ArticlePage() {
                     <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
                       ChatGPT
                     </th>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">GPT-4o (beperkt)</td>
+                    <td className="p-3 border border-black/[0.08] text-[#575760]">GPT-5.3 (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">ChatGPT Plus</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">20 euro</td>
                   </tr>
@@ -188,17 +191,17 @@ export default function ArticlePage() {
                     <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
                       Claude
                     </th>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">Claude (beperkt)</td>
+                    <td className="p-3 border border-black/[0.08] text-[#575760]">Claude Sonnet (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Claude Pro</td>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">18 euro</td>
+                    <td className="p-3 border border-black/[0.08] text-[#575760]">20 euro</td>
                   </tr>
                   <tr>
                     <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
                       Gemini
                     </th>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Gemini (beperkt)</td>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">Gemini Advanced</td>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">22 euro</td>
+                    <td className="p-3 border border-black/[0.08] text-[#575760]">Gemini AI Pro</td>
+                    <td className="p-3 border border-black/[0.08] text-[#575760]">~20 euro</td>
                   </tr>
                 </tbody>
               </table>
