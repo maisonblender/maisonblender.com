@@ -56,12 +56,11 @@ export default function HeroWithTriage() {
 
             <div className="border-t border-black/[0.06] pt-6">
               <div className="flex items-center gap-2.5">
-                <SiteImage
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
                   src="/images/applemooz-logo.png"
                   alt="Applemooz logo"
-                  width={16}
-                  height={16}
-                  className="h-4 w-4 shrink-0 object-contain"
+                  className="h-4 w-auto shrink-0 object-contain"
                 />
                 <p className="text-xs leading-relaxed text-[#575760]">
                   Applemooz is gerebrand naar MAISON BLNDR. We bouwen nog steeds websites en
