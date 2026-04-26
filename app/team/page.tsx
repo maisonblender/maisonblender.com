@@ -30,7 +30,7 @@ const capaciteiten = [
     beschrijving: "Visuele identiteit, ontwerpsystemen, marketing- en campagnemateriaal.",
   },
   {
-    titel: "E-commerce dev",
+    titel: "E-commerce development",
     beschrijving: "Shopify en headless commerce — bouw, optimalisatie en conversieverbeteringen.",
   },
   {
@@ -212,7 +212,7 @@ export default function TeamPage() {
                 <p className="text-[#575760] leading-relaxed">
                   Voor projecten waarbij menselijk vakwerk onvervangbaar is — live fotografie,
                   complexe merkstrategie, campagneproductie met fysieke componenten — werken we
-                  samen met een vaste groep freelancers. Zij worden door Karl geselecteerd en
+                  samen met een vaste groep partners. Zij worden door Karl geselecteerd en
                   aangestuurd, en vallen onder dezelfde kwaliteitseisen als de rest van het werk.
                 </p>
               </div>
