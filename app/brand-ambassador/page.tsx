@@ -33,40 +33,46 @@ export const metadata: Metadata = {
 const differentiators = [
   {
     nummer: "01",
-    titel: "Een levende presence, geen avatar",
-    kop: "Geen profielfoto, geen robot-icoon.",
-    body: "Een canvas-gerenderde entiteit die ademt, luistert, denkt en spreekt. Vier visuele states, reactief op audio en conversatie-intent. Niemand anders heeft dit.",
+    titel: "Productkennis",
+    kop: "Getraind op je volledige productcatalogus, prijzen en specificaties.",
+    body: "Geeft accurate antwoorden — ook op technische vragen die je normaal doorschakelt naar een specialist.",
   },
   {
     nummer: "02",
-    titel: "Imagine This Is Yours",
-    kop: "Typ je bedrijfsnaam. De Ambassador transformeert.",
-    body: "Kleur, tone, opening — ter plekke. De prospect ervaart hoe een Ambassador voor hun merk zou klinken. Geen concurrent biedt dit in de sales-flow.",
+    titel: "Tone-of-voice",
+    kop: "Communiceert in de stijl van jouw merk — formeel of informeel, technisch of laagdrempelig.",
+    body: "Niet generiek, niet robotachtig. Jouw klanten merken het verschil niet met een menselijke medewerker.",
   },
   {
     nummer: "03",
-    titel: "Voice-first, waar het past",
-    kop: "Spreken, niet alleen typen.",
-    body: "Web Speech API. Je spreekt je vraag in, de Ambassador antwoordt. Audio wordt nooit naar een server gestuurd — alles in de browser.",
+    titel: "Leadgeneratie",
+    kop: "Kwalificeert bezoekers actief: wat zoekt hij, wat is zijn budget, hoe urgent is de vraag.",
+    body: "Stuurt alleen de warme leads door naar jouw salesteam — compleet met gesprekscontext.",
   },
   {
     nummer: "04",
-    titel: "Conversationele leadcapture",
-    kop: "Geen formulier ooit.",
-    body: "Bij een koopsignaal weeft de Ambassador kwalificatievragen in het gesprek. Jouw salesteam ontvangt volledig gekwalificeerde leads — zonder dat de bezoeker zich ingevuld voelt.",
+    titel: "24/7 beschikbaar",
+    kop: "Altijd beschikbaar — ook 's avonds, ook in het weekend.",
+    body: "Geen gemiste lead meer omdat er niemand online was.",
   },
   {
     nummer: "05",
-    titel: "AI-gegenereerde briefing",
-    kop: "Na het gesprek: één persoonlijke e-mail.",
-    body: "De bezoeker krijgt een samenvatting van wat hun voor ons gesprek relevant is. Jij ontvangt hetzelfde — in Twenty CRM, met volledig transcript en context. Vervolggesprek begint niet van nul.",
+    titel: "Multichannel",
+    kop: "Eén kennisbase, drie kanalen: website, WhatsApp Business en Microsoft Teams.",
+    body: "Consistent antwoord op elk kanaal — de Ambassador weet altijd wat eerder is besproken.",
+  },
+  {
+    nummer: "06",
+    titel: "Lerende kennisbase",
+    kop: "Nieuwe producten, gewijzigde prijzen of nieuwe FAQs?",
+    body: "Aanpassen en binnen uren live — zonder dat je daarvoor bij ons hoeft aan te kloppen.",
   },
 ];
 
 const kanalen = [
-  { name: "Website", description: "Embedded widget of fullscreen experience. Branded, snel, geen redirect." },
-  { name: "WhatsApp Business", description: "Dezelfde Ambassador via het officiële Business Platform. Eén kennisbase." },
-  { name: "Microsoft Teams", description: "Interne kennis-assistent of klantenservice-bot, met SSO." },
+  { name: "Website", description: "Embedded op elke pagina — klanten stellen hun vraag waar ze zijn, zonder door te klikken naar een contactpagina." },
+  { name: "WhatsApp Business", description: "Via het officiële platform. Klanten chatten in de app die ze toch al hebben open staan." },
+  { name: "Microsoft Teams", description: "Als interne kennisassistent of als klantenservice-bot. Zelfde kennisbase, andere context." },
 ];
 
 export default function BrandAmbassadorPage() {
@@ -98,34 +104,33 @@ export default function BrandAmbassadorPage() {
           <div className="relative z-10 mx-auto max-w-5xl text-center">
             <div className="inline-flex items-center gap-2 border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-white/80">
               <span className="h-2 w-2 rounded-full bg-[#4af0c4]" />
-              Niet zomaar een chatbot — een aanwezigheid
+              Probeer hem nu — dit is onze eigen Brand Ambassador.
             </div>
             <h1
               className="mt-8 text-[34px] font-normal leading-[1.1] tracking-tight sm:text-[46px] lg:text-[58px]"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Elke website heeft een chatbox.
+              Je merk heeft een stem.
               <br />
-              <span className="font-exposure">Jij verdient een Ambassador.</span>
+              <span className="font-exposure">Die mag 24/7 beschikbaar zijn.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
-              De AI Brand Ambassador spreekt met de stem van je merk. Geen bolletje onderin je
-              scherm. Een levende presence, voice-ready, die je merk herkenbaar maakt en leads
-              kwalificeert zonder ooit een formulier te tonen. Probeer &apos;m nu live — en zie
-              binnen drie klikken hoe hij voor jouw merk zou klinken.
+              Een AI Brand Ambassador spreekt met de stem van jouw merk — productkennis,
+              tone-of-voice en commerciële instelling inbegrepen. Via je website, WhatsApp of
+              Teams. Altijd beschikbaar, zonder dat je er extra mensen voor nodig hebt.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
               <a
                 href="#demo"
                 className="inline-flex items-center justify-center rounded-full bg-[#4af0c4] px-8 py-4 text-sm font-semibold text-[#1f1f1f] transition-all hover:bg-[#7cf5d3] hover:shadow-lg"
               >
-                Praat met de Ambassador →
+                Bekijk de live demo →
               </a>
               <a
                 href="/strategiegesprek"
                 className="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-8 py-4 text-sm font-medium text-white/80 transition-all hover:border-white/40 hover:text-white"
               >
-                Vraag een offerte aan
+                Plan een gesprek
               </a>
             </div>
             <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[11px] uppercase tracking-widest text-white/40">
@@ -149,13 +154,12 @@ export default function BrandAmbassadorPage() {
                 className="text-[26px] font-normal leading-tight tracking-tight text-white sm:text-[32px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
-                Dit is onze eigen Ambassador.
-                <br />
-                <span className="font-exposure">Probeer te zien waarom hij anders is.</span>
+                Probeer het zelf — dit is onze eigen Brand Ambassador.
               </h2>
               <p className="mx-auto max-w-xl text-sm text-white/55">
-                Stel gerust een vraag over tarieven, aanpak of implementatie. Druk op &quot;imagine
-                this is yours&quot; om &apos;m voor jouw merk te zien transformeren.
+                Geen nep-data, geen scriptje. Stel een vraag over onze diensten, tarieven of aanpak
+                — en ervaar precies hoe jouw klanten geholpen worden. Wat je hier ziet, is wat wij
+                voor jou bouwen.
               </p>
             </div>
             <AmbassadorWidget />
@@ -167,21 +171,8 @@ export default function BrandAmbassadorPage() {
           <div className="mx-auto max-w-6xl">
             <div className="mb-16 flex flex-col gap-4">
               <span className="text-xs font-medium uppercase tracking-widest text-[#575760]">
-                Waarom deze Ambassador anders is
+                Wat de Ambassador concreet doet
               </span>
-              <h2
-                className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[32px]"
-                style={{ letterSpacing: "-0.95px" }}
-              >
-                Er zijn duizenden chatbots.
-                <br />
-                <span className="font-exposure">Geen enkele doet dit.</span>
-              </h2>
-              <p className="max-w-2xl text-[#575760]">
-                Een gewone chatbot is een formulier met woorden. Dit is een gesprek dat bewijs
-                levert terwijl het plaatsvindt — ontworpen om niet te lijken op elke andere
-                widget rechtsonder op je scherm.
-              </p>
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
@@ -211,14 +202,10 @@ export default function BrandAmbassadorPage() {
                 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
-                Eén Ambassador.
+                Eén kennisbase.
                 <br />
-                <span className="font-exposure">Overal consistent.</span>
+                <span className="font-exposure">Drie kanalen.</span>
               </h2>
-              <p className="mx-auto mt-4 max-w-xl text-[#575760]">
-                Dezelfde kennisbase, dezelfde tone-of-voice. Beantwoordt overal wat je team
-                anders zou beantwoorden — en doet het consequent.
-              </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {kanalen.map((ch) => (
@@ -256,19 +243,19 @@ export default function BrandAmbassadorPage() {
               className="text-[24px] font-normal leading-[1.2] tracking-tight sm:text-[29px] lg:text-[32px]"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Wil je een Ambassador die
+              Wil je een Brand Ambassador die
               <br />
-              <span className="font-exposure">als jóuw merk klinkt?</span>
+              <span className="font-exposure">klinkt als jouw merk?</span>
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-white/70">
-              We trainen &apos;m op jouw producten, diensten, FAQ&apos;s en tone-of-voice. Live
-              binnen twee weken, inclusief integratie met je CRM en kanalen.
+              We bouwen hem op basis van jouw producten, diensten en tone-of-voice. Live binnen
+              twee weken.
             </p>
             <a
               href="/strategiegesprek"
               className="mt-8 inline-block rounded-full bg-[#4af0c4] px-10 py-4 text-sm font-semibold text-[#1f1f1f] transition-all hover:bg-[#7cf5d3] hover:shadow-lg"
             >
-              Plan een strategiegesprek →
+              Plan een gesprek →
             </a>
           </div>
         </section>
