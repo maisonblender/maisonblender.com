@@ -100,8 +100,31 @@ interface Props {
   defaultFullscreen?: boolean;
 }
 
+/**
+ * Maak een url-veilige conversationId. Gebruikt crypto.randomUUID wanneer
+ * beschikbaar, anders Math.random fallback. Stabiel over de duur van één
+ * gesprek — reset alleen wanneer de user een nieuwe brand activeert.
+ */
+function newConversationId(): string {
+  try {
+    if (typeof crypto !== "undefined" && "randomUUID" in crypto) {
+      return crypto.randomUUID().replace(/-/g, "");
+    }
+  } catch {
+    // fallthrough
+  }
+  return (
+    Date.now().toString(36) +
+    Math.random().toString(36).slice(2, 10) +
+    Math.random().toString(36).slice(2, 10)
+  );
+}
+
 export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   const [brand, setBrand] = useState<BrandContext | null>(null);
+  const [conversationId, setConversationId] = useState<string>(() =>
+    newConversationId()
+  );
   const [bubbles, setBubbles] = useState<Bubble[]>(() => [openingMessage(null)]);
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -152,10 +175,13 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   }, [bubbles]);
 
   // Open bij brand-change opnieuw (nieuw openings-antwoord).
+  // Ook conversationId resetten: nieuwe brand = nieuwe context = server
+  // moet een fris leadprofiel opbouwen ipv de oude info door te rommelen.
   useEffect(() => {
     setBubbles([openingMessage(brand)]);
     setSpeakSession((s) => ({ id: s.id + 1, sentences: [] }));
     speakCursorRef.current = 0;
+    setConversationId(newConversationId());
   }, [brand]);
 
   // Feature-detect of ElevenLabs ConvAI server-side geconfigureerd is.
@@ -219,7 +245,11 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
         const res = await fetch("/api/brand-ambassador/chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages: historyForApi, brand }),
+          body: JSON.stringify({
+            messages: historyForApi,
+            brand,
+            conversationId,
+          }),
           signal: abortRef.current.signal,
         });
 
@@ -356,7 +386,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
         setPresenceState("idle");
       }
     },
-    [apiMessages, brand, sending]
+    [apiMessages, brand, sending, conversationId]
   );
 
   function handleSubmit(e: React.FormEvent) {

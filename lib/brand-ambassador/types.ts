@@ -29,17 +29,32 @@ export interface BrandContext {
  * Leadprofiel dat gaandeweg het gesprek gevuld wordt door de AI
  * (conversationele capture, geen formulier). Alle velden optioneel tot het
  * moment van expliciete submit.
+ *
+ * Wordt op twee manieren gevuld:
+ *  - Via de `capture_lead` tool die Claude aanroept tijdens het chat-streaming
+ *    endpoint zodra het nieuwe info hoort.
+ *  - Via het expliciete briefing-formulier (knop "Stuur mij een briefing").
  */
 export interface AmbassadorLead {
   /** Vrij ingevulde naam (voor- + achternaam samen toegestaan). */
   naam?: string;
   email?: string;
+  /** Telefoonnummer zoals opgegeven; wij normaliseren server-side. */
+  telefoon?: string;
   bedrijf?: string;
+  /** Rol/functie van de bezoeker binnen hun bedrijf. */
+  rol?: string;
   sector?: string;
   teamgrootte?: string;
   urgentie?: string;
   /** Samenvatting van de interesse, door AI gegenereerd. */
   interesse?: string;
+  /**
+   * Heeft de bezoeker expliciet ingestemd met contactopname? Alleen `true`
+   * wanneer de AI dit in het gesprek verifieerd heeft (bv. "Mag Karl je
+   * terugbellen?" → "Ja").
+   */
+  toestemming_contact?: boolean;
 }
 
 export interface ChatRequest {

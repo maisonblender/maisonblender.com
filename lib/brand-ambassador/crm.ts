@@ -121,6 +121,40 @@ function splitNaam(naam: string | undefined): { firstName: string; lastName: str
   return { firstName: parts[0], lastName: parts.slice(1).join(" ") };
 }
 
+/**
+ * Bouw Twenty-compatible phones-object. NL-mobiel (06-xxxxxxxx, +31-6…)
+ * en landlines krijgen callingCode +31 / country NL. Anders zetten we
+ * alleen het nummer en laat Twenty de normalisering doen.
+ */
+function bouwPhones(
+  telefoonRaw: string | undefined
+): Record<string, unknown> | null {
+  const trimmed = (telefoonRaw ?? "").trim();
+  if (!trimmed) return null;
+
+  // Normaliseren: alles behalve cijfers en leidende + weg.
+  const cleaned = trimmed.replace(/[^\d+]/g, "");
+  if (cleaned.replace(/\D/g, "").length < 8) return null;
+
+  // NL-patronen: leading 0, of leading +31.
+  if (/^\+31/.test(cleaned)) {
+    return {
+      primaryPhoneNumber: cleaned.replace(/^\+31/, ""),
+      primaryPhoneCallingCode: "+31",
+      primaryPhoneCountryCode: "NL",
+    };
+  }
+  if (/^0\d{9}$/.test(cleaned)) {
+    return {
+      primaryPhoneNumber: cleaned.slice(1),
+      primaryPhoneCallingCode: "+31",
+      primaryPhoneCountryCode: "NL",
+    };
+  }
+  // Onbekend formaat — sla de raw value op, Twenty valideert zelf.
+  return { primaryPhoneNumber: cleaned };
+}
+
 function transcriptAlsMarkdown(messages: ChatMessage[]): string {
   return messages
     .map((m) => {
@@ -146,10 +180,13 @@ function bouwLeadNote(
     "## Leadprofiel",
     `- **Naam:** ${lead.naam ?? "niet opgegeven"}`,
     `- **Email:** ${lead.email ?? "niet opgegeven"}`,
+    `- **Telefoon:** ${lead.telefoon ?? "niet opgegeven"}`,
     `- **Bedrijf:** ${lead.bedrijf ?? "niet opgegeven"}`,
+    `- **Rol:** ${lead.rol ?? "niet opgegeven"}`,
     `- **Sector:** ${lead.sector ?? "niet opgegeven"}`,
     `- **Teamgrootte:** ${lead.teamgrootte ?? "niet opgegeven"}`,
     `- **Urgentie:** ${lead.urgentie ?? "niet opgegeven"}`,
+    `- **Toestemming contact:** ${lead.toestemming_contact ? "Ja" : "nee / onbekend"}`,
     `- **Interesse (samenvatting):** ${lead.interesse ?? "niet opgegeven"}`,
   ];
 
@@ -232,12 +269,17 @@ export async function pushAmbassadorLead(
   }
   const { baseUrl, apiKey } = cfg.config;
 
-  if (!lead.email) {
-    devLog("[BA-CRM] Lead zonder email — alleen note aanmaken niet mogelijk; overgeslagen");
+  // Minimum: we hebben óf een email óf een telefoonnummer nodig. Zonder
+  // beide hebben we geen natural key voor person-dedup en sloegen we
+  // voorheen de lead over. Nu mogen phone-only leads ook door.
+  const hasEmail = !!lead.email && lead.email.includes("@");
+  const hasPhone = !!lead.telefoon && lead.telefoon.replace(/\D/g, "").length >= 8;
+  if (!hasEmail && !hasPhone) {
+    devLog("[BA-CRM] Lead zonder email én zonder telefoon — overgeslagen");
     return;
   }
 
-  const rawDomain = lead.email.split("@")[1]?.toLowerCase() ?? "";
+  const rawDomain = hasEmail ? (lead.email!.split("@")[1]?.toLowerCase() ?? "") : "";
   const isBusinessDomain = rawDomain !== "" && !FREE_EMAIL_DOMAINS.has(rawDomain);
   const emailDomain = isBusinessDomain ? rawDomain : "";
 
@@ -294,11 +336,17 @@ export async function pushAmbassadorLead(
     }
 
     const { firstName, lastName } = splitNaam(lead.naam);
+    const fallbackFirst = hasEmail
+      ? lead.email!.split("@")[0]
+      : lead.naam?.split(/\s+/)[0] || "Onbekend";
     const personBody: Record<string, unknown> = {
-      name: { firstName: firstName || lead.email.split("@")[0], lastName },
-      emails: { primaryEmail: lead.email },
+      name: { firstName: firstName || fallbackFirst, lastName },
       createdBy: CREATED_BY,
     };
+    if (hasEmail) personBody.emails = { primaryEmail: lead.email };
+    const phonesObj = bouwPhones(lead.telefoon);
+    if (phonesObj) personBody.phones = phonesObj;
+    if (lead.rol) personBody.jobTitle = lead.rol;
     if (companyId) personBody.companyId = companyId;
 
     let personId: string | null = null;
@@ -307,24 +355,29 @@ export async function pushAmbassadorLead(
       personId = extractId(res);
     } catch (err) {
       if (err instanceof TwentyDuplicateError) {
-        try {
-          const existing = await twentyGET(
-            baseUrl,
-            apiKey,
-            "people",
-            `filter=emails.primaryEmail[eq]:${encodeURIComponent(lead.email)}`
-          );
-          personId = extractFirstId(existing);
-        } catch {
-          // geef op
+        if (hasEmail) {
+          try {
+            const existing = await twentyGET(
+              baseUrl,
+              apiKey,
+              "people",
+              `filter=emails.primaryEmail[eq]:${encodeURIComponent(lead.email!)}`
+            );
+            personId = extractFirstId(existing);
+          } catch {
+            // geef op
+          }
         }
+        // Phone-only dedup in Twenty is lastig via REST filter — laat de
+        // note dan vallen zodat we geen dubbele note per nummer krijgen.
       } else {
         console.warn("[BA-CRM] Person aanmaken mislukt:", err);
       }
     }
 
     if (!personId) {
-      console.warn(`[BA-CRM] Person voor ${lead.email} niet aangemaakt/gevonden — note overgeslagen`);
+      const key = lead.email ?? lead.telefoon ?? "onbekend";
+      console.warn(`[BA-CRM] Person voor ${key} niet aangemaakt/gevonden — note overgeslagen`);
       return;
     }
 
@@ -338,7 +391,9 @@ export async function pushAmbassadorLead(
       companyId
     );
 
-    devLog(`[BA-CRM] Lead verwerkt: ${lead.email} (person=${personId}, company=${companyId ?? "geen"})`);
+    devLog(
+      `[BA-CRM] Lead verwerkt: ${lead.email ?? lead.telefoon ?? "onbekend"} (person=${personId}, company=${companyId ?? "geen"})`
+    );
   } catch (err) {
     console.error("[BA-CRM] Twenty push mislukt:", err);
   }
