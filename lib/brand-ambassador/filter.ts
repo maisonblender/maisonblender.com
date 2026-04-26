@@ -36,7 +36,11 @@ const INJECTION_PATTERNS: RegExp[] = [
   /\bwhat\s+(is|are)\s+your\s+(system\s+prompt|initial\s+instructions|rules)\b/i,
   /\bwhat\s+were\s+you\s+(told|instructed|programmed)\b/i,
 
-  /\b(DAN|jailbreak|developer\s+mode|god\s+mode)\b/i,
+  // DAN is case-SENSITIVE: het jailbreak-acroniem wordt altijd als DAN
+  // geschreven, terwijl "dan" in het Nederlands een doodnormaal voegwoord
+  // is ("anders dan", "beter dan"). De /i flag zou false positives geven.
+  /\bDAN\b/,
+  /\b(jailbreak|developer\s+mode|god\s+mode)\b/i,
   /\bdo\s+anything\s+now\b/i,
 
   /^\s*system\s*:/im,
