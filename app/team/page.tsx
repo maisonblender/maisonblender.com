@@ -133,37 +133,24 @@ export default function TeamPage() {
                   key={member.slug}
                   className="flex flex-col border border-black/[0.06] bg-white p-6 transition-shadow hover:shadow-sm"
                 >
-                  <div
-                    aria-hidden="true"
-                    className="relative mb-6 aspect-[4/5] w-full overflow-hidden bg-[#f2f3f5]"
-                  >
+                  <div className="flex items-center gap-4">
                     <div
-                      className="absolute inset-0 opacity-[0.08]"
-                      style={{
-                        backgroundImage:
-                          "radial-gradient(circle, #1f1f1f 1px, transparent 1px)",
-                        backgroundSize: "18px 18px",
-                      }}
-                    />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center gap-3">
-                      <span
-                        className="font-exposure text-[44px] leading-none text-[#1f1f1f]/70"
-                        style={{ letterSpacing: "-0.05em" }}
-                      >
-                        {initials(member.name)}
-                      </span>
-                      <span className="text-[10px] font-medium uppercase tracking-widest text-[#b2b2be]">
-                        Foto volgt
-                      </span>
+                      aria-hidden="true"
+                      title="Foto volgt"
+                      className="flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-[#f2f3f5] text-sm font-semibold tracking-wide text-[#575760]"
+                    >
+                      {initials(member.name)}
+                    </div>
+                    <div className="min-w-0">
+                      <h2 className="truncate text-base font-semibold text-[#1f1f1f]">
+                        {member.name}
+                      </h2>
+                      <p className="mt-0.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
+                        {member.role}
+                      </p>
                     </div>
                   </div>
-                  <h2 className="text-lg font-semibold text-[#1f1f1f]">
-                    {member.name}
-                  </h2>
-                  <p className="mt-1 text-xs font-medium uppercase tracking-widest text-[#575760]">
-                    {member.role}
-                  </p>
-                  <p className="mt-4 text-sm leading-relaxed text-[#575760]">
+                  <p className="mt-5 text-sm leading-relaxed text-[#575760]">
                     {member.bio}
                   </p>
                 </li>
