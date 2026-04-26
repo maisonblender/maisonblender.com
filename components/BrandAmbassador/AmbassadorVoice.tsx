@@ -166,6 +166,22 @@ export default function AmbassadorVoice({
   const activeAudioRef = useRef<HTMLAudioElement | null>(null);
   const activeAbortRef = useRef<AbortController | null>(null);
 
+  // VAD + continuous-recognition state:
+  //  - finalBufferRef: accumuleert alle final transcripts van de huidige
+  //    recognition-sessie. In continuous-mode krijgen we per ingesproken
+  //    zin een final — we submitten pas wanneer rec.stop() gecalled wordt
+  //    (door VAD of door user klik).
+  //  - listeningRef: mirror van `listening` state zodat de amplitudeLoop
+  //    zonder re-render toegang heeft tot de huidige status.
+  //  - lastSpeechAtRef: timestamp (ms) van laatste mic-amplitude boven
+  //    threshold. Gebruikt voor silence-based auto-stop.
+  //  - startedAtRef: timestamp van recognition-start, voor no-speech
+  //    fallback timeout.
+  const finalBufferRef = useRef<string>("");
+  const listeningRef = useRef<boolean>(false);
+  const lastSpeechAtRef = useRef<number>(0);
+  const startedAtRef = useRef<number>(0);
+
   // Queue-state voor streaming TTS. `playedIdx` = index van de volgende zin
   // die we gaan uitspreken. `lastSessionId` detecteert nieuwe turns zodat
   // we de queue kunnen resetten. `playing` voorkomt overlappende fetches.
@@ -205,6 +221,12 @@ export default function AmbassadorVoice({
     return audioCtxRef.current;
   }, []);
 
+  // VAD-parameters. Getuned voor natuurlijke Nederlandse spraak met
+  // denkpauzes tussen zinnen.
+  const SPEECH_THRESHOLD = 0.08; // amplitude waarboven we spraak aannemen
+  const VAD_SILENCE_MS = 1800; // stilte-duur na spraak → auto-stop
+  const NO_SPEECH_TIMEOUT_MS = 15000; // absolute cap bij stuck mic
+
   const amplitudeLoopRunning = useRef(false);
   const startAmplitudeLoop = useCallback(() => {
     if (amplitudeLoopRunning.current) return;
@@ -220,6 +242,7 @@ export default function AmbassadorVoice({
         return;
       }
       let level = 0;
+      let micLevel = 0;
       if (mic) {
         const data = new Uint8Array(mic.frequencyBinCount);
         mic.getByteTimeDomainData(data);
@@ -228,7 +251,8 @@ export default function AmbassadorVoice({
           const v = (data[i] - 128) / 128;
           sum += v * v;
         }
-        level = Math.max(level, Math.sqrt(sum / data.length) * 3);
+        micLevel = Math.sqrt(sum / data.length) * 3;
+        level = Math.max(level, micLevel);
       }
       if (play) {
         const data = new Uint8Array(play.frequencyBinCount);
@@ -241,6 +265,42 @@ export default function AmbassadorVoice({
         level = Math.max(level, Math.sqrt(sum / data.length) * 3);
       }
       onAudioLevel?.(Math.min(1, level));
+
+      // VAD auto-stop logic: alleen actief terwijl we luisteren en mic
+      // actief is. We onderscheiden drie gevallen:
+      //  a) spraak gedetecteerd → update lastSpeechAt
+      //  b) stilte na spraak >= VAD_SILENCE_MS én er is transcript →
+      //     rec.stop() triggert onend → submit
+      //  c) geen enkele spraak binnen NO_SPEECH_TIMEOUT_MS → rec.stop()
+      if (listeningRef.current && mic) {
+        const now = Date.now();
+        if (micLevel > SPEECH_THRESHOLD) {
+          lastSpeechAtRef.current = now;
+        } else if (
+          lastSpeechAtRef.current > 0 &&
+          now - lastSpeechAtRef.current > VAD_SILENCE_MS &&
+          (finalBufferRef.current || interimRef.current).trim().length > 0
+        ) {
+          lastSpeechAtRef.current = 0;
+          try {
+            recRef.current?.stop();
+          } catch {
+            // ignore — onend handelt de rest af
+          }
+        } else if (
+          lastSpeechAtRef.current === 0 &&
+          startedAtRef.current > 0 &&
+          now - startedAtRef.current > NO_SPEECH_TIMEOUT_MS
+        ) {
+          startedAtRef.current = 0;
+          try {
+            recRef.current?.stop();
+          } catch {
+            // ignore
+          }
+        }
+      }
+
       rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
@@ -415,47 +475,72 @@ export default function AmbassadorVoice({
     const rec = new SR();
     rec.lang = "nl-NL";
     rec.interimResults = true;
-    rec.continuous = false;
+    // continuous=true: browser-level silence detection uit, wij handelen
+    // stop-logic zelf via VAD in de amplitudeLoop. Zonder dit capt Chrome
+    // de input na ~0.8s stilte midden in een zin af.
+    rec.continuous = true;
     rec.maxAlternatives = 1;
 
+    // Reset alle buffers voor deze verse recognition-run.
     interimRef.current = "";
+    finalBufferRef.current = "";
+    lastSpeechAtRef.current = 0;
+    startedAtRef.current = Date.now();
 
-    rec.onstart = () => setListening(true);
+    rec.onstart = () => {
+      setListening(true);
+      listeningRef.current = true;
+    };
 
     rec.onresult = (event: SpeechRecognitionEventLike) => {
       let interim = "";
-      let finalText = "";
+      let newFinal = "";
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const res = event.results[i];
         const transcript = res[0]?.transcript ?? "";
-        if (res.isFinal) finalText += transcript;
+        if (res.isFinal) newFinal += transcript;
         else interim += transcript;
       }
-      if (interim) {
-        interimRef.current = interim;
-        onInterim?.(interim);
+      if (newFinal) {
+        // Accumuleer final-chunks tot één coherente transcript; in
+        // continuous-mode krijgen we meerdere finals (één per zin).
+        finalBufferRef.current = (
+          finalBufferRef.current +
+          " " +
+          newFinal
+        ).trim();
       }
-      if (finalText.trim()) {
-        interimRef.current = "";
-        onInterim?.("");
-        onSubmit(finalText.trim());
-      }
+      interimRef.current = interim;
+      const display = (finalBufferRef.current + " " + interim).trim();
+      onInterim?.(display);
     };
 
     rec.onerror = (event: SpeechRecognitionErrorLike) => {
       const msg = friendlyError(event.error);
       if (msg) onError?.(msg);
       setListening(false);
+      listeningRef.current = false;
       stopMicMonitoring();
     };
 
     rec.onend = () => {
       setListening(false);
+      listeningRef.current = false;
       stopMicMonitoring();
-      if (interimRef.current.trim()) {
-        onSubmit(interimRef.current.trim());
-        interimRef.current = "";
-        onInterim?.("");
+      // Submit het volledige transcript (final + eventuele interim die
+      // nog niet was gepromote naar final).
+      const complete = (
+        finalBufferRef.current +
+        " " +
+        interimRef.current
+      ).trim();
+      finalBufferRef.current = "";
+      interimRef.current = "";
+      onInterim?.("");
+      lastSpeechAtRef.current = 0;
+      startedAtRef.current = 0;
+      if (complete) {
+        onSubmit(complete);
       }
     };
 
@@ -467,6 +552,7 @@ export default function AmbassadorVoice({
       console.error("[ambassador-voice] rec.start failed:", err);
       onError?.("Kon spraakherkenning niet starten. Probeer opnieuw.");
       setListening(false);
+      listeningRef.current = false;
       stopMicMonitoring();
     }
   }, [onSubmit, onInterim, onError, startMicMonitoring, stopMicMonitoring]);
@@ -566,8 +652,14 @@ export default function AmbassadorVoice({
       recRef.current = null;
     }
     setListening(false);
+    listeningRef.current = false;
     stopMicMonitoring();
-    // playedIdx resetten: fresh state voor de volgende keer.
+    // Reset alle recognition + VAD buffers zodat volgende session fris
+    // begint.
+    finalBufferRef.current = "";
+    interimRef.current = "";
+    lastSpeechAtRef.current = 0;
+    startedAtRef.current = 0;
     playedIdxRef.current = 0;
   }, [enabled, stopPlayback, stopMicMonitoring]);
 
