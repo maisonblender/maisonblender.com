@@ -108,6 +108,8 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   const [briefingOpen, setBriefingOpen] = useState(false);
   const [briefingStatus, setBriefingStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [briefingError, setBriefingError] = useState<string>("");
+  const [voiceInterim, setVoiceInterim] = useState("");
+  const [voiceError, setVoiceError] = useState("");
 
   const threadRef = useRef<HTMLDivElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -300,7 +302,29 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   }
 
   function handleVoiceTranscript(text: string) {
+    setVoiceInterim("");
+    setVoiceError("");
     send(text);
+  }
+
+  function handleVoiceInterim(text: string) {
+    setVoiceInterim(text);
+  }
+
+  function handleVoiceError(message: string) {
+    setVoiceError(message);
+    setVoiceInterim("");
+    window.setTimeout(() => setVoiceError(""), 5000);
+  }
+
+  function toggleVoiceMode() {
+    setVoiceEnabled((v) => {
+      const next = !v;
+      if (!next && typeof window !== "undefined" && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      return next;
+    });
   }
 
   function handleAudioLevel(level: number) {
@@ -567,37 +591,56 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
             onSubmit={handleSubmit}
             className="relative z-10 border-t border-white/5 px-5 py-4 sm:px-8"
           >
-            <div className="mx-auto flex max-w-2xl items-center gap-3 rounded-full border border-white/10 bg-white/[0.04] px-2 py-2 pl-4 focus-within:border-white/25">
+            <div className="mx-auto flex max-w-2xl items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-2 py-2 pl-4 focus-within:border-white/25 sm:gap-3">
               <input
                 type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
+                value={voiceInterim || input}
+                onChange={(e) => {
+                  setVoiceInterim("");
+                  setInput(e.target.value);
+                }}
                 placeholder={
                   sending
                     ? "Wacht tot Ambassador klaar is…"
+                    : voiceInterim
+                    ? ""
                     : brand
                     ? `Stel een vraag aan de ${brand.name} Ambassador…`
                     : "Stel een vraag aan de Ambassador…"
                 }
                 disabled={sending}
                 maxLength={2000}
-                className="flex-1 bg-transparent text-sm text-white placeholder:text-white/35 focus:outline-none disabled:opacity-40"
+                className={`flex-1 bg-transparent text-sm focus:outline-none disabled:opacity-40 placeholder:text-white/35 ${
+                  voiceInterim ? "italic text-[#4af0c4]/90" : "text-white"
+                }`}
               />
               <button
                 type="button"
-                onClick={() => setVoiceEnabled((v) => !v)}
+                onClick={toggleVoiceMode}
                 aria-pressed={voiceEnabled}
-                aria-label="Schakel voice-modus om"
-                className={`hidden h-9 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold uppercase tracking-widest transition-colors sm:inline-flex ${
+                aria-label="Zet voorleesmodus aan of uit"
+                title={
+                  voiceEnabled
+                    ? "Voorleesmodus aan — antwoorden worden uitgesproken"
+                    : "Voorleesmodus uit — klik om antwoorden te laten voorlezen"
+                }
+                className={`inline-flex h-9 items-center gap-1.5 rounded-full border px-2.5 text-[10px] font-semibold uppercase tracking-widest transition-colors sm:px-3 ${
                   voiceEnabled
                     ? "border-[#4af0c4] bg-[#4af0c4]/15 text-[#4af0c4]"
                     : "border-white/15 text-white/50 hover:text-white/80"
                 }`}
               >
-                Voice {voiceEnabled ? "on" : "off"}
+                <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  {voiceEnabled && <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />}
+                  {voiceEnabled && <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />}
+                </svg>
+                <span className="hidden sm:inline">{voiceEnabled ? "on" : "off"}</span>
               </button>
               <AmbassadorVoice
                 onSubmit={handleVoiceTranscript}
+                onInterim={handleVoiceInterim}
+                onError={handleVoiceError}
                 speakText={voiceEnabled ? lastAssistantText : undefined}
                 enabled={voiceEnabled}
                 onAudioLevel={handleAudioLevel}
@@ -614,6 +657,15 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 </svg>
               </button>
             </div>
+            {voiceError && (
+              <p
+                role="status"
+                aria-live="polite"
+                className="mx-auto mt-2 max-w-2xl text-center text-[11px] text-[#ff9a9a]"
+              >
+                {voiceError}
+              </p>
+            )}
           </form>
         </section>
       </div>
