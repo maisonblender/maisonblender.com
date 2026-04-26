@@ -21,7 +21,12 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
-  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com",
+  // connect-src: GA + ElevenLabs REST/WebSocket + LiveKit RTC signaling (voor
+  // ConvAI live-gesprek). TTS loopt via onze eigen /api/.../tts proxy (self).
+  "connect-src 'self' https://www.google-analytics.com https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com https://*.elevenlabs.io wss://*.elevenlabs.io",
+  // media-src: TTS-response komt binnen als MP3-blob → new Audio(blob:URL).
+  // Zonder blob: hier wordt de audio-playback geblokkeerd door CSP.
+  "media-src 'self' blob:",
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -38,8 +43,11 @@ const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   {
+    // microphone=(self) is nodig voor de Brand Ambassador voice-features
+    // (getUserMedia + ElevenLabs ConvAI). We staan alleen de eigen origin
+    // toe — geen iframes of externe scripts krijgen mic-toegang.
     key: "Permissions-Policy",
-    value: "camera=(), microphone=(), geolocation=(), interest-cohort=()",
+    value: "camera=(), microphone=(self), geolocation=(), interest-cohort=()",
   },
   { key: "Content-Security-Policy", value: csp },
   { key: "X-DNS-Prefetch-Control", value: "on" },
