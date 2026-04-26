@@ -321,21 +321,29 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
     send(q);
   }
 
-  function handleVoiceTranscript(text: string) {
-    setVoiceInterim("");
-    setVoiceError("");
-    send(text);
-  }
+  // Deze handlers worden als props naar AmbassadorVoice doorgegeven. Ze
+  // MOETEN stable references zijn: anders veroorzaken ze in AmbassadorVoice
+  // een useEffect-loop die de TTS-fetch telkens abort en opnieuw start.
+  // (De amplitudeLoop triggert setAudioLevel → re-render → nieuwe callback
+  // ref → nieuwe speakViaElevenLabs ref → TTS-useEffect cleanup → abort.)
+  const handleVoiceTranscript = useCallback(
+    (text: string) => {
+      setVoiceInterim("");
+      setVoiceError("");
+      send(text);
+    },
+    [send]
+  );
 
-  function handleVoiceInterim(text: string) {
+  const handleVoiceInterim = useCallback((text: string) => {
     setVoiceInterim(text);
-  }
+  }, []);
 
-  function handleVoiceError(message: string) {
+  const handleVoiceError = useCallback((message: string) => {
     setVoiceError(message);
     setVoiceInterim("");
     window.setTimeout(() => setVoiceError(""), 5000);
-  }
+  }, []);
 
   function toggleVoiceMode() {
     setVoiceEnabled((v) => {
@@ -347,14 +355,17 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
     });
   }
 
-  function handleAudioLevel(level: number) {
+  // handleAudioLevel wordt per animation frame gecalled tijdens TTS-playback.
+  // Afhankelijk maken van `sending` zou de callback-ref doen wisselen zodra
+  // `sending` van true→false flipt (precies op het moment dat TTS start) en
+  // dan is het feest: abort-restart loop. We gebruiken functional setState
+  // zodat de callback zelf geen deps nodig heeft.
+  const handleAudioLevel = useCallback((level: number) => {
     setAudioLevel(level);
     if (level > 0.05) {
-      setPresenceState("listening");
-    } else if (!sending) {
-      setPresenceState("idle");
+      setPresenceState((prev) => (prev === "idle" ? "listening" : prev));
     }
-  }
+  }, []);
 
   async function submitBriefing(email: string, naam: string, bedrijf: string, sector: string) {
     setBriefingStatus("sending");
