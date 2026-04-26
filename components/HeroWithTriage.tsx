@@ -60,7 +60,7 @@ export default function HeroWithTriage() {
                 <img
                   src="/images/applemooz-logo.png"
                   alt="Applemooz logo"
-                  className="h-4 w-auto shrink-0 object-contain"
+                  className="h-6 w-auto shrink-0 object-contain"
                 />
                 <p className="text-xs leading-relaxed text-[#575760]">
                   Applemooz is gerebrand naar MAISON BLNDR. We bouwen nog steeds websites en
