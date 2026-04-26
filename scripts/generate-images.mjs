@@ -77,16 +77,17 @@ async function generateImage(name, prompt, aspectRatio = "16:9") {
   console.log(`✅  ${name}.png saved (${Math.round(buf.length / 1024)} KB)`);
 }
 
-// Shared visual style applied to every prompt.
-// Reference: hero-visual.png and about-visual.png — isometric/flat minimal,
-// very light gray background, teal glowing nodes, thin mesh lines, no text.
+// Shared visual style — MUST match hero-visual.png and about-visual.png exactly.
+// Key traits: near-white background, sparse triangular mesh lines, teal glowing
+// circular nodes, isometric 3D objects with soft shadows, extreme minimalism.
+// NO cartoon style. NO colorful icons. NO dark backgrounds. NO text.
 const STYLE =
-  "STYLE: very light gray (#f2f3f5) background, near-white, airy and minimal. " +
-  "Isometric or flat 2D illustration. Teal (#4af0c4) glowing circular nodes and accent lines. " +
-  "Thin light-gray geometric mesh or triangular network lines. " +
-  "Soft drop shadows on 3D elements. Abundant white space. " +
-  "Professional Dutch B2B tech aesthetic. Absolutely no text, no labels, no numbers. " +
-  "High-contrast teal accents on a pale background only. No dark backgrounds.";
+  "STYLE: near-white (#f2f3f5) background. Sparse thin light-gray triangular mesh lines. " +
+  "Small teal (#4af0c4) glowing circular nodes at mesh intersections. " +
+  "Isometric 3D objects in light gray/white with teal accents and very soft drop shadows. " +
+  "Extreme minimalism — maximum white space, understated, clinical precision. " +
+  "NO cartoon style. NO flat colorful icons. NO gradients. NO dark elements. NO text. " +
+  "Match the exact visual DNA of a minimal tech infographic: server+brain+network style.";
 
 const images = [
   {
@@ -99,13 +100,13 @@ const images = [
     name: "services-flow",
     aspectRatio: "16:9",
     prompt:
-      `${STYLE} SUBJECT: Flat workflow diagram — a robot AI icon on the far left connected by teal arrows through 5 sequential circular node modules (chat bubble, gear cog, document, bar chart, lightbulb) to a business person silhouette on the right. Nodes connected by thin geometric lines.`,
+      `${STYLE} SUBJECT: Horizontal isometric workflow — 7 small teal glowing circular nodes in a straight line connected by thin gray lines, with a minimal isometric AI core shape on the far left and an abstract human silhouette outline on the far right. Pure mesh-and-node aesthetic. No boxes, no arrows, no icons.`,
   },
   {
     name: "process-steps",
     aspectRatio: "3:2",
     prompt:
-      `${STYLE} SUBJECT: Three sequential isometric steps connected by smooth teal curved lines — Step 1: a clipboard with magnifying glass, Step 2: two abstract building blocks with a lightning bolt, Step 3: a rocket launching upward. Teal circular markers at each step junction.`,
+      `${STYLE} SUBJECT: Three isometric 3D platforms or surfaces arranged diagonally, connected by thin teal curved lines. Each platform holds one minimal isometric object: platform 1 a small clipboard shape, platform 2 a gear shape, platform 3 a small rocket shape. Triangular mesh lines radiate from each platform. Teal node at each connection point.`,
   },
   {
     name: "about-visual",
@@ -131,7 +132,7 @@ const images = [
     name: "service-rpa-workflow",
     aspectRatio: "3:2",
     prompt:
-      `${STYLE} SUBJECT: Isometric robotic arm connecting three floating software window panels via smooth teal curved lines. Left panel: data table. Center panel: rotating gear. Right panel: green checkmark. Soft isometric depth on each panel. Sparse mesh lines in background.`,
+      `${STYLE} SUBJECT: Three isometric 3D interface panels floating in space, connected by thin teal lines. Each panel is a minimal gray-white floating surface with one small teal accent shape: left panel a grid pattern, center panel a circular gear outline, right panel a checkmark outline. Triangular mesh lines extend from the panels. No robot arm, no cartoon elements.`,
   },
   {
     name: "service-custom-software",
