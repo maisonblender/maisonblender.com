@@ -2,26 +2,23 @@ const testimonials = [
   {
     quote:
       "Inkoopfacturen verwerken we nu volledig automatisch. Wat vroeger een halve dag werk was, doet de AI in minuten.",
-    name: "Marco van den Berg",
-    title: "Directeur Operations",
-    company: "Productiebedrijf Sittard",
-    initials: "MB",
+    name: "Directeur Operations",
+    company: "Productiebedrijf, Sittard",
+    initials: "DO",
   },
   {
     quote:
       "In één gesprek werd duidelijk welke processen het meeste opleveren. Voor elk MKB-bedrijf een aanrader.",
-    name: "Ilse Hermans",
-    title: "Eigenaar",
-    company: "Hermans Accountancy Geleen",
-    initials: "IH",
+    name: "Eigenaar",
+    company: "Accountantskantoor, Geleen",
+    initials: "EK",
   },
   {
     quote:
       "Onze chatbot beantwoordt 80% van de klantvragen zonder tussenkomst. Klanttevredenheid omhoog, team focust op de echte problemen.",
-    name: "Tom Houben",
-    title: "Hoofd Klantcontact",
-    company: "Houben Installatietechniek Maastricht",
-    initials: "TH",
+    name: "Hoofd Klantcontact",
+    company: "Installatietechniek, Maastricht",
+    initials: "HK",
   },
 ];
 
@@ -75,9 +72,7 @@ export default function Testimonials() {
                   </div>
                   <div className="flex flex-col gap-0.5">
                     <span className="text-sm font-semibold text-[#1f1f1f]">{t.name}</span>
-                    <span className="text-xs text-[#b2b2be]">
-                      {t.title} · {t.company}
-                    </span>
+                    <span className="text-xs text-[#b2b2be]">{t.company}</span>
                   </div>
                 </figcaption>
               </figure>

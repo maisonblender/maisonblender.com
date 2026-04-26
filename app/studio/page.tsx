@@ -52,24 +52,6 @@ const process = [
   },
 ];
 
-const techStack = [
-  {
-    category: "Intelligente agents",
-    items: ["Anthropic Claude", "OpenAI GPT-4o", "LangChain", "LangGraph"],
-  },
-  {
-    category: "Workflow & integraties",
-    items: ["n8n", "Make.com", "Zapier"],
-  },
-  {
-    category: "Maatwerksoftware",
-    items: ["Next.js", "TypeScript", "Python"],
-  },
-  {
-    category: "Infrastructuur",
-    items: ["Microsoft Azure", "AWS", "DigitalOcean"],
-  },
-];
 
 const sectors = [
   "Productiebedrijven",
@@ -90,7 +72,7 @@ const testimonials = [
     quote:
       "We hadden geen idee waar te beginnen met AI. Na de quickscan wisten we precies welke drie stappen we moesten zetten - en in welke volgorde.",
     author: "Eigenaar",
-    company: "Hermans Accountancy, Geleen",
+    company: "Accountantskantoor, Geleen",
   },
 ];
 
@@ -266,10 +248,22 @@ export default function StudioPage() {
               </div>
               <div className="space-y-5 text-base leading-relaxed text-[#575760]">
                 <p>
-                  We kiezen de tool die past bij het probleem - niet de tool
+                  We kiezen de tool die past bij het probleem — niet de tool
                   die we graag willen uitproberen, en niet de tool die de
                   hoogste marge heeft. Dat klinkt vanzelfsprekend. In de
                   praktijk is het dat niet altijd.
+                </p>
+                <p>
+                  Voor intelligente agents werken we met <strong className="text-[#1f1f1f]">Anthropic Claude</strong> en{" "}
+                  <strong className="text-[#1f1f1f]">OpenAI</strong>, georkestreerd via{" "}
+                  <strong className="text-[#1f1f1f]">LangChain</strong> en{" "}
+                  <strong className="text-[#1f1f1f]">LangGraph</strong>. Workflow-automatisering bouwen we
+                  met <strong className="text-[#1f1f1f]">n8n</strong>, <strong className="text-[#1f1f1f]">Make.com</strong> of{" "}
+                  <strong className="text-[#1f1f1f]">Zapier</strong> — afhankelijk van wat bij jouw systemen past.
+                  Maatwerksoftware bouwen we op <strong className="text-[#1f1f1f]">Next.js</strong>,{" "}
+                  <strong className="text-[#1f1f1f]">TypeScript</strong> en{" "}
+                  <strong className="text-[#1f1f1f]">Python</strong>, gehost op{" "}
+                  <strong className="text-[#1f1f1f]">Microsoft Azure</strong> of <strong className="text-[#1f1f1f]">AWS</strong>.
                 </p>
                 <p>
                   We beheren onze eigen infrastructuur en kennen de systemen
@@ -277,29 +271,6 @@ export default function StudioPage() {
                   sneller en eerlijker geprijsd.
                 </p>
               </div>
-            </div>
-
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {techStack.map((stack) => (
-                <div
-                  key={stack.category}
-                  className="border border-black/[0.06] bg-[#f2f3f5] p-6"
-                >
-                  <h3 className="text-xs font-medium uppercase tracking-widest text-[#575760] mb-4">
-                    {stack.category}
-                  </h3>
-                  <ul className="space-y-2">
-                    {stack.items.map((item) => (
-                      <li
-                        key={item}
-                        className="text-sm font-medium text-[#1f1f1f]"
-                      >
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
             </div>
           </div>
         </section>
