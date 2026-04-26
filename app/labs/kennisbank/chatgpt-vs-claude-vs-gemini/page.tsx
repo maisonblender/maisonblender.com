@@ -71,9 +71,9 @@ export default function ArticlePage() {
 
             <p>
               De gratis versie geeft toegang tot GPT-5.3 met beperkingen — prima voor incidenteel gebruik.
-              De betaalde versie (20 euro per maand) geeft volledige toegang tot GPT-5.3 en de geavanceerde
-              o-serie redeneermodellen, hogere limieten en de mogelijkheid om eigen instructies in te stellen
-              zodat de tool jouw bedrijfsstijl en context onthoudt.
+              De betaalde versie geeft volledige toegang tot GPT-5.3 en de geavanceerde o-serie redeneermodellen,
+              hogere limieten en de mogelijkheid om eigen instructies in te stellen zodat de tool jouw
+              bedrijfsstijl en context onthoudt.
             </p>
 
             <p>
@@ -112,9 +112,8 @@ export default function ArticlePage() {
             <p>
               Claude is ook merkbaar beter in situaties waarbij de toon precies goed moet zijn: een lastige
               brief aan een klant, een delicate interne communicatie of een genuanceerd advies. De gratis versie
-              geeft beperkt toegang tot Claude Sonnet 4.6. De betaalde versie (20 euro per maand) geeft toegang
-              tot Claude Opus 4.7 — het krachtigste model voor complexe taken waarbij precisie en redenering
-              centraal staan.
+              geeft beperkt toegang tot Claude Sonnet 4.6. De betaalde versie geeft toegang tot Claude Opus 4.7
+              — het krachtigste model voor complexe taken waarbij precisie en redenering centraal staan.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">Geschikt voor:</h3>
@@ -141,8 +140,8 @@ export default function ArticlePage() {
             <p>
               Als pure tekstassistent scoort Gemini iets lager dan de andere twee - met name op nauwkeurigheid
               en nuance. Maar als productiviteitstool voor Google-gebruikers is het de sterkste keuze. De gratis
-              versie draait op Gemini 3 Flash. De betaalde versie (~20 euro per maand) geeft toegang tot
-              Gemini 3.1 Pro en diepe integraties met de volledige Google Workspace.
+              versie draait op Gemini 3 Flash. De betaalde versie geeft toegang tot Gemini 3.1 Pro en diepe
+              integraties met de volledige Google Workspace.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">Geschikt voor:</h3>
@@ -156,7 +155,7 @@ export default function ArticlePage() {
             </ul>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              Prijsvergelijking 2026
+              Modellenvergelijking 2026
             </h2>
 
             <div className="overflow-x-auto">
@@ -173,9 +172,6 @@ export default function ArticlePage() {
                     <th scope="col" className="border border-black/[0.08] p-3 text-left font-semibold text-[#1f1f1f]">
                       Betaald model
                     </th>
-                    <th scope="col" className="border border-black/[0.08] p-3 text-left font-semibold text-[#1f1f1f]">
-                      Prijs per maand
-                    </th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,7 +181,6 @@ export default function ArticlePage() {
                     </th>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">GPT-5.3 (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">GPT-5.3 (volledig) + o-serie</td>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">20 euro</td>
                   </tr>
                   <tr className="bg-[#f2f3f5]/50">
                     <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
@@ -193,7 +188,6 @@ export default function ArticlePage() {
                     </th>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Claude Sonnet 4.6 (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Claude Opus 4.7</td>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">20 euro</td>
                   </tr>
                   <tr>
                     <th scope="row" className="border border-black/[0.08] p-3 text-left font-medium text-[#1f1f1f]">
@@ -201,7 +195,6 @@ export default function ArticlePage() {
                     </th>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Gemini 3 Flash (beperkt)</td>
                     <td className="p-3 border border-black/[0.08] text-[#575760]">Gemini 3.1 Pro</td>
-                    <td className="p-3 border border-black/[0.08] text-[#575760]">~20 euro</td>
                   </tr>
                 </tbody>
               </table>
@@ -223,9 +216,9 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              En weet je wat? Veel Limburgse ondernemers eindigen met twee tools. Gemini voor de Google-integratie,
-              en Claude of ChatGPT voor teksttaken waarbij precisie telt. De gecombineerde kosten zijn minder dan
-              een halve dag werk per maand - en de tijdsbesparing is een veelvoud daarvan.
+              En weet je wat? Veel ondernemers eindigen met twee tools. Gemini voor de Google-integratie,
+              en Claude of ChatGPT voor teksttaken waarbij precisie telt. De tijdsbesparing is een veelvoud
+              van wat je erin stopt.
             </p>
 
             <p>
