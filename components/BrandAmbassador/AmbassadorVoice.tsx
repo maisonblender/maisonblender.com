@@ -457,6 +457,10 @@ export default function AmbassadorVoice({
       recRef.current?.stop();
       return;
     }
+    // Stop any playing TTS first — otherwise Web Speech API picks up the
+    // Ambassador's own audio output and confuses it with user speech.
+    stopPlayback();
+    playingRef.current = false;
     startRecognition();
   }
 

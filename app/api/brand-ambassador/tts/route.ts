@@ -157,9 +157,12 @@ export async function POST(request: NextRequest) {
         text,
         model_id: config.modelId,
         voice_settings: {
-          stability: 0.5,
-          similarity_boost: 0.75,
-          style: 0.15,
+          // Lower stability → more natural prosody variation, less monotone.
+          // Higher style → more expressive delivery.
+          // similarity_boost at 0.85 keeps voice character consistent.
+          stability: 0.35,
+          similarity_boost: 0.85,
+          style: 0.40,
           use_speaker_boost: true,
         },
       }),
