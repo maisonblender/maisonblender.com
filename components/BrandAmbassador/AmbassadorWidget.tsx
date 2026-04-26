@@ -614,10 +614,6 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 </svg>
               </button>
             </div>
-            <p className="mx-auto mt-2 max-w-2xl text-center text-[11px] text-white/35">
-              Powered by Claude · Alles wat je typt wordt verwerkt om te antwoorden. Transcripten
-              blijven bij MAISON BLNDR.
-            </p>
           </form>
         </section>
       </div>
