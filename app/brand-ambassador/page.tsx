@@ -107,7 +107,7 @@ export default function BrandAmbassadorPage() {
               Probeer hem nu — dit is onze eigen Brand Ambassador.
             </div>
             <h1
-              className="mt-8 text-[32px] font-normal leading-[1.15] tracking-tight sm:text-[42px] lg:text-[52px]"
+              className="mt-8 text-[28px] font-normal leading-[1.2] tracking-tight sm:text-[35px] lg:text-[32px]"
               style={{ letterSpacing: "-0.95px" }}
             >
               Je merk heeft een stem.
