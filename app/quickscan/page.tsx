@@ -144,7 +144,7 @@ export default function QuickscanPage() {
         <section className="py-16 px-6 bg-[#f2f3f5]">
           <div className="max-w-3xl mx-auto text-center">
             <p className="text-xs font-medium uppercase tracking-widest text-[#575760] mb-8">
-              Vertrouwd door MKB in Zuid-Limburg
+              Vertrouwd door MKB in Limburg
             </p>
             <blockquote
               className="text-xl leading-relaxed text-[#1f1f1f] mb-6"

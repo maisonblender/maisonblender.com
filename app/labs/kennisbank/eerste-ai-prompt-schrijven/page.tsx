@@ -121,7 +121,7 @@ export default function ArticlePage() {
             <div className="bg-[#f0fdf4] border border-[#22c55e]/30 p-5 text-sm leading-relaxed font-mono">
               <p className="text-[#16a34a] text-xs mb-3 font-sans font-medium uppercase tracking-widest">Goede prompt</p>
               <p className="text-[#1f1f1f]">
-                "Jij bent een accountmanager bij een klein IT-bureau in Zuid-Limburg. Schrijf een begeleidende e-mail
+                "Jij bent een accountmanager bij een klein IT-bureau in Limburg. Schrijf een begeleidende e-mail
                 bij een offerte voor website-onderhoud (3.200 euro per jaar) aan een MKB-klant die twijfelt over de
                 prijs. De toon is professioneel maar warm. Benoem kort de drie voordelen van het pakket: beschikbaarheid,
                 snelheid en zekerheid. Geen technisch jargon. Geen komma-opsommingen. Maximaal 120 woorden.

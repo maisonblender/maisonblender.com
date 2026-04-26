@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   // metadataBase wordt geërfd van app/layout.tsx (https://maisonblender.com).
   // Labs draait als subfolder onder het hoofddomein voor SEO-consolidatie.
   title: {
-    default: "Limburg AI Labs - AI kennis voor Zuid-Limburg",
+    default: "Limburg AI Labs - AI kennis voor Limburg",
     template: "%s | Limburg AI Labs",
   },
   description:

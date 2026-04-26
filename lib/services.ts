@@ -35,7 +35,7 @@ export const services: Service[] = [
     tags: ["Conversational AI", "WhatsApp & web chat", "Lead generatie", "Omnichannel"],
     metaTitle: "AI Chatbots & Klantenservice - MAISON BLNDR | 24/7 Geautomatiseerde Klantinteractie",
     metaDescription:
-      "Automatiseer tot 90% van je klantenservice met intelligente AI-chatbots. MAISON BLNDR bouwt conversational AI-agents voor web, WhatsApp en e-mail. Actief in Sittard, Maastricht en heel Zuid-Limburg.",
+      "Automatiseer tot 90% van je klantenservice met intelligente AI-chatbots. MAISON BLNDR bouwt conversational AI-agents voor web, WhatsApp en e-mail. Actief in Sittard, Maastricht en heel Limburg.",
     keywords: [
       "AI chatbot klantenservice",
       "WhatsApp chatbot zakelijk",
@@ -65,7 +65,7 @@ export const services: Service[] = [
       "Klachten registreren en routeren",
       "Productinformatie en beschikbaarheid opvragen",
     ],
-    technologies: ["OpenAI GPT-4o", "Anthropic Claude", "WhatsApp Business API", "Zendesk", "HubSpot"],
+    technologies: ["OpenAI", "Anthropic Claude", "WhatsApp Business API", "Zendesk", "HubSpot"],
     sections: [
       {
         id: "lead-generatie",
@@ -81,7 +81,7 @@ export const services: Service[] = [
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/ai-chatbots-klantenservice#service",
-    heroImage: { src: "/images/service-ai-chatbots.png", alt: "AI chatbot interface met chat bubbles op smartphone en desktop - AI-gestuurde klantenservice automatisering voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/service-ai-chatbots.png", alt: "AI chatbot interface met chat bubbles op smartphone en desktop - AI-gestuurde klantenservice automatisering voor bedrijven in Limburg" },
     jsonLdServiceType: "Conversational AI & Klantenservice Automatisering",
   },
   {
@@ -94,7 +94,7 @@ export const services: Service[] = [
     tags: ["Multi-agent orkestratie", "Documentverwerking", "CRM/ERP-koppelingen", "Taakuitvoering"],
     metaTitle: "AI Agents & Procesautomatisering - MAISON BLNDR | Intelligente Agents voor Je Bedrijf",
     metaDescription:
-      "Custom AI-agents die zelfstandig taken uitvoeren: documenten verwerken, e-mails interpreteren, acties in CRM en ERP. 24/7 operationeel. MAISON BLNDR, AI-bureau in Zuid-Limburg.",
+      "Custom AI-agents die zelfstandig taken uitvoeren: documenten verwerken, e-mails interpreteren, acties in CRM en ERP. 24/7 operationeel. MAISON BLNDR, AI-bureau in Limburg.",
     keywords: [
       "AI agents procesautomatisering",
       "intelligente automatisering",
@@ -124,7 +124,7 @@ export const services: Service[] = [
       "Inkooporders verwerken en goedkeuringen routeren",
       "Klantenportfolio monitoren en alerting",
     ],
-    technologies: ["LangChain", "Anthropic Claude", "OpenAI GPT-4o", "Microsoft Azure AI", "n8n"],
+    technologies: ["LangChain", "Anthropic Claude", "OpenAI", "Microsoft Azure AI", "n8n"],
     sections: [
       {
         id: "multi-agent",
@@ -157,9 +157,9 @@ export const services: Service[] = [
     description:
       "Facturen, bestellingen, rapportages: wij automatiseren wat nu handmatig tussendoor gaat. Ook voor systemen zonder API. Volledig beheerd, inclusief onderhoud.",
     tags: ["Robotic Process Automation", "API-integraties", "Factuurverwerking", "Schermautomatisering"],
-    metaTitle: "RPA & Workflow-integraties - MAISON BLNDR | Robotic Process Automation Zuid-Limburg",
+    metaTitle: "RPA & Workflow-integraties - MAISON BLNDR | Robotic Process Automation Limburg",
     metaDescription:
-      "Automatiseer repetitieve schermtaken en verbind je systemen met RPA. MAISON BLNDR implementeert robuuste workflow-automatisering met n8n, Make.com en Zapier. Volledig beheerd in Zuid-Limburg.",
+      "Automatiseer repetitieve schermtaken en verbind je systemen met RPA. MAISON BLNDR implementeert robuuste workflow-automatisering met n8n, Make.com en Zapier. Volledig beheerd in Limburg.",
     keywords: [
       "RPA automatisering Limburg",
       "robotic process automation",
@@ -173,7 +173,7 @@ export const services: Service[] = [
       "Veel bedrijfsprocessen bestaan nog grotendeels uit handmatig werk dat eigenlijk nooit handmatig zou moeten zijn: facturen overzetten van e-mail naar boekhoudpakket, gegevens kopiëren tussen systemen, rapporten samenstellen uit meerdere bronnen. Robotic Process Automation (RPA) elimineert dit soort werk structureel en betrouwbaar.",
       "MAISON BLNDR implementeert en beheert RPA-oplossingen die je scherminteracties automatiseren alsof er een digitale medewerker achter de computer zit — maar dan sneller, nauwkeuriger en altijd beschikbaar. Wij werken met professionele tools zoals n8n, Make.com en Zapier voor workflow-automatisering, aangevuld met Python-gebaseerde automatisering voor complexere scenario's.",
       "Naast schermautomatisering bouwen wij robuuste API-integraties die je systemen met elkaar verbinden. Geen data meer handmatig overzetten tussen je webshop en je magazijnsysteem. Geen dubbele invoer meer bij het verwerken van bestellingen. Geen verloren informatie meer omdat twee systemen niet met elkaar praten.",
-      "Voor het MKB in Zuid-Limburg is RPA vaak de snelste manier om uren per week te besparen. De implementatietijd is kort, de ROI is direct zichtbaar, en je hoeft geen bestaande systemen te vervangen. Wij beheren je automatiseringen proactief: bij systeemupdates of proceswijzigingen passen wij de robots aan zodat je nooit stilstaat.",
+      "Voor het MKB in Limburg is RPA vaak de snelste manier om uren per week te besparen. De implementatietijd is kort, de ROI is direct zichtbaar, en je hoeft geen bestaande systemen te vervangen. Wij beheren je automatiseringen proactief: bij systeemupdates of proceswijzigingen passen wij de robots aan zodat je nooit stilstaat.",
     ],
     benefits: [
       "Uren per week besparen op handmatige dataverwerking",
@@ -205,7 +205,7 @@ export const services: Service[] = [
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/rpa-workflow-integraties#service",
-    heroImage: { src: "/images/service-rpa-workflow.png", alt: "RPA workflow automatisering: robot arm verbindt softwareapplicaties via geautomatiseerde processen - procesoptimalisatie voor MKB in Zuid-Limburg" },
+    heroImage: { src: "/images/service-rpa-workflow.png", alt: "RPA workflow automatisering: robot arm verbindt softwareapplicaties via geautomatiseerde processen - procesoptimalisatie voor MKB in Limburg" },
     jsonLdServiceType: "Robotic Process Automation & Workflow-integraties",
   },
   {
@@ -216,9 +216,9 @@ export const services: Service[] = [
     description:
       "Op een gegeven moment werkt het omgekeerde: je past niet meer aan het systeem aan, maar wil dat het systeem aanpast aan jou. Dat is het moment om maatwerk te overwegen — en dat is precies waar wij goed in zijn.",
     tags: ["Klantportalen", "Web & mobiele apps", "AI-applicaties", "Documentbeheer"],
-    metaTitle: "Custom AI Software & Portalen - MAISON BLNDR | Maatwerk AI-applicaties Zuid-Limburg",
+    metaTitle: "Custom AI Software & Portalen - MAISON BLNDR | Maatwerk AI-applicaties Limburg",
     metaDescription:
-      "Bespoke AI-applicaties, klantportalen en mobiele apps volledig op maat. MAISON BLNDR bouwt custom AI-software voor ambitieuze bedrijven in Sittard, Maastricht en heel Zuid-Limburg.",
+      "Bespoke AI-applicaties, klantportalen en mobiele apps volledig op maat. MAISON BLNDR bouwt custom AI-software voor ambitieuze bedrijven in Sittard, Maastricht en heel Limburg.",
     keywords: [
       "custom AI software",
       "maatwerk AI applicaties",
@@ -288,7 +288,7 @@ export const services: Service[] = [
     tags: ["RAG-systemen", "Kennismanagement", "Dashboards", "Automatische rapportages"],
     metaTitle: "Data-intelligentie & Rapportages - MAISON BLNDR | RAG-systemen en AI-dashboards",
     metaDescription:
-      "Van ruwe data naar bruikbare inzichten met RAG-systemen, automatische rapportages en AI-dashboards. MAISON BLNDR, specialist in data-intelligentie voor bedrijven in Zuid-Limburg.",
+      "Van ruwe data naar bruikbare inzichten met RAG-systemen, automatische rapportages en AI-dashboards. MAISON BLNDR, specialist in data-intelligentie voor bedrijven in Limburg.",
     keywords: [
       "RAG systemen bedrijf",
       "data-intelligentie Limburg",
@@ -353,7 +353,7 @@ export const services: Service[] = [
     tags: ["Gratis quickscan", "Implementatieroadmap", "Business case", "Team training"],
     metaTitle: "AI Strategie & Quickscan - MAISON BLNDR | Gratis AI-scan voor Je Bedrijf",
     metaDescription:
-      "Start met een gratis automatiseringsquickscan. MAISON BLNDR maakt een concreet AI-implementatieplan met business case voor je bedrijf in Zuid-Limburg. Weet wat het oplevert vóór je investeert.",
+      "Start met een gratis automatiseringsquickscan. MAISON BLNDR maakt een concreet AI-implementatieplan met business case voor je bedrijf in Limburg. Weet wat het oplevert vóór je investeert.",
     keywords: [
       "AI strategie consultancy",
       "gratis AI quickscan",
@@ -404,7 +404,7 @@ export const services: Service[] = [
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/ai-strategie-quickscan#service",
-    heroImage: { src: "/images/service-ai-strategy.png", alt: "AI strategie en quickscan: roadmap met mijlpalen en analysevergrootglas - strategisch AI-advies voor bedrijven in Zuid-Limburg" },
+    heroImage: { src: "/images/service-ai-strategy.png", alt: "AI strategie en quickscan: roadmap met mijlpalen en analysevergrootglas - strategisch AI-advies voor bedrijven in Limburg" },
     jsonLdServiceType: "AI Strategie Consultancy",
   },
 ];

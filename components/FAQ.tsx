@@ -26,7 +26,7 @@ const faqs = [
   {
     question: "Werken jullie met OpenAI of Claude (Anthropic)?",
     answer:
-      "Wij kiezen de beste technologie voor jouw specifieke usecase. Dat betekent in de praktijk: OpenAI (GPT-4o), Anthropic (Claude), Google (Gemini) en waar relevant open-source modellen zoals Llama. Wij zijn niet gebonden aan één leverancier. Je data blijft altijd van jou - wij configureren de juiste privacy- en compliance-instellingen per situatie.",
+      "Wij kiezen de beste technologie voor jouw specifieke usecase. Dat betekent in de praktijk: OpenAI, Anthropic Claude, Google Gemini en waar relevant open-source modellen. Wij zijn niet gebonden aan één leverancier. Je data blijft altijd van jou - wij configureren de juiste privacy- en compliance-instellingen per situatie.",
   },
   {
     question: "Kan AI mijn bestaande software koppelen?",

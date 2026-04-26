@@ -369,7 +369,7 @@ export default function StudioPage() {
             </h2>
             <div className="space-y-5 text-base leading-relaxed text-[#575760]">
               <p>
-                We werken vanuit Sittard, Zuid-Limburg. Niet omdat we gebonden
+                We werken vanuit Sittard, Limburg. Niet omdat we gebonden
                 zijn aan de regio, maar omdat we hier geworteld zijn. Via{" "}
                 <a
                   href="/labs"

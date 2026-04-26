@@ -17,14 +17,14 @@ export default function Hero() {
         {/* Text column */}
         <div className="flex flex-1 flex-col items-center gap-6 md:items-start">
           <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
-            AI-frontrunner · Zuid-Limburg
+            AI-frontrunner · Limburg
           </div>
 
           <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[42px]" style={{ letterSpacing: "-0.95px" }}>
             AI die je medewerkers
             <br />
             <span className="font-exposure">dagelijks gebruiken.</span>
-            <span className="sr-only"> - AI-bureau in Sittard, Zuid-Limburg</span>
+            <span className="sr-only"> - AI-bureau in Sittard, Limburg</span>
           </h1>
 
           <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Limburg AI Labs - AI kennis voor Zuid-Limburg",
+  title: "Limburg AI Labs - AI kennis voor Limburg",
   description:
     "Limburg AI Labs deelt praktische AI-kennis met Limburgse ondernemers. Gratis webinars, tools, cases en een kennisbank. Een initiatief van MAISON BLNDR.",
   alternates: { canonical: "https://maisonblender.com/labs" },

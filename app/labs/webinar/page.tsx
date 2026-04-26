@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Webinars over AI voor Limburgse ondernemers",
   description:
-    "Gratis live webinars en terugkijkarchief over AI voor het MKB. Praktisch, zonder jargon, voor ondernemers in Zuid-Limburg. Aanmelden voor de volgende editie.",
+    "Gratis live webinars en terugkijkarchief over AI voor het MKB. Praktisch, zonder jargon, voor ondernemers in Limburg. Aanmelden voor de volgende editie.",
   alternates: { canonical: "https://maisonblender.com/labs/webinar" },
 };
 
@@ -59,7 +59,7 @@ export default function WebinarPage() {
             <span className="font-exposure">AI voor het MKB.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-xl mx-auto">
-            Praktisch, zonder jargon, voor ondernemers in Zuid-Limburg die AI willen begrijpen en toepassen.
+            Praktisch, zonder jargon, voor ondernemers in Limburg die AI willen begrijpen en toepassen.
             Elke editie: live demo&apos;s, Q&amp;A en iets wat je de volgende dag al kunt gebruiken.
           </p>
         </div>
