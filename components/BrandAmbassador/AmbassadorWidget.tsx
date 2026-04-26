@@ -27,6 +27,7 @@ import AmbassadorPresence, { type PresenceState } from "./AmbassadorPresence";
 import AmbassadorVoice from "./AmbassadorVoice";
 import BrandTransform from "./BrandTransform";
 import SuggestedQuestions from "./SuggestedQuestions";
+import LiveConversation from "./LiveConversation";
 import { safeInlineMarkdown } from "@/lib/security/escape";
 import type {
   BrandContext,
@@ -110,6 +111,8 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   const [briefingError, setBriefingError] = useState<string>("");
   const [voiceInterim, setVoiceInterim] = useState("");
   const [voiceError, setVoiceError] = useState("");
+  const [liveOpen, setLiveOpen] = useState(false);
+  const [liveAvailable, setLiveAvailable] = useState(false);
 
   const threadRef = useRef<HTMLDivElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
@@ -138,6 +141,23 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
     setBubbles([openingMessage(brand)]);
     setLastAssistantText("");
   }, [brand]);
+
+  // Feature-detect of ElevenLabs ConvAI server-side geconfigureerd is.
+  // Uitkomst cachen via HTTP-cache (public 60s). Zo geen flash van de knop.
+  useEffect(() => {
+    let cancelled = false;
+    fetch("/api/brand-ambassador/config", { method: "GET" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (!cancelled && data?.live) setLiveAvailable(true);
+      })
+      .catch(() => {
+        // Stil falen — knop blijft gewoon verborgen.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   // Lock scroll wanneer fullscreen open is (mobile UX).
   useEffect(() => {
@@ -385,6 +405,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
     : "relative flex flex-col rounded-2xl border border-white/10 bg-[#0b0b0d] overflow-hidden";
 
   return (
+    <>
     <div
       className={containerClass}
       style={{
@@ -432,6 +453,38 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
             onReset={() => setBrand(null)}
             disabled={sending}
           />
+          {liveAvailable && (
+            <button
+              type="button"
+              onClick={() => setLiveOpen(true)}
+              aria-label="Start een live voice-gesprek met de Ambassador"
+              className="group inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold uppercase tracking-widest transition-all"
+              style={{
+                borderColor: `hsl(${hue}, 80%, 55%)`,
+                color: `hsl(${hue}, 85%, 70%)`,
+                background: `hsla(${hue}, 80%, 50%, 0.08)`,
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = `hsla(${hue}, 80%, 50%, 0.18)`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = `hsla(${hue}, 80%, 50%, 0.08)`;
+              }}
+            >
+              <span className="relative flex h-2 w-2">
+                <span
+                  className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
+                  style={{ background: `hsl(${hue}, 85%, 60%)` }}
+                />
+                <span
+                  className="relative inline-flex h-2 w-2 rounded-full"
+                  style={{ background: `hsl(${hue}, 85%, 60%)` }}
+                />
+              </span>
+              <span className="hidden sm:inline">Praat live</span>
+              <span className="sm:hidden">Live</span>
+            </button>
+          )}
           <button
             type="button"
             onClick={() => setFullscreen((v) => !v)}
@@ -670,6 +723,15 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
         </section>
       </div>
     </div>
+    {liveAvailable && (
+      <LiveConversation
+        open={liveOpen}
+        onClose={() => setLiveOpen(false)}
+        brand={brand}
+        hue={hue}
+      />
+    )}
+    </>
   );
 }
 

@@ -4,20 +4,18 @@
  * Voice control voor de Ambassador.
  *
  * Features:
- *  - Mic-knop start SpeechRecognition (Web Speech API).
- *  - Interim-transcript wordt LIVE aan parent doorgegeven via onInterim,
- *    zodat de gebruiker tijdens het spreken feedback ziet in de inputbox.
- *  - Final transcript gaat naar onSubmit → triggert de chat.
- *  - TTS wordt gedaan via SpeechSynthesis op AI-antwoorden, mits enabled.
- *  - AudioContext meet amplitude → onAudioLevel voor visuele reactiviteit.
- *  - Foutmeldingen gaan naar onError zodat de parent ze kan tonen.
+ *  - Mic-knop start SpeechRecognition (Web Speech API) voor input.
+ *  - Interim-transcript wordt LIVE aan parent doorgegeven (visuele feedback).
+ *  - Final transcript → onSubmit → triggert de chat.
+ *  - TTS van AI-antwoorden:
+ *      1. Eerst via /api/brand-ambassador/tts (ElevenLabs, natuurlijk)
+ *      2. Fallback: SpeechSynthesis als ElevenLabs niet beschikbaar is
+ *  - AudioContext meet amplitude tijdens luisteren ÉN spreken →
+ *    de Liquid Presence orb ademt op zowel mic als Ambassador-stem.
  *
- * Browser support:
- *  - Chrome / Edge / Safari: OK (webkit-prefix in Safari).
- *  - Firefox: geen SpeechRecognition → knop wordt verborgen.
- *  - iOS Safari: vereist user-gesture (klikken is OK), stopt zelf na pauze.
- *
- * Privacy: audio wordt NOOIT naar onze server gestuurd. Alles in de browser.
+ * Privacy: mic-audio wordt NOOIT naar onze server gestuurd. Alleen het
+ * uiteindelijke transcript (tekst) gaat naar /api/brand-ambassador/chat.
+ * TTS-tekst gaat wel naar onze TTS-proxy (en dan naar ElevenLabs).
  */
 
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -70,10 +68,6 @@ function getSpeechRecognition(): SRCtor | null {
   return w.SpeechRecognition ?? w.webkitSpeechRecognition ?? null;
 }
 
-/**
- * In Chrome is getVoices() async — de eerste call kan leeg zijn.
- * Cache de voices zodra ze beschikbaar zijn.
- */
 function loadVoices(): Promise<SpeechSynthesisVoice[]> {
   return new Promise((resolve) => {
     if (typeof window === "undefined" || !window.speechSynthesis) {
@@ -86,14 +80,11 @@ function loadVoices(): Promise<SpeechSynthesisVoice[]> {
       return;
     }
     const handler = () => {
-      const voices = window.speechSynthesis.getVoices();
-      resolve(voices);
+      resolve(window.speechSynthesis.getVoices());
       window.speechSynthesis.onvoiceschanged = null;
     };
     window.speechSynthesis.onvoiceschanged = handler;
-    setTimeout(() => {
-      resolve(window.speechSynthesis.getVoices());
-    }, 1500);
+    setTimeout(() => resolve(window.speechSynthesis.getVoices()), 1500);
   });
 }
 
@@ -115,6 +106,29 @@ function friendlyError(err: string | undefined): string {
   }
 }
 
+/**
+ * SpeechSynthesis fallback — gebruikt alleen als ElevenLabs TTS faalt.
+ */
+async function speakNative(text: string, cancelSignal: AbortSignal) {
+  if (typeof window === "undefined" || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const voices = await loadVoices();
+  if (cancelSignal.aborted) return;
+
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.lang = "nl-NL";
+  utt.rate = 1.02;
+  utt.pitch = 1.0;
+
+  const dutch =
+    voices.find((v) => v.lang.toLowerCase().startsWith("nl")) ??
+    voices.find((v) => v.lang.toLowerCase().startsWith("en-gb")) ??
+    voices.find((v) => v.lang.toLowerCase().startsWith("en"));
+  if (dutch) utt.voice = dutch;
+
+  window.speechSynthesis.speak(utt);
+}
+
 export default function AmbassadorVoice({
   onSubmit,
   onInterim,
@@ -127,12 +141,18 @@ export default function AmbassadorVoice({
   const [supported, setSupported] = useState(false);
   const [listening, setListening] = useState(false);
   const recRef = useRef<SpeechRecognitionLike | null>(null);
+
+  // Audio-amplitude tracking (mic + Ambassador-audio-playback).
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const analyserRef = useRef<AnalyserNode | null>(null);
+  const micAnalyserRef = useRef<AnalyserNode | null>(null);
+  const playbackAnalyserRef = useRef<AnalyserNode | null>(null);
   const streamRef = useRef<MediaStream | null>(null);
   const rafRef = useRef<number | null>(null);
-  const lastSpokenRef = useRef<string>("");
+
   const interimRef = useRef<string>("");
+  const lastSpokenRef = useRef<string>("");
+  const activeAudioRef = useRef<HTMLAudioElement | null>(null);
+  const activeAbortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     setSupported(getSpeechRecognition() !== null);
@@ -141,62 +161,194 @@ export default function AmbassadorVoice({
     }
   }, []);
 
-  const stopAudioMonitoring = useCallback(() => {
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
-    }
-    analyserRef.current = null;
-    if (audioCtxRef.current) {
-      audioCtxRef.current.close().catch(() => void 0);
-      audioCtxRef.current = null;
-    }
+  const ensureAudioContext = useCallback((): AudioContext | null => {
+    if (audioCtxRef.current) return audioCtxRef.current;
+    if (typeof window === "undefined") return null;
+    const AudioCtx =
+      window.AudioContext ||
+      (window as unknown as { webkitAudioContext?: typeof AudioContext })
+        .webkitAudioContext;
+    if (!AudioCtx) return null;
+    audioCtxRef.current = new AudioCtx();
+    return audioCtxRef.current;
+  }, []);
+
+  const amplitudeLoopRunning = useRef(false);
+  const startAmplitudeLoop = useCallback(() => {
+    if (amplitudeLoopRunning.current) return;
+    amplitudeLoopRunning.current = true;
+
+    const tick = () => {
+      const mic = micAnalyserRef.current;
+      const play = playbackAnalyserRef.current;
+      if (!mic && !play) {
+        amplitudeLoopRunning.current = false;
+        rafRef.current = null;
+        onAudioLevel?.(0);
+        return;
+      }
+      let level = 0;
+      if (mic) {
+        const data = new Uint8Array(mic.frequencyBinCount);
+        mic.getByteTimeDomainData(data);
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+          const v = (data[i] - 128) / 128;
+          sum += v * v;
+        }
+        level = Math.max(level, Math.sqrt(sum / data.length) * 3);
+      }
+      if (play) {
+        const data = new Uint8Array(play.frequencyBinCount);
+        play.getByteTimeDomainData(data);
+        let sum = 0;
+        for (let i = 0; i < data.length; i++) {
+          const v = (data[i] - 128) / 128;
+          sum += v * v;
+        }
+        level = Math.max(level, Math.sqrt(sum / data.length) * 3);
+      }
+      onAudioLevel?.(Math.min(1, level));
+      rafRef.current = requestAnimationFrame(tick);
+    };
+    rafRef.current = requestAnimationFrame(tick);
+  }, [onAudioLevel]);
+
+  const stopMicMonitoring = useCallback(() => {
+    micAnalyserRef.current = null;
     if (streamRef.current) {
       streamRef.current.getTracks().forEach((t) => t.stop());
       streamRef.current = null;
     }
-    onAudioLevel?.(0);
+    if (!playbackAnalyserRef.current) {
+      onAudioLevel?.(0);
+    }
   }, [onAudioLevel]);
 
-  const startAudioMonitoring = useCallback(() => {
+  const startMicMonitoring = useCallback(() => {
     if (!onAudioLevel) return;
     if (typeof navigator === "undefined" || !navigator.mediaDevices) return;
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then((stream) => {
         streamRef.current = stream;
-        const AudioCtx =
-          window.AudioContext ||
-          (window as unknown as { webkitAudioContext?: typeof AudioContext })
-            .webkitAudioContext;
-        if (!AudioCtx) return;
-        const ctx = new AudioCtx();
-        audioCtxRef.current = ctx;
+        const ctx = ensureAudioContext();
+        if (!ctx) return;
         const source = ctx.createMediaStreamSource(stream);
         const analyser = ctx.createAnalyser();
         analyser.fftSize = 256;
         source.connect(analyser);
-        analyserRef.current = analyser;
-
-        const data = new Uint8Array(analyser.frequencyBinCount);
-        const tick = () => {
-          if (!analyserRef.current) return;
-          analyserRef.current.getByteTimeDomainData(data);
-          let sum = 0;
-          for (let i = 0; i < data.length; i++) {
-            const v = (data[i] - 128) / 128;
-            sum += v * v;
-          }
-          const rms = Math.sqrt(sum / data.length);
-          onAudioLevel?.(Math.min(1, rms * 3));
-          rafRef.current = requestAnimationFrame(tick);
-        };
-        rafRef.current = requestAnimationFrame(tick);
+        micAnalyserRef.current = analyser;
+        startAmplitudeLoop();
       })
       .catch(() => {
-        // Geen mic-permissie — ga door zonder visuele amplitude, SR kan alsnog werken.
+        // Permissie geweigerd — SR zou nog via onerror een nette melding geven.
       });
+  }, [ensureAudioContext, onAudioLevel, startAmplitudeLoop]);
+
+  const stopPlayback = useCallback(() => {
+    activeAbortRef.current?.abort();
+    activeAbortRef.current = null;
+    if (activeAudioRef.current) {
+      activeAudioRef.current.pause();
+      activeAudioRef.current.src = "";
+      activeAudioRef.current = null;
+    }
+    playbackAnalyserRef.current = null;
+    if (typeof window !== "undefined" && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+    if (!micAnalyserRef.current) {
+      onAudioLevel?.(0);
+    }
   }, [onAudioLevel]);
+
+  /**
+   * Speel tekst af via ElevenLabs TTS. Bij fout: fallback naar SpeechSynthesis.
+   * Returns een AbortController waarmee caller kan onderbreken.
+   */
+  const speakViaElevenLabs = useCallback(
+    async (text: string, abort: AbortController): Promise<boolean> => {
+      let response: Response;
+      try {
+        response = await fetch("/api/brand-ambassador/tts", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ text }),
+          signal: abort.signal,
+        });
+      } catch (err) {
+        if ((err as { name?: string }).name === "AbortError") return true;
+        return false;
+      }
+
+      if (!response.ok || !response.body) {
+        return false;
+      }
+
+      let blob: Blob;
+      try {
+        blob = await response.blob();
+      } catch {
+        return false;
+      }
+      if (abort.signal.aborted) return true;
+
+      const url = URL.createObjectURL(blob);
+      const audio = new Audio(url);
+      audio.crossOrigin = "anonymous";
+      activeAudioRef.current = audio;
+
+      // Route audio door AudioContext → analyser → speakers, zodat we de
+      // amplitude kunnen meten voor de Presence-orb.
+      const ctx = ensureAudioContext();
+      if (ctx) {
+        try {
+          const source = ctx.createMediaElementSource(audio);
+          const analyser = ctx.createAnalyser();
+          analyser.fftSize = 256;
+          source.connect(analyser);
+          analyser.connect(ctx.destination);
+          playbackAnalyserRef.current = analyser;
+          startAmplitudeLoop();
+        } catch {
+          // createMediaElementSource faalt bij herbruikte audio-elements.
+          // Afspelen werkt nog gewoon.
+        }
+      }
+
+      return new Promise<boolean>((resolve) => {
+        const cleanup = () => {
+          URL.revokeObjectURL(url);
+          playbackAnalyserRef.current = null;
+          if (activeAudioRef.current === audio) {
+            activeAudioRef.current = null;
+          }
+          if (!micAnalyserRef.current) {
+            onAudioLevel?.(0);
+          }
+        };
+        audio.onended = () => {
+          cleanup();
+          resolve(true);
+        };
+        audio.onerror = () => {
+          cleanup();
+          resolve(false);
+        };
+        abort.signal.addEventListener("abort", () => {
+          audio.pause();
+          cleanup();
+          resolve(true);
+        });
+        audio.play().catch(() => {
+          cleanup();
+          resolve(false);
+        });
+      });
+    },
+    [ensureAudioContext, onAudioLevel, startAmplitudeLoop]
+  );
 
   const startRecognition = useCallback(() => {
     const SR = getSpeechRecognition();
@@ -213,9 +365,7 @@ export default function AmbassadorVoice({
 
     interimRef.current = "";
 
-    rec.onstart = () => {
-      setListening(true);
-    };
+    rec.onstart = () => setListening(true);
 
     rec.onresult = (event: SpeechRecognitionEventLike) => {
       let interim = "";
@@ -223,11 +373,8 @@ export default function AmbassadorVoice({
       for (let i = event.resultIndex; i < event.results.length; i++) {
         const res = event.results[i];
         const transcript = res[0]?.transcript ?? "";
-        if (res.isFinal) {
-          finalText += transcript;
-        } else {
-          interim += transcript;
-        }
+        if (res.isFinal) finalText += transcript;
+        else interim += transcript;
       }
       if (interim) {
         interimRef.current = interim;
@@ -244,12 +391,12 @@ export default function AmbassadorVoice({
       const msg = friendlyError(event.error);
       if (msg) onError?.(msg);
       setListening(false);
-      stopAudioMonitoring();
+      stopMicMonitoring();
     };
 
     rec.onend = () => {
       setListening(false);
-      stopAudioMonitoring();
+      stopMicMonitoring();
       if (interimRef.current.trim()) {
         onSubmit(interimRef.current.trim());
         interimRef.current = "";
@@ -260,14 +407,14 @@ export default function AmbassadorVoice({
     recRef.current = rec;
     try {
       rec.start();
-      startAudioMonitoring();
+      startMicMonitoring();
     } catch (err) {
       console.error("[ambassador-voice] rec.start failed:", err);
       onError?.("Kon spraakherkenning niet starten. Probeer opnieuw.");
       setListening(false);
-      stopAudioMonitoring();
+      stopMicMonitoring();
     }
-  }, [onSubmit, onInterim, onError, startAudioMonitoring, stopAudioMonitoring]);
+  }, [onSubmit, onInterim, onError, startMicMonitoring, stopMicMonitoring]);
 
   function toggleListening() {
     if (listening) {
@@ -277,53 +424,49 @@ export default function AmbassadorVoice({
     startRecognition();
   }
 
+  // TTS van binnenkomende antwoorden: ElevenLabs first, SpeechSynthesis fallback.
   useEffect(() => {
     if (!enabled) return;
-    if (typeof window === "undefined" || !window.speechSynthesis) return;
     if (!speakText || speakText === lastSpokenRef.current) return;
 
     lastSpokenRef.current = speakText;
 
-    let cancelled = false;
-    const speak = async () => {
-      window.speechSynthesis.cancel();
-      const voices = await loadVoices();
-      if (cancelled) return;
+    // Cancel eventuele vorige playback.
+    stopPlayback();
 
-      const utt = new SpeechSynthesisUtterance(speakText);
-      utt.lang = "nl-NL";
-      utt.rate = 1.02;
-      utt.pitch = 1.0;
+    const abort = new AbortController();
+    activeAbortRef.current = abort;
 
-      const dutch =
-        voices.find((v) => v.lang.toLowerCase().startsWith("nl")) ??
-        voices.find((v) => v.lang.toLowerCase().startsWith("en-gb")) ??
-        voices.find((v) => v.lang.toLowerCase().startsWith("en"));
-      if (dutch) utt.voice = dutch;
-
-      window.speechSynthesis.speak(utt);
-    };
-    void speak();
+    (async () => {
+      const ok = await speakViaElevenLabs(speakText, abort);
+      if (!ok && !abort.signal.aborted) {
+        await speakNative(speakText, abort.signal);
+      }
+    })().catch(() => {
+      // Ignore — best-effort.
+    });
 
     return () => {
-      cancelled = true;
+      abort.abort();
     };
-  }, [speakText, enabled]);
+  }, [speakText, enabled, speakViaElevenLabs, stopPlayback]);
 
   useEffect(() => {
-    if (!enabled) {
-      if (typeof window !== "undefined" && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
-      }
-      stopAudioMonitoring();
-    }
+    if (!enabled) stopPlayback();
     return () => {
-      stopAudioMonitoring();
-      if (typeof window !== "undefined" && window.speechSynthesis) {
-        window.speechSynthesis.cancel();
+      stopPlayback();
+      stopMicMonitoring();
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+      amplitudeLoopRunning.current = false;
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close().catch(() => void 0);
+        audioCtxRef.current = null;
       }
     };
-  }, [enabled, stopAudioMonitoring]);
+  }, [enabled, stopPlayback, stopMicMonitoring]);
 
   if (!supported) {
     return (
