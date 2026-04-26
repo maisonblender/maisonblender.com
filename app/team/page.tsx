@@ -98,16 +98,16 @@ export default function TeamPage() {
                 <div>
                   <h2 className="text-xl font-bold text-[#1f1f1f]">Karl Dreissen</h2>
                   <p className="mt-1 text-xs font-medium uppercase tracking-widest text-[#575760]">
-                    Oprichter &amp; AI Engineer
+                    AI Engineer
                   </p>
                 </div>
                 <p className="text-[#575760] leading-relaxed">
                   Karl bouwt de AI-agents en automatiseringsarchitectuur die bij de meeste projecten de
-                  kern vormen. Hij werkt met LangGraph, n8n en Anthropic Claude, en heeft meer dan twee
-                  decennia ervaring in webdevelopment en marketingtechnologie.
+                  kern vormen. Hij werkt o.a. met LangGraph, n8n en Anthropic Claude, en heeft meer dan
+                  drie decennia ervaring in webdevelopment en marketingtechnologie.
                 </p>
                 <p className="text-[#575760] leading-relaxed">
-                  Als iets technisch complex is maar simpel moet werken, is Karl degene die dat oplost.
+                  Als iets technisch complex is maar simpel moet werken, is hij degene die dat oplost.
                   Hij is ook het gezicht van MAISON BLNDR in klantgesprekken — je weet altijd met wie
                   je praat, en die persoon is ook degene die bouwt.
                 </p>
