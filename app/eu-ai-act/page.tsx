@@ -44,10 +44,13 @@ export default function EuAiActPage() {
               {/* Inleiding */}
               <div>
                 <p className="leading-relaxed text-[#575760]">
-                  Op 12 juli 2024 is de EU AI Act officieel gepubliceerd in het Publicatieblad van de Europese Unie
-                  (Verordening (EU) 2024/1689). De wet is op 1 augustus 2024 in werking getreden en is de eerste
-                  uitgebreide AI-verordening ter wereld. Ze is rechtstreeks van toepassing in alle EU-lidstaten —
-                  er is geen nationale omzetting nodig.
+                  Op 1 augustus 2024 trad de EU AI Act in werking — de eerste uitgebreide AI-verordening ter
+                  wereld, rechtstreeks van toepassing in alle EU-lidstaten. Voor de meeste MKB-bedrijven geldt:
+                  de impact hangt volledig af van welke AI-systemen je gebruikt en waarvoor.
+                </p>
+                <p className="mt-4 leading-relaxed text-[#575760]">
+                  De verordening werkt met vier risicocategorieën. Hoe groter het risico van een AI-systeem
+                  voor de samenleving, des te strenger de verplichtingen.
                 </p>
               </div>
 
@@ -436,25 +439,25 @@ export default function EuAiActPage() {
                   </li>
                 </ul>
                 <p className="mt-6 leading-relaxed text-[#575760]">
-                  Wil je weten wat de EU AI Act concreet betekent voor jouw organisatie? Neem contact op via{" "}
+                  Wat betekent dit concreet voor jouw situatie? Stuur een mail naar{" "}
                   <a
                     href="mailto:info@maisonblender.com"
                     className="text-[#1f1f1f] underline underline-offset-2 hover:text-[#575760] transition-colors"
                   >
                     info@maisonblender.com
                   </a>
-                  {" "}of vraag een{" "}
+                  {" "}of{" "}
                   <Link
-                    href="/#contact"
+                    href="/strategiegesprek"
                     className="text-[#1f1f1f] underline underline-offset-2 transition-colors hover:text-[#575760]"
                   >
-                    vrijblijvend gesprek
-                  </Link>{" "}
-                  aan.
+                    plan een kort gesprek
+                  </Link>
+                  {" "}— we leggen je uit wat er voor jouw gebruik van AI geldt.
                 </p>
                 <p className="mt-4 text-xs leading-relaxed text-[#b2b2be]">
-                  Deze pagina is informatief van aard en vormt geen juridisch advies. Raadpleeg een juridisch adviseur
-                  voor vragen over de naleving van de EU AI Act in uw specifieke situatie.
+                  Deze pagina is informatief en geen juridisch advies. Voor vragen over naleving in je specifieke
+                  situatie raden we aan een juridisch adviseur te raadplegen.
                 </p>
               </div>
 

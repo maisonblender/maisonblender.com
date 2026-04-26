@@ -17,14 +17,14 @@ export const metadata: Metadata = {
 };
 
 const voordelen = [
-  { Icon: Zap, titel: "~10 minuten", tekst: "5 pijlers, 22 gerichte vragen over bedrijf, data, IT-infrastructuur, cultuur en governance" },
-  { Icon: Brain, titel: "Echte AI-analyse", tekst: "Analyseert live jouw volledige situatie — geen generiek rapport" },
-  { Icon: BarChart3, titel: "AI Readiness Score", tekst: "Jouw score 0-100 + benchmark versus jouw sector" },
-  { Icon: TrendingUp, titel: "ROI Berekening", tekst: "Concrete euro-indicaties voor tijds- en kostenbesparing per use case" },
-  { Icon: Map, titel: "AI Kansenkaart", tekst: "Geprioriteerde quick wins én strategische kansen voor jouw organisatie" },
-  { Icon: Shield, titel: "Governance & EU AI Act", tekst: "Inzicht in jouw AVG-risico's, EU AI Act-bekendheid en wat je nodig hebt om AI veilig in te zetten" },
-  { Icon: Users, titel: "Cultuur, kennis & training", tekst: "Hoe klaar is jouw team? Sentiment, management-betrokkenheid en concrete trainingsbehoeften in beeld" },
-  { Icon: FileText, titel: "Gratis Actieplan", tekst: "Gepersonaliseerd AI Actieplan met 90-dagen roadmap via e-mail" },
+  { Icon: BarChart3, titel: "AI Readiness Score 0–100", tekst: "Jouw score + vergelijking met jouw sector" },
+  { Icon: TrendingUp, titel: "Top 3 quick wins", tekst: "Met ROI-indicatie in euro's — concreet en berekend op basis van jouw situatie" },
+  { Icon: Shield, titel: "Governance & EU AI Act", tekst: "Inzicht in AVG-risico's en EU AI Act-verplichtingen" },
+  { Icon: Users, titel: "Teamreadiness & adoptie", tekst: "Analyse van je teamreadiness en adoptiebereidheid" },
+  { Icon: Map, titel: "90-dagen actieplan", tekst: "Gepersonaliseerd actieplan met roadmap — direct naar je inbox" },
+  { Icon: Zap, titel: "5 pijlers, 22 vragen", tekst: "Gerichte vragen over jouw bedrijf — geen generieke vragenlijst" },
+  { Icon: Brain, titel: "Live AI-analyse", tekst: "Analyseert jouw situatie live — geen standaard rapport" },
+  { Icon: FileText, titel: "AI Kansenkaart", tekst: "Direct naar je inbox, inclusief sector-benchmark" },
 ];
 
 export default function QuickscanPage() {
@@ -53,15 +53,15 @@ export default function QuickscanPage() {
               className="text-[32px] font-normal leading-[1.15] tracking-tight text-[#1f1f1f] sm:text-[42px] lg:text-[52px] mb-6"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Ontdek jouw AI-kansen
+              Wat levert AI jou
               <br />
-              <span className="font-exposure">in 10 minuten.</span>
+              <span className="font-exposure">concreet op?</span>
             </h1>
 
             <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-              De AI Readiness Intake analyseert jouw bedrijfsprofiel op 5 pijlers: bedrijfsprofiel, pijnpunten & urgentie,
-              data & infrastructuur, kennis cultuur & governance, en AI-ambitie. Je ontvangt een gepersonaliseerde AI
-              Kansenkaart met directe quick wins, ROI-berekening en EU AI Act-roadmap.
+              De AI Readiness Intake analyseert je bedrijf op vijf pijlers: quick wins, ROI, datakwaliteit,
+              IT-infrastructuur en EU AI Act-gereedheid. Tien minuten. Daarna weet je precies waar de kansen
+              liggen en wat ze je opleveren.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -89,12 +89,14 @@ export default function QuickscanPage() {
                 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
-                Alles in 10 minuten.
+                Geen generieke vragenlijst.
                 <br />
-                <span className="font-exposure">Een echte intake, geen quiz.</span>
+                <span className="font-exposure">Een intake die ergens op uitkomt.</span>
               </h2>
               <p className="max-w-xl text-[#575760]">
-                Geen generiek rapport. Een diepgaande AI-analyse op maat — van laaghangend fruit tot governance en adoptie.
+                Je krijgt geen rapport vol open deuren. De intake analyseert jouw situatie live en levert een
+                gepersonaliseerde AI Kansenkaart op — met score, sector-benchmark, quick wins in euro&apos;s
+                en een 90-dagen actieplan.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -148,10 +150,10 @@ export default function QuickscanPage() {
               className="text-xl leading-relaxed text-[#1f1f1f] mb-6"
               style={{ letterSpacing: "-0.3px" }}
             >
-              &quot;De intake maakte in één oogopslag duidelijk waar we het meeste tijd verspillen en waar de
-              grootste governance-risico&apos;s zitten. Binnen 6 weken hadden we de eerste automatisering live.&quot;
+              &quot;In één gesprek werd duidelijk waar we tijd verspillen en waar de risico&apos;s zitten.
+              Zes weken later stond de eerste automatisering live.&quot;
             </blockquote>
-            <p className="text-sm text-[#575760]">- Directeur, productiebedrijf Sittard</p>
+            <p className="text-sm text-[#575760]">— Directeur, productiebedrijf Sittard</p>
           </div>
         </section>
 
@@ -159,8 +161,8 @@ export default function QuickscanPage() {
         <section className="py-20 px-6 bg-[#f2f3f5]">
           <div className="max-w-6xl mx-auto flex flex-col items-center gap-4 bg-white p-10 text-center sm:flex-row sm:justify-between sm:text-left">
             <div className="flex flex-col gap-2">
-              <p className="text-lg font-bold text-[#1f1f1f]">Klaar om jouw AI-kansen in kaart te brengen?</p>
-              <p className="text-[#575760]">10 minuten. Gratis. Direct inzicht in quick wins én governance.</p>
+              <p className="text-lg font-bold text-[#1f1f1f]">Wil je weten waar de kansen liggen?</p>
+              <p className="text-[#575760]">Tien minuten. Gratis. Resultaten direct zichtbaar.</p>
             </div>
             <Link
               href="/quickscan/scan"

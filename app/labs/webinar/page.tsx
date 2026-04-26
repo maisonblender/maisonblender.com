@@ -11,13 +11,13 @@ export const metadata: Metadata = {
 const upcoming = {
   title: "AI in de praktijk: van quickscan tot live systeem",
   date: "22 mei 2026",
-  time: "19:00 - 20:30",
+  time: "19:00–20:30",
   description:
-    "In 90 minuten laten we zien hoe een Limburgse ondernemer van nul naar een werkend AI-systeem gaat. Live demo's, Q&A en praktische takeaways.",
+    "In 90 minuten laten we zien hoe een Limburgse ondernemer van nul naar een werkend AI-systeem gaat. Live demo's, Q&A en praktische takeaways die je de volgende dag al kunt toepassen.",
   topics: [
-    "Welke processen lenen zich het best voor AI-automatisering?",
-    "Live demo: factuurverwerking in Exact Online automatiseren",
-    "Kosten en tijdlijn: wat is realistisch voor MKB?",
+    "Welke processen lenen zich het best voor automatisering?",
+    "Live demo: factuurverwerking automatiseren in Exact Online",
+    "Kosten en tijdlijn: wat is realistisch voor een MKB-bedrijf?",
     "Q&A met de engineers van MAISON BLNDR",
   ],
 };
@@ -33,7 +33,7 @@ const archive = [
     title: "ChatGPT voor je bedrijf: wat werkt en wat niet",
     date: "18 februari 2026",
     attendees: "98 aanmeldingen",
-    description: "Een eerlijk overzicht van wat je met ChatGPT kunt bereiken als MKB-ondernemer, en wat de grenzen zijn.",
+    description: "Een eerlijk overzicht van wat je met ChatGPT kunt bereiken als MKB-ondernemer — en wat de grenzen zijn.",
   },
 ];
 
@@ -60,6 +60,7 @@ export default function WebinarPage() {
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-xl mx-auto">
             Praktisch, zonder jargon, voor ondernemers in Zuid-Limburg die AI willen begrijpen en toepassen.
+            Elke editie: live demo&apos;s, Q&amp;A en iets wat je de volgende dag al kunt gebruiken.
           </p>
         </div>
       </section>
@@ -128,12 +129,13 @@ export default function WebinarPage() {
       {/* CTA */}
       <section className="px-6 py-20 bg-white">
         <div className="mx-auto max-w-2xl text-center">
-          <p className="text-sm text-[#575760] mb-4">Mis geen enkele editie</p>
+          <p className="text-sm font-bold text-[#1f1f1f] mb-2">Mis geen volgende editie.</p>
+          <p className="text-sm text-[#575760] mb-6">Schrijf je in voor de nieuwsbrief — je ontvangt aankondigingen, opnames en praktische AI-updates één keer per maand.</p>
           <Link
             href="/labs/nieuwsbrief"
             className="inline-block rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42]"
           >
-            Schrijf je in voor de nieuwsbrief →
+            Schrijf je in →
           </Link>
         </div>
       </section>

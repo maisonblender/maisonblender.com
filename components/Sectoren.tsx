@@ -11,61 +11,67 @@ const sectoren = [
   {
     sector: "Retail & E-commerce",
     Icon: ShoppingCart,
+    intro: "Meer bestellingen, minder handmatig werk eromheen.",
     usecases: [
-      "AI-chatbot voor 24/7 klantenservice",
-      "Automatische orderverwerking",
-      "Persoonlijke productaanbevelingen",
-      "Retourverwerking zonder handmatig werk",
+      "AI-chatbot beantwoordt klantvragen — ook buiten kantoortijden",
+      "Orders automatisch verwerkt en doorgezet naar fulfillment",
+      "Productaanbevelingen op basis van bestelhistorie en gedrag",
+      "Retouren automatisch verwerkt, klant direct geïnformeerd",
     ],
   },
   {
     sector: "Logistiek & Transport",
     Icon: Truck,
+    intro: "Minder papierwerk. Minder bellen. Meer ritten per dag.",
     usecases: [
-      "Automatische routeplanning en dispatching",
-      "Documentverwerking (CMR, vrachtbrieven)",
-      "Klantcommunicatie over leveringstijden",
-      "RPA voor exportdocumentatie",
+      "Routeplanning en dispatching automatisch gegenereerd",
+      "CMR's en vrachtbrieven automatisch verwerkt en gearchiveerd",
+      "Klanten proactief geïnformeerd over leveringstijden — zonder dat iemand belt",
+      "Exportdocumentatie automatisch aangemaakt en ingediend",
     ],
   },
   {
     sector: "MKB & Zakelijke dienstverlening",
     Icon: Briefcase,
+    intro: "Minder administratie. Meer tijd voor de klant.",
     usecases: [
-      "Automatische factuurverwerking",
-      "AI-assistent voor offertes en contracten",
-      "CRM-automatisering en lead opvolging",
-      "Interne kennisbank met RAG-systeem",
+      "Inkomende facturen automatisch verwerkt en geboekt",
+      "Offertes en contracten opgesteld op basis van jouw templates en klantdata",
+      "Leads automatisch opgevolgd — geen enkele meer vergeten",
+      "Interne kennisbank doorzoekbaar via een vraag in gewone taal",
     ],
   },
   {
     sector: "Horeca & Toerisme",
     Icon: UtensilsCrossed,
+    intro: "Gasten geholpen. Personeel ontlast. Ook als het druk is.",
     usecases: [
-      "Reserveringsbot via WhatsApp of web",
-      "AI-menuadviseur en upsell assistent",
-      "Automatische review-verwerking",
-      "Personeelsplanning met AI-ondersteuning",
+      "Reserveringen aangenomen via WhatsApp of website — dag en nacht",
+      "Gasten krijgen persoonlijk advies over menu, allergieën en aanbevelingen",
+      "Nieuwe reviews automatisch gesignaleerd en samengevat voor de manager",
+      "Personeelsplanning automatisch gegenereerd op basis van bezetting en voorkeuren",
     ],
   },
   {
     sector: "Zorg & Welzijn",
     Icon: HeartPulse,
+    intro: "Minder administratie voor zorgverleners. Meer aandacht voor de cliënt.",
     usecases: [
-      "Afspraken plannen via AI-chatbot",
-      "Automatische verwerking van verwijzingen",
-      "Patiëntcommunicatie en nazorg",
-      "Rapportages en administratie versnellen",
+      "Afspraken ingepland via chatbot — patiënt kiest zelf tijd, zonder telefonisch wachten",
+      "Inkomende verwijzingen automatisch verwerkt en gekoppeld aan het juiste dossier",
+      "Nazorg en herinneringen automatisch verstuurd op het juiste moment",
+      "Rapportages automatisch gegenereerd — zorgverleners schrijven minder, doen meer",
     ],
   },
   {
     sector: "Productie & Maakindustrie",
     Icon: Factory,
+    intro: "Minder handmatig invoerwerk. Sneller signaleren als er iets afwijkt.",
     usecases: [
-      "Orderverwerking en inkoopautomatisering",
-      "Kwaliteitscontrole met AI-inspectie",
-      "Voorraad- en inkoopbeheer",
-      "ERP-koppeling en datarapportages",
+      "Orders en inkoopverzoeken automatisch verwerkt en doorgezet in het ERP",
+      "AI signaleert kwaliteitsafwijkingen voordat ze de lijn verlaten",
+      "Voorraadniveaus automatisch bewaakt — inkooporders getriggerd bij onderschrijding",
+      "ERP-data automatisch omgezet naar managementrapportages",
     ],
   },
 ];
@@ -83,11 +89,11 @@ export default function Sectoren() {
           <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]" style={{ letterSpacing: "-0.95px" }}>
             AI werkt in elke sector.
             <br />
-            <span className="font-exposure">Mits het goed is gebouwd.</span>
+            <span className="font-exposure">Het proces bepaalt de aanpak.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Een logistiek bedrijf en een accountantskantoor hebben andere processen. Andere problemen.
-            Andere kansen. Wij bouwen voor het verschil.
+            Een logistiek bedrijf en een accountantskantoor hebben andere problemen en andere kansen.
+            Wij bouwen voor die verschillen — niet voor de gemiddelde klant.
           </p>
         </div>
 
@@ -97,10 +103,11 @@ export default function Sectoren() {
               key={item.sector}
               className="group bg-[#f2f3f5] p-8 transition-colors hover:bg-white"
             >
-              <div className="mb-6 flex items-center gap-3">
+              <div className="mb-4 flex items-center gap-3">
                 <item.Icon className="h-5 w-5 shrink-0 text-[#1f1f1f]" strokeWidth={1.5} />
                 <h3 className="text-base font-bold text-[#1f1f1f]">{item.sector}</h3>
               </div>
+              <p className="mb-4 text-sm text-[#1f1f1f] font-medium">{item.intro}</p>
               <ul className="flex flex-col gap-2.5">
                 {item.usecases.map((uc) => (
                   <li key={uc} className="flex items-start gap-2.5 text-sm text-[#575760]">
@@ -114,12 +121,13 @@ export default function Sectoren() {
         </div>
 
         {/* CTA strip */}
-        <div className="mt-8 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
+          <div className="mt-8 flex flex-col items-center gap-4 bg-[#f2f3f5] p-10 text-center sm:flex-row sm:justify-between sm:text-left">
           <div className="flex flex-col gap-2">
-            <p className="text-lg font-bold text-[#1f1f1f]">Jouw sector staat er niet bij?</p>
+            <p className="text-lg font-bold text-[#1f1f1f]">Staat jouw sector er niet bij?</p>
             <p className="text-sm text-[#575760]">
-              AI-automatisering is niet gebonden aan een branche - het is gebonden aan processen.
-              Elk bedrijf heeft processen die beter kunnen.
+              AI-automatisering is niet sectorgebonden — het is procesgebonden. Als er taken zijn
+              die herhaald worden, tijd kosten of gevoelig zijn voor fouten, is er waarschijnlijk
+              iets te doen. We kijken het graag met je mee.
             </p>
           </div>
           <a

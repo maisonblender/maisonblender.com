@@ -13,13 +13,13 @@ export default function Services() {
             Diensten
           </span>
           <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]" style={{ letterSpacing: "-0.95px" }}>
-            Van AI Impact Scan tot live systeem.
+            Van eerste gesprek tot live systeem
             <br />
-            <span className="font-exposure">Alles in eigen handen.</span>
+            <span className="font-exposure">— en daarna.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Sommige bureaus adviseren. Anderen bouwen. Wij doen alles: van het eerste gesprek
-            over je processen tot het beheer van de AI-agents die eruit voortkomen.
+            Sommige bureaus adviseren. Anderen bouwen. Wij doen het hele traject: procesanalyse,
+            bouw, lancering en beheer. Jij hoeft alleen de resultaten te zien.
           </p>
         </div>
 

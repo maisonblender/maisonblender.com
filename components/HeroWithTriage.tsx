@@ -27,15 +27,15 @@ export default function HeroWithTriage() {
             </div>
 
             <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[32px]" style={{ letterSpacing: "-0.95px" }}>
-              Geen pilots, geen proof-of-concepts.
+              Geen pilots. Geen proof-of-concepts.
               <br />
-              <span className="font-exposure">Minder handwerk, meer marge, vanaf dag één.</span>
+              <span className="font-exposure">Jouw processen geautomatiseerd — live binnen vier weken.</span>
             </h1>
 
             <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-              Facturen verwerken, klantvragen beantwoorden, leads opvolgen - wij automatiseren wat
-              nu handmatig gaat. MAISON BLNDR begint bij jouw workflows, levert binnen vier
-              weken een werkend systeem, en blijft beheren terwijl jij de resultaten ziet.
+              Facturen verwerken, klantvragen beantwoorden, leads opvolgen: wij bouwen de AI-agents
+              die dat overnemen. We beginnen bij jouw workflows, niet bij een template. Binnen vier
+              weken staat er iets wat echt werkt.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">

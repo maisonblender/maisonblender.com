@@ -3,21 +3,21 @@ import SiteImage from "@/components/SiteImage";
 const steps = [
   {
     step: "01",
-    title: "Jouw processen eerst",
+    title: "We beginnen bij jouw processen",
     description:
-      "Geen intakegesprek waarbij jij vertelt wat je wilt en wij knikken. Wij gaan in op je processen, bouwen een architectuur die je bestaande systemen serieus neemt, en leveren een roadmap met realistische tijdlijnen - inclusief wat het je concreet oplevert.",
+      "Geen intake waarbij jij vertelt wat je wilt en wij knikken. We gaan in op hoe je bedrijf werkt, waar de tijd verloren gaat en wat de realistische impact is van automatisering. Daaruit rolt een architectuur die jouw bestaande systemen serieus neemt — en een roadmap met tijdlijnen en verwacht rendement.",
   },
   {
     step: "02",
-    title: "Twee weken. Dan zie je het.",
+    title: "Werkend prototype in twee weken",
     description:
-      "Binnen twee weken draait een werkend prototype in je eigen omgeving. Geen demo-omgeving, geen mock-data. Je ziet direct of het past - en stuurt bij voordat er een euro te veel is uitgegeven.",
+      "Geen demo-omgeving, geen mock-data. Binnen twee weken draait er iets echts in jouw omgeving. Je ziet direct of het past — en stuurt bij voordat er onnodig geld is uitgegeven.",
   },
   {
     step: "03",
-    title: "Live. En wij blijven.",
+    title: "Live. En we blijven.",
     description:
-      "Na validatie bouwen wij naar productie. Robuust, veilig, schaalbaar. Monitoring en beheer blijven bij ons - jij hoeft alleen de resultaten te zien.",
+      "Na validatie bouwen we naar productie: robuust, veilig, schaalbaar. Monitoring en beheer blijven bij ons. Jij hoeft alleen de resultaten te zien.",
   },
 ];
 
@@ -35,9 +35,9 @@ export default function Process() {
                 Aanpak
               </span>
               <h2 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]" style={{ letterSpacing: "-0.95px" }}>
-                Geen big bang.
+                Stap voor stap.
                 <br />
-                <span className="font-exposure">Wel live binnen vier weken.</span>
+                <span className="font-exposure">Live binnen vier weken.</span>
               </h2>
             </div>
 

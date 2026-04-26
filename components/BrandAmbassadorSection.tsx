@@ -63,14 +63,15 @@ export default function BrandAmbassadorSection() {
               className="text-[24px] font-normal leading-[1.2] tracking-tight text-white sm:text-[29px] lg:text-[26px]"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Jouw merk.
+              Je merk heeft een stem.
               <br />
-              <span className="font-exposure">Altijd online. Altijd on-brand.</span>
+              <span className="font-exposure">Die mag 24/7 beschikbaar zijn.</span>
             </h2>
 
             <p className="text-base leading-relaxed text-white/60 max-w-lg">
-              Een AI Brand Ambassador spreekt met de stem van jouw merk - productkennis, tone-of-voice,
-              commerciële instelling. Via je website, WhatsApp of Teams. Dag en nacht, zonder personeelskosten.
+              Een AI Brand Ambassador spreekt met de stem van jouw merk — productkennis,
+              tone-of-voice en commerciële instelling inbegrepen. Via je website, WhatsApp of
+              Teams. Dag en nacht, zonder dat je daarvoor extra personeel nodig hebt.
             </p>
 
             <ul className="flex flex-col gap-3 text-sm text-white/60">

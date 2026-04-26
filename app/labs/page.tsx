@@ -11,19 +11,19 @@ export const metadata: Metadata = {
 const tools = [
   {
     title: "AI Readiness Check",
-    description: "5 vragen om te bepalen hoe klaar jouw bedrijf is voor AI-automatisering.",
+    description: "Vijf vragen. Duidelijk beeld van hoe klaar jouw bedrijf is voor AI-automatisering.",
     href: "https://maisonblender.com/quickscan",
     label: "Doe de check →",
   },
   {
     title: "Prompt Starter Kit",
-    description: "15+ direct inzetbare prompts voor MKB-ondernemers. Voor klantenservice, marketing en meer.",
+    description: "Vijftien direct inzetbare prompts voor MKB-ondernemers — voor klantenservice, marketing en meer.",
     href: "/labs/prompt-starter-kit",
     label: "Bekijk prompts →",
   },
   {
     title: "AI Tools Vergelijker",
-    description: "Welke AI-tool past bij welk probleem? Overzicht voor niet-technische ondernemers.",
+    description: "Welke AI-tool past bij welk probleem? Een overzicht zonder technisch jargon.",
     href: "/labs/tools-vergelijker",
     label: "Vergelijk tools →",
   },
@@ -71,13 +71,13 @@ export default function LabsHomePage() {
             className="text-[32px] font-normal leading-[1.15] tracking-tight sm:text-[42px] lg:text-[52px] mb-6"
             style={{ letterSpacing: "-0.95px" }}
           >
-            AI kennis voor
+            Praktische AI-kennis voor
             <br />
-            <span className="font-exposure">Zuid-Limburg.</span>
+            <span className="font-exposure">Limburgse ondernemers.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 sm:text-lg mb-10 max-w-2xl mx-auto">
-            Limburg AI Labs deelt praktische kennis over AI met Limburgse ondernemers.
-            Geen hype, geen jargon - gewoon wat werkt en hoe je het toepast in jouw bedrijf.
+            Geen hype, geen jargon — gewoon wat werkt en hoe je het toepast. Webinars, een
+            maandelijkse nieuwsbrief en gratis tools, gemaakt voor het MKB in de regio.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row justify-center">
             <Link
@@ -105,9 +105,9 @@ export default function LabsHomePage() {
               className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Gratis tools voor
+              Drie tools om direct
               <br />
-              <span className="font-exposure">Limburgse ondernemers.</span>
+              <span className="font-exposure">mee aan de slag.</span>
             </h2>
           </div>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -174,12 +174,12 @@ export default function LabsHomePage() {
             className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px] mb-4"
             style={{ letterSpacing: "-0.95px" }}
           >
-            Maandelijks een AI-update
+            Eén concrete AI-update per maand.
             <br />
-            <span className="font-exposure">die de moeite waard is.</span>
+            <span className="font-exposure">Niet meer.</span>
           </h2>
           <p className="text-base leading-relaxed text-[#575760] mb-8 max-w-xl mx-auto">
-            Geen nieuwsbrief over de toekomst van AI. Wel: één concreet inzicht, één gratis tool en één voorbeeld uit de regio. Elke maand. Afmelden kan altijd.
+            Geen toekomstvisioenen. Elke maand: één inzicht, één gratis tool en één praktijkvoorbeeld uit de regio. Afmelden kan altijd.
           </p>
           <Link
             href="/labs/nieuwsbrief"

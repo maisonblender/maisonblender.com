@@ -17,27 +17,27 @@ export const metadata: Metadata = {
 const capabilities = [
   {
     title: "Productkennis",
-    description: "Getraind op je volledige productcatalogus, prijzen en specificaties. Antwoordt accuraat op technische vragen.",
+    description: "Getraind op je volledige productcatalogus, prijzen en specificaties. Antwoordt accuraat — ook op technische vragen die je normaal doorschakelt.",
   },
   {
-    title: "Tone-of-voice",
-    description: "Communiceert in de stijl van jouw merk - of dat nu formeel, informeel, technisch of laagdrempelig is.",
+    title: "Jouw tone-of-voice",
+    description: "Formeel of laagdrempelig, technisch of commercieel: de Ambassador communiceert in de stijl van jouw merk. Niet generiek, niet robotachtig.",
   },
   {
     title: "Leadgeneratie",
-    description: "Kwalificeert bezoekers, stelt gerichte vragen en stuurt warme leads door naar jouw salesteam.",
+    description: "Kwalificeert bezoekers, stelt gerichte vragen en geeft je salesteam alleen de warme leads — compleet met context.",
   },
   {
     title: "24/7 beschikbaar",
-    description: "Beantwoordt vragen buiten kantooruren. Geen gemiste leads in het weekend of 's nachts.",
+    description: "Beantwoordt vragen buiten kantooruren. Geen gemiste leads in het weekend of 's avonds.",
   },
   {
     title: "Multichannel",
-    description: "Eén kennisbase, meerdere kanalen: website widget, WhatsApp Business en Microsoft Teams.",
+    description: "Één kennisbase, drie kanalen: website, WhatsApp Business en Microsoft Teams. Altijd consistent.",
   },
   {
     title: "Lerende kennisbase",
-    description: "Groeit mee met jouw bedrijf. Nieuwe producten of FAQs? Binnen uren live in de Ambassador.",
+    description: "Nieuwe producten of FAQ's toevoegen? Binnen uren live.",
   },
 ];
 
@@ -70,13 +70,14 @@ export default function BrandAmbassadorPage() {
               className="text-[32px] font-normal leading-[1.15] tracking-tight sm:text-[42px] lg:text-[52px] mb-6"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Jouw merk.
+              Je merk heeft een stem.
               <br />
-              <span className="font-exposure">Altijd online. Altijd on-brand.</span>
+              <span className="font-exposure">Die mag 24/7 beschikbaar zijn.</span>
             </h1>
             <p className="text-base leading-relaxed text-white/70 sm:text-lg mb-10 max-w-2xl mx-auto">
-              Een AI Brand Ambassador spreekt met de stem van jouw merk - productkennis, tone-of-voice,
-              commerciële instelling. Via je website, WhatsApp of Teams. Dag en nacht, zonder personeelskosten.
+              Een AI Brand Ambassador spreekt met de stem van jouw merk — productkennis,
+              tone-of-voice en commerciële instelling inbegrepen. Via je website, WhatsApp of
+              Teams. Dag en nacht, zonder dat je daarvoor extra personeel nodig hebt.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row justify-center">
               <a
@@ -108,17 +109,13 @@ export default function BrandAmbassadorPage() {
                   className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px] mb-4"
                   style={{ letterSpacing: "-0.95px" }}
                 >
-                  Ervaar onze eigen
+                  Probeer het zelf — dit is onze
                   <br />
-                  <span className="font-exposure">Brand Ambassador.</span>
+                  <span className="font-exposure">eigen Brand Ambassador.</span>
                 </h2>
                 <p className="text-base leading-relaxed text-[#575760] mb-6">
-                  Dit is geen demo-omgeving - dit is de echte MAISON BLNDR Brand Ambassador.
-                  Stel een vraag over onze diensten, tarieven of aanpak. Zo ervaar je precies
-                  wat jouw klanten zullen ervaren.
-                </p>
-                <p className="text-sm leading-relaxed text-[#575760]">
-                  Getraind op: onze diensten, veelgestelde vragen, werkwijze, sector-expertise en tone-of-voice.
+                  Geen nep-data, geen scriptje. Stel een vraag over onze diensten, tarieven of
+                  aanpak — en ervaar precies wat jouw klanten zullen ervaren.
                 </p>
               </div>
 
@@ -174,9 +171,9 @@ export default function BrandAmbassadorPage() {
                 className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
-                Wat een Brand Ambassador
+                Wat de Ambassador doet
                 <br />
-                <span className="font-exposure">voor jou doet.</span>
+                <span className="font-exposure">— concreet.</span>
               </h2>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -221,12 +218,12 @@ export default function BrandAmbassadorPage() {
               className="text-[24px] font-normal leading-[1.2] tracking-tight sm:text-[29px] lg:text-[26px] mb-4"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Klaar voor een Brand Ambassador
+              Wil je een Brand Ambassador die
               <br />
-              <span className="font-exposure">die nooit slaapt?</span>
+              <span className="font-exposure">past bij jouw merk?</span>
             </h2>
             <p className="text-base leading-relaxed text-white/70 mb-8 max-w-xl mx-auto">
-              Vraag een offerte aan. We bouwen een Ambassador getraind op jouw merk - live binnen twee weken.
+              We bouwen een Ambassador getraind op jouw producten, diensten en tone-of-voice — live binnen twee weken.
             </p>
             <a
               href="/strategiegesprek"

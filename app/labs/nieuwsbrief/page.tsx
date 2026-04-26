@@ -24,12 +24,12 @@ export default function NieuwsbriefPage() {
             className="text-[28px] font-normal leading-[1.15] tracking-tight sm:text-[36px] lg:text-[44px] mb-6"
             style={{ letterSpacing: "-0.95px" }}
           >
-            Maandelijks een AI-update
+            Eén concrete AI-update per maand.
             <br />
-            <span className="font-exposure">die de moeite waard is.</span>
+            <span className="font-exposure">Niet meer.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 mb-10 max-w-lg mx-auto">
-            Geen nieuwsbrief over de toekomst van AI. Wel: één concreet inzicht, één gratis tool en één voorbeeld uit de regio. Elke maand. Afmelden kan altijd.
+            Geen toekomstvisioenen. Geen hype. Elke maand: één inzicht uitgelegd zonder jargon, één gratis tool die je direct kunt gebruiken en één praktijkvoorbeeld uit de regio. Afmelden kan altijd, met één klik.
           </p>
 
           <NewsletterForm />
@@ -43,13 +43,13 @@ export default function NieuwsbriefPage() {
             className="text-[20px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[24px] mb-10 text-center"
             style={{ letterSpacing: "-0.5px" }}
           >
-            Wat je elke maand krijgt
+            Wat er in elke editie zit
           </h2>
           <div className="grid gap-4 sm:grid-cols-3">
             {[
-              { label: "Concreet inzicht", description: "Eén AI-toepassing uitgelegd zonder jargon - wat het is, wat het kost, wat het oplevert." },
-              { label: "Voorbeeld uit de regio", description: "Hoe een Limburgs bedrijf AI heeft ingezet - en wat het opleverde." },
-              { label: "Gratis tool", description: "Een template, prompt of tool die je direct kunt gebruiken." },
+              { label: "Concreet inzicht", description: "Één AI-toepassing uitgelegd: wat het is, wat het kost, wat het oplevert. Geen abstracties." },
+              { label: "Voorbeeld uit de regio", description: "Hoe een Limburgs bedrijf AI heeft ingezet — en wat het in de praktijk opleverde." },
+              { label: "Gratis tool", description: "Een template, prompt of tool die je de volgende dag al kunt gebruiken." },
             ].map((item) => (
               <div key={item.label} className="border border-black/[0.06] bg-[#f2f3f5] p-6 text-center">
                 <span className="text-xs font-medium uppercase tracking-widest text-[#22c55e] block mb-3">{item.label}</span>

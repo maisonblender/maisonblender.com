@@ -1,26 +1,26 @@
 const testimonials = [
   {
     quote:
-      "Dankzij MAISON BLNDR verwerken we inkoopfacturen nu volledig automatisch. Wat vroeger een halve dag kostte, doet de AI in minuten. Indrukwekkend.",
+      "Inkoopfacturen verwerken we nu volledig automatisch. Wat vroeger een halve dag werk was, doet de AI in minuten.",
     name: "Marco van den Berg",
     title: "Directeur Operations",
-    company: "Productiebedrijf, Sittard",
+    company: "Productiebedrijf Sittard",
     initials: "MB",
   },
   {
     quote:
-      "We hadden geen idee waar te beginnen met AI. Het team van MAISON BLNDR maakte in één gesprek duidelijk welke processen het meeste zouden opleveren. Aanrader voor elk MKB-bedrijf in Limburg.",
+      "In één gesprek werd duidelijk welke processen het meeste opleveren. Voor elk MKB-bedrijf een aanrader.",
     name: "Ilse Hermans",
     title: "Eigenaar",
-    company: "Hermans Accountancy, Geleen",
+    company: "Hermans Accountancy Geleen",
     initials: "IH",
   },
   {
     quote:
-      "Onze AI-chatbot beantwoordt nu 80% van de klantvragen zonder menselijke tussenkomst. De klanttevredenheid is omhooggegaan en ons team kan zich focussen op echte problemen.",
+      "Onze chatbot beantwoordt 80% van de klantvragen zonder tussenkomst. Klanttevredenheid omhoog, team focust op de echte problemen.",
     name: "Tom Houben",
     title: "Hoofd Klantcontact",
-    company: "Houben Installatietechniek, Maastricht",
+    company: "Houben Installatietechniek Maastricht",
     initials: "TH",
   },
 ];
@@ -40,9 +40,9 @@ export default function Testimonials() {
               className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[26px]"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Minder werk.
+              Wat klanten
               <br />
-              <span className="font-exposure">Elke week opnieuw.</span>
+              <span className="font-exposure">zeggen.</span>
             </h2>
           </div>
 
