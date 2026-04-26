@@ -24,11 +24,15 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import AmbassadorPresence, { type PresenceState } from "./AmbassadorPresence";
-import AmbassadorVoice from "./AmbassadorVoice";
+import AmbassadorVoice, { type SpeakSession } from "./AmbassadorVoice";
 import BrandTransform from "./BrandTransform";
 import SuggestedQuestions from "./SuggestedQuestions";
 import LiveConversation from "./LiveConversation";
 import { safeInlineMarkdown } from "@/lib/security/escape";
+import {
+  extractCompleteSentences,
+  flushRemainder,
+} from "@/lib/brand-ambassador/sentence-stream";
 import type {
   BrandContext,
   ChatMessage,
@@ -105,7 +109,18 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   const [voiceEnabled, setVoiceEnabled] = useState(false);
   const [audioLevel, setAudioLevel] = useState(0);
   const [presenceState, setPresenceState] = useState<PresenceState>("idle");
-  const [lastAssistantText, setLastAssistantText] = useState("");
+  // Streaming TTS queue: zinnen worden per stuk gequeued zodra ze compleet
+  // zijn (tijdens SSE-stream) zodat de voice direct kan beginnen praten ipv
+  // te wachten op het volledige antwoord. De `id` incrementeert per user-turn
+  // zodat AmbassadorVoice kan detecteren dat het een nieuwe response is en
+  // oude queue moet droppen.
+  const [speakSession, setSpeakSession] = useState<SpeakSession>({
+    id: 0,
+    sentences: [],
+  });
+  // Trackt hoeveel chars van de huidige response al naar TTS-queue zijn
+  // gestuurd. Reset bij elke nieuwe turn.
+  const speakCursorRef = useRef<number>(0);
   const [briefingOpen, setBriefingOpen] = useState(false);
   const [briefingStatus, setBriefingStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [briefingError, setBriefingError] = useState<string>("");
@@ -139,7 +154,8 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   // Open bij brand-change opnieuw (nieuw openings-antwoord).
   useEffect(() => {
     setBubbles([openingMessage(brand)]);
-    setLastAssistantText("");
+    setSpeakSession((s) => ({ id: s.id + 1, sentences: [] }));
+    speakCursorRef.current = 0;
   }, [brand]);
 
   // Feature-detect of ElevenLabs ConvAI server-side geconfigureerd is.
@@ -184,6 +200,12 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
       setInput("");
       setSending(true);
       setPresenceState("thinking");
+
+      // Nieuwe user-turn: reset TTS queue. AmbassadorVoice detecteert
+      // session id verandering en aborteert eventuele nog draaiende audio
+      // van een vorig antwoord.
+      setSpeakSession((s) => ({ id: s.id + 1, sentences: [] }));
+      speakCursorRef.current = 0;
 
       const historyForApi: ChatMessage[] = [
         ...apiMessages,
@@ -262,6 +284,21 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 }
                 return next;
               });
+
+              // Streaming TTS: extract complete zinnen uit `clean` sinds de
+              // laatste cursor en append ze aan de speak-queue. Voice kan
+              // zo direct beginnen praten zonder te wachten op "done".
+              const { sentences, nextIdx } = extractCompleteSentences(
+                clean,
+                speakCursorRef.current
+              );
+              if (sentences.length > 0) {
+                speakCursorRef.current = nextIdx;
+                setSpeakSession((s) => ({
+                  id: s.id,
+                  sentences: [...s.sentences, ...sentences],
+                }));
+              }
             } else if (eventName === "done") {
               const { clean, suggestions } = extractSuggestions(full);
               setBubbles((prev) => {
@@ -277,7 +314,17 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 }
                 return next;
               });
-              setLastAssistantText(clean);
+
+              // Flush eventuele resterende tekst (korte antwoorden zonder
+              // eindteken, of laatste zin zonder trailing whitespace).
+              const remainder = flushRemainder(clean, speakCursorRef.current);
+              if (remainder) {
+                speakCursorRef.current = clean.length;
+                setSpeakSession((s) => ({
+                  id: s.id,
+                  sentences: [...s.sentences, remainder],
+                }));
+              }
             } else if (eventName === "error") {
               const msg =
                 data && typeof data === "object" && typeof (data as { error?: string }).error === "string"
@@ -705,7 +752,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 onSubmit={handleVoiceTranscript}
                 onInterim={handleVoiceInterim}
                 onError={handleVoiceError}
-                speakText={voiceEnabled ? lastAssistantText : undefined}
+                speakSession={speakSession}
                 enabled={voiceEnabled}
                 onAudioLevel={handleAudioLevel}
                 disabled={sending}

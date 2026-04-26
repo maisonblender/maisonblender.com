@@ -20,11 +20,24 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 
+/**
+ * Streaming TTS queue:
+ *  - `id` incrementeert per user-turn. Als de id wijzigt droppen we elke
+ *    nog-draaiende audio en starten fris: de vorige response is obsolete.
+ *  - `sentences` is een cumulatieve array — tijdens SSE-streaming worden
+ *    er zinnen aan het eind toegevoegd. We houden intern bij tot welke
+ *    index we gespeeld hebben en pakken de volgende zodra we vrij zijn.
+ */
+export interface SpeakSession {
+  id: number;
+  sentences: string[];
+}
+
 interface Props {
   onSubmit: (text: string) => void;
   onInterim?: (text: string) => void;
   onError?: (message: string) => void;
-  speakText?: string;
+  speakSession?: SpeakSession;
   enabled: boolean;
   onAudioLevel?: (level: number) => void;
   disabled?: boolean;
@@ -133,7 +146,7 @@ export default function AmbassadorVoice({
   onSubmit,
   onInterim,
   onError,
-  speakText,
+  speakSession,
   enabled,
   onAudioLevel,
   disabled = false,
@@ -150,9 +163,19 @@ export default function AmbassadorVoice({
   const rafRef = useRef<number | null>(null);
 
   const interimRef = useRef<string>("");
-  const lastSpokenRef = useRef<string>("");
   const activeAudioRef = useRef<HTMLAudioElement | null>(null);
   const activeAbortRef = useRef<AbortController | null>(null);
+
+  // Queue-state voor streaming TTS. `playedIdx` = index van de volgende zin
+  // die we gaan uitspreken. `lastSessionId` detecteert nieuwe turns zodat
+  // we de queue kunnen resetten. `playing` voorkomt overlappende fetches.
+  const playedIdxRef = useRef<number>(0);
+  const lastSessionIdRef = useRef<number>(-1);
+  const playingRef = useRef<boolean>(false);
+  // Live-reference naar de huidige session zodat de play-loop altijd de
+  // laatste state ziet zonder dat we hem in callback-deps hoeven te zetten.
+  const sessionRef = useRef<SpeakSession | undefined>(speakSession);
+  sessionRef.current = speakSession;
 
   useEffect(() => {
     setSupported(getSpeechRecognition() !== null);
@@ -437,32 +460,65 @@ export default function AmbassadorVoice({
     startRecognition();
   }
 
-  // TTS van binnenkomende antwoorden: ElevenLabs first, SpeechSynthesis fallback.
-  useEffect(() => {
-    if (!enabled) return;
-    if (!speakText || speakText === lastSpokenRef.current) return;
+  /**
+   * Probeer de volgende zin uit de queue af te spelen. Idempotent: als we
+   * al bezig zijn, of de queue leeg is, doet deze niks. Na het afspelen
+   * recurst hij zelf om de volgende zin te pakken — zo houden we playback
+   * gapless terwijl de chat-stream nieuwe zinnen blijft aanvoeren.
+   */
+  const tryPlayNext = useCallback(async () => {
+    if (playingRef.current) return;
+    const session = sessionRef.current;
+    if (!session) return;
+    if (playedIdxRef.current >= session.sentences.length) return;
 
-    lastSpokenRef.current = speakText;
-
-    // Cancel eventuele vorige playback.
-    stopPlayback();
+    const sentence = session.sentences[playedIdxRef.current];
+    const expectedSessionId = session.id;
+    playingRef.current = true;
 
     const abort = new AbortController();
     activeAbortRef.current = abort;
 
-    (async () => {
-      const ok = await speakViaElevenLabs(speakText, abort);
+    try {
+      const ok = await speakViaElevenLabs(sentence, abort);
       if (!ok && !abort.signal.aborted) {
-        await speakNative(speakText, abort.signal);
+        await speakNative(sentence, abort.signal);
       }
-    })().catch(() => {
-      // Ignore — best-effort.
-    });
+    } catch {
+      // Best-effort — ga door naar volgende zin.
+    }
 
-    return () => {
-      abort.abort();
-    };
-  }, [speakText, enabled, speakViaElevenLabs, stopPlayback]);
+    playingRef.current = false;
+
+    // Als de session is gewisseld tijdens afspelen (user stelde nieuwe
+    // vraag): stop met spelen, de session-effect handelt reset af.
+    if (sessionRef.current?.id !== expectedSessionId) return;
+
+    playedIdxRef.current += 1;
+
+    // Recursief volgende zin proberen. Zo lopen we de queue leeg zonder
+    // dat we afhankelijk zijn van re-renders.
+    void tryPlayNext();
+  }, [speakViaElevenLabs]);
+
+  // Reageer op wijzigingen in de queue: nieuwe zin toegevoegd → probeer
+  // te spelen. Nieuwe session id → reset cursor en abort lopende audio.
+  useEffect(() => {
+    if (!enabled) return;
+    const session = speakSession;
+    if (!session) return;
+
+    if (session.id !== lastSessionIdRef.current) {
+      lastSessionIdRef.current = session.id;
+      playedIdxRef.current = 0;
+      // Abort lopende audio van vorige turn. playingRef wordt op false
+      // gezet door stopPlayback → abort → promise resolves.
+      stopPlayback();
+      playingRef.current = false;
+    }
+
+    void tryPlayNext();
+  }, [speakSession, enabled, tryPlayNext, stopPlayback]);
 
   useEffect(() => {
     if (!enabled) stopPlayback();
