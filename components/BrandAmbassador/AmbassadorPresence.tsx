@@ -37,6 +37,17 @@ interface Props {
   size?: number;
   /** Extra className om in de layout te passen. */
   className?: string;
+  /**
+   * Contrastmodus:
+   *   - "dark"  (default) — licht-getinte mint tegen donkere achtergrond
+   *   - "light"           — donker-getinte mint tegen lichte achtergrond
+   *
+   * De site-wide shell detecteert automatisch wat onder de Presence zit
+   * en switcht live tussen de twee. Componenten die in een vast-donkere
+   * context draaien (/brand-ambassador hero) kunnen deze prop gewoon
+   * weglaten.
+   */
+  contrastMode?: "dark" | "light";
 }
 
 interface Ring {
@@ -71,11 +82,13 @@ export default function AmbassadorPresence({
   audioLevel = 0,
   size = 280,
   className = "",
+  contrastMode = "dark",
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const stateRef = useRef<PresenceState>(state);
   const hueRef = useRef(hue);
   const audioRef = useRef(audioLevel);
+  const modeRef = useRef<"dark" | "light">(contrastMode);
   const animRef = useRef<number | null>(null);
   const reducedMotionRef = useRef(false);
 
@@ -90,6 +103,10 @@ export default function AmbassadorPresence({
   useEffect(() => {
     audioRef.current = audioLevel;
   }, [audioLevel]);
+
+  useEffect(() => {
+    modeRef.current = contrastMode;
+  }, [contrastMode]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -136,20 +153,56 @@ export default function AmbassadorPresence({
 
       const h = hueRef.current;
       const audio = audioRef.current;
+      const mode = modeRef.current;
 
-      // Clear met subtle dark fill (geen pitch-black zodat de glow werkt).
+      // ----------------------------------------------------------------
+      // Contrast-palette: beslist alle kleuren op basis van de mode.
+      //
+      //   "dark"   = Presence tegen donkere pagina-achtergrond.
+      //              Licht-getinte mint tinten, positieve glow eromheen.
+      //              Dit is de originele look.
+      //
+      //   "light"  = Presence tegen lichte pagina-achtergrond.
+      //              Donker-getinte mint tinten + inkt-achtige rings zodat
+      //              de vorm leesbaar blijft. Glow wordt subtiel
+      //              donkergetint (i.p.v. lichtgevend) omdat licht-op-licht
+              //        geen visueel contrast oplevert.
+      // ----------------------------------------------------------------
+      const P =
+        mode === "light"
+          ? {
+              glowInner: `hsla(${h}, 70%, 28%, ${0.14 * profile.glow})`,
+              glowMid: `hsla(${h}, 70%, 22%, ${0.05 * profile.glow})`,
+              glowOuter: `hsla(${h}, 70%, 18%, 0)`,
+              coreInner: `hsla(${h}, 85%, 42%, 0.95)`,
+              coreMid: `hsla(${h}, 80%, 28%, 0.7)`,
+              coreOuter: `hsla(${h}, 75%, 20%, 0.3)`,
+              coreStroke: (op: number) => `hsla(${h}, 95%, 22%, ${Math.min(1, op * 1.6)})`,
+              ringStroke: (op: number) => `hsla(${h}, 90%, 26%, ${Math.min(1, op * 1.9)})`,
+              dot: `hsla(${h}, 95%, 20%, 0.95)`,
+            }
+          : {
+              glowInner: `hsla(${h}, 90%, 60%, ${0.18 * profile.glow})`,
+              glowMid: `hsla(${h}, 85%, 50%, ${0.06 * profile.glow})`,
+              glowOuter: `hsla(${h}, 80%, 40%, 0)`,
+              coreInner: `hsla(${h}, 90%, 68%, 0.9)`,
+              coreMid: `hsla(${h}, 85%, 45%, 0.55)`,
+              coreOuter: `hsla(${h}, 80%, 30%, 0.2)`,
+              coreStroke: (op: number) => `hsla(${h}, 100%, 75%, ${op})`,
+              ringStroke: (op: number) => `hsla(${h}, 100%, 70%, ${op * profile.glow})`,
+              dot: `hsla(${h}, 100%, 85%, 0.95)`,
+            };
+
       ctx.clearRect(0, 0, size, size);
 
-      // Radiale gradient als achtergrond-glow.
       const glowRadius = baseRadius * (1.6 + profile.glow * 0.2);
       const glow = ctx.createRadialGradient(cx, cy, baseRadius * 0.2, cx, cy, glowRadius);
-      glow.addColorStop(0, `hsla(${h}, 90%, 60%, ${0.18 * profile.glow})`);
-      glow.addColorStop(0.6, `hsla(${h}, 85%, 50%, ${0.06 * profile.glow})`);
-      glow.addColorStop(1, `hsla(${h}, 80%, 40%, 0)`);
+      glow.addColorStop(0, P.glowInner);
+      glow.addColorStop(0.6, P.glowMid);
+      glow.addColorStop(1, P.glowOuter);
       ctx.fillStyle = glow;
       ctx.fillRect(0, 0, size, size);
 
-      // Teken elke ring. Bij reduced-motion: één statische cirkel.
       const rc = reducedMotionRef.current ? 1 : profile.ringCount;
 
       for (let r = 0; r < rc; r++) {
@@ -162,7 +215,6 @@ export default function AmbassadorPresence({
         ctx.beginPath();
         for (let i = 0; i <= ring.points; i++) {
           const a = (i / ring.points) * TAU;
-          // Meerdere overlappende sinus-golven voor organische flow.
           const noise =
             Math.sin(a * 3 + offset + ring.phase) * 0.5 +
             Math.sin(a * 5 - offset * 1.3 + ring.phase * 2) * 0.3 +
@@ -175,31 +227,29 @@ export default function AmbassadorPresence({
         }
         ctx.closePath();
 
-        // Gevulde kern (eerste ring) is licht getint; outer rings zijn outlines.
         if (r === 0) {
           const coreGradient = ctx.createRadialGradient(cx, cy - baseRadius * 0.2, 0, cx, cy, ring.radius * 1.1);
-          coreGradient.addColorStop(0, `hsla(${h}, 90%, 68%, 0.9)`);
-          coreGradient.addColorStop(0.7, `hsla(${h}, 85%, 45%, 0.55)`);
-          coreGradient.addColorStop(1, `hsla(${h}, 80%, 30%, 0.2)`);
+          coreGradient.addColorStop(0, P.coreInner);
+          coreGradient.addColorStop(0.7, P.coreMid);
+          coreGradient.addColorStop(1, P.coreOuter);
           ctx.fillStyle = coreGradient;
           ctx.fill();
 
-          ctx.strokeStyle = `hsla(${h}, 100%, 75%, ${ring.opacity})`;
+          ctx.strokeStyle = P.coreStroke(ring.opacity);
           ctx.lineWidth = ring.lineWidth;
           ctx.stroke();
         } else {
-          ctx.strokeStyle = `hsla(${h}, 100%, 70%, ${ring.opacity * profile.glow})`;
+          ctx.strokeStyle = P.ringStroke(ring.opacity);
           ctx.lineWidth = ring.lineWidth;
           ctx.stroke();
         }
       }
 
-      // Subtiele highlight-dot bovenin (suggereert "leven").
       const pulse = reducedMotionRef.current ? 1 : 1 + Math.sin(t * 0.004) * 0.2;
       const dotRadius = 3 * pulse;
       ctx.beginPath();
       ctx.arc(cx, cy - baseRadius * 0.35, dotRadius, 0, TAU);
-      ctx.fillStyle = `hsla(${h}, 100%, 85%, 0.95)`;
+      ctx.fillStyle = P.dot;
       ctx.fill();
 
       animRef.current = requestAnimationFrame(render);

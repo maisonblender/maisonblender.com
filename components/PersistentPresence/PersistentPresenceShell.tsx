@@ -28,7 +28,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
 import AmbassadorPresence from "@/components/BrandAmbassador/AmbassadorPresence";
 import {
   SIZE_PX,
@@ -36,6 +36,7 @@ import {
   type PresenceAnchor,
   type PresenceSize,
 } from "./PresenceContext";
+import { useBackgroundLuminance } from "./useBackgroundLuminance";
 
 /**
  * Lazy-load de AmbassadorWidget. Hij pullt een grote streaming/chat
@@ -148,6 +149,20 @@ export default function PersistentPresenceShell() {
     ? { duration: 0 }
     : { type: "spring" as const, stiffness: 260, damping: 28, mass: 0.9 };
 
+  // Ref op het launcher-wrapper-element. We gebruiken z'n positie om de
+  // achtergrond-luminance eronder te sampleren en contrastMode te bepalen.
+  const launcherRef = useRef<HTMLDivElement | null>(null);
+  const getLauncherCenter = useCallback(() => {
+    const el = launcherRef.current;
+    if (!el) return null;
+    const r = el.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }, []);
+  const luminance = useBackgroundLuminance(getLauncherCenter, {
+    enabled: !isOpen && !hidden,
+  });
+  const contrastMode = luminance === "light" ? "light" : "dark";
+
   const handleLauncherClick = useCallback(() => {
     open();
     clearNudge();
@@ -204,9 +219,11 @@ export default function PersistentPresenceShell() {
         ) : !hidden ? (
           <motion.div
             key="presence-launcher"
+            ref={launcherRef}
             layoutId={LAYOUT_ID}
             style={wrapperStyle}
             className="mb-presence-launcher z-[55]"
+            data-presence-ignore=""
             transition={spring}
             initial={{ opacity: 0, scale: 0.6 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -219,21 +236,31 @@ export default function PersistentPresenceShell() {
               aria-expanded={isOpen}
               className="group relative block h-full w-full cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#4af0c4] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b0d]"
               style={{
-                // Soft halo achter de canvas — leesbaar tegen witte én donkere
-                // achtergronden, zonder een harde container op te leggen.
+                // Soft halo achter de canvas. Adapteert met contrastMode:
+                //   - dark  = lichte mint-glow (huidig, staat mooi op donker)
+                //   - light = donkere mint-wash (geeft gewicht tegen wit)
                 background:
-                  "radial-gradient(circle, rgba(74, 240, 196, 0.18) 0%, rgba(74, 240, 196, 0.08) 40%, transparent 70%)",
+                  contrastMode === "light"
+                    ? "radial-gradient(circle, rgba(6, 92, 68, 0.14) 0%, rgba(6, 92, 68, 0.06) 45%, transparent 72%)"
+                    : "radial-gradient(circle, rgba(74, 240, 196, 0.18) 0%, rgba(74, 240, 196, 0.08) 40%, transparent 70%)",
+                transition: "background 320ms ease",
               }}
             >
               <AmbassadorPresence
                 state={state}
                 hue={160}
                 size={px}
+                contrastMode={contrastMode}
                 className="pointer-events-none"
               />
               <span
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-0 rounded-full ring-1 ring-[#4af0c4]/0 transition-[box-shadow,ring-color] duration-300 group-hover:ring-[#4af0c4]/30 group-hover:[box-shadow:0_0_24px_rgba(74,240,196,0.3)]"
+                className={[
+                  "pointer-events-none absolute inset-0 rounded-full ring-1 transition-[box-shadow,ring-color] duration-300",
+                  contrastMode === "light"
+                    ? "ring-[#0a7a5c]/0 group-hover:ring-[#0a7a5c]/40 group-hover:[box-shadow:0_0_24px_rgba(10,122,92,0.25)]"
+                    : "ring-[#4af0c4]/0 group-hover:ring-[#4af0c4]/30 group-hover:[box-shadow:0_0_24px_rgba(74,240,196,0.3)]",
+                ].join(" ")}
               />
             </button>
 
