@@ -4,10 +4,13 @@
  * Gebruik:
  *   - `escapeHtml(s)` voor elke string die in HTML attributes of innerHTML belandt.
  *   - `safeInlineMarkdown(s)` voor markdown→HTML conversie van AI- of user-content
- *     waarbij we **bold** / *italic* willen renderen maar geen rauwe HTML.
+ *     waarbij we **bold** / *italic* willen renderen, én waarin bekende interne
+ *     paden / externe URL's / e-mailadressen automatisch klikbaar worden.
  *   - `sanitizeHeader(s)` voor email subject / from / to of andere HTTP/SMTP headers,
  *     voorkomt CRLF-injectie.
  */
+
+import { linkifyInlineHtml, restoreLinkTokens } from "./auto-link";
 
 /** Escape HTML special chars zodat geen tags / attributes uitgevoerd worden. */
 export function escapeHtml(s: string | undefined | null): string {
@@ -21,19 +24,25 @@ export function escapeHtml(s: string | undefined | null): string {
 }
 
 /**
- * Veilige markdown-inline conversie:
- *   1. Eerst HTML escapen (alle `<`, `>`, `&`, `"`, `'` worden onschuldig).
- *   2. Daarna alleen de specifieke markdown-patterns terug-converteren naar
- *      `<strong>` / `<em>` tags. Omdat de tags zelf gebruik maken van de
- *      al-geëscapete chars (`*` blijft `*`), kan een aanvaller geen tag injecteren.
+ * Veilige markdown-inline conversie + auto-linking:
+ *   1. HTML escapen (alle `<`, `>`, `&`, `"`, `'` worden onschuldig).
+ *   2. Linkify: markdown `[tekst](href)`, bare URL's, e-mails en bekende
+ *      interne paden → placeholder-tokens + anchor-HTML in aparte array.
+ *   3. Markdown bold/italic-substitutie op de restant-tekst (placeholders
+ *      zijn opaque voor deze regexes en lopen dus niet kapot).
+ *   4. Tokens her-inserteren → definitieve HTML met `<a>`-tags.
  *
  * BELANGRIJK: deze output is veilig om met `dangerouslySetInnerHTML` te renderen.
+ *   Anchors krijgen class `mb-prose-link` voor styling; zie globals.css voor
+ *   de light/dark varianten.
  */
 export function safeInlineMarkdown(text: string | undefined | null): string {
-  return escapeHtml(text)
-    .replace(/\u2014/g, "-")
+  const escaped = escapeHtml(text).replace(/\u2014/g, "-");
+  const { html, tokens } = linkifyInlineHtml(escaped);
+  const withMarkdown = html
     .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
     .replace(/\*(.+?)\*/g, "<em>$1</em>");
+  return restoreLinkTokens(withMarkdown, tokens);
 }
 
 /**

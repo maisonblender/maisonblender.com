@@ -898,7 +898,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
         <section className="flex min-h-0 flex-1 flex-col">
           <div
             ref={threadRef}
-            className="flex-1 overflow-y-auto px-5 py-6 sm:px-8"
+            className="mb-prose-on-dark flex-1 overflow-y-auto px-5 py-6 sm:px-8"
             aria-live="polite"
           >
             <div className="mx-auto flex max-w-2xl flex-col gap-6">

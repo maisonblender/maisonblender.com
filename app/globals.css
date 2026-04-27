@@ -232,3 +232,37 @@ body {
     box-shadow: 0 0 0 4px rgba(74, 240, 196, 0.12);
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Auto-linking in AI-output (safeInlineMarkdown / auto-link.ts).
+   Alle anchors die door de linkifier worden gegenereerd krijgen
+   class `mb-prose-link`. Twee varianten:
+     1. Default (light surfaces): WCAG AA-compliant donkergroene
+        tekst — gebruikt var(--accent-text) = #0a7a5c.
+     2. `.mb-prose-on-dark` context: helder mint voor zichtbaarheid
+        op donkere backgrounds (chat-bubbles, ambassador-widget).
+   ───────────────────────────────────────────────────────────── */
+.mb-prose-link {
+  color: var(--accent-text);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  text-decoration-color: color-mix(in srgb, var(--accent-text) 40%, transparent);
+  transition: color 180ms ease, text-decoration-color 180ms ease;
+  font-weight: 500;
+}
+
+.mb-prose-link:hover {
+  color: #065c44;
+  text-decoration-color: currentColor;
+}
+
+.mb-prose-on-dark .mb-prose-link {
+  color: #4af0c4;
+  text-decoration-color: rgba(74, 240, 196, 0.4);
+}
+
+.mb-prose-on-dark .mb-prose-link:hover {
+  color: #7cf5d3;
+  text-decoration-color: #4af0c4;
+}
