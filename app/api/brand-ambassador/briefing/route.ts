@@ -196,7 +196,7 @@ export async function POST(request: NextRequest) {
           ${paragraphsToHtml(briefingTekst)}
         </td></tr>
         <tr><td style="background:#ffffff; padding:0 40px 32px;">
-          <a href="https://maisonblender.com/strategiegesprek" style="display:inline-block; background:#22c55e; color:#1f1f1f; padding:14px 28px; border-radius:100px; text-decoration:none; font-size:14px; font-weight:700;">Plan een gratis strategiegesprek →</a>
+          <a href="https://maisonblender.com/strategiegesprek" style="display:inline-block; background:#1f1f1f; color:#ffffff; padding:14px 28px; border-radius:100px; text-decoration:none; font-size:14px; font-weight:700; letter-spacing:-0.2px; border:1px solid #1f1f1f;">Plan een gratis strategiegesprek →</a>
         </td></tr>
         <tr><td style="background:#f2f3f5; padding:20px 40px;">
           <p style="margin:0; font-size:12px; color:#b2b2be; line-height:1.6;">MAISON BLNDR · Burg. Coonenplein 37, 6141BZ Sittard · <a href="mailto:info@maisonblender.com" style="color:#b2b2be;">info@maisonblender.com</a></p>

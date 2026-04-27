@@ -167,6 +167,17 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
     [bubbles]
   );
 
+  // Index van de LAATSTE assistant-bubble. Alleen daar tonen we suggestion-chips
+  // zodat oude (niet-contextuele) chips boven in de thread niet blijven hangen.
+  // Zo schuiven de voorgeprogrammeerde openings-chips automatisch weg zodra
+  // de AI een contextueel antwoord heeft geformuleerd.
+  const lastAssistantIdx = useMemo(() => {
+    for (let i = bubbles.length - 1; i >= 0; i--) {
+      if (bubbles[i].role === "assistant") return i;
+    }
+    return -1;
+  }, [bubbles]);
+
   // Auto-scroll naar onder bij nieuwe bubbles.
   useEffect(() => {
     const el = threadRef.current;
@@ -664,7 +675,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                         </span>
                       )}
                     </div>
-                    {!b.streaming && b.suggestions.length > 0 && (
+                    {i === lastAssistantIdx && !b.streaming && b.suggestions.length > 0 && (
                       <SuggestedQuestions
                         suggestions={b.suggestions}
                         onPick={handleSuggestion}
@@ -685,54 +696,25 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 )
               )}
 
-              {/* Briefing CTA + form */}
-              {bubbles.length > 3 && briefingStatus !== "sent" && (
-                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-                  {!briefingOpen ? (
-                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                      <div>
-                        <p className="text-sm font-semibold text-white">
-                          Wil je een AI-samenvatting van dit gesprek?
-                        </p>
-                        <p className="mt-1 text-xs text-white/60">
-                          Gepersonaliseerd. Eén mail. Jij bepaalt wat je ermee doet.
-                        </p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setBriefingOpen(true)}
-                        className="shrink-0 rounded-full bg-[#4af0c4] px-5 py-2.5 text-xs font-semibold text-[#1f1f1f] transition-colors hover:bg-[#7cf5d3]"
-                      >
-                        Stuur mij een briefing →
-                      </button>
-                    </div>
-                  ) : (
-                    <BriefingForm
-                      initialBrand={brand?.name ?? ""}
-                      onSubmit={submitBriefing}
-                      onCancel={() => setBriefingOpen(false)}
-                      status={briefingStatus}
-                      error={briefingError}
-                    />
-                  )}
-                </div>
-              )}
-
-              {briefingStatus === "sent" && (
-                <div className="mt-4 rounded-2xl border border-[#4af0c4]/30 bg-[#4af0c4]/10 px-5 py-4 text-sm text-white/90">
-                  ✓ Verstuurd. Check je inbox binnen een paar minuten. Geen mail? Check je
-                  spamfolder of mail direct karl@maisonblender.com.
-                </div>
-              )}
             </div>
           </div>
 
-          {/* Input */}
+          {/* Input
+           *
+           * Mobile-specifics:
+           *   - text-base (16px) om iOS auto-zoom op focus te voorkomen.
+           *   - min-w-0 op de input zodat flex-shrink werkt binnen de rounded
+           *     container — anders duwt een lange placeholder de submit-knop
+           *     buiten beeld.
+           *   - Voice-toggle hidden op mobile: op telefoon is de mic-knop
+           *     voldoende, de on/off-toggle is een desktop-luxe. Zo houden we
+           *     input + mic + submit binnen viewport.
+           */}
           <form
             onSubmit={handleSubmit}
-            className="relative z-10 border-t border-white/5 px-5 py-4 sm:px-8"
+            className="relative z-10 border-t border-white/5 px-3 py-3 sm:px-8 sm:py-4"
           >
-            <div className="mx-auto flex max-w-2xl items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-2 py-2 pl-4 focus-within:border-white/25 sm:gap-3">
+            <div className="mx-auto flex max-w-2xl items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] py-2 pl-4 pr-1.5 focus-within:border-white/25 sm:gap-3 sm:pr-2">
               <input
                 type="text"
                 value={voiceInterim || input}
@@ -742,16 +724,16 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 }}
                 placeholder={
                   sending
-                    ? "Wacht tot Ambassador klaar is…"
+                    ? "Ambassador is bezig…"
                     : voiceInterim
                     ? ""
                     : brand
-                    ? `Stel een vraag aan de ${brand.name} Ambassador…`
-                    : "Stel een vraag aan de Ambassador…"
+                    ? `Vraag ${brand.name} Ambassador…`
+                    : "Stel je vraag…"
                 }
                 disabled={sending}
                 maxLength={2000}
-                className={`flex-1 bg-transparent text-sm focus:outline-none disabled:opacity-40 placeholder:text-white/35 ${
+                className={`min-w-0 flex-1 bg-transparent text-base focus:outline-none disabled:opacity-40 placeholder:text-white/55 sm:text-sm ${
                   voiceInterim ? "italic text-[#4af0c4]/90" : "text-white"
                 }`}
               />
@@ -765,7 +747,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                     ? "Voorleesmodus aan — antwoorden worden uitgesproken"
                     : "Voorleesmodus uit — klik om antwoorden te laten voorlezen"
                 }
-                className={`inline-flex h-9 items-center gap-1.5 rounded-full border px-2.5 text-[10px] font-semibold uppercase tracking-widest transition-colors sm:px-3 ${
+                className={`hidden h-9 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold uppercase tracking-widest transition-colors sm:inline-flex ${
                   voiceEnabled
                     ? "border-[#4af0c4] bg-[#4af0c4]/15 text-[#4af0c4]"
                     : "border-white/15 text-white/50 hover:text-white/80"
@@ -776,7 +758,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                   {voiceEnabled && <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />}
                   {voiceEnabled && <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />}
                 </svg>
-                <span className="hidden sm:inline">{voiceEnabled ? "on" : "off"}</span>
+                <span>{voiceEnabled ? "on" : "off"}</span>
               </button>
               <AmbassadorVoice
                 onSubmit={handleVoiceTranscript}
@@ -791,7 +773,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
                 type="submit"
                 disabled={sending || !input.trim()}
                 aria-label="Verstuur"
-                className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white text-[#1f1f1f] transition-all hover:bg-white/90 disabled:bg-white/20 disabled:text-white/40 disabled:cursor-not-allowed"
+                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1f1f1f] transition-all hover:bg-white/90 disabled:bg-white/20 disabled:text-white/40 disabled:cursor-not-allowed sm:h-11 sm:w-11"
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12l14 -7l-7 14l-2 -5l-5 -2" />
@@ -808,6 +790,51 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
               </p>
             )}
           </form>
+
+          {/* Briefing CTA + form — onder de input zodat het gesprek niet
+           *  onderbroken wordt. Verschijnt pas zodra er daadwerkelijk iets te
+           *  briefen valt (>3 bubbles). */}
+          {bubbles.length > 3 && briefingStatus !== "sent" && (
+            <div className="px-3 pb-4 sm:px-8">
+              <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+                {!briefingOpen ? (
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                    <div>
+                      <p className="text-sm font-semibold text-white">
+                        Wil je een AI-samenvatting van dit gesprek?
+                      </p>
+                      <p className="mt-1 text-xs text-white/60">
+                        Gepersonaliseerd. Eén mail. Jij bepaalt wat je ermee doet.
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setBriefingOpen(true)}
+                      className="shrink-0 rounded-full bg-[#4af0c4] px-5 py-2.5 text-xs font-semibold text-[#1f1f1f] transition-colors hover:bg-[#7cf5d3]"
+                    >
+                      Stuur mij een briefing →
+                    </button>
+                  </div>
+                ) : (
+                  <BriefingForm
+                    initialBrand={brand?.name ?? ""}
+                    onSubmit={submitBriefing}
+                    onCancel={() => setBriefingOpen(false)}
+                    status={briefingStatus}
+                    error={briefingError}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+
+          {briefingStatus === "sent" && (
+            <div className="px-3 pb-4 sm:px-8">
+              <div className="mx-auto max-w-2xl rounded-2xl border border-[#4af0c4]/30 bg-[#4af0c4]/10 px-5 py-4 text-sm text-white/90">
+                ✓ E-mail is verzonden. Geen e-mail? Check je spambox.
+              </div>
+            </div>
+          )}
         </section>
       </div>
     </div>
