@@ -86,7 +86,7 @@ export default function BrandAmbassadorSection() {
 
             <ul className="flex flex-col gap-3 text-sm text-white/65">
               {[
-                "Geen avatar — een canvas-gerenderde liquid entity (4 states)",
+                "Geen chatbox-icoontje — een levende vorm die zichtbaar luistert, denkt en antwoordt",
                 "Imagine-this-is-yours: transformeer UI live naar jouw merk",
                 "Voice-mode via Web Speech API — audio blijft in de browser",
                 "Conversationele leadcapture — geen formulieren, wel gekwalificeerde leads",

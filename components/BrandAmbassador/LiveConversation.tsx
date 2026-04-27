@@ -330,13 +330,13 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
               className="text-[10px] font-semibold uppercase tracking-[0.3em]"
               style={{ color: active ? `hsl(${hue}, 70%, 65%)` : "rgba(255,255,255,0.4)" }}
             >
-              {status === "connected" && presenceState === "listening" && "Liquid Presence · Listening"}
-              {status === "connected" && presenceState === "responding" && "Liquid Presence · Speaking"}
-              {status === "connecting" && "Liquid Presence · Connecting"}
-              {status === "requesting-mic" && "Liquid Presence · Waiting for mic"}
-              {status === "disconnecting" && "Liquid Presence · Disconnecting"}
-              {status === "idle" && "Liquid Presence · Standby"}
-              {status === "error" && "Liquid Presence · Error"}
+              {status === "connected" && presenceState === "listening" && "Liquid Presence · Luistert"}
+              {status === "connected" && presenceState === "responding" && "Liquid Presence · Antwoordt"}
+              {status === "connecting" && "Liquid Presence · Verbindt"}
+              {status === "requesting-mic" && "Liquid Presence · Wacht op microfoon"}
+              {status === "disconnecting" && "Liquid Presence · Ontkoppelt"}
+              {status === "idle" && "Liquid Presence · Gereed"}
+              {status === "error" && "Liquid Presence · Fout"}
             </span>
             <span className="text-sm text-white/80">{statusLabel[status]}</span>
           </div>

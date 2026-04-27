@@ -212,3 +212,23 @@ body {
     font-size: 16px !important;
   }
 }
+
+/* ─────────────────────────────────────────────────────────────
+   Brand Ambassador — subtiele "ademen" animatie voor de onboarding
+   hint-chip. Zachter dan animate-pulse: glijdt tussen 0.7 → 1 →
+   0.7 opacity + een glow-puls om de aandacht naar de Liquid
+   Presence te trekken zonder visueel lawaai. Alleen opacity +
+   box-shadow worden geanimeerd zodat Tailwind-transforms (zoals
+   translate-x) intact blijven. Wordt automatisch uitgeschakeld
+   door de prefers-reduced-motion-override hierboven.
+   ───────────────────────────────────────────────────────────── */
+@keyframes mbAmbassadorHintPulse {
+  0%, 100% {
+    opacity: 0.78;
+    box-shadow: 0 0 0 0 rgba(74, 240, 196, 0);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 4px rgba(74, 240, 196, 0.12);
+  }
+}

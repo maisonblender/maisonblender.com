@@ -41,6 +41,57 @@ import type {
 
 const MAISON_HUE = 160; // MAISON BLNDR mint accent
 
+/**
+ * STATE_META — de Liquid Presence heeft vier zichtbare gedragsmodi. We
+ * visualiseren die op drie plaatsen tegelijk zodat de bezoeker het zeker
+ * merkt: (1) de canvas-vorm zelf, (2) een gekleurde pulse-dot naast het
+ * label, (3) het label mee-muteert (ipv statisch "Liquid Presence").
+ *
+ * Kleuren zijn bewust niet-merkgekoppeld: ze moeten werken onder elke hue
+ * die de Imagine-This-Is-Yours-modus aanzet. Daarom gebruiken we warme/koele
+ * accenten die semantisch aansluiten bij de activiteit (amber = input,
+ * sky = processing, mint = output).
+ */
+const STATE_META: Record<PresenceState, {
+  label: string;
+  description: string;
+  shortDescription: string;
+  dotClass: string;
+  animate: boolean;
+}> = {
+  idle: {
+    label: "Gereed",
+    description: "Klaar voor je vraag — in tekst of spraak.",
+    shortDescription: "zachte ademhaling, wacht op input",
+    dotClass: "bg-white/55",
+    animate: false,
+  },
+  listening: {
+    label: "Luistert",
+    description: "Luistert naar je stem…",
+    shortDescription: "beweegt mee met audio-amplitude",
+    dotClass: "bg-amber-300",
+    animate: true,
+  },
+  thinking: {
+    label: "Denkt",
+    description: "Analyseert je vraag…",
+    shortDescription: "snellere, complexere morfologie",
+    dotClass: "bg-sky-300",
+    animate: true,
+  },
+  responding: {
+    label: "Antwoordt",
+    description: "Formuleert een antwoord…",
+    shortDescription: "uitdijende beweging terwijl tekst streamt",
+    dotClass: "bg-[#4af0c4]",
+    animate: true,
+  },
+};
+
+const ONBOARDING_STORAGE_KEY = "mb_ambassador_presence_hint_seen_v1";
+const ONBOARDING_DURATION_MS = 10_000;
+
 interface AssistantBubble {
   role: "assistant";
   content: string;
@@ -151,10 +202,15 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   const [voiceError, setVoiceError] = useState("");
   const [liveOpen, setLiveOpen] = useState(false);
   const [liveAvailable, setLiveAvailable] = useState(false);
+  // Presence-UI: tooltip met 4-states-uitleg + onboarding-hint voor nieuwe bezoekers
+  const [statesTooltipOpen, setStatesTooltipOpen] = useState(false);
+  const [showOnboardingHint, setShowOnboardingHint] = useState(false);
 
   const threadRef = useRef<HTMLDivElement | null>(null);
   const briefingRef = useRef<HTMLDivElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
+  const tooltipRef = useRef<HTMLDivElement | null>(null);
+  const tooltipTriggerRef = useRef<HTMLButtonElement | null>(null);
 
   const hue = brand?.hue ?? MAISON_HUE;
 
@@ -236,6 +292,69 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
       };
     }
   }, [fullscreen]);
+
+  // Onboarding-hint: toon de eerste keer een subtiele instructie ("let op de
+  // vorm — hij reageert mee") zodat de 4-states-belofte niet ongemerkt blijft.
+  // Slaat op in localStorage zodat terugkerende bezoekers niet gestoord worden.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      const seen = window.localStorage.getItem(ONBOARDING_STORAGE_KEY);
+      if (seen === "1") return;
+    } catch {
+      // localStorage kan geblokkeerd zijn (privacy-mode etc.) — dan is de
+      // hint gewoon niet persistent. Zachte degradatie: wél tonen, niet
+      // eindeloos herhalen want hij verdwijnt sowieso na ONBOARDING_DURATION.
+    }
+    setShowOnboardingHint(true);
+    const timer = window.setTimeout(() => {
+      setShowOnboardingHint(false);
+      try {
+        window.localStorage.setItem(ONBOARDING_STORAGE_KEY, "1");
+      } catch {
+        // noop — zie boven
+      }
+    }, ONBOARDING_DURATION_MS);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  // Hide de onboarding-hint zodra er daadwerkelijk iets gebeurt in het
+  // gesprek — dan is de demonstratie al vanzelf begonnen.
+  useEffect(() => {
+    if (bubbles.length > 1 || presenceState !== "idle") {
+      setShowOnboardingHint(false);
+      try {
+        window.localStorage.setItem(ONBOARDING_STORAGE_KEY, "1");
+      } catch {
+        // noop
+      }
+    }
+  }, [bubbles.length, presenceState]);
+
+  // States-tooltip: sluit bij klik buiten of Escape — standaard popover-UX.
+  useEffect(() => {
+    if (!statesTooltipOpen) return;
+    const handlePointerDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as Node;
+      if (tooltipRef.current?.contains(target)) return;
+      if (tooltipTriggerRef.current?.contains(target)) return;
+      setStatesTooltipOpen(false);
+    };
+    const handleKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setStatesTooltipOpen(false);
+        tooltipTriggerRef.current?.focus();
+      }
+    };
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleKey);
+    return () => {
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleKey);
+    };
+  }, [statesTooltipOpen]);
 
   const send = useCallback(
     async (text: string) => {
@@ -626,28 +745,152 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
       {/* Main: presence + thread */}
       <div className="relative z-10 flex flex-1 flex-col overflow-hidden lg:grid lg:grid-cols-[minmax(260px,_38%)_1fr] lg:gap-0">
         {/* Presence column */}
-        <aside className="flex flex-col items-center justify-center gap-4 border-b border-white/5 px-6 py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-10">
-          <AmbassadorPresence
-            state={presenceState}
-            hue={hue}
-            audioLevel={audioLevel}
-            size={fullscreen ? 320 : 240}
-          />
-          <div className="text-center">
-            <p className="text-[11px] uppercase tracking-widest text-white/40">
-              Liquid presence
-            </p>
-            <p className="mt-1 text-xs text-white/60">
-              {presenceState === "thinking"
-                ? "Analyseert je vraag…"
-                : presenceState === "responding"
-                ? "Formuleert een antwoord…"
-                : presenceState === "listening"
-                ? "Luistert naar je stem…"
-                : voiceEnabled
+        <aside className="relative flex flex-col items-center justify-center gap-4 border-b border-white/5 px-6 py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-10">
+          <div className="relative">
+            <AmbassadorPresence
+              state={presenceState}
+              hue={hue}
+              audioLevel={audioLevel}
+              size={fullscreen ? 320 : 240}
+            />
+            {/* Onboarding hint — verschijnt alleen bij eerste bezoek, 10s */}
+            {showOnboardingHint && (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none absolute -right-2 top-6 hidden translate-x-full items-center gap-2 whitespace-nowrap rounded-full border border-[#4af0c4]/50 bg-[#4af0c4]/10 px-3 py-1.5 text-[11px] font-medium text-[#4af0c4] backdrop-blur-sm animate-[fadeIn_400ms_ease-out] sm:inline-flex"
+                style={{
+                  animation: "mbAmbassadorHintPulse 2.5s ease-in-out infinite",
+                }}
+              >
+                <span aria-hidden="true">←</span>
+                <span>Kijk wat de vorm doet tijdens het gesprek</span>
+              </div>
+            )}
+          </div>
+
+          {/* Status-blok: label mee-muteert + pulse-dot + tooltip-trigger */}
+          <div className="relative text-center">
+            <div className="inline-flex items-center gap-2">
+              <span
+                aria-hidden="true"
+                className={`h-1.5 w-1.5 rounded-full transition-colors duration-300 ${STATE_META[presenceState].dotClass} ${
+                  STATE_META[presenceState].animate ? "animate-pulse" : ""
+                }`}
+              />
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-white/75">
+                Liquid Presence{" "}
+                <span aria-hidden="true" className="text-white/40">
+                  ·
+                </span>{" "}
+                <span className="text-white transition-colors duration-300">
+                  {STATE_META[presenceState].label}
+                </span>
+              </p>
+              <button
+                ref={tooltipTriggerRef}
+                type="button"
+                onClick={() => setStatesTooltipOpen((o) => !o)}
+                aria-label="Wat betekenen de vier states?"
+                aria-expanded={statesTooltipOpen}
+                aria-haspopup="dialog"
+                className="ml-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/30 text-[9px] font-semibold text-white/70 transition-colors hover:border-white/60 hover:bg-white/5 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4af0c4]"
+              >
+                ?
+              </button>
+            </div>
+
+            <p
+              className="mt-1.5 text-xs text-white/85 transition-opacity duration-200"
+              aria-live="polite"
+            >
+              {presenceState === "idle" && voiceEnabled
                 ? "Klaar voor je vraag — in tekst of spraak."
-                : "Klaar voor je vraag."}
+                : STATE_META[presenceState].description}
             </p>
+
+            {/* Mobile onboarding hint — onder de status ipv naast de orb */}
+            {showOnboardingHint && (
+              <div
+                aria-hidden="true"
+                className="pointer-events-none mx-auto mt-3 inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[#4af0c4]/50 bg-[#4af0c4]/10 px-3 py-1.5 text-[11px] font-medium text-[#4af0c4] backdrop-blur-sm sm:hidden"
+                style={{
+                  animation: "mbAmbassadorHintPulse 2.5s ease-in-out infinite",
+                }}
+              >
+                <span aria-hidden="true">↑</span>
+                <span>De vorm reageert mee op het gesprek</span>
+              </div>
+            )}
+
+            {/* States-tooltip: compacte legenda met alle 4 modi */}
+            {statesTooltipOpen && (
+              <div
+                ref={tooltipRef}
+                role="dialog"
+                aria-label="Uitleg van de vier states"
+                className="absolute left-1/2 top-full z-30 mt-3 w-[280px] -translate-x-1/2 rounded-xl border border-white/10 bg-[#141416] p-4 text-left shadow-[0_20px_60px_-10px_rgba(0,0,0,0.8)]"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <h3 className="text-[11px] font-semibold uppercase tracking-widest text-white/80">
+                    Vier zichtbare modi
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setStatesTooltipOpen(false);
+                      tooltipTriggerRef.current?.focus();
+                    }}
+                    aria-label="Sluit uitleg"
+                    className="-mr-1 -mt-1 flex h-5 w-5 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/5 hover:text-white/90"
+                  >
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="1.75"
+                      className="h-3 w-3"
+                      aria-hidden="true"
+                    >
+                      <path d="M4 4l12 12M16 4L4 16" strokeLinecap="round" />
+                    </svg>
+                  </button>
+                </div>
+                <p className="mt-2 text-[11px] leading-relaxed text-white/65">
+                  De Liquid Presence verandert zichtbaar van gedrag per
+                  gespreksfase. Let op vorm én kleur tijdens het praten.
+                </p>
+                <ul className="mt-3 flex flex-col gap-2.5 text-[11px]">
+                  {(Object.keys(STATE_META) as PresenceState[]).map((s) => (
+                    <li
+                      key={s}
+                      className={`flex items-start gap-2.5 rounded-md px-2 py-1.5 transition-colors ${
+                        presenceState === s
+                          ? "bg-white/5"
+                          : "bg-transparent"
+                      }`}
+                    >
+                      <span
+                        className={`mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full ${STATE_META[s].dotClass} ${
+                          presenceState === s && STATE_META[s].animate
+                            ? "animate-pulse"
+                            : ""
+                        }`}
+                        aria-hidden="true"
+                      />
+                      <span className="flex-1">
+                        <span className="font-semibold text-white/95">
+                          {STATE_META[s].label}
+                        </span>
+                        <span className="text-white/55">
+                          {" — "}
+                          {STATE_META[s].shortDescription}
+                        </span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </aside>
 

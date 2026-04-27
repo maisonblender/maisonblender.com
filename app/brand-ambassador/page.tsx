@@ -167,6 +167,91 @@ export default function BrandAmbassadorPage() {
           </div>
         </section>
 
+        {/* "Waarom is dit geen chatbot?" — de drie beloftes achter de Liquid Presence */}
+        <section className="relative overflow-hidden bg-[#0b0b0d] px-6 py-20 text-white lg:py-28">
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 opacity-[0.04]"
+            style={{
+              backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+              backgroundSize: "32px 32px",
+            }}
+          />
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              width: "720px",
+              height: "520px",
+              background:
+                "radial-gradient(closest-side, rgba(74,240,196,0.10), transparent 70%)",
+            }}
+          />
+
+          <div className="relative z-10 mx-auto max-w-6xl">
+            <div className="mx-auto mb-14 flex max-w-2xl flex-col items-center gap-4 text-center">
+              <span className="text-xs font-medium uppercase tracking-widest text-white/50">
+                Waarom is dit geen chatbot?
+              </span>
+              <h2
+                className="text-[26px] font-normal leading-[1.2] tracking-tight sm:text-[32px]"
+                style={{ letterSpacing: "-0.95px" }}
+              >
+                Drie dingen die de Ambassador doet
+                <br />
+                <span className="font-exposure">die geen andere chatbot doet.</span>
+              </h2>
+            </div>
+
+            <div className="grid gap-px bg-white/[0.06] sm:grid-cols-3">
+              {[
+                {
+                  nummer: "01",
+                  titel: "Geen avatar",
+                  kop: "Geen stockfoto, geen initialen-cirkel, geen cartoon-robot.",
+                  body:
+                    "Een abstracte aanwezigheid die geen gezicht oplegt aan je merk. Net zoals je winkel geen pratende mascotte in de etalage heeft — een sfeer, geen karikatuur.",
+                },
+                {
+                  nummer: "02",
+                  titel: "Vier zichtbare modi",
+                  kop: "Hij laat je zien dat hij luistert, denkt en antwoordt.",
+                  body:
+                    "De vorm beweegt anders tijdens elke fase: volgt je stem tijdens luisteren, versnelt tijdens verwerken, dijt uit tijdens antwoorden. Geen drie puntjes — een presence die meeleeft.",
+                },
+                {
+                  nummer: "03",
+                  titel: "Vloeibaar van merk",
+                  kop: "Typ een andere bedrijfsnaam en zie 'm van karakter veranderen.",
+                  body:
+                    "Kleur, toon en zelfbeschrijving passen zich live aan. Geen rebranding-sprint nodig om de ervaring te testen — voer een domein in en de Ambassador spreekt in jouw merkstem.",
+                },
+              ].map((item) => (
+                <article
+                  key={item.nummer}
+                  className="flex flex-col gap-4 bg-[#0b0b0d] p-8 transition-colors hover:bg-[#141416]"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs text-white/40">{item.nummer}</span>
+                    <div className="h-px w-8 bg-white/20" />
+                  </div>
+                  <h3 className="text-lg font-bold text-white">{item.titel}</h3>
+                  <p className="text-sm font-medium text-white/90">{item.kop}</p>
+                  <p className="text-sm leading-relaxed text-white/60">{item.body}</p>
+                </article>
+              ))}
+            </div>
+
+            <p className="mx-auto mt-10 max-w-2xl text-center text-xs text-white/45">
+              Ga terug naar de demo hierboven en kijk naar de vorm terwijl je een
+              vraag stelt — je ziet hem van <span className="text-white/75">gereed</span>{" "}
+              naar <span className="text-white/75">luistert</span> naar{" "}
+              <span className="text-white/75">denkt</span> naar{" "}
+              <span className="text-white/75">antwoordt</span> schakelen.
+            </p>
+          </div>
+        </section>
+
         {/* Differentiators — "waarom anders" */}
         <section className="bg-white px-6 py-20 lg:py-28">
           <div className="mx-auto max-w-6xl">
