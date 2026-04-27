@@ -160,7 +160,7 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
         overrides: brand
           ? {
               agent: {
-                firstMessage: `Hoi, fijn dat je er bent. Ik ben de Brand Ambassador van MAISON BLNDR — dit is een demo van hoe een Ambassador voor ${brand.name} zou klinken. Waar zullen we het over hebben?`,
+                firstMessage: `Hoi, fijn dat je er bent. Ik ben de Ambassador — de Brand Presence van MAISON BLNDR. Dit is een demo van hoe een Brand Presence voor ${brand.name} zou klinken. Waar zullen we het over hebben?`,
               },
             }
           : undefined,

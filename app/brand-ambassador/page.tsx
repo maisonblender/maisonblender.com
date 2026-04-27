@@ -4,27 +4,27 @@ import Footer from "@/components/Footer";
 import AmbassadorWidget from "@/components/BrandAmbassador/AmbassadorWidget";
 
 export const metadata: Metadata = {
-  title: "AI Brand Ambassador | MAISON BLNDR — Geen chatbot. Een aanwezigheid.",
+  title: "Brand Presence | MAISON BLNDR — Geen chatbot. Een aanwezigheid.",
   description:
-    "Geen chatbox. De eerste AI Brand Ambassador met een levende presence, voice, en live brand-transform. Getraind op jouw producten, diensten en tone-of-voice. Ervaar 'm nu.",
+    "Geen chatbox. De eerste AI Brand Presence met een levende Liquid Presence, voice, en live brand-transform. Getraind op jouw producten, diensten en tone-of-voice. Ervaar 'm nu.",
   alternates: { canonical: "https://maisonblender.com/brand-ambassador" },
   openGraph: {
-    title: "AI Brand Ambassador | MAISON BLNDR",
+    title: "Brand Presence | MAISON BLNDR",
     description:
-      "Geen chatbox. Een levende brand presence die 24/7 namens je merk spreekt — op je website, WhatsApp en Teams.",
+      "Geen chatbox. Een levende Brand Presence die 24/7 namens je merk spreekt — op je website, WhatsApp en Teams. Ontmoet de Ambassador.",
     url: "https://maisonblender.com/brand-ambassador",
     images: [
       {
         url: "https://maisonblender.com/images/brand-ambassador-encounter.png",
         width: 1024,
         height: 576,
-        alt: "MAISON BLNDR · THE ENCOUNTER — AI Brand Ambassador met levende Liquid Presence",
+        alt: "MAISON BLNDR · THE ENCOUNTER — AI Brand Presence met levende Ambassador",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "AI Brand Ambassador | MAISON BLNDR",
+    title: "Brand Presence | MAISON BLNDR",
     description: "Geen chatbox. Een aanwezigheid — voice-ready, levend, en transformeert voor jouw merk.",
     images: ["https://maisonblender.com/images/brand-ambassador-encounter.png"],
   },
@@ -104,7 +104,7 @@ export default function BrandAmbassadorPage() {
           <div className="relative z-10 mx-auto max-w-5xl text-center">
             <div className="inline-flex items-center gap-2 border border-white/20 bg-white/5 px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-white/80">
               <span className="h-2 w-2 rounded-full bg-[#4af0c4]" />
-              Probeer hem nu — dit is onze eigen Brand Ambassador.
+              Probeer hem nu — dit is onze eigen Brand Presence.
             </div>
             <h1
               className="mt-8 text-[28px] font-normal leading-[1.2] tracking-tight sm:text-[35px] lg:text-[32px]"
@@ -115,9 +115,10 @@ export default function BrandAmbassadorPage() {
               <span className="font-exposure">Die mag 24/7 beschikbaar zijn.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
-              Een AI Brand Ambassador spreekt met de stem van jouw merk — productkennis,
-              tone-of-voice en commerciële instelling inbegrepen. Via je website, WhatsApp of
-              Teams. Altijd beschikbaar, zonder dat je er extra mensen voor nodig hebt.
+              Een Brand Presence is een levende AI-aanwezigheid die met de stem van jouw merk
+              spreekt — productkennis, tone-of-voice en commerciële instelling inbegrepen. Via
+              je website, WhatsApp of Teams. Altijd beschikbaar, zonder dat je er extra mensen
+              voor nodig hebt.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
               <a
@@ -154,7 +155,7 @@ export default function BrandAmbassadorPage() {
                 className="text-[26px] font-normal leading-tight tracking-tight text-white sm:text-[32px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
-                Probeer het zelf — dit is onze eigen Brand Ambassador.
+                Probeer het zelf — dit is onze eigen Brand Presence.
               </h2>
               <p className="mx-auto max-w-xl text-sm text-white/55">
                 Geen nep-data, geen scriptje. Stel een vraag over onze diensten, tarieven of aanpak
@@ -243,7 +244,7 @@ export default function BrandAmbassadorPage() {
               className="text-[24px] font-normal leading-[1.2] tracking-tight sm:text-[29px] lg:text-[32px]"
               style={{ letterSpacing: "-0.95px" }}
             >
-              Wil je een Brand Ambassador die
+              Wil je een Brand Presence die
               <br />
               <span className="font-exposure">klinkt als jouw merk?</span>
             </h2>

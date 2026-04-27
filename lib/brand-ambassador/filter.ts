@@ -86,15 +86,15 @@ const OFFTOPIC_PATTERNS: Array<{ re: RegExp; topic: string }> = [
 
 function redirectReply(topic: string): string {
   return (
-    `Ik ben de Brand Ambassador van MAISON BLNDR — ik kan je niet helpen met ${topic}, ` +
+    `Ik ben de Ambassador van MAISON BLNDR — ik kan je niet helpen met ${topic}, ` +
     `maar wél met alles rond AI-automatisering, onze AI-op-Maat Sessies, onze Brand ` +
-    `Ambassador zelf, tarieven, en hoe we werken. Waar zou ik je mee op weg kunnen helpen?`
+    `Presence zelf, tarieven, en hoe we werken. Waar zou ik je mee op weg kunnen helpen?`
   );
 }
 
 const INJECTION_REPLY =
   "Ik focus me graag op MAISON BLNDR. Vertel me liever iets over je bedrijf of " +
-  "stel een vraag over onze AI-Sessies, Brand Ambassador, of aanpak — daar help ik je echt vooruit.";
+  "stel een vraag over onze AI-Sessies, Brand Presence, of aanpak — daar help ik je echt vooruit.";
 
 /**
  * Filter alleen het laatste user-bericht. Eerdere berichten zijn al door

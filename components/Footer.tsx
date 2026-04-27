@@ -42,7 +42,7 @@ export default function Footer() {
           <nav className="mt-4 flex flex-col gap-3 text-sm text-[#1f1f1f]">
             <Link href="/#diensten" className="hover:text-black transition-colors">Diensten</Link>
             <Link href="/sessies" className="hover:text-black transition-colors">AI-op-Maat Sessies</Link>
-            <Link href="/brand-ambassador" className="hover:text-black transition-colors">Brand Ambassador</Link>
+            <Link href="/brand-ambassador" className="hover:text-black transition-colors">Brand Presence</Link>
             <Link href="/#sectoren" className="hover:text-black transition-colors">Sectoren</Link>
             <Link href="/#aanpak" className="hover:text-black transition-colors">Aanpak</Link>
           </nav>

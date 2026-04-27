@@ -190,7 +190,7 @@ export async function POST(request: NextRequest) {
       <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px; width:100%;">
         <tr><td style="background:#1f1f1f; padding:32px 40px;">
           <div style="font-size:18px; font-weight:700; color:#ffffff; letter-spacing:-0.3px;">MAISON BLNDR</div>
-          <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px; text-transform:uppercase; letter-spacing:0.08em;">Brand Ambassador · Gesprekssamenvatting</div>
+          <div style="font-size:11px; color:rgba(255,255,255,0.5); margin-top:4px; text-transform:uppercase; letter-spacing:0.08em;">Brand Presence · Gesprekssamenvatting</div>
         </td></tr>
         <tr><td style="background:#ffffff; padding:32px 40px;">
           ${paragraphsToHtml(briefingTekst)}
@@ -207,7 +207,7 @@ export async function POST(request: NextRequest) {
 </body></html>`;
 
   const subjectBedrijf = lead.bedrijf ? sanitizeHeader(lead.bedrijf, 80) : "jouw gesprek";
-  const subject = `Samenvatting Brand Ambassador — ${subjectBedrijf}`;
+  const subject = `Samenvatting Brand Presence — ${subjectBedrijf}`;
 
   try {
     const res = await fetch("https://api.resend.com/emails", {

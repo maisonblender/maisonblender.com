@@ -78,10 +78,10 @@ export default function BrandAmbassadorSection() {
             </h2>
 
             <p className="max-w-xl text-base leading-relaxed text-white/65">
-              Geen bolletje rechtsonder. Een levende presence die ademt, spreekt en luistert — met
+              Geen bolletje rechtsonder. Een Brand Presence die ademt, spreekt en luistert — met
               de stem van jouw merk. Voice-ready, met een &quot;imagine this is yours&quot;-modus
-              die ter plekke transformeert naar jouw bedrijfsnaam. De eerste Ambassador die als
-              product aanvoelt, niet als widget.
+              die ter plekke transformeert naar jouw bedrijfsnaam. De Ambassador die als product
+              aanvoelt, niet als widget.
             </p>
 
             <ul className="flex flex-col gap-3 text-sm text-white/65">

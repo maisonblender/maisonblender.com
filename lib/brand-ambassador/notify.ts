@@ -56,8 +56,8 @@ function buildEmailHtml(
 ): string {
   const label =
     variant === "conversational"
-      ? "Spontane lead — Brand Ambassador gesprek"
-      : "Nieuwe briefing — Brand Ambassador";
+      ? "Spontane lead — Brand Presence gesprek"
+      : "Nieuwe briefing — Brand Presence";
 
   const veiligBedrijf = lead.bedrijf ?? "—";
   const veiligBrand = brand ? escapeHtml(brand.name) : null;
@@ -138,7 +138,7 @@ async function sendNotifyEmail(
     variant === "conversational" ? "conversational lead" : "briefing";
   const identifier =
     lead.bedrijf ?? lead.naam ?? lead.email ?? lead.telefoon ?? "onbekend";
-  const subject = `Brand Ambassador ${kanaal} — ${sanitizeHeader(identifier, 120)}`;
+  const subject = `Brand Presence ${kanaal} — ${sanitizeHeader(identifier, 120)}`;
 
   try {
     const body: Record<string, unknown> = {

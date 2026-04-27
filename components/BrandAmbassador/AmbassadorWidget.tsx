@@ -73,7 +73,7 @@ function openingMessage(brand: BrandContext | null): AssistantBubble {
   if (brand) {
     return {
       role: "assistant",
-      content: `${greet} — dit is een demo van hoe een Brand Ambassador voor "${brand.name}" zou kunnen klinken. Voor een echte implementatie zou ik getraind zijn op jullie producten en tone-of-voice. Waar wil je als eerste over praten: aanpak, tijdlijn, of wat het concreet kost?`,
+      content: `${greet} — dit is een demo van hoe een Brand Presence voor "${brand.name}" zou kunnen klinken. Voor een echte implementatie zou ik getraind zijn op jullie producten en tone-of-voice. Waar wil je als eerste over praten: aanpak, tijdlijn, of wat het concreet kost?`,
       suggestions: [
         "Wat kost dit voor ons?",
         "Hoe snel kan dit live?",
@@ -85,10 +85,10 @@ function openingMessage(brand: BrandContext | null): AssistantBubble {
 
   return {
     role: "assistant",
-    content: `${greet}. Ik ben de Brand Ambassador van MAISON BLNDR — geen chatbot, geen FAQ-zoekmachine. Waar wil je het over hebben: onze aanpak, een specifiek proces in jouw bedrijf, of wat deze Ambassador concreet kost?`,
+    content: `${greet}. Ik ben de Ambassador — de Brand Presence van MAISON BLNDR. Geen chatbot, geen FAQ-zoekmachine. Waar wil je het over hebben: onze aanpak, een specifiek proces in jouw bedrijf, of wat een Brand Presence concreet kost?`,
     suggestions: [
       "Wat maakt jullie anders dan andere AI-bureaus?",
-      "Wat kost een Brand Ambassador?",
+      "Wat kost een Brand Presence?",
       "Hoe snel staat iets live?",
     ],
     streaming: false,
