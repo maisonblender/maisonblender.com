@@ -266,3 +266,23 @@ body {
   color: #7cf5d3;
   text-decoration-color: #4af0c4;
 }
+
+/* ------------------------------------------------------------------------
+   Persistent Liquid Presence — site-wide launcher.
+
+   Wanneer de cookie-banner actief is (body[data-cookie-banner="open"]),
+   duwen we de bottom-docked launcher omhoog zodat hij niet achter de
+   banner verdwijnt. Inline-style wint doorgaans, dus we gebruiken
+   !important-vrije CSS met een hogere specificiteit via de data-attr +
+   de launcher-class. Werkt alleen op bottom-positioned launchers; corner-tr
+   / tl worden niet aangeraakt.
+   ------------------------------------------------------------------------ */
+body[data-cookie-banner="open"] .mb-presence-launcher {
+  bottom: 160px !important;
+}
+
+@media (min-width: 640px) {
+  body[data-cookie-banner="open"] .mb-presence-launcher {
+    bottom: 140px !important;
+  }
+}

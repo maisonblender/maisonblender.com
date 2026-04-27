@@ -50,6 +50,21 @@ export default function CookieBanner() {
     /* eslint-enable react-hooks/set-state-in-effect */
   }, []);
 
+  // Publiceer banner-zichtbaarheid naar document.body zodat andere
+  // site-wide UI-elementen (bv. de Liquid Presence launcher) hun positie
+  // kunnen offsetten om niet te overlappen met deze bottom-bar.
+  useEffect(() => {
+    if (typeof document === "undefined") return;
+    if (visible) {
+      document.body.dataset.cookieBanner = "open";
+    } else {
+      delete document.body.dataset.cookieBanner;
+    }
+    return () => {
+      delete document.body.dataset.cookieBanner;
+    };
+  }, [visible]);
+
   useEffect(() => {
     if (!visible) return;
     const t = window.requestAnimationFrame(() => {

@@ -5,6 +5,7 @@ import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieBanner from "@/components/CookieBanner";
 import SkipLink from "@/components/SkipLink";
 import ScrollToTop from "@/components/ScrollToTop";
+import PersistentPresenceRoot from "@/components/PersistentPresence";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -265,7 +266,7 @@ export default function RootLayout({
         <SkipLink />
         <GoogleAnalytics />
         <CookieBanner />
-        {children}
+        <PersistentPresenceRoot>{children}</PersistentPresenceRoot>
       </body>
     </html>
   );

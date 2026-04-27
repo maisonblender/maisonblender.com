@@ -51,6 +51,10 @@ export default function HeroWithTriage() {
               </button>
               <a
                 href="/quickscan"
+                data-presence-trigger="hero-quickscan"
+                data-presence-hint="Vragen over de scan?"
+                data-presence-chip="Vraag de Ambassador"
+                data-presence-prefill="Kun je kort uitleggen wat de AI Impact Scan doet en hoelang die duurt?"
                 className="rounded-full border border-black/10 bg-white px-8 py-4 text-sm font-medium text-[#1f1f1f] transition-all hover:border-black/20 hover:bg-[#f2f3f5]"
               >
                 Start AI Impact Scan →

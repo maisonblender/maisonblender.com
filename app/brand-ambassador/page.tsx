@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import AmbassadorWidget from "@/components/BrandAmbassador/AmbassadorWidget";
+import HidePresence from "@/components/PersistentPresence/HidePresence";
 
 export const metadata: Metadata = {
   title: "Brand Presence | MAISON BLNDR — Geen chatbot. Een aanwezigheid.",
@@ -78,6 +79,7 @@ const kanalen = [
 export default function BrandAmbassadorPage() {
   return (
     <>
+      <HidePresence />
       <Nav />
       <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
         {/* Hero */}

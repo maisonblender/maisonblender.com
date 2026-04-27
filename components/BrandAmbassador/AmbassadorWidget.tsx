@@ -149,6 +149,14 @@ function openingMessage(brand: BrandContext | null): AssistantBubble {
 interface Props {
   /** Start in fullscreen? Default false. */
   defaultFullscreen?: boolean;
+  /**
+   * Optionele tekst die bij mount in het input-veld wordt voorgevuld.
+   * Gebruikt door site-wide triggers (text-selection nudge, Cmd+K met
+   * query) om de conversatie met context te starten. De gebruiker
+   * moet zelf nog op Enter / Verstuur klikken — we versturen niet
+   * automatisch om misverstanden te voorkomen.
+   */
+  initialPrompt?: string;
 }
 
 /**
@@ -171,13 +179,16 @@ function newConversationId(): string {
   );
 }
 
-export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
+export default function AmbassadorWidget({
+  defaultFullscreen = false,
+  initialPrompt,
+}: Props) {
   const [brand, setBrand] = useState<BrandContext | null>(null);
   const [conversationId, setConversationId] = useState<string>(() =>
     newConversationId()
   );
   const [bubbles, setBubbles] = useState<Bubble[]>(() => [openingMessage(null)]);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(initialPrompt ?? "");
   const [sending, setSending] = useState(false);
   const [fullscreen, setFullscreen] = useState(defaultFullscreen);
   const [voiceEnabled, setVoiceEnabled] = useState(false);
