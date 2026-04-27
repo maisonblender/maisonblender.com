@@ -157,6 +157,14 @@ interface Props {
    * automatisch om misverstanden te voorkomen.
    */
   initialPrompt?: string;
+  /**
+   * Wanneer de widget in een "modal/overlay"-context draait (bv. de
+   * site-wide PersistentPresence modal) en er dus géén embedded-state
+   * is om naar terug te vallen: geef een onClose handler mee. De
+   * header-knop rechtsboven wordt dan een X (sluit) i.p.v. het
+   * expand/collapse-icoon. Zo is er maar één knop nodig.
+   */
+  onClose?: () => void;
 }
 
 /**
@@ -182,6 +190,7 @@ function newConversationId(): string {
 export default function AmbassadorWidget({
   defaultFullscreen = false,
   initialPrompt,
+  onClose,
 }: Props) {
   const [brand, setBrand] = useState<BrandContext | null>(null);
   const [conversationId, setConversationId] = useState<string>(() =>
@@ -728,28 +737,44 @@ export default function AmbassadorWidget({
               <span className="sm:hidden">Live</span>
             </button>
           )}
-          <button
-            type="button"
-            onClick={() => setFullscreen((v) => !v)}
-            aria-label={fullscreen ? "Verlaat volledig scherm" : "Volledig scherm"}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-white/30 hover:text-white"
-          >
-            {fullscreen ? (
+          {onClose ? (
+            // Modal-context: één knop, altijd een close. Geen expand-toggle
+            // want er is niets om naar terug te vallen buiten de overlay.
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Sluit gesprek"
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-white/30 hover:text-white"
+            >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 3H5a2 2 0 0 0-2 2v4" />
-                <path d="M15 3h4a2 2 0 0 1 2 2v4" />
-                <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
-                <path d="M15 21h4a2 2 0 0 0 2-2v-4" />
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
               </svg>
-            ) : (
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M3 9V5a2 2 0 0 1 2-2h4" />
-                <path d="M21 9V5a2 2 0 0 0-2-2h-4" />
-                <path d="M3 15v4a2 2 0 0 0 2 2h4" />
-                <path d="M21 15v4a2 2 0 0 1-2 2h-4" />
-              </svg>
-            )}
-          </button>
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setFullscreen((v) => !v)}
+              aria-label={fullscreen ? "Verlaat volledig scherm" : "Volledig scherm"}
+              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-white/30 hover:text-white"
+            >
+              {fullscreen ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M9 3H5a2 2 0 0 0-2 2v4" />
+                  <path d="M15 3h4a2 2 0 0 1 2 2v4" />
+                  <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
+                  <path d="M15 21h4a2 2 0 0 0 2-2v-4" />
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 9V5a2 2 0 0 1 2-2h4" />
+                  <path d="M21 9V5a2 2 0 0 0-2-2h-4" />
+                  <path d="M3 15v4a2 2 0 0 0 2 2h4" />
+                  <path d="M21 15v4a2 2 0 0 1-2 2h-4" />
+                </svg>
+              )}
+            </button>
+          )}
         </div>
       </header>
 

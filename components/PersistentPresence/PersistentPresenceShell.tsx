@@ -182,18 +182,9 @@ export default function PersistentPresenceShell() {
             aria-modal="true"
             aria-label="Ambassador gesprek"
           >
-            <button
-              type="button"
-              onClick={close}
-              aria-label="Sluit gesprek"
-              className="absolute right-5 top-5 z-[100] inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 transition-colors hover:border-white/40 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-
+            {/* Geen aparte close-button: de AmbassadorWidget header-knop
+                gedraagt zich als close zodra we `onClose` meegeven. Dat
+                voorkomt dubbele iconen (expand + close) rechtsboven. */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -206,6 +197,7 @@ export default function PersistentPresenceShell() {
               <AmbassadorWidget
                 defaultFullscreen
                 initialPrompt={prefill ?? undefined}
+                onClose={close}
               />
             </motion.div>
           </motion.div>
