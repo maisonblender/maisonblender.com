@@ -153,6 +153,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
   const [liveAvailable, setLiveAvailable] = useState(false);
 
   const threadRef = useRef<HTMLDivElement | null>(null);
+  const briefingRef = useRef<HTMLDivElement | null>(null);
   const abortRef = useRef<AbortController | null>(null);
 
   const hue = brand?.hue ?? MAISON_HUE;
@@ -184,6 +185,19 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
     if (!el) return;
     el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
   }, [bubbles]);
+
+  // Scroll de briefing-sectie in beeld zodra:
+  //   - de user het form opent (anders zie je op mobile alleen de inputbalk
+  //     en blijft het form onder de viewport hangen)
+  //   - de bevestiging verschijnt na succesvolle verzending
+  // Gebruikt window-scroll omdat de briefing buiten de thread-scroll-container
+  // leeft (direct onder de input als deel van de section).
+  useEffect(() => {
+    if (!briefingOpen && briefingStatus !== "sent") return;
+    const el = briefingRef.current;
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [briefingOpen, briefingStatus]);
 
   // Open bij brand-change opnieuw (nieuw openings-antwoord).
   // Ook conversationId resetten: nieuwe brand = nieuwe context = server
@@ -792,10 +806,12 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
           </form>
 
           {/* Briefing CTA + form — onder de input zodat het gesprek niet
-           *  onderbroken wordt. Verschijnt pas zodra er daadwerkelijk iets te
-           *  briefen valt (>3 bubbles). */}
-          {bubbles.length > 3 && briefingStatus !== "sent" && (
-            <div className="px-3 pb-4 sm:px-8">
+           *  onderbroken wordt. Verschijnt zodra er één volledige exchange
+           *  is geweest (opening + user + assistant response = 3 bubbles),
+           *  zodat de bezoeker meteen na de eerste AI-reactie de optie ziet
+           *  om een samenvatting aan te vragen. */}
+          {bubbles.length >= 3 && briefingStatus !== "sent" && (
+            <div ref={briefingRef} className="px-3 pb-4 sm:px-8">
               <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
                 {!briefingOpen ? (
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -829,7 +845,7 @@ export default function AmbassadorWidget({ defaultFullscreen = false }: Props) {
           )}
 
           {briefingStatus === "sent" && (
-            <div className="px-3 pb-4 sm:px-8">
+            <div ref={briefingRef} className="px-3 pb-4 sm:px-8">
               <div className="mx-auto max-w-2xl rounded-2xl border border-[#4af0c4]/30 bg-[#4af0c4]/10 px-5 py-4 text-sm text-white/90">
                 ✓ E-mail is verzonden. Geen e-mail? Check je spambox.
               </div>
