@@ -177,8 +177,13 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
         },
         onError: (msg) => {
           console.error("[live-convai] error:", msg);
-          setErrorMessage("Er ging iets mis tijdens het gesprek.");
+          setErrorMessage(
+            "Er ging iets mis tijdens het gesprek. Probeer opnieuw of ga verder in tekst-chat."
+          );
           setStatus("error");
+          // Cleanup: websocket kan in broken state blijven; teardown zorgt
+          // dat een retry een verse sessie krijgt.
+          void teardown();
         },
         onModeChange: ({ mode }) => {
           setPresenceState(mode === "speaking" ? "responding" : "listening");
@@ -204,7 +209,7 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
       setStatus("error");
       startedRef.current = false;
     }
-  }, [brand, startAmplitudeLoop, stopAmplitudeLoop]);
+  }, [brand, startAmplitudeLoop, stopAmplitudeLoop, teardown]);
 
   const handleStop = useCallback(async () => {
     setStatus("disconnecting");
@@ -276,7 +281,8 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
         }}
       />
 
-      {/* Close button */}
+      {/* Close button — z-20 zodat hij BOVEN de main-content z-10 ligt,
+          anders vangt de content-laag clicks op de kruis-positie op. */}
       <button
         type="button"
         onClick={() => {
@@ -284,7 +290,7 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
           onClose();
         }}
         aria-label="Sluiten"
-        className="absolute right-5 top-5 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 transition-colors hover:border-white/40 hover:text-white"
+        className="absolute right-5 top-5 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 transition-colors hover:border-white/40 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <line x1="18" y1="6" x2="6" y2="18" />
@@ -342,9 +348,38 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
           </div>
 
           {errorMessage && (
-            <p role="status" aria-live="polite" className="max-w-md text-center text-xs text-[#ff9a9a]">
-              {errorMessage}
-            </p>
+            <div className="flex max-w-md flex-col items-center gap-3">
+              <p
+                role="status"
+                aria-live="polite"
+                className="text-center text-xs text-[#ff9a9a]"
+              >
+                {errorMessage}
+              </p>
+              {status === "error" && (
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="inline-flex items-center gap-1.5 text-[11px] font-medium uppercase tracking-widest text-white/60 underline underline-offset-4 transition-colors hover:text-white"
+                >
+                  Ga verder in tekst-chat
+                  <svg
+                    width="12"
+                    height="12"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    aria-hidden="true"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              )}
+            </div>
           )}
 
           {/* Transcript preview — laatste 2 messages */}
