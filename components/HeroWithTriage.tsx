@@ -22,8 +22,11 @@ export default function HeroWithTriage() {
         <div className="relative z-10 mx-auto flex w-full max-w-6xl flex-col items-center gap-10 md:flex-row md:items-center md:gap-12 md:text-left lg:gap-16">
           {/* Text column */}
           <div className="flex flex-1 flex-col items-center gap-6 md:items-start">
-            <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760]">
-              Van strategie naar productie · Custom AI
+            <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-center text-xs font-medium uppercase tracking-widest text-[#575760]">
+              <span>
+                Van strategie naar productie ·{" "}
+                <span className="whitespace-nowrap">Custom AI</span>
+              </span>
             </div>
 
             <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[32px]" style={{ letterSpacing: "-0.95px" }}>
