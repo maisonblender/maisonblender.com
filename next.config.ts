@@ -75,6 +75,32 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+
+  /**
+   * Domain rewrites voor de AI Collega product-sites.
+   * Registreer deze domeinen als Vercel Custom Domains — ze wijzen
+   * automatisch naar de juiste routes binnen deze Next.js app.
+   *
+   * Toevoegen: Vercel dashboard → Project → Settings → Domains
+   *   aicollegamakelaar.nl    → wordt /aicollega/makelaar/*
+   *   aicollegaaccountant.nl  → wordt /aicollega/accountant/*  (toekomstig)
+   */
+  async rewrites() {
+    return {
+      beforeFiles: [
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "aicollegamakelaar.nl" }],
+          destination: "/aicollega/makelaar/:path*",
+        },
+        {
+          source: "/:path*",
+          has: [{ type: "host", value: "www.aicollegamakelaar.nl" }],
+          destination: "/aicollega/makelaar/:path*",
+        },
+      ],
+    };
+  },
 };
 
 export default nextConfig;
