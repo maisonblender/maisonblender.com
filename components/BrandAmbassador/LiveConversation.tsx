@@ -22,6 +22,20 @@ import type { Conversation } from "@elevenlabs/client";
 import AmbassadorPresence, { type PresenceState } from "./AmbassadorPresence";
 import type { BrandContext } from "@/lib/brand-ambassador/types";
 
+/**
+ * Tijd-aware Nederlandse begroeting. ElevenLabs agent heeft een statische
+ * `first_message` server-side (zegt altijd "Goedemiddag"), wat 's ochtends
+ * of 's avonds vreemd voelt. We overriden die hier dynamisch zodat de
+ * eerste indruk altijd klopt.
+ */
+function getDutchGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 6) return "Goedenacht";
+  if (hour < 12) return "Goedemorgen";
+  if (hour < 18) return "Goedemiddag";
+  return "Goedenavond";
+}
+
 interface Props {
   open: boolean;
   onClose: () => void;
@@ -183,33 +197,72 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
     //    dat willen we niet in de main bundle.
     try {
       const { Conversation } = await import("@elevenlabs/client");
+
+      // Tijdstempel voor diagnose: is "stopt na paar woorden" een echte
+      // disconnect kort na connect, of een natural turn-end?
+      const sessionStart = Date.now();
+
+      // Altijd onze eigen tijd-aware begroeting — de server-side
+      // first_message in ElevenLabs is statisch "Goedemiddag" en klopt
+      // niet 's ochtends/'s avonds. Brand-context wordt ingebakken
+      // wanneer aanwezig.
+      const greeting = getDutchGreeting();
+      const dynamicFirstMessage = brand
+        ? `${greeting}, fijn dat je er bent. Ik ben de Ambassador — de Brand Presence van MAISON BLNDR. Dit is een demo van hoe een Brand Presence voor ${brand.name} zou klinken. Waar zullen we het over hebben?`
+        : `${greeting}. Ik ben de Brand Presence van MAISON BLNDR — de Ambassador. Waar wil je het over hebben: onze aanpak, een specifiek proces in jouw bedrijf, of wat een Ambassador concreet kost?`;
+
       const conv = await Conversation.startSession({
         signedUrl,
-        overrides: brand
-          ? {
-              agent: {
-                firstMessage: `Hoi, fijn dat je er bent. Ik ben de Ambassador — de Brand Presence van MAISON BLNDR. Dit is een demo van hoe een Brand Presence voor ${brand.name} zou klinken. Waar zullen we het over hebben?`,
-              },
-            }
-          : undefined,
-        onConnect: () => {
+        overrides: {
+          agent: {
+            firstMessage: dynamicFirstMessage,
+          },
+        },
+        onConnect: (info) => {
+          console.log("[live-convai] onConnect", info);
           setStatus("connected");
           setPresenceState("listening");
           startAmplitudeLoop();
         },
-        onDisconnect: () => {
-          setStatus("idle");
+        onDisconnect: (info) => {
+          // KRITIEK voor diagnose van "stopt na paar woorden": als dit
+          // binnen <10s na connect afgaat is er iets mis (vroege server-
+          // disconnect, of self-interruption door eigen audio-loopback).
+          const elapsedMs = Date.now() - sessionStart;
+          console.log("[live-convai] onDisconnect", { elapsedMs, info });
+
+          // Als de disconnect verdacht vroeg is, surface dat in de UI
+          // zodat we (Karl) direct zien wat er gebeurt zonder devtools.
+          if (elapsedMs < 10_000) {
+            setErrorMessage(
+              "De verbinding viel weg vlak na het starten. Probeer opnieuw of ga verder in tekst-chat."
+            );
+            let infoStr = "geen detail";
+            try {
+              infoStr =
+                typeof info === "string"
+                  ? info
+                  : JSON.stringify(info ?? {}).slice(0, 240);
+            } catch {
+              infoStr = String(info);
+            }
+            setErrorDetail(
+              `onDisconnect na ${elapsedMs}ms — ${infoStr}`
+            );
+            setStatus("error");
+          } else {
+            setStatus("idle");
+          }
           setPresenceState("idle");
           stopAmplitudeLoop();
           startedRef.current = false;
         },
         onError: (msg) => {
-          console.error("[live-convai] error:", msg);
+          const elapsedMs = Date.now() - sessionStart;
+          console.error("[live-convai] onError", { elapsedMs, msg });
           setErrorMessage(
             "Er ging iets mis tijdens het gesprek. Probeer opnieuw of ga verder in tekst-chat."
           );
-          // Probeer altijd iets readable te maken — kan string, Error, of
-          // arbitrary object zijn afhankelijk van waar in de SDK het misgaat.
           let detail = "onError (geen detail)";
           if (typeof msg === "string") {
             detail = msg;
@@ -220,16 +273,22 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
               detail = String(msg);
             }
           }
-          setErrorDetail(detail);
+          setErrorDetail(`onError na ${elapsedMs}ms — ${detail}`);
           setStatus("error");
           // Cleanup: websocket kan in broken state blijven; teardown zorgt
           // dat een retry een verse sessie krijgt.
           void teardown();
         },
         onModeChange: ({ mode }) => {
+          console.log("[live-convai] onModeChange", { mode, elapsedMs: Date.now() - sessionStart });
           setPresenceState(mode === "speaking" ? "responding" : "listening");
         },
         onMessage: ({ message, source }) => {
+          console.log("[live-convai] onMessage", {
+            source,
+            len: typeof message === "string" ? message.length : -1,
+            elapsedMs: Date.now() - sessionStart,
+          });
           if (typeof message !== "string" || !message.trim()) return;
           // source is "user" | "ai" in the ElevenLabs SDK; map "ai" → "agent"
           // voor de lokale UI-label.
