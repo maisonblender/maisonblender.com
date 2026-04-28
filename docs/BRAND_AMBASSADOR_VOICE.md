@@ -72,12 +72,48 @@ worden in ElevenLabs.
 12. Herstart de dev-server / redeploy. De "Praat live"-knop verschijnt
     automatisch in de widget-header.
 
+### 3a. Allowed overrides — VERPLICHT voor AI Collega multi-tenant
+
+De AI Collega-flow (`/aicollega/...`) hergebruikt **dezelfde**
+ElevenLabs-agent voor álle tenants en injecteert per sessie een
+tenant-specifieke prompt + first message via session overrides
+(zie `app/api/aicollega/[branche]/voice-session/route.ts`). Daarvoor moet
+het ElevenLabs-dashboard die overrides toestaan — zonder dit klinkt
+elke makelaar als de generieke MAISON BLNDR Ambassador.
+
+In de agent-config:
+
+1. Open de agent → tab **Security** (of **Advanced** in oudere UI).
+2. Onder **Allowed overrides** activeer:
+   - `Prompt` — laat ons de tenant's `buildCollegaSystemPrompt(tenant)` injecteren
+   - `First message` — laat ons NL-tijd-aware begroeting met persona/bedrijfsnaam injecteren
+   - `Language` — `nl` als override (optioneel, voor brave dynamische taalwissel)
+3. Save.
+
+Voor alleen MAISON BLNDR (geen AI Collega): **First message** override
+is genoeg — de prompt staat dan vast in het dashboard.
+
+#### Verifiëren dat overrides werken
+
+Open de demo (`/aicollega/makelaar/demo`), klik **Praat live**.
+- ✅ Eerste zin moet bevatten: `"online assistent van Makelaardij Van den Berg in Sittard"`.
+- ❌ Hoor je *"Brand Presence van MAISON BLNDR"*? → overrides zijn nog niet toegestaan in dashboard.
+
+In server-logs zie je geen errors als de override geaccepteerd is. Wordt
+de override geweigerd, dan close ElevenLabs de WebSocket binnen ~2 sec
+met code `1008` — dit verschijnt in de UI als "verbinding viel weg vlak
+na het starten".
+
 ## 4. Rate limiting & kosten
 
 Server-side rate limits (per IP):
 
 - **TTS**: 40 calls / 10 min — dempt abuse, ruim voor normaal gebruik
-- **Voice session**: 6 sessies / uur — elk live gesprek kost €0.10–0.30/min
+- **Voice session (MAISON BLNDR)**: 6 sessies / uur per IP
+- **Voice session (AI Collega)**: 6 sessies / uur per `tenant + IP` —
+  zo blokkeert één misbruiker niet meteen het volledige tenant-quota
+  voor andere bezoekers van diezelfde makelaar
+- Elk live gesprek kost €0.10–0.30/min
 
 Overweeg in productie om een **hard cap** per dag toe te voegen via Upstash
 Redis + maandelijkse budget-alert in het ElevenLabs dashboard.
@@ -102,3 +138,14 @@ De site blijft dus altijd werken, ook zonder voice-budget.
 - [ ] Start gesprek → spreek → Ambassador reageert in echte tijd
 - [ ] ESC of close-knop → gesprek stopt, verbinding gesloten
 - [ ] Zonder `ELEVENLABS_API_KEY`: TTS werkt nog via browser-voice
+
+### AI Collega (multi-tenant) checklist
+
+- [ ] In ElevenLabs dashboard: agent → Security → "Prompt" + "First message" overrides aan
+- [ ] `/aicollega/makelaar/demo` → klik "Praat live"
+- [ ] Eerste zin bevat persona + bedrijfsnaam (niet "MAISON BLNDR")
+- [ ] Stel een vraag over een specifiek object — antwoord komt uit tenant-prompt
+- [ ] Vraag iets buiten scope ("wat is het beste recept voor pasta?") → vriendelijke weigering volgens tenant-prompt
+- [ ] `tenantId` weglaten in URL → 400 "tenantId ontbreekt"
+- [ ] Onbekende `tenantId` → 404 "Tenant niet gevonden"
+- [ ] Branche-mismatch (bv. `/aicollega/accountant/voice-session?tenantId=demo-makelaar-01`) → 400

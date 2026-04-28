@@ -52,6 +52,29 @@ interface Props {
    * mic-permissie geweigerd) triggeren dit NIET — dan heeft retry zin.
    */
   onConfigError?: () => void;
+  /**
+   * Alternatief endpoint dat een signed URL teruggeeft.
+   * Default: `/api/brand-ambassador/voice-session` (MAISON BLNDR Brand Presence).
+   *
+   * Voor AI Collega tenants: `/api/aicollega/<branche>/voice-session?tenantId=<id>`.
+   * Het response-shape mag optioneel `overrides.systemPrompt` en
+   * `overrides.firstMessage` bevatten — die worden dan via de ElevenLabs
+   * SDK als sessie-overrides toegepast (Optie B uit voice-strategie).
+   */
+  endpoint?: string;
+  /**
+   * Bedrijfs-/merknaam zoals getoond in de live-modal headers en titels.
+   * Heeft alleen effect wanneer `brand` ontbreekt (de site-wide MAISON BLNDR
+   * BrandTransform-flow zet `brand` zelf).
+   * Voor AI Collega: bijvoorbeeld "Makelaardij Van den Berg".
+   */
+  brandName?: string;
+  /**
+   * Persona-label naast de bedrijfsnaam. Default "Ambassador" voor de
+   * MAISON BLNDR Brand Presence; voor AI Collega bv. "Online assistent"
+   * of een eigen naam zoals "Sophie".
+   */
+  personaLabel?: string;
 }
 
 type LiveStatus =
@@ -68,7 +91,16 @@ interface TranscriptEntry {
   id: string;
 }
 
-export default function LiveConversation({ open, onClose, brand, hue, onConfigError }: Props) {
+export default function LiveConversation({
+  open,
+  onClose,
+  brand,
+  hue,
+  onConfigError,
+  endpoint = "/api/brand-ambassador/voice-session",
+  brandName,
+  personaLabel = "Ambassador",
+}: Props) {
   const [status, setStatus] = useState<LiveStatus>("idle");
   const [presenceState, setPresenceState] = useState<PresenceState>("idle");
   const [audioLevel, setAudioLevel] = useState(0);
@@ -205,12 +237,19 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
     }
 
     // 2. Haal een signed URL op via onze backend.
+    //
+    // Het response-shape kan tenant-specifieke overrides meegeven
+    // (AI Collega flow). Wanneer aanwezig gebruiken we die voor
+    // agent.prompt.prompt + agent.firstMessage zodat de ene gedeelde
+    // ElevenLabs-agent zich gedraagt als de juiste tenant. Vereist dat
+    // de agent-config "Allowed overrides → Prompt + First message"
+    // heeft aanstaan in het ElevenLabs-dashboard.
     setStatus("connecting");
     let signedUrl: string;
+    let serverFirstMessage: string | undefined;
+    let serverSystemPrompt: string | undefined;
     try {
-      const res = await fetch("/api/brand-ambassador/voice-session", {
-        method: "GET",
-      });
+      const res = await fetch(endpoint, { method: "GET" });
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
         setErrorMessage(body.error || "Kon live-sessie niet starten.");
@@ -226,8 +265,13 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
         }
         return;
       }
-      const body = (await res.json()) as { signedUrl: string };
+      const body = (await res.json()) as {
+        signedUrl: string;
+        overrides?: { systemPrompt?: string; firstMessage?: string };
+      };
       signedUrl = body.signedUrl;
+      serverFirstMessage = body.overrides?.firstMessage;
+      serverSystemPrompt = body.overrides?.systemPrompt;
     } catch (err) {
       setErrorMessage("Kon geen verbinding maken met de voice-service.");
       setErrorDetail(err instanceof Error ? `${err.name}: ${err.message}` : "fetch failed");
@@ -245,22 +289,36 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
       // disconnect kort na connect, of een natural turn-end?
       const sessionStart = Date.now();
 
-      // Altijd onze eigen tijd-aware begroeting — de server-side
-      // first_message in ElevenLabs is statisch "Goedemiddag" en klopt
-      // niet 's ochtends/'s avonds. Brand-context wordt ingebakken
-      // wanneer aanwezig. Vereist dat "First message" override aan staat
-      // in de agent-config (anders close 1008).
+      // Bouw de overrides op. Voorrang:
+      //   1. Server-side `overrides.firstMessage` (AI Collega tenant)
+      //   2. Brand-context fallback (MAISON BLNDR Brand Presence Imagine-flow)
+      //   3. Generieke MAISON BLNDR begroeting
+      // First message override vereist dat "First message" aan staat in
+      // ElevenLabs agent-config (anders close 1008 binnen ~2s).
       const greeting = getDutchGreeting();
-      const dynamicFirstMessage = brand
-        ? `${greeting}, fijn dat je er bent. Ik ben de Ambassador — de Brand Presence van MAISON BLNDR. Dit is een demo van hoe een Brand Presence voor ${brand.name} zou klinken. Waar zullen we het over hebben?`
-        : `${greeting}. Ik ben de Brand Presence van MAISON BLNDR — de Ambassador. Waar wil je het over hebben: onze aanpak, een specifiek proces in jouw bedrijf, of wat een Ambassador concreet kost?`;
+      const firstMessage =
+        serverFirstMessage ??
+        (brand
+          ? `${greeting}, fijn dat je er bent. Ik ben de Ambassador — de Brand Presence van MAISON BLNDR. Dit is een demo van hoe een Brand Presence voor ${brand.name} zou klinken. Waar zullen we het over hebben?`
+          : `${greeting}. Ik ben de Brand Presence van MAISON BLNDR — de Ambassador. Waar wil je het over hebben: onze aanpak, een specifiek proces in jouw bedrijf, of wat een Ambassador concreet kost?`);
+
+      // Prompt-override alleen meesturen wanneer de server hem expliciet
+      // levert (AI Collega flow). MAISON BLNDR-eigen agent heeft zijn
+      // prompt vast in de ElevenLabs-config staan — daar nooit overheen
+      // schrijven, anders verliezen we de finetuning die in het dashboard
+      // is gedaan.
+      const agentOverrides: {
+        firstMessage: string;
+        prompt?: { prompt: string };
+      } = { firstMessage };
+      if (serverSystemPrompt) {
+        agentOverrides.prompt = { prompt: serverSystemPrompt };
+      }
 
       const conv = await Conversation.startSession({
         signedUrl,
         overrides: {
-          agent: {
-            firstMessage: dynamicFirstMessage,
-          },
+          agent: agentOverrides,
         },
         onConnect: (info) => {
           console.log("[live-convai] onConnect", info);
@@ -358,7 +416,14 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
       setStatus("error");
       startedRef.current = false;
     }
-  }, [brand, startAmplitudeLoop, stopAmplitudeLoop, teardown]);
+  }, [
+    brand,
+    endpoint,
+    onConfigError,
+    startAmplitudeLoop,
+    stopAmplitudeLoop,
+    teardown,
+  ]);
 
   const handleStop = useCallback(async () => {
     setStatus("disconnecting");
@@ -473,7 +538,9 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
         {/* Status badge */}
         <div className="flex flex-col items-center gap-2">
           <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/40">
-            MAISON BLNDR · Live Encounter
+            {brandName && !brand
+              ? `${brandName} · Live gesprek`
+              : "MAISON BLNDR · Live Encounter"}
           </span>
           <h2
             className="mt-2 text-center text-[20px] font-normal leading-tight text-white sm:mt-3 sm:text-[28px]"
@@ -482,6 +549,10 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
             {brand ? (
               <>
                 Praat live met de <span className="font-exposure">{brand.name}</span> Ambassador
+              </>
+            ) : brandName ? (
+              <>
+                Praat live met de <span className="font-exposure">{personaLabel}</span> van {brandName}
               </>
             ) : (
               <>
@@ -578,7 +649,11 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
                     t.role === "user" ? "text-white/40" : "text-white/75"
                   }`}
                 >
-                  <span className="opacity-50">{t.role === "user" ? "Jij: " : "Ambassador: "}</span>
+                  <span className="opacity-50">
+                    {t.role === "user"
+                      ? "Jij: "
+                      : `${brand ? "Ambassador" : personaLabel}: `}
+                  </span>
                   {t.text}
                 </p>
               ))}

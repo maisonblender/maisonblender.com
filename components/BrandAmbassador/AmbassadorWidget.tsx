@@ -198,6 +198,32 @@ interface Props {
    * fallback ("Online assistent").
    */
   personaLabel?: string;
+  /**
+   * Alternatief voice-session endpoint. Default:
+   * `/api/brand-ambassador/voice-session` (MAISON BLNDR-eigen agent).
+   *
+   * Voor AI Collega tenants: koppel aan de tenant-aware route, bv.
+   * `/api/aicollega/makelaar/voice-session?tenantId=demo-makelaar-01`.
+   * Die route stuurt zijn eigen system-prompt + first message als
+   * sessie-overrides terug, zodat de gedeelde ElevenLabs-agent zich
+   * gedraagt als de juiste tenant.
+   */
+  voiceSessionEndpoint?: string;
+  /**
+   * HSL hue (0-360) voor het accentkleur van de Liquid Presence en alle
+   * gerelateerde UI-elementen (chips, status-pulse, focus-ringen).
+   * Default: 160 = MAISON BLNDR mint — dat is gekoppeld aan de eigen
+   * Brand Presence en mag NIET door tenants gebruikt worden.
+   *
+   * Aanbevolen tenant-hues:
+   *   - 220 navy/royal blue (default voor AI Collega makelaar)
+   *   - 25  warm amber (accountancy)
+   *   - 280 violet (creatieve diensten)
+   *
+   * Wanneer de site-wide BrandTransform actief is (Imagine-This-Is-Yours)
+   * krijgt `brand?.hue` voorrang — die wordt per merk hash-gegenereerd.
+   */
+  accentHue?: number;
 }
 
 /**
@@ -229,6 +255,8 @@ export default function AmbassadorWidget({
   initialBubble,
   brandName: brandNameProp,
   personaLabel = "Ambassador",
+  voiceSessionEndpoint,
+  accentHue,
 }: Props) {
   const [brand, setBrand] = useState<BrandContext | null>(null);
   const [conversationId, setConversationId] = useState<string>(() =>
@@ -288,7 +316,12 @@ export default function AmbassadorWidget({
   const tooltipRef = useRef<HTMLDivElement | null>(null);
   const tooltipTriggerRef = useRef<HTMLButtonElement | null>(null);
 
-  const hue = brand?.hue ?? MAISON_HUE;
+  // Voorrang van hoog naar laag:
+  //   1. brand?.hue — site-wide Imagine-This-Is-Yours hash-hue (overschrijft alles
+  //      zodat de "verzin een merk"-flow voelbaar werkt)
+  //   2. accentHue prop — tenant-eigen kleur (AI Collega maakt hier gebruik van)
+  //   3. MAISON_HUE — eigen merk fallback
+  const hue = brand?.hue ?? accentHue ?? MAISON_HUE;
 
   // Conversie van bubbles naar API messages (strip suggestions/streaming fields).
   const apiMessages: ChatMessage[] = useMemo(
@@ -1427,6 +1460,9 @@ export default function AmbassadorWidget({
         onClose={() => setLiveOpen(false)}
         brand={brand}
         hue={hue}
+        endpoint={voiceSessionEndpoint}
+        brandName={brandNameProp}
+        personaLabel={personaLabel}
         onConfigError={() => {
           // Live-modus is permanent niet bruikbaar in deze sessie (bv.
           // ElevenLabs key/agent issue, of plan dekt ConvAI niet). We
