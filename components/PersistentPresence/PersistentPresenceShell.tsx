@@ -28,7 +28,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import AmbassadorPresence from "@/components/BrandAmbassador/AmbassadorPresence";
 import {
   SIZE_PX,
@@ -174,6 +174,50 @@ export default function PersistentPresenceShell() {
       clearNudge();
     }
   }, [nudge, open, clearNudge]);
+
+  // Bulletproof body scroll lock zolang de modal open is.
+  //
+  // Ook al doet AmbassadorWidget zélf een lock wanneer fullscreen, die
+  // useEffect runt pas NA eerste render van de lazy-geladen widget. In
+  // dat ~50-150ms gat kan de body kortstondig scrollen → user ziet
+  // onderliggende pagina flitsen tijdens de FLIP-morph. Door hier op
+  // het modal-niveau ook te locken pakken we dat gat.
+  //
+  // iOS Safari quirk: enkel `overflow:hidden` op body laat overscroll
+  // (rubber-band) toe, waardoor je tijdens scrollen "achter" de modal
+  // kunt zien. De canonische fix is `position:fixed` + bewaarde scrollY
+  // — dan staat de body fysiek vast.
+  useEffect(() => {
+    if (!isOpen) return;
+    if (typeof window === "undefined") return;
+
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+
+    return () => {
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.left = prev.left;
+      body.style.right = prev.right;
+      body.style.width = prev.width;
+      body.style.overflow = prev.overflow;
+      window.scrollTo(0, scrollY);
+    };
+  }, [isOpen]);
 
   const nudgeSide = nudgeSideForAnchor(anchor);
 

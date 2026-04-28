@@ -56,6 +56,12 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
   const [presenceState, setPresenceState] = useState<PresenceState>("idle");
   const [audioLevel, setAudioLevel] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
+  // Aparte technische error voor diagnose. Tonen we als kleine collapse
+  // onder de user-vriendelijke errorMessage zodat we (als developer)
+  // zonder browser-console kunnen zien wat er werkelijk fout ging
+  // tijdens een live-sessie. Eindgebruikers kunnen het simpelweg
+  // negeren — staat in een lager-contrast, kleinere font.
+  const [errorDetail, setErrorDetail] = useState("");
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
 
   const conversationRef = useRef<Conversation | null>(null);
@@ -119,6 +125,7 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
     if (startedRef.current) return;
     startedRef.current = true;
     setErrorMessage("");
+    setErrorDetail("");
     setTranscript([]);
     setStatus("requesting-mic");
 
@@ -127,10 +134,11 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
       stream.getTracks().forEach((t) => t.stop());
-    } catch {
+    } catch (err) {
       setErrorMessage(
         "Microfoontoegang is nodig voor een live gesprek. Sta toegang toe en probeer opnieuw."
       );
+      setErrorDetail(err instanceof Error ? `${err.name}: ${err.message}` : "getUserMedia geweigerd");
       setStatus("error");
       startedRef.current = false;
       return;
@@ -146,6 +154,7 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
       if (!res.ok) {
         const body = (await res.json().catch(() => ({}))) as { error?: string };
         setErrorMessage(body.error || "Kon live-sessie niet starten.");
+        setErrorDetail(`HTTP ${res.status} ${res.statusText} — voice-session`);
         setStatus("error");
         startedRef.current = false;
         // Permanente config-fouten = geen zin om opnieuw te proberen.
@@ -159,8 +168,9 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
       }
       const body = (await res.json()) as { signedUrl: string };
       signedUrl = body.signedUrl;
-    } catch {
+    } catch (err) {
       setErrorMessage("Kon geen verbinding maken met de voice-service.");
+      setErrorDetail(err instanceof Error ? `${err.name}: ${err.message}` : "fetch failed");
       setStatus("error");
       startedRef.current = false;
       return;
@@ -195,6 +205,19 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
           setErrorMessage(
             "Er ging iets mis tijdens het gesprek. Probeer opnieuw of ga verder in tekst-chat."
           );
+          // Probeer altijd iets readable te maken — kan string, Error, of
+          // arbitrary object zijn afhankelijk van waar in de SDK het misgaat.
+          let detail = "onError (geen detail)";
+          if (typeof msg === "string") {
+            detail = msg;
+          } else if (msg && typeof msg === "object") {
+            try {
+              detail = JSON.stringify(msg).slice(0, 240);
+            } catch {
+              detail = String(msg);
+            }
+          }
+          setErrorDetail(detail);
           setStatus("error");
           // Cleanup: websocket kan in broken state blijven; teardown zorgt
           // dat een retry een verse sessie krijgt.
@@ -221,6 +244,11 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
     } catch (err) {
       console.error("[live-convai] startSession failed:", err);
       setErrorMessage("Kon live gesprek niet starten. Probeer het opnieuw.");
+      setErrorDetail(
+        err instanceof Error
+          ? `${err.name}: ${err.message}`
+          : `startSession failed: ${String(err)}`
+      );
       setStatus("error");
       startedRef.current = false;
     }
@@ -371,6 +399,16 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
               >
                 {errorMessage}
               </p>
+              {errorDetail && (
+                <details className="w-full max-w-sm">
+                  <summary className="cursor-pointer text-center text-[10px] font-medium uppercase tracking-widest text-white/30 hover:text-white/50">
+                    Technische details
+                  </summary>
+                  <pre className="mt-2 max-h-32 overflow-auto whitespace-pre-wrap break-all rounded-lg border border-white/5 bg-black/30 px-3 py-2 text-[10px] leading-relaxed text-white/50">
+                    {errorDetail}
+                  </pre>
+                </details>
+              )}
               {status === "error" && (
                 <button
                   type="button"

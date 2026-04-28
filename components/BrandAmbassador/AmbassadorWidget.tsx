@@ -307,15 +307,50 @@ export default function AmbassadorWidget({
   }, []);
 
   // Lock scroll wanneer fullscreen open is (mobile UX).
+  //
+  // BELANGRIJK: skip deze lock als `onClose` is meegegeven. Dat betekent
+  // dat we binnen de site-wide modal (PersistentPresenceShell) draaien,
+  // die al z'n eigen bulletproof body scroll lock doet. Twee locks
+  // tegelijk geeft ongewenste scroll-restore-conflicten.
+  //
+  // iOS Safari quirk: `body { overflow: hidden }` is niet voldoende —
+  // de browser laat tóch overscroll/rubber-band toe waardoor je onder
+  // de modal de onderliggende pagina ziet flitsen ("iframe-achtig"
+  // gevoel). De canonische fix is body fixen met `position: fixed`
+  // + `top: -scrollY` zodat de body fysiek vast staat.
   useEffect(() => {
-    if (fullscreen) {
-      const prev = document.body.style.overflow;
-      document.body.style.overflow = "hidden";
-      return () => {
-        document.body.style.overflow = prev;
-      };
-    }
-  }, [fullscreen]);
+    if (!fullscreen) return;
+    if (onClose) return; // Modal-context: outer shell handelt dit af.
+    if (typeof window === "undefined") return;
+
+    const scrollY = window.scrollY;
+    const body = document.body;
+    const prev = {
+      position: body.style.position,
+      top: body.style.top,
+      left: body.style.left,
+      right: body.style.right,
+      width: body.style.width,
+      overflow: body.style.overflow,
+    };
+
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    body.style.overflow = "hidden";
+
+    return () => {
+      body.style.position = prev.position;
+      body.style.top = prev.top;
+      body.style.left = prev.left;
+      body.style.right = prev.right;
+      body.style.width = prev.width;
+      body.style.overflow = prev.overflow;
+      window.scrollTo(0, scrollY);
+    };
+  }, [fullscreen, onClose]);
 
   // Mobile-breakpoint detect. We luisteren naar matchMedia zodat rotaties
   // en window-resize live worden opgepakt. lg-breakpoint = 1024px (Tailwind
@@ -834,8 +869,17 @@ export default function AmbassadorWidget({
        *     sticky bottom (zie verderop) zodat invoer altijd bereikbaar is.
        *   - Desktop (lg+): split-grid met aparte aside + thread, beide
        *     binnen overflow-hidden. Thread heeft eigen interne scroll.
+       *
+       * `overscroll-behavior: contain` voorkomt dat de scroll "doorlekt"
+       * naar de onderliggende body — zonder dit krijg je op iOS de
+       * onbedoelde rubber-band die de pagina-erachter laat zien (het
+       * "iframe-gevoel"). `touch-action: pan-y` houdt verticaal scrollen
+       * mogelijk maar voorkomt horizontale/zoom-gestures op de chat.
        */}
-      <div className="relative z-10 flex flex-1 flex-col overflow-y-auto lg:grid lg:grid-cols-[minmax(260px,_38%)_1fr] lg:gap-0 lg:overflow-hidden">
+      <div
+        className="relative z-10 flex flex-1 flex-col overflow-y-auto overscroll-contain lg:grid lg:grid-cols-[minmax(260px,_38%)_1fr] lg:gap-0 lg:overflow-hidden"
+        style={{ touchAction: "pan-y" }}
+      >
         {/* Presence column */}
         <aside className="relative flex flex-col items-center justify-center gap-3 border-b border-white/5 px-6 py-4 sm:py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-10">
           <div className="relative">
