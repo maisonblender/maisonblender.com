@@ -159,27 +159,33 @@ export default function AmbassadorPresence({
       // Contrast-palette: beslist alle kleuren op basis van de mode.
       //
       //   "dark"   = Presence tegen donkere pagina-achtergrond.
-      //              Licht-getinte mint tinten, positieve glow eromheen.
-      //              Dit is de originele look.
+      //              Licht-getinte mint, positieve glow. Originele look.
       //
       //   "light"  = Presence tegen lichte pagina-achtergrond.
-      //              Donker-getinte mint tinten + inkt-achtige rings zodat
-      //              de vorm leesbaar blijft. Glow wordt subtiel
-      //              donkergetint (i.p.v. lichtgevend) omdat licht-op-licht
-              //        geen visueel contrast oplevert.
+      //              Anthraciet/graphite ink (geen mint!) — matcht met
+      //              `#1f1f1f` van de hero-CTA's en typografie. Een
+      //              koel-getinte grey (hue 220, sat 8%) geeft premium
+      //              ink-look zonder pure greyscale flatness. Hue-prop
+      //              wordt in light-mode genegeerd: het wezen verandert
+      //              van karakter (van levendig mint naar rustig ink)
+      //              maar blijft hetzelfde wezen.
       // ----------------------------------------------------------------
+      const INK_HUE = 220;
+      const INK_SAT = 8;
       const P =
         mode === "light"
           ? {
-              glowInner: `hsla(${h}, 70%, 28%, ${0.14 * profile.glow})`,
-              glowMid: `hsla(${h}, 70%, 22%, ${0.05 * profile.glow})`,
-              glowOuter: `hsla(${h}, 70%, 18%, 0)`,
-              coreInner: `hsla(${h}, 85%, 42%, 0.95)`,
-              coreMid: `hsla(${h}, 80%, 28%, 0.7)`,
-              coreOuter: `hsla(${h}, 75%, 20%, 0.3)`,
-              coreStroke: (op: number) => `hsla(${h}, 95%, 22%, ${Math.min(1, op * 1.6)})`,
-              ringStroke: (op: number) => `hsla(${h}, 90%, 26%, ${Math.min(1, op * 1.9)})`,
-              dot: `hsla(${h}, 95%, 20%, 0.95)`,
+              glowInner: `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${0.10 * profile.glow})`,
+              glowMid: `hsla(${INK_HUE}, ${INK_SAT}%, 14%, ${0.04 * profile.glow})`,
+              glowOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0)`,
+              coreInner: `hsla(${INK_HUE}, ${INK_SAT}%, 22%, 0.92)`,
+              coreMid: `hsla(${INK_HUE}, ${INK_SAT}%, 16%, 0.7)`,
+              coreOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 12%, 0.28)`,
+              coreStroke: (op: number) =>
+                `hsla(${INK_HUE}, ${INK_SAT}%, 12%, ${Math.min(1, op * 1.6)})`,
+              ringStroke: (op: number) =>
+                `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${Math.min(1, op * 1.9)})`,
+              dot: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0.95)`,
             }
           : {
               glowInner: `hsla(${h}, 90%, 60%, ${0.18 * profile.glow})`,

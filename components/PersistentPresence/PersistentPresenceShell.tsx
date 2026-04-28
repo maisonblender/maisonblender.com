@@ -237,11 +237,11 @@ export default function PersistentPresenceShell() {
               className="group relative block h-full w-full cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#4af0c4] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b0d]"
               style={{
                 // Soft halo achter de canvas. Adapteert met contrastMode:
-                //   - dark  = lichte mint-glow (huidig, staat mooi op donker)
-                //   - light = donkere mint-wash (geeft gewicht tegen wit)
+                //   - dark  = lichte mint-glow (origineel, staat mooi op donker)
+                //   - light = anthraciet-wash (matcht met `#1f1f1f` van CTAs)
                 background:
                   contrastMode === "light"
-                    ? "radial-gradient(circle, rgba(6, 92, 68, 0.14) 0%, rgba(6, 92, 68, 0.06) 45%, transparent 72%)"
+                    ? "radial-gradient(circle, rgba(28, 30, 36, 0.12) 0%, rgba(28, 30, 36, 0.05) 45%, transparent 72%)"
                     : "radial-gradient(circle, rgba(74, 240, 196, 0.18) 0%, rgba(74, 240, 196, 0.08) 40%, transparent 70%)",
                 transition: "background 320ms ease",
               }}
@@ -258,7 +258,7 @@ export default function PersistentPresenceShell() {
                 className={[
                   "pointer-events-none absolute inset-0 rounded-full ring-1 transition-[box-shadow,ring-color] duration-300",
                   contrastMode === "light"
-                    ? "ring-[#0a7a5c]/0 group-hover:ring-[#0a7a5c]/40 group-hover:[box-shadow:0_0_24px_rgba(10,122,92,0.25)]"
+                    ? "ring-[#1f1f1f]/0 group-hover:ring-[#1f1f1f]/40 group-hover:[box-shadow:0_0_24px_rgba(31,31,31,0.22)]"
                     : "ring-[#4af0c4]/0 group-hover:ring-[#4af0c4]/30 group-hover:[box-shadow:0_0_24px_rgba(74,240,196,0.3)]",
                 ].join(" ")}
               />
