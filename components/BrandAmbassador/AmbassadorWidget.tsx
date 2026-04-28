@@ -801,7 +801,7 @@ export default function AmbassadorWidget({
 
   const containerClass = fullscreen
     ? "fixed inset-0 z-[60] flex flex-col bg-[#0b0b0d]"
-    : "relative flex flex-col rounded-2xl border border-white/10 bg-[#0b0b0d] overflow-hidden";
+    : "relative flex flex-col rounded-2xl border border-white/10 bg-[#0b0b0d]";
 
   return (
     <>
@@ -809,7 +809,7 @@ export default function AmbassadorWidget({
       className={containerClass}
       style={{
         ["--ambassador-hue" as string]: String(hue),
-        minHeight: fullscreen ? "100svh" : "640px",
+        ...(fullscreen ? { minHeight: "100svh" } : {}),
       }}
     >
       {/* Subtle background dot grid + radial glow */}
@@ -929,7 +929,11 @@ export default function AmbassadorWidget({
        * mogelijk maar voorkomt horizontale/zoom-gestures op de chat.
        */}
       <div
-        className="relative z-10 flex flex-1 flex-col overflow-y-auto overscroll-contain lg:grid lg:grid-cols-[minmax(260px,_38%)_1fr] lg:gap-0 lg:overflow-hidden"
+        className={`relative z-10 flex flex-1 flex-col lg:grid lg:grid-cols-[minmax(260px,_38%)_1fr] lg:gap-0 ${
+          fullscreen
+            ? "overflow-y-auto overscroll-contain lg:overflow-hidden"
+            : "lg:overflow-visible"
+        }`}
         style={{ touchAction: "pan-y" }}
       >
         {/* Presence column */}
@@ -1163,7 +1167,9 @@ export default function AmbassadorWidget({
         <section className="flex flex-col lg:min-h-0 lg:flex-1">
           <div
             ref={threadRef}
-            className="mb-prose-on-dark px-5 py-6 sm:px-8 lg:flex-1 lg:overflow-y-auto"
+            className={`mb-prose-on-dark px-5 py-6 sm:px-8 lg:flex-1 ${
+              fullscreen ? "lg:overflow-y-auto" : ""
+            }`}
             aria-live="polite"
           >
             <div className="mx-auto flex max-w-2xl flex-col gap-6">
@@ -1237,7 +1243,11 @@ export default function AmbassadorWidget({
            *   - text-base (16px) op de input zelf om iOS auto-zoom te voorkomen.
            *   - min-w-0 op input → flex-shrink werkt binnen rounded container.
            *   - Voice-toggle hidden op mobile: mic-knop is genoeg op telefoon. */}
-          <div className="sticky bottom-0 z-20 border-t border-white/5 bg-[#0b0b0d]/95 backdrop-blur-md lg:static lg:bg-transparent lg:backdrop-blur-none">
+          <div className={`z-20 border-t border-white/5 lg:static lg:bg-transparent lg:backdrop-blur-none ${
+            fullscreen
+              ? "sticky bottom-0 bg-[#0b0b0d]/95 backdrop-blur-md"
+              : "static bg-transparent"
+          }`}>
             <div className="px-3 pt-3 sm:px-8">
               <div className="mx-auto max-w-2xl">
                 {!tenantId && (
