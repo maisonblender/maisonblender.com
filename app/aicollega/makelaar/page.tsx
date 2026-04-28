@@ -12,7 +12,7 @@ import {
 export const metadata: Metadata = {
   title: "AI Collega Makelaar — 24/7 klantvragen & woningomschrijvingen | MAISON BLNDR",
   description:
-    "Een AI Collega speciaal voor makelaars in Limburg. Beantwoordt bezoekersvragen over objecten, plant bezichtigingen in en schrijft woningomschrijvingen. Vanaf €249/mnd. Live in 15 minuten.",
+    "Een AI Collega voor makelaars die ook na 17:00 leads krijgen. Beantwoordt bezoekersvragen over objecten, plant bezichtigingen in en schrijft woningomschrijvingen — 24/7. Vanaf €249/mnd. Live in 15 minuten.",
   keywords: [
     "AI makelaar Limburg",
     "AI collega makelaardij",
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "AI Collega Makelaar — 24/7 klantvragen & woningomschrijvingen",
     description:
-      "Speciaal voor makelaars in Limburg. Live in 15 minuten. Vanaf €249/mnd.",
+      "Voor makelaars die ook na 17:00 leads krijgen. Live in 15 minuten. Vanaf €249/mnd.",
     url: "https://maisonblender.com/aicollega/makelaar",
   },
 };
@@ -64,23 +64,23 @@ const jsonLd = {
 const useCases = [
   {
     Icon: MessageSquare,
-    titel: "Leads opvangen buiten kantooruren",
+    titel: "Leads die om 22:00 binnenkomen",
     beschrijving:
-      "Een nieuwe lead om 22:00? Jouw AI Collega reageert direct, stelt kwalificatievragen en scoort de lead als warm, lauw of koud. Jij ziet het de volgende ochtend in je dashboard.",
+      "Op het moment dat de lead arriveert: een direct, persoonlijk antwoord. De AI Collega stelt kwalificatievragen, scoort de lead als warm, lauw of koud, en zet het gesprek klaar in je dashboard. Jij begint je ochtend met een lead die al gepraat is — niet met een gemiste kans.",
     tijdwinst: "3-5 uur/week",
   },
   {
     Icon: Mail,
-    titel: "No-shows terugdringen",
+    titel: "Bezichtigingen die ook echt doorgaan",
     beschrijving:
-      "Automatische bevestigingsmails en herinneringen op de dag van de bezichtiging. Na afloop vraagt de AI Collega gestructureerde feedback op — zodat jij weet of er interesse is.",
+      "Bevestiging direct na het inplannen. Reminder de avond ervoor, en nog een paar uur van tevoren. Na afloop een gestructureerde feedbackvraag die direct in je CRM komt te staan. Geen lege agenda omdat de klant het vergeten was.",
     tijdwinst: "1-2 uur/week",
   },
   {
     Icon: FileText,
-    titel: "Objectomschrijvingen in seconden",
+    titel: "Funda-tekst, social-post en opvolgmail in één keer",
     beschrijving:
-      "Vul de kenmerken in, kies je stijl — en krijg drie klaarstaande varianten: Funda, Instagram en opvolgmail. Geen leeg scherm meer.",
+      "Vul de kenmerken in, kies je toon. Drie kant-en-klare teksten — voor Funda, voor Instagram, en voor de opvolgmail. Geen leeg scherm meer op vrijdagmiddag, geen 'ik schrijf 'm morgen wel'.",
     tijdwinst: "2-4 uur/week",
   },
 ];
@@ -165,22 +165,23 @@ export default function MakelaarLandingPage() {
         <div className="relative z-10 max-w-3xl mx-auto">
           <div className="inline-flex items-center gap-2 border border-black/10 bg-white px-4 py-1.5 text-xs font-medium uppercase tracking-widest text-[#575760] mb-8">
             <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-            Speciaal voor makelaars in Limburg — live in 15 minuten
+            Voor makelaars die ook na 17:00 leads krijgen
           </div>
 
           <h1
             className="text-[32px] font-normal leading-[1.15] tracking-tight text-[#1f1f1f] mb-6"
             style={{ letterSpacing: "-0.95px" }}
           >
-            Leads die buiten kantooruren
+            Je leads komen binnen om 21:47.
             <br />
-            <span className="font-exposure">binnenkomen? Nooit meer missen.</span>
+            <span className="font-exposure">Niet om half tien &apos;s ochtends.</span>
           </h1>
 
           <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-            Jouw AI Collega vangt leads op, kwalificeert ze direct (warm / lauw / koud),
-            plant bezichtigingen in, stuurt reminders en schrijft je woningomschrijvingen — 24/7,
-            in het Nederlands. Geen installatie. Geen technische kennis nodig.
+            Een AI Collega die direct reageert zodra een vraag binnenkomt. Hij kwalificeert de
+            lead, plant de bezichtiging, stuurt herinneringen en schrijft de Funda-tekst van je
+            volgende object. Jij komt &apos;s ochtends binnen met een gesprek dat al loopt — niet
+            met een gemiste kans van gisteravond.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -236,7 +237,7 @@ export default function MakelaarLandingPage() {
             >
               Geen fancy features.
               <br />
-              <span className="font-exposure">Gewoon uren terugkrijgen.</span>
+              <span className="font-exposure">Wel je woensdagavond terug.</span>
             </h2>
           </div>
 
@@ -278,17 +279,17 @@ export default function MakelaarLandingPage() {
               {
                 nr: "01",
                 titel: "Aanmelden",
-                tekst: "Vul je kantoorgegevens in, kies je toon en voeg je objecten toe. Duurt 5 minuten.",
+                tekst: "Kantoorgegevens, toon en je eerste objecten. Vijf minuten — minder lang dan een koffiepauze.",
               },
               {
                 nr: "02",
                 titel: "Configureren",
-                tekst: "Je AI Collega wordt geconfigureerd op jouw kantoor: naam, objecten, veelgestelde vragen.",
+                tekst: "We trainen de AI Collega op jouw kantoor: naam, panden, veelgestelde vragen. Jij hoeft alleen even mee te kijken.",
               },
               {
                 nr: "03",
                 titel: "Live gaan",
-                tekst: "Kopieer één script-tag op je website. De AI Collega is direct actief voor je bezoekers.",
+                tekst: "Eén script-tag op je website. Klaar. De AI Collega is meteen actief — geen herstart, geen tussenstap.",
               },
             ].map((stap) => (
               <div key={stap.nr} className="bg-[#f2f3f5] p-8">
@@ -313,9 +314,9 @@ export default function MakelaarLandingPage() {
               className="text-[24px] font-normal leading-tight tracking-tight text-[#1f1f1f] sm:text-[32px]"
               style={{ letterSpacing: "-0.6px" }}
             >
-              Transparant geprijsd.
+              Drie pakketten.
               <br />
-              <span className="font-exposure">Geen verborgen kosten.</span>
+              <span className="font-exposure">Eén tarief per maand. Klaar.</span>
             </h2>
           </div>
 
@@ -382,10 +383,10 @@ export default function MakelaarLandingPage() {
             <TrendingUp className="h-8 w-8 text-white/40" strokeWidth={1.5} />
             <div>
               <p className="text-2xl font-bold text-white mb-2" style={{ letterSpacing: "-0.4px" }}>
-                Overtuig jezelf in 60 seconden.
+                Eén minuut. Eén vraag. Zie het zelf.
               </p>
               <p className="text-white/60 text-sm max-w-md">
-                Stel de AI Collega een vraag over een woning. Zie hoe hij reageert. Geen registratie nodig.
+                Stel de AI Collega een vraag over een woning, alsof je zelf die zoekende klant bent. Geen registratie nodig.
               </p>
             </div>
             <Link
