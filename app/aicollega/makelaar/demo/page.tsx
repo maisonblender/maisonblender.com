@@ -73,7 +73,7 @@ export default function DemoPage() {
             >
               Gesprek met de AI Collega
             </h1>
-            <p className="text-[#575760] text-sm max-w-xl">
+            <p className="text-[#575760] text-sm">
               Dit is dezelfde Liquid Presence, voice en leadcapture als de MAISON BLNDR Brand
               Ambassador — geconfigureerd voor een makelaarskantoor. Zo ziet jouw AI Collega eruit.
             </p>
