@@ -94,6 +94,7 @@ export default function DemoPage() {
             initialBubble={MAKELAAR_OPENING}
             defaultFullscreen={false}
             accentHue={MAKELAAR_HUE}
+            theme="light"
           />
 
           {/* Sidebar-context onder de widget */}

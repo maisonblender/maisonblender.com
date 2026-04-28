@@ -39,15 +39,20 @@ interface Props {
   className?: string;
   /**
    * Contrastmodus:
-   *   - "dark"  (default) — licht-getinte mint tegen donkere achtergrond
-   *   - "light"           — donker-getinte mint tegen lichte achtergrond
+   *   - "dark"        (default) — licht-getinte accent tegen donkere achtergrond
+   *   - "light"                 — anthracite/ink op lichte achtergrond
+   *                                (hue genegeerd; MAISON BLNDR signature look)
+   *   - "lightAccent"           — donker-getinte accent (hue actief) op lichte
+   *                                achtergrond (AI Collega tenants — hue blijft
+   *                                herkenbaar maar verzadigd genoeg om tegen
+   *                                wit te poppen ipv te verdwijnen)
    *
    * De site-wide shell detecteert automatisch wat onder de Presence zit
-   * en switcht live tussen de twee. Componenten die in een vast-donkere
-   * context draaien (/brand-ambassador hero) kunnen deze prop gewoon
-   * weglaten.
+   * en switcht live tussen "dark" en "light". Componenten die in een
+   * vast-donkere context draaien (/brand-ambassador hero) kunnen deze
+   * prop gewoon weglaten. AI Collega geeft `"lightAccent"` expliciet mee.
    */
-  contrastMode?: "dark" | "light";
+  contrastMode?: "dark" | "light" | "lightAccent";
 }
 
 interface Ring {
@@ -88,7 +93,7 @@ export default function AmbassadorPresence({
   const stateRef = useRef<PresenceState>(state);
   const hueRef = useRef(hue);
   const audioRef = useRef(audioLevel);
-  const modeRef = useRef<"dark" | "light">(contrastMode);
+  const modeRef = useRef<"dark" | "light" | "lightAccent">(contrastMode);
   const animRef = useRef<number | null>(null);
   const reducedMotionRef = useRef(false);
 
@@ -172,32 +177,53 @@ export default function AmbassadorPresence({
       // ----------------------------------------------------------------
       const INK_HUE = 220;
       const INK_SAT = 8;
-      const P =
-        mode === "light"
-          ? {
-              glowInner: `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${0.10 * profile.glow})`,
-              glowMid: `hsla(${INK_HUE}, ${INK_SAT}%, 14%, ${0.04 * profile.glow})`,
-              glowOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0)`,
-              coreInner: `hsla(${INK_HUE}, ${INK_SAT}%, 22%, 0.92)`,
-              coreMid: `hsla(${INK_HUE}, ${INK_SAT}%, 16%, 0.7)`,
-              coreOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 12%, 0.28)`,
-              coreStroke: (op: number) =>
-                `hsla(${INK_HUE}, ${INK_SAT}%, 12%, ${Math.min(1, op * 1.6)})`,
-              ringStroke: (op: number) =>
-                `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${Math.min(1, op * 1.9)})`,
-              dot: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0.95)`,
-            }
-          : {
-              glowInner: `hsla(${h}, 90%, 60%, ${0.18 * profile.glow})`,
-              glowMid: `hsla(${h}, 85%, 50%, ${0.06 * profile.glow})`,
-              glowOuter: `hsla(${h}, 80%, 40%, 0)`,
-              coreInner: `hsla(${h}, 90%, 68%, 0.9)`,
-              coreMid: `hsla(${h}, 85%, 45%, 0.55)`,
-              coreOuter: `hsla(${h}, 80%, 30%, 0.2)`,
-              coreStroke: (op: number) => `hsla(${h}, 100%, 75%, ${op})`,
-              ringStroke: (op: number) => `hsla(${h}, 100%, 70%, ${op * profile.glow})`,
-              dot: `hsla(${h}, 100%, 85%, 0.95)`,
-            };
+      let P;
+      if (mode === "light") {
+        // MAISON BLNDR signature ink-look — hue genegeerd, anthracite tegen wit.
+        P = {
+          glowInner: `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${0.10 * profile.glow})`,
+          glowMid: `hsla(${INK_HUE}, ${INK_SAT}%, 14%, ${0.04 * profile.glow})`,
+          glowOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0)`,
+          coreInner: `hsla(${INK_HUE}, ${INK_SAT}%, 22%, 0.92)`,
+          coreMid: `hsla(${INK_HUE}, ${INK_SAT}%, 16%, 0.7)`,
+          coreOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 12%, 0.28)`,
+          coreStroke: (op: number) =>
+            `hsla(${INK_HUE}, ${INK_SAT}%, 12%, ${Math.min(1, op * 1.6)})`,
+          ringStroke: (op: number) =>
+            `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${Math.min(1, op * 1.9)})`,
+          dot: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0.95)`,
+        };
+      } else if (mode === "lightAccent") {
+        // AI Collega: hue blijft volle accentkleur (bv. navy 220), maar
+        // donkerder + meer saturated dan in "dark" modus zodat hij niet
+        // verdwijnt tegen een witte achtergrond. Lightness 35-45% geeft
+        // een "deep coloured ink"-gevoel ipv pastel-mist.
+        P = {
+          glowInner: `hsla(${h}, 75%, 45%, ${0.14 * profile.glow})`,
+          glowMid: `hsla(${h}, 70%, 35%, ${0.05 * profile.glow})`,
+          glowOuter: `hsla(${h}, 65%, 25%, 0)`,
+          coreInner: `hsla(${h}, 75%, 42%, 0.92)`,
+          coreMid: `hsla(${h}, 70%, 32%, 0.6)`,
+          coreOuter: `hsla(${h}, 65%, 22%, 0.22)`,
+          coreStroke: (op: number) =>
+            `hsla(${h}, 80%, 28%, ${Math.min(1, op * 1.5)})`,
+          ringStroke: (op: number) =>
+            `hsla(${h}, 75%, 38%, ${Math.min(1, op * 1.7)})`,
+          dot: `hsla(${h}, 85%, 25%, 0.95)`,
+        };
+      } else {
+        P = {
+          glowInner: `hsla(${h}, 90%, 60%, ${0.18 * profile.glow})`,
+          glowMid: `hsla(${h}, 85%, 50%, ${0.06 * profile.glow})`,
+          glowOuter: `hsla(${h}, 80%, 40%, 0)`,
+          coreInner: `hsla(${h}, 90%, 68%, 0.9)`,
+          coreMid: `hsla(${h}, 85%, 45%, 0.55)`,
+          coreOuter: `hsla(${h}, 80%, 30%, 0.2)`,
+          coreStroke: (op: number) => `hsla(${h}, 100%, 75%, ${op})`,
+          ringStroke: (op: number) => `hsla(${h}, 100%, 70%, ${op * profile.glow})`,
+          dot: `hsla(${h}, 100%, 85%, 0.95)`,
+        };
+      }
 
       ctx.clearRect(0, 0, size, size);
 

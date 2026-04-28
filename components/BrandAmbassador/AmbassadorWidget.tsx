@@ -224,6 +224,14 @@ interface Props {
    * krijgt `brand?.hue` voorrang — die wordt per merk hash-gegenereerd.
    */
   accentHue?: number;
+  /**
+   * Visueel thema van de widget. Default `"dark"` = de oorspronkelijke
+   * MAISON BLNDR Brand Presence stage (zwart canvas, witte tekst). Voor
+   * AI Collega tenants vaak `"light"`: witte achtergrond, donkere tekst,
+   * past bij de standaard site-look. De Liquid Presence (canvas) past
+   * zich automatisch aan via de `accentHue`.
+   */
+  theme?: "dark" | "light";
 }
 
 /**
@@ -257,7 +265,77 @@ export default function AmbassadorWidget({
   personaLabel = "Ambassador",
   voiceSessionEndpoint,
   accentHue,
+  theme = "dark",
 }: Props) {
+  // Tokens — één plek waar dark/light verschillen leven. Alle visible-
+  // surface componenten lezen hieruit ipv hardcoded "text-white" etc.
+  // Voorkomt dat we per element een if/else moeten neerzetten en houdt
+  // de JSX leesbaar. Niet semantisch overgenamed naar een aparte util:
+  // dit is widget-intern en alleen hier nuttig.
+  const isLight = theme === "light";
+  const t = {
+    // Outer container & background
+    containerBgFs: isLight ? "bg-white" : "bg-[#0b0b0d]",
+    containerBg: isLight
+      ? "border-black/10 bg-white"
+      : "border-white/10 bg-[#0b0b0d]",
+    dotPatternColor: isLight ? "#b2b2be" : "#ffffff",
+    dotPatternOpacity: isLight ? 0.25 : 0.05,
+
+    // Borders
+    borderSoft: isLight ? "border-black/[0.06]" : "border-white/5",
+    borderMid: isLight ? "border-black/10" : "border-white/10",
+    borderStrong: isLight ? "border-black/15" : "border-white/15",
+
+    // Text
+    text: isLight ? "text-[#1f1f1f]" : "text-white",
+    textHigh: isLight ? "text-[#1f1f1f]" : "text-white/90",
+    textBody: isLight ? "text-[#3a3a42]" : "text-white/85",
+    textMid: isLight ? "text-[#575760]" : "text-white/75",
+    textMuted: isLight ? "text-[#8a8a93]" : "text-white/55",
+    textFaint: isLight ? "text-[#a8a8b0]" : "text-white/40",
+
+    // Surfaces
+    bubbleAssistant: isLight
+      ? "border-black/[0.06] bg-[#f7f7f8]"
+      : "border-white/5 bg-white/[0.04]",
+    surfaceCard: isLight
+      ? "border-black/10 bg-white"
+      : "border-white/10 bg-white/[0.03]",
+    surfaceSubtle: isLight ? "bg-black/[0.04]" : "bg-white/5",
+    iconCircle: isLight
+      ? "border-black/10 bg-black/[0.04]"
+      : "border-white/10 bg-white/5",
+
+    // Input zone
+    inputContainer: isLight
+      ? "border-black/15 bg-[#f7f7f8] focus-within:border-black/40"
+      : "border-white/10 bg-white/[0.04] focus-within:border-white/25",
+    inputText: isLight ? "text-[#1f1f1f]" : "text-white",
+    inputPlaceholder: isLight
+      ? "placeholder:text-[#8a8a93]"
+      : "placeholder:text-white/55",
+    formInput: isLight
+      ? "border-black/15 bg-white text-[#1f1f1f] placeholder:text-[#a8a8b0] focus:border-black/40"
+      : "border-white/15 bg-white/5 text-white placeholder:text-white/35 focus:border-white/30",
+
+    // Submit button
+    submitBg: isLight
+      ? "bg-[#1f1f1f] hover:bg-[#3a3a42]"
+      : "bg-white hover:bg-white/90",
+    submitText: isLight ? "text-white" : "text-[#1f1f1f]",
+    submitDisabled: isLight
+      ? "disabled:bg-black/10 disabled:text-[#8a8a93]"
+      : "disabled:bg-white/20 disabled:text-white/40",
+
+    // Sticky input zone bg (mobile fullscreen)
+    stickyBg: isLight ? "bg-white/95" : "bg-[#0b0b0d]/95",
+
+    // Focus ring offset
+    focusRingOffset: isLight
+      ? "focus-visible:ring-offset-white"
+      : "focus-visible:ring-offset-[#0b0b0d]",
+  };
   const [brand, setBrand] = useState<BrandContext | null>(null);
   const [conversationId, setConversationId] = useState<string>(() =>
     newConversationId()
@@ -860,8 +938,8 @@ export default function AmbassadorWidget({
   const brandName = brand?.name ?? brandNameProp ?? "MAISON BLNDR";
 
   const containerClass = fullscreen
-    ? "fixed inset-0 z-[60] flex flex-col bg-[#0b0b0d]"
-    : "relative flex flex-col rounded-2xl border border-white/10 bg-[#0b0b0d]";
+    ? `fixed inset-0 z-[60] flex flex-col ${t.containerBgFs}`
+    : `relative flex flex-col rounded-2xl border ${t.containerBg}`;
 
   return (
     <>
@@ -875,17 +953,20 @@ export default function AmbassadorWidget({
       {/* Subtle background dot grid + radial glow */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.05]"
+        className="pointer-events-none absolute inset-0"
         style={{
-          backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
+          backgroundImage: `radial-gradient(circle, ${t.dotPatternColor} 1px, transparent 1px)`,
           backgroundSize: "28px 28px",
+          opacity: t.dotPatternOpacity,
         }}
       />
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 transition-opacity duration-700"
         style={{
-          background: `radial-gradient(800px 500px at 20% 30%, hsla(${hue}, 80%, 50%, 0.12), transparent 60%)`,
+          background: `radial-gradient(800px 500px at 20% 30%, hsla(${hue}, 80%, 50%, ${
+            isLight ? 0.08 : 0.12
+          }), transparent 60%)`,
         }}
       />
 
@@ -904,7 +985,11 @@ export default function AmbassadorWidget({
           type="button"
           onClick={onClose}
           aria-label="Sluit gesprek"
-          className="absolute right-3 top-3 z-30 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white/70 backdrop-blur-md transition-colors hover:border-white/35 hover:bg-black/60 hover:text-white sm:right-4 sm:top-4"
+          className={`absolute right-3 top-3 z-30 inline-flex h-9 w-9 items-center justify-center rounded-full border backdrop-blur-md transition-colors sm:right-4 sm:top-4 ${
+            isLight
+              ? "border-black/15 bg-white/70 text-[#575760] hover:border-black/30 hover:bg-white hover:text-[#1f1f1f]"
+              : "border-white/15 bg-black/40 text-white/70 hover:border-white/35 hover:bg-black/60 hover:text-white"
+          }`}
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <line x1="18" y1="6" x2="6" y2="18" />
@@ -927,17 +1012,17 @@ export default function AmbassadorWidget({
        * Zo blijft de header op alle viewports een rustige, ééngrips
        * identiteits-balk en voorkomen we de visuele competitie tussen
        * close-knop en functionele knoppen die we eerder zagen. */}
-      <header className="relative z-10 flex items-center justify-between gap-3 border-b border-white/5 px-5 py-4 pr-14 sm:pr-16 lg:pr-5">
+      <header className={`relative z-10 flex items-center justify-between gap-3 border-b ${t.borderSoft} px-5 py-4 pr-14 sm:pr-16 lg:pr-5`}>
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5">
+          <div className={`flex h-8 w-8 items-center justify-center rounded-full border ${t.iconCircle}`}>
             <span
               className="h-2 w-2 rounded-full animate-pulse"
               style={{ background: `hsl(${hue}, 90%, 60%)` }}
             />
           </div>
           <div className="flex flex-col">
-            <p className="text-sm font-semibold text-white">{brandName} · {personaLabel}</p>
-            <p className="text-[11px] uppercase tracking-widest text-white/50">
+            <p className={`text-sm font-semibold ${t.text}`}>{brandName} · {personaLabel}</p>
+            <p className={`text-[11px] uppercase tracking-widest ${t.textMuted}`}>
               {sending ? "antwoordt…" : voiceEnabled ? "voice · live" : "live · 24/7"}
             </p>
           </div>
@@ -950,7 +1035,11 @@ export default function AmbassadorWidget({
             type="button"
             onClick={() => setFullscreen((v) => !v)}
             aria-label={fullscreen ? "Verlaat volledig scherm" : "Volledig scherm"}
-            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-white/30 hover:text-white"
+            className={`inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border transition-colors ${
+              isLight
+                ? "border-black/15 text-[#575760] hover:border-black/30 hover:text-[#1f1f1f]"
+                : "border-white/15 text-white/60 hover:border-white/30 hover:text-white"
+            }`}
           >
             {fullscreen ? (
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -997,12 +1086,13 @@ export default function AmbassadorWidget({
         style={{ touchAction: "pan-y" }}
       >
         {/* Presence column */}
-        <aside className="relative flex flex-col items-center justify-center gap-3 border-b border-white/5 px-6 py-4 sm:py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-10">
+        <aside className={`relative flex flex-col items-center justify-center gap-3 border-b ${t.borderSoft} px-6 py-4 sm:py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-10`}>
           <div className="relative">
             <AmbassadorPresence
               state={presenceState}
               hue={hue}
               audioLevel={audioLevel}
+              contrastMode={isLight ? "lightAccent" : "dark"}
               size={
                 fullscreen
                   ? isMobile
@@ -1037,12 +1127,12 @@ export default function AmbassadorWidget({
                   STATE_META[presenceState].animate ? "animate-pulse" : ""
                 }`}
               />
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-white/75">
+              <p className={`text-[11px] font-semibold uppercase tracking-widest ${t.textMid}`}>
                 Liquid Presence{" "}
-                <span aria-hidden="true" className="text-white/40">
+                <span aria-hidden="true" className={t.textFaint}>
                   ·
                 </span>{" "}
-                <span className="text-white transition-colors duration-300">
+                <span className={`${t.text} transition-colors duration-300`}>
                   {STATE_META[presenceState].label}
                 </span>
               </p>
@@ -1053,14 +1143,18 @@ export default function AmbassadorWidget({
                 aria-label="Wat betekenen de vier states?"
                 aria-expanded={statesTooltipOpen}
                 aria-haspopup="dialog"
-                className="ml-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border border-white/30 text-[9px] font-semibold text-white/70 transition-colors hover:border-white/60 hover:bg-white/5 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-[#4af0c4]"
+                className={`ml-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border text-[9px] font-semibold transition-colors focus:outline-none focus-visible:ring-2 ${
+                  isLight
+                    ? "border-black/30 text-[#575760] hover:border-black/60 hover:bg-black/[0.04] hover:text-[#1f1f1f] focus-visible:ring-[#1f1f1f]"
+                    : "border-white/30 text-white/70 hover:border-white/60 hover:bg-white/5 hover:text-white focus-visible:ring-[#4af0c4]"
+                }`}
               >
                 ?
               </button>
             </div>
 
             <p
-              className="mt-1.5 text-xs text-white/85 transition-opacity duration-200"
+              className={`mt-1.5 text-xs ${t.textBody} transition-opacity duration-200`}
               aria-live="polite"
             >
               {presenceState === "idle" && voiceEnabled
@@ -1079,7 +1173,7 @@ export default function AmbassadorWidget({
                   type="button"
                   onClick={() => setLiveOpen(true)}
                   aria-label="Start een live voice-gesprek met de Ambassador"
-                  className="group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold uppercase tracking-widest transition-all hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b0d]"
+                  className={`group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold uppercase tracking-widest transition-all hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${t.focusRingOffset}`}
                   style={{
                     borderColor: `hsl(${hue}, 80%, 55%)`,
                     color: `hsl(${hue}, 85%, 70%)`,
@@ -1144,10 +1238,16 @@ export default function AmbassadorWidget({
                     width: 300,
                     maxHeight: "min(70vh, 420px)",
                   }}
-                  className="z-[110] flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#141416] text-left shadow-[0_20px_60px_-10px_rgba(0,0,0,0.8)]"
+                  className={`z-[110] flex flex-col overflow-hidden rounded-xl border text-left shadow-[0_20px_60px_-10px_rgba(0,0,0,0.5)] ${
+                    isLight
+                      ? "border-black/10 bg-white"
+                      : "border-white/10 bg-[#141416]"
+                  }`}
                 >
-                  <div className="flex items-start justify-between gap-2 border-b border-white/5 p-4 pb-3">
-                    <h3 className="text-[11px] font-semibold uppercase tracking-widest text-white/80">
+                  <div className={`flex items-start justify-between gap-2 border-b ${t.borderSoft} p-4 pb-3`}>
+                    <h3 className={`text-[11px] font-semibold uppercase tracking-widest ${
+                      isLight ? "text-[#1f1f1f]" : "text-white/80"
+                    }`}>
                       Vier zichtbare modi
                     </h3>
                     <button
@@ -1157,7 +1257,11 @@ export default function AmbassadorWidget({
                         tooltipTriggerRef.current?.focus();
                       }}
                       aria-label="Sluit uitleg"
-                      className="-mr-1 -mt-1 flex h-5 w-5 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/5 hover:text-white/90"
+                      className={`-mr-1 -mt-1 flex h-5 w-5 items-center justify-center rounded-full transition-colors ${
+                        isLight
+                          ? "text-[#8a8a93] hover:bg-black/[0.04] hover:text-[#1f1f1f]"
+                          : "text-white/50 hover:bg-white/5 hover:text-white/90"
+                      }`}
                     >
                       <svg
                         viewBox="0 0 20 20"
@@ -1176,7 +1280,9 @@ export default function AmbassadorWidget({
                     className="overflow-y-auto overscroll-contain p-4 pt-3"
                     style={{ touchAction: "pan-y" }}
                   >
-                    <p className="text-[11px] leading-relaxed text-white/65">
+                    <p className={`text-[11px] leading-relaxed ${
+                      isLight ? "text-[#575760]" : "text-white/65"
+                    }`}>
                       De Liquid Presence verandert zichtbaar van gedrag per
                       gespreksfase. Let op vorm én kleur tijdens het praten.
                     </p>
@@ -1186,7 +1292,9 @@ export default function AmbassadorWidget({
                           key={s}
                           className={`flex items-start gap-2.5 rounded-md px-2 py-1.5 transition-colors ${
                             presenceState === s
-                              ? "bg-white/5"
+                              ? isLight
+                                ? "bg-black/[0.04]"
+                                : "bg-white/5"
                               : "bg-transparent"
                           }`}
                         >
@@ -1199,10 +1307,14 @@ export default function AmbassadorWidget({
                             aria-hidden="true"
                           />
                           <span className="flex-1">
-                            <span className="font-semibold text-white/95">
+                            <span className={`font-semibold ${
+                              isLight ? "text-[#1f1f1f]" : "text-white/95"
+                            }`}>
                               {STATE_META[s].label}
                             </span>
-                            <span className="text-white/55">
+                            <span className={
+                              isLight ? "text-[#8a8a93]" : "text-white/55"
+                            }>
                               {" — "}
                               {STATE_META[s].shortDescription}
                             </span>
@@ -1227,9 +1339,9 @@ export default function AmbassadorWidget({
         <section className="flex flex-col lg:min-h-0 lg:flex-1">
           <div
             ref={threadRef}
-            className={`mb-prose-on-dark px-5 py-6 sm:px-8 lg:flex-1 ${
-              fullscreen ? "lg:overflow-y-auto" : ""
-            }`}
+            className={`px-5 py-6 sm:px-8 lg:flex-1 ${
+              isLight ? "" : "mb-prose-on-dark"
+            } ${fullscreen ? "lg:overflow-y-auto" : ""}`}
             aria-live="polite"
           >
             <div className="mx-auto flex max-w-2xl flex-col gap-6">
@@ -1237,7 +1349,7 @@ export default function AmbassadorWidget({
                 b.role === "assistant" ? (
                   <div key={i} className="flex flex-col gap-3">
                     <div
-                      className="rounded-2xl rounded-tl-sm border border-white/5 bg-white/[0.04] px-5 py-4 text-[15px] leading-relaxed text-white/90"
+                      className={`rounded-2xl rounded-tl-sm border px-5 py-4 text-[15px] leading-relaxed ${t.bubbleAssistant} ${t.textHigh}`}
                       style={{ whiteSpace: "pre-wrap" }}
                     >
                       {b.content ? (
@@ -1269,6 +1381,7 @@ export default function AmbassadorWidget({
                         onPick={handleSuggestion}
                         disabled={sending}
                         accentHue={hue}
+                        theme={theme}
                       />
                     )}
                   </div>
@@ -1276,7 +1389,14 @@ export default function AmbassadorWidget({
                   <div key={i} className="ml-auto max-w-[85%]">
                     <div
                       className="rounded-2xl rounded-tr-sm px-5 py-3 text-[15px] leading-relaxed text-[#1f1f1f]"
-                      style={{ background: `hsl(${hue}, 85%, 70%)` }}
+                      style={{
+                        // Lichter accent op light theme: 85%/70% wordt te
+                        // schreeuwerig, 60%/85% geeft een gedempte tint
+                        // die niet vecht met de witte achtergrond.
+                        background: isLight
+                          ? `hsl(${hue}, 60%, 88%)`
+                          : `hsl(${hue}, 85%, 70%)`,
+                      }}
                     >
                       {b.content}
                     </div>
@@ -1303,9 +1423,9 @@ export default function AmbassadorWidget({
            *   - text-base (16px) op de input zelf om iOS auto-zoom te voorkomen.
            *   - min-w-0 op input → flex-shrink werkt binnen rounded container.
            *   - Voice-toggle hidden op mobile: mic-knop is genoeg op telefoon. */}
-          <div className={`z-20 border-t border-white/5 lg:static lg:bg-transparent lg:backdrop-blur-none ${
+          <div className={`z-20 border-t ${t.borderSoft} lg:static lg:bg-transparent lg:backdrop-blur-none ${
             fullscreen
-              ? "sticky bottom-0 bg-[#0b0b0d]/95 backdrop-blur-md"
+              ? `sticky bottom-0 ${t.stickyBg} backdrop-blur-md`
               : "static bg-transparent"
           }`}>
             <div className="px-3 pt-3 sm:px-8">
@@ -1325,7 +1445,7 @@ export default function AmbassadorWidget({
             onSubmit={handleSubmit}
             className="relative z-10 px-3 py-3 sm:px-8 sm:py-4"
           >
-            <div className="mx-auto flex max-w-2xl items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] py-2 pl-4 pr-1.5 focus-within:border-white/25 sm:gap-3 sm:pr-2">
+            <div className={`mx-auto flex max-w-2xl items-center gap-1.5 rounded-full border py-2 pl-4 pr-1.5 sm:gap-3 sm:pr-2 ${t.inputContainer}`}>
               <input
                 type="text"
                 value={voiceInterim || input}
@@ -1344,8 +1464,12 @@ export default function AmbassadorWidget({
                 }
                 disabled={sending}
                 maxLength={2000}
-                className={`min-w-0 flex-1 bg-transparent text-base focus:outline-none disabled:opacity-40 placeholder:text-white/55 sm:text-sm ${
-                  voiceInterim ? "italic text-[#4af0c4]/90" : "text-white"
+                className={`min-w-0 flex-1 bg-transparent text-base focus:outline-none disabled:opacity-40 sm:text-sm ${t.inputPlaceholder} ${
+                  voiceInterim
+                    ? isLight
+                      ? `italic text-[hsl(${hue},70%,40%)]`
+                      : "italic text-[#4af0c4]/90"
+                    : t.inputText
                 }`}
               />
               <button
@@ -1360,9 +1484,18 @@ export default function AmbassadorWidget({
                 }
                 className={`hidden h-9 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold uppercase tracking-widest transition-colors sm:inline-flex ${
                   voiceEnabled
-                    ? "border-[#4af0c4] bg-[#4af0c4]/15 text-[#4af0c4]"
+                    ? isLight
+                      ? "border-transparent text-white"
+                      : "border-[#4af0c4] bg-[#4af0c4]/15 text-[#4af0c4]"
+                    : isLight
+                    ? "border-black/15 text-[#575760] hover:text-[#1f1f1f]"
                     : "border-white/15 text-white/50 hover:text-white/80"
                 }`}
+                style={
+                  voiceEnabled && isLight
+                    ? { background: `hsl(${hue}, 70%, 50%)` }
+                    : undefined
+                }
               >
                 <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
@@ -1384,7 +1517,7 @@ export default function AmbassadorWidget({
                 type="submit"
                 disabled={sending || !input.trim()}
                 aria-label="Verstuur"
-                className="inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-[#1f1f1f] transition-all hover:bg-white/90 disabled:bg-white/20 disabled:text-white/40 disabled:cursor-not-allowed sm:h-11 sm:w-11"
+                className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-all disabled:cursor-not-allowed sm:h-11 sm:w-11 ${t.submitBg} ${t.submitText} ${t.submitDisabled}`}
               >
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12l14 -7l-7 14l-2 -5l-5 -2" />
@@ -1410,21 +1543,26 @@ export default function AmbassadorWidget({
            *  om een samenvatting aan te vragen. */}
           {bubbles.length >= 3 && briefingStatus !== "sent" && (
             <div ref={briefingRef} className="px-3 pb-4 sm:px-8">
-              <div className="mx-auto max-w-2xl rounded-2xl border border-white/10 bg-white/[0.03] p-4 sm:p-5">
+              <div className={`mx-auto max-w-2xl rounded-2xl border p-4 sm:p-5 ${t.surfaceCard}`}>
                 {!briefingOpen ? (
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                     <div>
-                      <p className="text-sm font-semibold text-white">
+                      <p className={`text-sm font-semibold ${t.text}`}>
                         Wil je een AI-samenvatting van dit gesprek?
                       </p>
-                      <p className="mt-1 text-xs text-white/60">
+                      <p className={`mt-1 text-xs ${t.textMid}`}>
                         Gepersonaliseerd. Eén mail. Jij bepaalt wat je ermee doet.
                       </p>
                     </div>
                     <button
                       type="button"
                       onClick={() => setBriefingOpen(true)}
-                      className="shrink-0 rounded-full bg-[#4af0c4] px-5 py-2.5 text-xs font-semibold text-[#1f1f1f] transition-colors hover:bg-[#7cf5d3]"
+                      className="shrink-0 rounded-full px-5 py-2.5 text-xs font-semibold text-[#1f1f1f] transition-colors hover:opacity-90"
+                      style={{
+                        background: isLight
+                          ? `hsl(${hue}, 60%, 80%)`
+                          : "#4af0c4",
+                      }}
                     >
                       Stuur mij een briefing →
                     </button>
@@ -1438,6 +1576,8 @@ export default function AmbassadorWidget({
                     error={briefingError}
                     consentParty={brandNameProp ?? "MAISON BLNDR"}
                     personaLabel={personaLabel}
+                    theme={theme}
+                    accentHue={hue}
                   />
                 )}
               </div>
@@ -1446,7 +1586,19 @@ export default function AmbassadorWidget({
 
           {briefingStatus === "sent" && (
             <div ref={briefingRef} className="px-3 pb-4 sm:px-8">
-              <div className="mx-auto max-w-2xl rounded-2xl border border-[#4af0c4]/30 bg-[#4af0c4]/10 px-5 py-4 text-sm text-white/90">
+              <div
+                className={`mx-auto max-w-2xl rounded-2xl border px-5 py-4 text-sm ${
+                  isLight ? "text-[#1f1f1f]" : "text-white/90"
+                }`}
+                style={{
+                  borderColor: isLight
+                    ? `hsl(${hue}, 60%, 70%)`
+                    : "rgba(74,240,196,0.3)",
+                  background: isLight
+                    ? `hsla(${hue}, 70%, 90%, 0.6)`
+                    : "rgba(74,240,196,0.1)",
+                }}
+              >
                 ✓ E-mail is verzonden. Geen e-mail? Check je spambox.
               </div>
             </div>
@@ -1489,6 +1641,10 @@ interface BriefingFormProps {
   consentParty?: string;
   /** Persona-label voor de "verbetering van de X"-tekst. */
   personaLabel?: string;
+  /** Erft het thema van de parent widget. */
+  theme?: "dark" | "light";
+  /** Accent-hue van de parent widget — voor checkbox & submit-knop. */
+  accentHue?: number;
 }
 
 function BriefingForm({
@@ -1499,6 +1655,8 @@ function BriefingForm({
   error,
   consentParty = "MAISON BLNDR",
   personaLabel = "Ambassador",
+  theme = "dark",
+  accentHue = 160,
 }: BriefingFormProps) {
   const [email, setEmail] = useState("");
   const [naam, setNaam] = useState("");
@@ -1513,15 +1671,28 @@ function BriefingForm({
   }
 
   const sending = status === "sending";
+  const isLight = theme === "light";
+  const inputCls = isLight
+    ? "rounded-full border border-black/15 bg-white px-4 py-2.5 text-sm text-[#1f1f1f] placeholder:text-[#a8a8b0] focus:border-black/40 focus:outline-none disabled:opacity-40"
+    : "rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-white/30 focus:outline-none disabled:opacity-40";
+  const submitBg = isLight
+    ? `hsl(${accentHue}, 60%, 80%)`
+    : "#4af0c4";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
       <div className="flex items-center justify-between">
-        <p className="text-sm font-semibold text-white">AI-samenvatting ontvangen</p>
+        <p className={`text-sm font-semibold ${isLight ? "text-[#1f1f1f]" : "text-white"}`}>
+          AI-samenvatting ontvangen
+        </p>
         <button
           type="button"
           onClick={onCancel}
-          className="text-[11px] text-white/50 hover:text-white/80"
+          className={`text-[11px] transition-colors ${
+            isLight
+              ? "text-[#8a8a93] hover:text-[#1f1f1f]"
+              : "text-white/50 hover:text-white/80"
+          }`}
         >
           Annuleer
         </button>
@@ -1534,7 +1705,7 @@ function BriefingForm({
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled={sending}
-          className="rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-white/30 focus:outline-none disabled:opacity-40"
+          className={inputCls}
         />
         <input
           type="text"
@@ -1542,7 +1713,7 @@ function BriefingForm({
           value={naam}
           onChange={(e) => setNaam(e.target.value)}
           disabled={sending}
-          className="rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-white/30 focus:outline-none disabled:opacity-40"
+          className={inputCls}
         />
         <input
           type="text"
@@ -1550,7 +1721,7 @@ function BriefingForm({
           value={bedrijf}
           onChange={(e) => setBedrijf(e.target.value)}
           disabled={sending}
-          className="rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-white/30 focus:outline-none disabled:opacity-40"
+          className={inputCls}
         />
         <input
           type="text"
@@ -1558,32 +1729,43 @@ function BriefingForm({
           value={sector}
           onChange={(e) => setSector(e.target.value)}
           disabled={sending}
-          className="rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-white/30 focus:outline-none disabled:opacity-40"
+          className={inputCls}
         />
       </div>
-      <label className="flex items-start gap-2 text-xs text-white/60">
+      <label className={`flex items-start gap-2 text-xs ${
+        isLight ? "text-[#575760]" : "text-white/60"
+      }`}>
         <input
           type="checkbox"
           checked={toestemming}
           onChange={(e) => setToestemming(e.target.checked)}
-          className="mt-0.5 h-4 w-4 accent-[#4af0c4]"
+          className="mt-0.5 h-4 w-4"
+          style={{ accentColor: isLight ? `hsl(${accentHue}, 70%, 45%)` : "#4af0c4" }}
         />
         <span>
           Ik geef {consentParty} toestemming om mijn gegevens en dit gesprek op te slaan voor
           contactopname en verbetering van de {personaLabel}. Zie{" "}
-          <a href="/privacybeleid" className="underline hover:text-white" target="_blank" rel="noreferrer">
+          <a
+            href="/privacybeleid"
+            className={`underline ${isLight ? "hover:text-[#1f1f1f]" : "hover:text-white"}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             privacybeleid
           </a>
           .
         </span>
       </label>
       {status === "error" && (
-        <p className="text-xs text-red-400">{error || "Er ging iets mis."}</p>
+        <p className={`text-xs ${isLight ? "text-red-600" : "text-red-400"}`}>
+          {error || "Er ging iets mis."}
+        </p>
       )}
       <button
         type="submit"
         disabled={sending || !email.trim() || !toestemming}
-        className="inline-flex items-center justify-center rounded-full bg-[#4af0c4] px-5 py-2.5 text-xs font-semibold text-[#1f1f1f] transition-colors hover:bg-[#7cf5d3] disabled:opacity-40 disabled:cursor-not-allowed"
+        className="inline-flex items-center justify-center rounded-full px-5 py-2.5 text-xs font-semibold text-[#1f1f1f] transition-opacity hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+        style={{ background: submitBg }}
       >
         {sending ? "Versturen…" : "Verstuur briefing →"}
       </button>
