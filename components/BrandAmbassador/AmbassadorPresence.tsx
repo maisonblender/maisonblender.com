@@ -251,12 +251,55 @@ export default function AmbassadorPresence({
         }
       }
 
+      // Twee symmetrische "kijk"-puntjes ipv één centrale dot.
+      // Pareidolia: het brein leest twee punten op deze positie als ogen,
+      // wat de Presence vriendelijker en levendiger maakt zonder dat het
+      // een echt gezicht of avatar wordt. De ene-dot variant werd onbewust
+      // als "cyclops" gelezen — uncanny valley territorium.
       const pulse = reducedMotionRef.current ? 1 : 1 + Math.sin(t * 0.004) * 0.2;
-      const dotRadius = 3 * pulse;
-      ctx.beginPath();
-      ctx.arc(cx, cy - baseRadius * 0.35, dotRadius, 0, TAU);
-      ctx.fillStyle = P.dot;
-      ctx.fill();
+      const dotRadius = 2.6 * pulse;
+      const eyeY = cy - baseRadius * 0.22;
+      const eyeOffsetX = baseRadius * 0.32;
+
+      // Subtiele blink (alleen in idle): ogen worden héél kort dunner
+      // elke 4-6 seconden. Voelt levendig zonder te overdrijven.
+      const blinkPhase = (t * 0.0002) % 1;
+      const blinking =
+        !reducedMotionRef.current &&
+        stateRef.current === "idle" &&
+        blinkPhase > 0.96;
+      const eyeScaleY = blinking ? 0.15 : 1;
+
+      for (const sign of [-1, 1]) {
+        ctx.save();
+        ctx.translate(cx + sign * eyeOffsetX, eyeY);
+        ctx.scale(1, eyeScaleY);
+        ctx.beginPath();
+        ctx.arc(0, 0, dotRadius, 0, TAU);
+        ctx.fillStyle = P.dot;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      // Tijdens "responding" suggereert een zacht horizontaal lichtboogje
+      // onder de ogen dat de Presence "opent" om te spreken. Geen mond,
+      // geen gezicht — alleen een rustige indicatie van actieve output.
+      if (
+        !reducedMotionRef.current &&
+        stateRef.current === "responding"
+      ) {
+        const mouthY = cy + baseRadius * 0.18;
+        const mouthWidth = baseRadius * 0.45;
+        const mouthCurve = baseRadius * 0.06 * (1 + Math.sin(t * 0.006) * 0.4);
+        ctx.beginPath();
+        ctx.moveTo(cx - mouthWidth / 2, mouthY);
+        ctx.quadraticCurveTo(cx, mouthY + mouthCurve, cx + mouthWidth / 2, mouthY);
+        ctx.strokeStyle = P.dot;
+        ctx.lineWidth = 1.2;
+        ctx.globalAlpha = 0.5;
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+      }
 
       animRef.current = requestAnimationFrame(render);
     };
