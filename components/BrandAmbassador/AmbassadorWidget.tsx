@@ -23,6 +23,7 @@
  */
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import AmbassadorPresence, { type PresenceState } from "./AmbassadorPresence";
 import AmbassadorVoice, { type SpeakSession } from "./AmbassadorVoice";
 import BrandTransform from "./BrandTransform";
@@ -225,6 +226,16 @@ export default function AmbassadorWidget({
   // Presence-UI: tooltip met 4-states-uitleg + onboarding-hint voor nieuwe bezoekers
   const [statesTooltipOpen, setStatesTooltipOpen] = useState(false);
   const [showOnboardingHint, setShowOnboardingHint] = useState(false);
+  // Tooltip wordt via Portal naar document.body gerendered (anders zou hij
+  // geclipped worden door `lg:overflow-hidden` op de chat-container) en
+  // gepositioneerd met smart placement: voorkeur onder de trigger, maar
+  // boven als daar onvoldoende ruimte is. Coords herberekenen we bij open,
+  // resize en scroll.
+  const [tooltipPos, setTooltipPos] = useState<{
+    top: number;
+    left: number;
+    placement: "below" | "above";
+  } | null>(null);
   // Viewport-mode detect — we passen presence-grootte, header-layout en
   // scroll-strategie aan op mobile. Geen Tailwind-only CSS want canvas-
   // grootte (size-prop) is geen CSS-property.
@@ -426,6 +437,65 @@ export default function AmbassadorWidget({
       document.removeEventListener("mousedown", handlePointerDown);
       document.removeEventListener("touchstart", handlePointerDown);
       document.removeEventListener("keydown", handleKey);
+    };
+  }, [statesTooltipOpen]);
+
+  // Tooltip positioning. Wanneer geopend: bereken coords vanuit de trigger,
+  // kies smart placement (boven of onder) en clamp horizontaal binnen
+  // viewport-marges. Recompute bij window resize én scroll (chat-container
+  // kan scrollen op desktop, dat verschuift de trigger).
+  useEffect(() => {
+    if (!statesTooltipOpen) {
+      setTooltipPos(null);
+      return;
+    }
+    if (typeof window === "undefined") return;
+
+    // Geschatte tooltip-afmetingen (matched met className in JSX).
+    // Gebruikt voor placement-decision; effective height na render kan iets
+    // afwijken — daarom hebben we ook een hard max-height + overflow als
+    // safety-net, dus content is altijd bereikbaar.
+    const TOOLTIP_W = 300;
+    const TOOLTIP_H_EST = 320;
+    const VIEWPORT_MARGIN = 12;
+    const GAP = 10;
+
+    const compute = () => {
+      const trigger = tooltipTriggerRef.current;
+      if (!trigger) return;
+      const r = trigger.getBoundingClientRect();
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+
+      const spaceBelow = vh - r.bottom;
+      const spaceAbove = r.top;
+      // Voorkeur onder; alleen boven als er onder echt te weinig ruimte is
+      // (en boven méér ruimte heeft).
+      const placement: "below" | "above" =
+        spaceBelow >= TOOLTIP_H_EST + GAP || spaceBelow >= spaceAbove
+          ? "below"
+          : "above";
+
+      const top =
+        placement === "below"
+          ? r.bottom + GAP
+          : Math.max(VIEWPORT_MARGIN, r.top - GAP - TOOLTIP_H_EST);
+
+      // Centreer horizontaal op trigger, clamp binnen viewport.
+      const triggerCenter = r.left + r.width / 2;
+      let left = triggerCenter - TOOLTIP_W / 2;
+      left = Math.max(VIEWPORT_MARGIN, left);
+      left = Math.min(vw - TOOLTIP_W - VIEWPORT_MARGIN, left);
+
+      setTooltipPos({ top, left, placement });
+    };
+
+    compute();
+    window.addEventListener("resize", compute);
+    window.addEventListener("scroll", compute, true); // capture: vang ook scroll van chat-container
+    return () => {
+      window.removeEventListener("resize", compute);
+      window.removeEventListener("scroll", compute, true);
     };
   }, [statesTooltipOpen]);
 
@@ -966,75 +1036,99 @@ export default function AmbassadorWidget({
               </div>
             )}
 
-            {/* States-tooltip: compacte legenda met alle 4 modi */}
-            {statesTooltipOpen && (
-              <div
-                ref={tooltipRef}
-                role="dialog"
-                aria-label="Uitleg van de vier states"
-                className="absolute left-1/2 top-full z-30 mt-3 w-[280px] -translate-x-1/2 rounded-xl border border-white/10 bg-[#141416] p-4 text-left shadow-[0_20px_60px_-10px_rgba(0,0,0,0.8)]"
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-[11px] font-semibold uppercase tracking-widest text-white/80">
-                    Vier zichtbare modi
-                  </h3>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setStatesTooltipOpen(false);
-                      tooltipTriggerRef.current?.focus();
-                    }}
-                    aria-label="Sluit uitleg"
-                    className="-mr-1 -mt-1 flex h-5 w-5 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/5 hover:text-white/90"
-                  >
-                    <svg
-                      viewBox="0 0 20 20"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.75"
-                      className="h-3 w-3"
-                      aria-hidden="true"
+            {/* States-tooltip: compacte legenda met alle 4 modi.
+             *
+             * Gerendered via Portal naar document.body met `position: fixed`
+             * zodat hij NIET geclipped wordt door `lg:overflow-hidden` op
+             * de chat-container of door de aside-grenzen. Smart placement
+             * (boven/onder) + viewport-clamp + max-height + interne scroll
+             * garanderen dat alle content altijd bereikbaar is, ongeacht
+             * de chat-grootte of viewport-resolutie. */}
+            {statesTooltipOpen &&
+              tooltipPos &&
+              typeof document !== "undefined" &&
+              createPortal(
+                <div
+                  ref={tooltipRef}
+                  role="dialog"
+                  aria-label="Uitleg van de vier states"
+                  style={{
+                    position: "fixed",
+                    top: tooltipPos.top,
+                    left: tooltipPos.left,
+                    width: 300,
+                    maxHeight: "min(70vh, 420px)",
+                  }}
+                  className="z-[110] flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#141416] text-left shadow-[0_20px_60px_-10px_rgba(0,0,0,0.8)]"
+                >
+                  <div className="flex items-start justify-between gap-2 border-b border-white/5 p-4 pb-3">
+                    <h3 className="text-[11px] font-semibold uppercase tracking-widest text-white/80">
+                      Vier zichtbare modi
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setStatesTooltipOpen(false);
+                        tooltipTriggerRef.current?.focus();
+                      }}
+                      aria-label="Sluit uitleg"
+                      className="-mr-1 -mt-1 flex h-5 w-5 items-center justify-center rounded-full text-white/50 transition-colors hover:bg-white/5 hover:text-white/90"
                     >
-                      <path d="M4 4l12 12M16 4L4 16" strokeLinecap="round" />
-                    </svg>
-                  </button>
-                </div>
-                <p className="mt-2 text-[11px] leading-relaxed text-white/65">
-                  De Liquid Presence verandert zichtbaar van gedrag per
-                  gespreksfase. Let op vorm én kleur tijdens het praten.
-                </p>
-                <ul className="mt-3 flex flex-col gap-2.5 text-[11px]">
-                  {(Object.keys(STATE_META) as PresenceState[]).map((s) => (
-                    <li
-                      key={s}
-                      className={`flex items-start gap-2.5 rounded-md px-2 py-1.5 transition-colors ${
-                        presenceState === s
-                          ? "bg-white/5"
-                          : "bg-transparent"
-                      }`}
-                    >
-                      <span
-                        className={`mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full ${STATE_META[s].dotClass} ${
-                          presenceState === s && STATE_META[s].animate
-                            ? "animate-pulse"
-                            : ""
-                        }`}
+                      <svg
+                        viewBox="0 0 20 20"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="1.75"
+                        className="h-3 w-3"
                         aria-hidden="true"
-                      />
-                      <span className="flex-1">
-                        <span className="font-semibold text-white/95">
-                          {STATE_META[s].label}
-                        </span>
-                        <span className="text-white/55">
-                          {" — "}
-                          {STATE_META[s].shortDescription}
-                        </span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
+                      >
+                        <path d="M4 4l12 12M16 4L4 16" strokeLinecap="round" />
+                      </svg>
+                    </button>
+                  </div>
+                  {/* Scrollable body — safety net voor lage viewports */}
+                  <div
+                    className="overflow-y-auto overscroll-contain p-4 pt-3"
+                    style={{ touchAction: "pan-y" }}
+                  >
+                    <p className="text-[11px] leading-relaxed text-white/65">
+                      De Liquid Presence verandert zichtbaar van gedrag per
+                      gespreksfase. Let op vorm én kleur tijdens het praten.
+                    </p>
+                    <ul className="mt-3 flex flex-col gap-2.5 text-[11px]">
+                      {(Object.keys(STATE_META) as PresenceState[]).map((s) => (
+                        <li
+                          key={s}
+                          className={`flex items-start gap-2.5 rounded-md px-2 py-1.5 transition-colors ${
+                            presenceState === s
+                              ? "bg-white/5"
+                              : "bg-transparent"
+                          }`}
+                        >
+                          <span
+                            className={`mt-[5px] h-1.5 w-1.5 shrink-0 rounded-full ${STATE_META[s].dotClass} ${
+                              presenceState === s && STATE_META[s].animate
+                                ? "animate-pulse"
+                                : ""
+                            }`}
+                            aria-hidden="true"
+                          />
+                          <span className="flex-1">
+                            <span className="font-semibold text-white/95">
+                              {STATE_META[s].label}
+                            </span>
+                            <span className="text-white/55">
+                              {" — "}
+                              {STATE_META[s].shortDescription}
+                            </span>
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>,
+                document.body
+              )}
           </div>
         </aside>
 
