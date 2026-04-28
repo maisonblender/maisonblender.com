@@ -149,6 +149,46 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
     setTranscript([]);
     setStatus("requesting-mic");
 
+    // 0. Pre-warm de audio output op iOS/Android (anti "blikkerige stem").
+    //
+    // iOS & Android schakelen by default naar "voice call mode" zodra je
+    // getUserMedia (mic) actief hebt + audio playback. Dat routeert audio
+    // naar de earpiece-speaker (klein, monovocal) ipv de luide loudspeaker,
+    // EN past vocal-DSP toe (compressie, smal frequency band, limiting) →
+    // klinkt als telefoongesprek.
+    //
+    // Truc: claim de speaker-route VOORDAT de mic geopend wordt. We doen
+    // dat door 100ms stilte af te spelen via een AudioContext tegen
+    // destination. Dit forceert iOS om media-mode aan te houden zodat
+    // wanneer de mic later opent, de audio-route niet wisselt.
+    //
+    // Best-effort: bij failure (bv. AudioContext blocked, oudere browser)
+    // valt het stil terug — geen blocker, alleen een suboptimale audio
+    // ervaring op die device.
+    try {
+      type WebkitWindow = Window & { webkitAudioContext?: typeof AudioContext };
+      const Ctx =
+        typeof window !== "undefined"
+          ? window.AudioContext || (window as WebkitWindow).webkitAudioContext
+          : null;
+      if (Ctx) {
+        const ctx = new Ctx();
+        if (ctx.state === "suspended") {
+          await ctx.resume();
+        }
+        const buffer = ctx.createBuffer(1, Math.floor(ctx.sampleRate * 0.1), ctx.sampleRate);
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(ctx.destination);
+        source.start();
+        // ctx.close() bewust niet — sluiten geeft de speaker-claim weer
+        // vrij waardoor iOS alsnog naar voice mode kan switchen zodra
+        // getUserMedia opent. Browser ruimt 'm op bij page unload.
+      }
+    } catch {
+      // best-effort — niet kritiek
+    }
+
     // 1. Verzoek expliciet mic-permissie vóór we ElevenLabs contacteren —
     //    zo krijgen we een nette eigen foutmelding ipv de ElevenLabs-error.
     try {
