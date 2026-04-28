@@ -183,6 +183,21 @@ interface Props {
    * AI dat in de eerste turn genereert.
    */
   initialBubble?: { content: string; suggestions: string[] };
+  /**
+   * Naam van het merk/bedrijf dat de widget representeert.
+   * Default: "MAISON BLNDR" (eigen Brand Presence).
+   * Voor AI Collega tenants: vul de bedrijfsnaam in (bv.
+   * "Makelaardij Van den Berg"). Wordt getoond in header,
+   * input-placeholder en privacy-disclaimer.
+   */
+  brandName?: string;
+  /**
+   * Persona-label dat naast de bedrijfsnaam staat.
+   * Default: "Ambassador" (MAISON BLNDR Brand Presence).
+   * Voor AI Collega: persoonlijke naam ("Sophie") of generieke
+   * fallback ("Online assistent").
+   */
+  personaLabel?: string;
 }
 
 /**
@@ -212,6 +227,8 @@ export default function AmbassadorWidget({
   chatEndpoint = "/api/brand-ambassador/chat",
   tenantId,
   initialBubble,
+  brandName: brandNameProp,
+  personaLabel = "Ambassador",
 }: Props) {
   const [brand, setBrand] = useState<BrandContext | null>(null);
   const [conversationId, setConversationId] = useState<string>(() =>
@@ -797,7 +814,7 @@ export default function AmbassadorWidget({
     }
   }
 
-  const brandName = brand?.name ?? "MAISON BLNDR";
+  const brandName = brand?.name ?? brandNameProp ?? "MAISON BLNDR";
 
   const containerClass = fullscreen
     ? "fixed inset-0 z-[60] flex flex-col bg-[#0b0b0d]"
@@ -876,7 +893,7 @@ export default function AmbassadorWidget({
             />
           </div>
           <div className="flex flex-col">
-            <p className="text-sm font-semibold text-white">{brandName} · Ambassador</p>
+            <p className="text-sm font-semibold text-white">{brandName} · {personaLabel}</p>
             <p className="text-[11px] uppercase tracking-widest text-white/50">
               {sending ? "antwoordt…" : voiceEnabled ? "voice · live" : "live · 24/7"}
             </p>
@@ -1275,11 +1292,11 @@ export default function AmbassadorWidget({
                 }}
                 placeholder={
                   sending
-                    ? "Ambassador is bezig…"
+                    ? `${personaLabel} is bezig…`
                     : voiceInterim
                     ? ""
                     : brand
-                    ? `Vraag ${brand.name} Ambassador…`
+                    ? `Vraag ${brand.name} ${personaLabel}…`
                     : "Stel je vraag…"
                 }
                 disabled={sending}
@@ -1376,6 +1393,8 @@ export default function AmbassadorWidget({
                     onCancel={() => setBriefingOpen(false)}
                     status={briefingStatus}
                     error={briefingError}
+                    consentParty={brandNameProp ?? "MAISON BLNDR"}
+                    personaLabel={personaLabel}
                   />
                 )}
               </div>
@@ -1420,9 +1439,21 @@ interface BriefingFormProps {
   onCancel: () => void;
   status: "idle" | "sending" | "sent" | "error";
   error: string;
+  /** Naam van het bedrijf dat de gegevens ontvangt (voor AVG-disclaimer). */
+  consentParty?: string;
+  /** Persona-label voor de "verbetering van de X"-tekst. */
+  personaLabel?: string;
 }
 
-function BriefingForm({ initialBrand, onSubmit, onCancel, status, error }: BriefingFormProps) {
+function BriefingForm({
+  initialBrand,
+  onSubmit,
+  onCancel,
+  status,
+  error,
+  consentParty = "MAISON BLNDR",
+  personaLabel = "Ambassador",
+}: BriefingFormProps) {
   const [email, setEmail] = useState("");
   const [naam, setNaam] = useState("");
   const [bedrijf, setBedrijf] = useState(initialBrand);
@@ -1492,8 +1523,8 @@ function BriefingForm({ initialBrand, onSubmit, onCancel, status, error }: Brief
           className="mt-0.5 h-4 w-4 accent-[#4af0c4]"
         />
         <span>
-          Ik geef MAISON BLNDR toestemming om mijn gegevens en dit gesprek op te slaan voor
-          contactopname en verbetering van de Ambassador. Zie{" "}
+          Ik geef {consentParty} toestemming om mijn gegevens en dit gesprek op te slaan voor
+          contactopname en verbetering van de {personaLabel}. Zie{" "}
           <a href="/privacybeleid" className="underline hover:text-white" target="_blank" rel="noreferrer">
             privacybeleid
           </a>

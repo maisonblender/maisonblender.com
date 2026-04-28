@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 const MAKELAAR_OPENING = {
   content:
-    "Hoi, ik ben de AI Collega van Makelaardij Van den Berg in Sittard. Je kunt me alles vragen over onze woningen, het aankoop- of verkoopproces, of een bezichtiging inplannen. Waar kan ik je mee helpen?",
+    "Hoi, ik ben de online assistent van Makelaardij Van den Berg in Sittard. Je kunt me alles vragen over onze woningen, het aankoop- of verkoopproces, of een bezichtiging inplannen. Waar kan ik je mee helpen?",
   suggestions: [
     "Welke woningen zijn er beschikbaar?",
     "Hoe werkt een bezichtiging aanvragen?",
@@ -65,6 +65,8 @@ export default function DemoPage() {
           <AmbassadorWidget
             chatEndpoint="/api/aicollega/makelaar/chat"
             tenantId="demo-makelaar-01"
+            brandName="Makelaardij Van den Berg"
+            personaLabel="Online assistent"
             initialBubble={MAKELAAR_OPENING}
             defaultFullscreen={false}
           />

@@ -28,6 +28,13 @@ export interface AICollegaTenant {
   id: string; // UUID
   branche: Branche;
   naam: string; // "Makelaardij Janssen"
+  /**
+   * Optionele persona-naam waarmee de AI Collega zich aan bezoekers
+   * voorstelt. Bv. "Sophie", "Lisa". Als leeg → fallback naar
+   * "Online assistent". Wordt zowel in de UI (header, opening) als in
+   * de systeem-prompt gebruikt zodat het consistent voelt.
+   */
+  personaNaam?: string;
   contactEmail: string;
   contactTelefoon?: string;
   website?: string;
@@ -82,6 +89,8 @@ export interface ContentVariant {
 
 export interface OnboardingData {
   naam: string;
+  /** Optionele persona-naam, bv. "Sophie". Leeg → "Online assistent". */
+  personaNaam?: string;
   stad: string;
   contactEmail: string;
   contactTelefoon?: string;
@@ -90,3 +99,6 @@ export interface OnboardingData {
   objectenRaw?: string; // vrij tekstblok met objecten info
   faqRaw?: string; // vrij tekstblok met FAQ
 }
+
+/** Centrale fallback voor de persona-label wanneer geen eigen naam is gezet. */
+export const DEFAULT_PERSONA_LABEL = "Online assistent";

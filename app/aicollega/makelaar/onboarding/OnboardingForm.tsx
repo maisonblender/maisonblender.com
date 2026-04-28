@@ -7,6 +7,7 @@ type Step = 1 | 2 | 3;
 
 interface FormData {
   naam: string;
+  personaNaam: string;
   stad: string;
   contactEmail: string;
   contactTelefoon: string;
@@ -24,6 +25,7 @@ interface OnboardingResult {
 
 const initialData: FormData = {
   naam: "",
+  personaNaam: "",
   stad: "",
   contactEmail: "",
   contactTelefoon: "",
@@ -213,6 +215,19 @@ export default function OnboardingForm() {
               />
             </Field>
 
+            <Field
+              label="Persona-naam (optioneel)"
+              hint="Hoe je AI Collega zich aan bezoekers voorstelt. Bv. 'Sophie' of 'Tim'. Leeg laten? Dan heet ze 'Online assistent'."
+            >
+              <input
+                type="text"
+                value={data.personaNaam}
+                onChange={(e) => update("personaNaam", e.target.value)}
+                placeholder="Sophie"
+                className={inputClass}
+              />
+            </Field>
+
             <Field label="E-mailadres" required hint="Hier komen leadmeldingen naartoe">
               <input
                 type="email"
@@ -339,6 +354,7 @@ export default function OnboardingForm() {
                 {[
                   { label: "Kantoor", value: data.naam },
                   { label: "Stad", value: data.stad || "—" },
+                  { label: "Persona-naam", value: data.personaNaam || "Online assistent (default)" },
                   { label: "E-mail", value: data.contactEmail },
                   { label: "Telefoon", value: data.contactTelefoon || "—" },
                   { label: "Toon", value: data.toon === "formeel" ? "Formeel (u/uw)" : "Informeel (je/jij)" },

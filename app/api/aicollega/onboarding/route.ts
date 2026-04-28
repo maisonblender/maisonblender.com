@@ -31,6 +31,7 @@ function sanitizeOnboarding(raw: unknown): OnboardingData | null {
 
   return {
     naam,
+    personaNaam: typeof r.personaNaam === "string" ? r.personaNaam.trim().slice(0, 60) : undefined,
     stad,
     contactEmail,
     contactTelefoon: typeof r.contactTelefoon === "string" ? r.contactTelefoon.trim().slice(0, 40) : undefined,
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
     id: tenantId,
     branche: "makelaar",
     naam: data.naam,
+    personaNaam: data.personaNaam || undefined,
     stad: data.stad || undefined,
     contactEmail: data.contactEmail,
     contactTelefoon: data.contactTelefoon,
