@@ -829,19 +829,21 @@ export default function AmbassadorWidget({
         </button>
       )}
 
-      {/* Header — compacter op mobile.
+      {/* Header — minimal en rustig.
        *
-       * Mobile (< lg):
-       *   - Brand-label + status (links).
-       *   - Praat-live blijft (kleine pill, past nog).
-       *   - BrandTransform NIET hier — verhuist naar inline-trigger boven
-       *     de input (zie verderop). Zo blijft de header op één regel en
-       *     komt de close-knop rechtsboven niet in de knel.
+       * Bevat alléén identiteit (brand-label + live-status) plus, in
+       * standalone-mode, de fullscreen-toggle. Alle andere acties zijn
+       * verplaatst naar logischer zones:
+       *   - Praat-live → onder de Liquid Presence in de aside (het IS
+       *     de stem van de presence — daar hoort hij contextueel)
+       *   - BrandTransform → in de sticky input-zone (conversie-tool
+       *     hoort bij invoer, niet bij identiteit)
+       *   - Sluit-knop (modal) → floating top-right, los van header
        *
-       * Desktop (lg+):
-       *   - Volledige header met BrandTransform inline, Praat-live, en
-       *     fullscreen-toggle (alleen als geen onClose meegegeven). */}
-      <header className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-white/5 px-5 py-4 pr-14 sm:pr-16 lg:pr-5">
+       * Zo blijft de header op alle viewports een rustige, ééngrips
+       * identiteits-balk en voorkomen we de visuele competitie tussen
+       * close-knop en functionele knoppen die we eerder zagen. */}
+      <header className="relative z-10 flex items-center justify-between gap-3 border-b border-white/5 px-5 py-4 pr-14 sm:pr-16 lg:pr-5">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5">
             <span
@@ -856,77 +858,33 @@ export default function AmbassadorWidget({
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          {/* BrandTransform alleen in header op desktop — op mobile inline
-              naast input om header-clutter te vermijden. */}
-          <div className="hidden lg:block">
-            <BrandTransform
-              current={brand}
-              onActivate={setBrand}
-              onReset={() => setBrand(null)}
-              disabled={sending}
-            />
-          </div>
-          {liveAvailable && (
-            <button
-              type="button"
-              onClick={() => setLiveOpen(true)}
-              aria-label="Start een live voice-gesprek met de Ambassador"
-              className="group inline-flex h-8 items-center gap-1.5 rounded-full border px-3 text-[10px] font-semibold uppercase tracking-widest transition-all"
-              style={{
-                borderColor: `hsl(${hue}, 80%, 55%)`,
-                color: `hsl(${hue}, 85%, 70%)`,
-                background: `hsla(${hue}, 80%, 50%, 0.08)`,
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = `hsla(${hue}, 80%, 50%, 0.18)`;
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = `hsla(${hue}, 80%, 50%, 0.08)`;
-              }}
-            >
-              <span className="relative flex h-2 w-2">
-                <span
-                  className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
-                  style={{ background: `hsl(${hue}, 85%, 60%)` }}
-                />
-                <span
-                  className="relative inline-flex h-2 w-2 rounded-full"
-                  style={{ background: `hsl(${hue}, 85%, 60%)` }}
-                />
-              </span>
-              <span className="hidden sm:inline">Praat live</span>
-              <span className="sm:hidden">Live</span>
-            </button>
-          )}
-          {/* Fullscreen-toggle alleen tonen als de widget standalone draait
-              (geen onClose). In modal-context dient de floating close-knop
-              rechtsboven als enige sluit-actie. */}
-          {!onClose && (
-            <button
-              type="button"
-              onClick={() => setFullscreen((v) => !v)}
-              aria-label={fullscreen ? "Verlaat volledig scherm" : "Volledig scherm"}
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-white/30 hover:text-white"
-            >
-              {fullscreen ? (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 3H5a2 2 0 0 0-2 2v4" />
-                  <path d="M15 3h4a2 2 0 0 1 2 2v4" />
-                  <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
-                  <path d="M15 21h4a2 2 0 0 0 2-2v-4" />
-                </svg>
-              ) : (
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M3 9V5a2 2 0 0 1 2-2h4" />
-                  <path d="M21 9V5a2 2 0 0 0-2-2h-4" />
-                  <path d="M3 15v4a2 2 0 0 0 2 2h4" />
-                  <path d="M21 15v4a2 2 0 0 1-2 2h-4" />
-                </svg>
-              )}
-            </button>
-          )}
-        </div>
+        {/* Fullscreen-toggle alleen in standalone-mode (geen onClose).
+            In modal-context dient de floating close-knop rechtsboven
+            als enige sluit-actie. */}
+        {!onClose && (
+          <button
+            type="button"
+            onClick={() => setFullscreen((v) => !v)}
+            aria-label={fullscreen ? "Verlaat volledig scherm" : "Volledig scherm"}
+            className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-white/30 hover:text-white"
+          >
+            {fullscreen ? (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 3H5a2 2 0 0 0-2 2v4" />
+                <path d="M15 3h4a2 2 0 0 1 2 2v4" />
+                <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
+                <path d="M15 21h4a2 2 0 0 0 2-2v-4" />
+              </svg>
+            ) : (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M3 9V5a2 2 0 0 1 2-2h4" />
+                <path d="M21 9V5a2 2 0 0 0-2-2h-4" />
+                <path d="M3 15v4a2 2 0 0 0 2 2h4" />
+                <path d="M21 15v4a2 2 0 0 1-2 2h-4" />
+              </svg>
+            )}
+          </button>
+        )}
       </header>
 
       {/* Main: presence + thread.
@@ -1021,6 +979,45 @@ export default function AmbassadorWidget({
                 ? "Klaar voor je vraag — in tekst of spraak."
                 : STATE_META[presenceState].description}
             </p>
+
+            {/* Praat-live CTA — bewust ONDER de Liquid Presence: dit is
+             *   contextueel "geef de presence z'n stem". Eén positie voor
+             *   mobiel én desktop, voorkomt header-clutter en de visuele
+             *   competitie met de close-knop. Toont alleen als de
+             *   live-mode beschikbaar is (geen permanente config-fout). */}
+            {liveAvailable && (
+              <div className="mt-4 flex justify-center">
+                <button
+                  type="button"
+                  onClick={() => setLiveOpen(true)}
+                  aria-label="Start een live voice-gesprek met de Ambassador"
+                  className="group inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[10px] font-semibold uppercase tracking-widest transition-all hover:scale-[1.02] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b0d]"
+                  style={{
+                    borderColor: `hsl(${hue}, 80%, 55%)`,
+                    color: `hsl(${hue}, 85%, 70%)`,
+                    background: `hsla(${hue}, 80%, 50%, 0.08)`,
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = `hsla(${hue}, 80%, 50%, 0.18)`;
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = `hsla(${hue}, 80%, 50%, 0.08)`;
+                  }}
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span
+                      className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-60"
+                      style={{ background: `hsl(${hue}, 85%, 60%)` }}
+                    />
+                    <span
+                      className="relative inline-flex h-2 w-2 rounded-full"
+                      style={{ background: `hsl(${hue}, 85%, 60%)` }}
+                    />
+                  </span>
+                  Praat live met de stem
+                </button>
+              </div>
+            )}
 
             {/* Mobile onboarding hint — onder de status ipv naast de orb */}
             {showOnboardingHint && (
@@ -1200,20 +1197,24 @@ export default function AmbassadorWidget({
             </div>
           </div>
 
-          {/* Input-zone (mobile sticky bottom + BrandTransform-trigger).
+          {/* Input-zone — bundelt BrandTransform-trigger en form in één
+           * visueel blok onderaan de conversatie, op alle viewports.
            *
-           * Op mobile bundelen we BrandTransform en de form in één sticky
-           * container met 1 border-top — de transform-rij is dan duidelijk
-           * onderdeel van het invoer-gebied, niet van het gesprek. Op
-           * desktop loopt de form gewoon mee in de section-flow want de
-           * BrandTransform zit dan in de header.
+           * Mobile: sticky bottom zodat invoer altijd bereikbaar is bij
+           * scrollen door lange threads. Desktop: static onderaan de
+           * section (de thread heeft eigen overflow-y-auto en vult de
+           * resterende hoogte daarboven).
+           *
+           * BrandTransform staat hier (niet meer in de header) omdat het
+           * een conversie-tool is — context = "voordat je de vraag stelt".
+           * Voor mobiel én desktop dezelfde plek = consistente mental model.
            *
            * Input-detail:
            *   - text-base (16px) op de input zelf om iOS auto-zoom te voorkomen.
            *   - min-w-0 op input → flex-shrink werkt binnen rounded container.
            *   - Voice-toggle hidden op mobile: mic-knop is genoeg op telefoon. */}
-          <div className="sticky bottom-0 z-20 border-t border-white/5 bg-[#0b0b0d]/95 backdrop-blur-md lg:static lg:border-t-0 lg:bg-transparent lg:backdrop-blur-none">
-            <div className="lg:hidden px-3 pt-3">
+          <div className="sticky bottom-0 z-20 border-t border-white/5 bg-[#0b0b0d]/95 backdrop-blur-md lg:static lg:bg-transparent lg:backdrop-blur-none">
+            <div className="px-3 pt-3 sm:px-8">
               <div className="mx-auto max-w-2xl">
                 <BrandTransform
                   current={brand}
@@ -1226,7 +1227,7 @@ export default function AmbassadorWidget({
 
           <form
             onSubmit={handleSubmit}
-            className="relative z-10 px-3 py-3 sm:px-8 sm:py-4 lg:border-t lg:border-white/5"
+            className="relative z-10 px-3 py-3 sm:px-8 sm:py-4"
           >
             <div className="mx-auto flex max-w-2xl items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] py-2 pl-4 pr-1.5 focus-within:border-white/25 sm:gap-3 sm:pr-2">
               <input
