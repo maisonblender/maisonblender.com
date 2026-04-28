@@ -166,6 +166,23 @@ interface Props {
    * expand/collapse-icoon. Zo is er maar één knop nodig.
    */
   onClose?: () => void;
+  /**
+   * Alternatief chat-endpoint. Default: /api/brand-ambassador/chat.
+   * Gebruik dit om de widget te koppelen aan een andere AI Collega-tenant,
+   * bv. /api/aicollega/makelaar/chat. Het SSE-protocol is identiek.
+   */
+  chatEndpoint?: string;
+  /**
+   * Tenant-ID die wordt meegestuurd in het request-body wanneer het
+   * chatEndpoint een multi-tenant AI Collega-route is.
+   */
+  tenantId?: string;
+  /**
+   * Overschrijf het standaard openingsbericht van de widget.
+   * Handig voor tenants die een eigen begroeting willen zonder dat de
+   * AI dat in de eerste turn genereert.
+   */
+  initialBubble?: { content: string; suggestions: string[] };
 }
 
 /**
@@ -192,12 +209,19 @@ export default function AmbassadorWidget({
   defaultFullscreen = false,
   initialPrompt,
   onClose,
+  chatEndpoint = "/api/brand-ambassador/chat",
+  tenantId,
+  initialBubble,
 }: Props) {
   const [brand, setBrand] = useState<BrandContext | null>(null);
   const [conversationId, setConversationId] = useState<string>(() =>
     newConversationId()
   );
-  const [bubbles, setBubbles] = useState<Bubble[]>(() => [openingMessage(null)]);
+  const [bubbles, setBubbles] = useState<Bubble[]>(() => [
+    initialBubble
+      ? { role: "assistant" as const, ...initialBubble, streaming: false }
+      : openingMessage(null),
+  ]);
   const [input, setInput] = useState(initialPrompt ?? "");
   const [sending, setSending] = useState(false);
   const [fullscreen, setFullscreen] = useState(defaultFullscreen);
@@ -529,12 +553,12 @@ export default function AmbassadorWidget({
       abortRef.current = new AbortController();
 
       try {
-        const res = await fetch("/api/brand-ambassador/chat", {
+        const res = await fetch(chatEndpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             messages: historyForApi,
-            brand,
+            ...(tenantId ? { tenantId } : { brand }),
             conversationId,
           }),
           signal: abortRef.current.signal,
@@ -1216,12 +1240,14 @@ export default function AmbassadorWidget({
           <div className="sticky bottom-0 z-20 border-t border-white/5 bg-[#0b0b0d]/95 backdrop-blur-md lg:static lg:bg-transparent lg:backdrop-blur-none">
             <div className="px-3 pt-3 sm:px-8">
               <div className="mx-auto max-w-2xl">
-                <BrandTransform
-                  current={brand}
-                  onActivate={setBrand}
-                  onReset={() => setBrand(null)}
-                  disabled={sending}
-                />
+                {!tenantId && (
+                  <BrandTransform
+                    current={brand}
+                    onActivate={setBrand}
+                    onReset={() => setBrand(null)}
+                    disabled={sending}
+                  />
+                )}
               </div>
             </div>
 
