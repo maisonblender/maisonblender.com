@@ -66,7 +66,7 @@ export default function AICollegaPage() {
           </div>
 
           <h1
-            className="text-[32px] font-normal leading-[1.15] tracking-tight text-[#1f1f1f] sm:text-[42px] lg:text-[52px] mb-6"
+            className="text-[32px] font-normal leading-[1.15] tracking-tight text-[#1f1f1f] mb-6"
             style={{ letterSpacing: "-0.95px" }}
           >
             Jouw AI Collega.
