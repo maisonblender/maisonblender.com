@@ -23,19 +23,21 @@ import AmbassadorPresence, { type PresenceState } from "./AmbassadorPresence";
 import type { BrandContext } from "@/lib/brand-ambassador/types";
 
 /**
- * NB: tijd-aware first-message override is uitgeschakeld.
+ * Tijd-aware Nederlandse begroeting. ElevenLabs agent heeft een statische
+ * `first_message` server-side (zegt altijd "Goedemiddag"), wat 's ochtends
+ * of 's avonds vreemd voelt. We overriden die hier dynamisch zodat de
+ * eerste indruk altijd klopt.
  *
- * ElevenLabs agent-config heeft `first_message: false` in de allowed
- * overrides — een poging tot client-side override geeft close code 1008
- * (Policy Violation) en de sessie valt binnen ~2s weg. Om dit te
- * activeren moet de "First message override" toggle aan in de ElevenLabs
- * dashboard (Agent → Security → Allowed overrides). Daarna kan de
- * helper terugkomen en de override-block re-enabled worden in
- * startSession() hieronder.
- *
- * Tot die tijd gebruikt ElevenLabs z'n eigen statische first_message
- * (zegt "Goedemiddag" ongeacht tijdstip).
+ * Vereist: agent-config "Allowed overrides → First message" moet aanstaan
+ * in ElevenLabs dashboard. Anders close code 1008 binnen ~2s.
  */
+function getDutchGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 6) return "Goedenacht";
+  if (hour < 12) return "Goedemorgen";
+  if (hour < 18) return "Goedemiddag";
+  return "Goedenavond";
+}
 
 interface Props {
   open: boolean;
@@ -203,17 +205,23 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
       // disconnect kort na connect, of een natural turn-end?
       const sessionStart = Date.now();
 
-      // NB: tijd-aware first_message override is uitgeschakeld omdat de
-      // ElevenLabs agent-config `first_message: false` in allowed
-      // overrides heeft — een poging tot override geeft close code 1008
-      // (Policy Violation) en de sessie valt direct weg na ~2s.
-      //
-      // Om dit te activeren: ga in ElevenLabs dashboard naar
-      //   Agent → Security/Auth → Allowed overrides → vink
-      //   "First message" aan. Daarna kan deze override-blok terug.
+      // Altijd onze eigen tijd-aware begroeting — de server-side
+      // first_message in ElevenLabs is statisch "Goedemiddag" en klopt
+      // niet 's ochtends/'s avonds. Brand-context wordt ingebakken
+      // wanneer aanwezig. Vereist dat "First message" override aan staat
+      // in de agent-config (anders close 1008).
+      const greeting = getDutchGreeting();
+      const dynamicFirstMessage = brand
+        ? `${greeting}, fijn dat je er bent. Ik ben de Ambassador — de Brand Presence van MAISON BLNDR. Dit is een demo van hoe een Brand Presence voor ${brand.name} zou klinken. Waar zullen we het over hebben?`
+        : `${greeting}. Ik ben de Brand Presence van MAISON BLNDR — de Ambassador. Waar wil je het over hebben: onze aanpak, een specifiek proces in jouw bedrijf, of wat een Ambassador concreet kost?`;
 
       const conv = await Conversation.startSession({
         signedUrl,
+        overrides: {
+          agent: {
+            firstMessage: dynamicFirstMessage,
+          },
+        },
         onConnect: (info) => {
           console.log("[live-convai] onConnect", info);
           setStatus("connected");
