@@ -63,6 +63,9 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
   // negeren — staat in een lager-contrast, kleinere font.
   const [errorDetail, setErrorDetail] = useState("");
   const [transcript, setTranscript] = useState<TranscriptEntry[]>([]);
+  // Mobile detect — orb-size en padding verschillen significant tussen
+  // viewports. Niet via Tailwind want canvas size is een prop, geen CSS.
+  const [isMobile, setIsMobile] = useState(false);
 
   const conversationRef = useRef<Conversation | null>(null);
   const rafRef = useRef<number | null>(null);
@@ -283,6 +286,18 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
     };
   }, [open]);
 
+  // Viewport detect: < 768px = mobile (kleinere orb + andere padding).
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => {
+      mq.removeEventListener?.("change", update);
+    };
+  }, []);
+
   // Cleanup on unmount or when closing.
   useEffect(() => {
     if (!open) {
@@ -307,10 +322,13 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
   const active = status === "connected";
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#0b0b0d]">
+    <div
+      className="fixed inset-0 z-[100] overflow-y-auto overscroll-contain bg-[#0b0b0d]"
+      style={{ touchAction: "pan-y" }}
+    >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        className="pointer-events-none fixed inset-0 opacity-[0.07]"
         style={{
           backgroundImage: "radial-gradient(circle, #ffffff 1px, transparent 1px)",
           backgroundSize: "32px 32px",
@@ -318,14 +336,15 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
       />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2"
+        className="pointer-events-none fixed left-1/2 top-1/2 h-[900px] w-[900px] -translate-x-1/2 -translate-y-1/2"
         style={{
           background: `radial-gradient(closest-side, hsla(${hue}, 70%, 55%, 0.12), transparent 70%)`,
         }}
       />
 
-      {/* Close button — z-20 zodat hij BOVEN de main-content z-10 ligt,
-          anders vangt de content-laag clicks op de kruis-positie op. */}
+      {/* Close button — fixed (niet absolute) zodat hij ALTIJD top-right
+          zichtbaar blijft, ook tijdens scrollen door tech-details. z-30
+          om boven alle content te staan. */}
       <button
         type="button"
         onClick={() => {
@@ -333,7 +352,7 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
           onClose();
         }}
         aria-label="Sluiten"
-        className="absolute right-5 top-5 z-20 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white/70 transition-colors hover:border-white/40 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)]"
+        className="fixed right-4 top-4 z-30 inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white/70 backdrop-blur-md transition-colors hover:border-white/40 hover:bg-black/60 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--accent)] sm:right-5 sm:top-5"
       >
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <line x1="18" y1="6" x2="6" y2="18" />
@@ -341,14 +360,20 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
         </svg>
       </button>
 
-      <div className="relative z-10 flex h-full w-full flex-col items-center justify-between px-6 py-16 sm:py-20">
+      {/* Centered content via min-h-full + flex. Wanneer de content (orb +
+          tech-details + transcript) groter wordt dan de viewport scrollt
+          de outer container natuurlijk — zonder scroll zou de tech-details
+          collapse onbereikbaar zijn op kleine schermen of in error-state.
+          gap-8 ipv justify-between zodat content netjes meegroeit en niet
+          uit het venster valt. */}
+      <div className="relative z-10 flex min-h-full w-full flex-col items-center gap-6 px-6 py-12 sm:gap-10 sm:py-16">
         {/* Status badge */}
         <div className="flex flex-col items-center gap-2">
           <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-white/40">
             MAISON BLNDR · Live Encounter
           </span>
           <h2
-            className="mt-3 text-center text-[22px] font-normal leading-tight text-white sm:text-[28px]"
+            className="mt-2 text-center text-[20px] font-normal leading-tight text-white sm:mt-3 sm:text-[28px]"
             style={{ letterSpacing: "-0.5px" }}
           >
             {brand ? (
@@ -366,13 +391,13 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
           </p>
         </div>
 
-        {/* Presence orb */}
+        {/* Presence orb — kleiner op mobile, ruimer op desktop. */}
         <div className="flex flex-col items-center gap-6">
           <AmbassadorPresence
             state={presenceState}
             hue={hue}
             audioLevel={audioLevel}
-            size={340}
+            size={isMobile ? 200 : 340}
           />
           <div className="flex flex-col items-center gap-1">
             <span
@@ -390,21 +415,26 @@ export default function LiveConversation({ open, onClose, brand, hue, onConfigEr
             <span className="text-sm text-white/80">{statusLabel[status]}</span>
           </div>
 
-          {errorMessage && (
-            <div className="flex max-w-md flex-col items-center gap-3">
-              <p
-                role="status"
-                aria-live="polite"
-                className="text-center text-xs text-[#ff9a9a]"
-              >
-                {errorMessage}
-              </p>
+          {(errorMessage || (status === "error" && errorDetail)) && (
+            <div className="flex w-full max-w-md flex-col items-center gap-3">
+              {errorMessage && (
+                <p
+                  role="status"
+                  aria-live="polite"
+                  className="text-center text-xs text-[#ff9a9a]"
+                >
+                  {errorMessage}
+                </p>
+              )}
               {errorDetail && (
-                <details className="w-full max-w-sm">
-                  <summary className="cursor-pointer text-center text-[10px] font-medium uppercase tracking-widest text-white/30 hover:text-white/50">
+                /* open by default zodat de developer/Karl de raw error
+                   direct ziet zonder extra klik — zonder dit blokje
+                   moet je elke keer browser-console openen. */
+                <details open className="w-full max-w-sm">
+                  <summary className="cursor-pointer text-center text-[10px] font-medium uppercase tracking-widest text-white/40 hover:text-white/60">
                     Technische details
                   </summary>
-                  <pre className="mt-2 max-h-32 overflow-auto whitespace-pre-wrap break-all rounded-lg border border-white/5 bg-black/30 px-3 py-2 text-[10px] leading-relaxed text-white/50">
+                  <pre className="mt-2 whitespace-pre-wrap break-all rounded-lg border border-white/5 bg-black/30 px-3 py-2 text-[10px] leading-relaxed text-white/55">
                     {errorDetail}
                   </pre>
                 </details>
