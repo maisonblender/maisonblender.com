@@ -334,7 +334,17 @@ export default function AmbassadorWidget({
   // Open bij brand-change opnieuw (nieuw openings-antwoord).
   // Ook conversationId resetten: nieuwe brand = nieuwe context = server
   // moet een fris leadprofiel opbouwen ipv de oude info door te rommelen.
+  //
+  // BELANGRIJK: skip de eerste render. Anders overschrijven we het
+  // door de parent meegegeven `initialBubble` direct met de generieke
+  // MAISON BLNDR opening (effects runnen bij mount, ook als deps
+  // gelijk zijn aan hun initial value).
+  const brandInitRef = useRef(true);
   useEffect(() => {
+    if (brandInitRef.current) {
+      brandInitRef.current = false;
+      return;
+    }
     setBubbles([openingMessage(brand)]);
     setSpeakSession((s) => ({ id: s.id + 1, sentences: [] }));
     speakCursorRef.current = 0;
