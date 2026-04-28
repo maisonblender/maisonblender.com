@@ -1014,7 +1014,7 @@ export default function AmbassadorWidget({
                       style={{ background: `hsl(${hue}, 85%, 60%)` }}
                     />
                   </span>
-                  Praat live met de stem
+                  Live gesprek
                 </button>
               </div>
             )}
