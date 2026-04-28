@@ -17,7 +17,20 @@ import type { NextConfig } from "next";
  */
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com",
+  // script-src: 'blob:' is nodig voor de ElevenLabs ConvAI SDK
+  // (@elevenlabs/client). Die genereert de audio worklet ("rawAudioProcessor")
+  // on-the-fly als Blob-URL en registreert die via audioWorklet.addModule().
+  // Zonder blob: krijg je "Failed to load the rawAudioProcessor worklet
+  // module" en kan de live voice-modus niet opstarten.
+  "script-src 'self' 'unsafe-inline' blob: https://www.googletagmanager.com https://www.google-analytics.com",
+  // worker-src: AudioWorklet, Web Workers, Service Workers. Browsers
+  // routeren AudioWorklet-loads via deze directive (fallback was script-src,
+  // maar moderne browsers honoreren worker-src apart). 'self' + blob: dekt
+  // de ElevenLabs SDK + onze eigen workers.
+  "worker-src 'self' blob:",
+  // child-src: legacy fallback voor browsers die nog geen worker-src
+  // ondersteunen — zelfde policy.
+  "child-src 'self' blob:",
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https:",
   "font-src 'self' data:",
