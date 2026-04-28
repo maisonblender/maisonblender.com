@@ -225,6 +225,10 @@ export default function AmbassadorWidget({
   // Presence-UI: tooltip met 4-states-uitleg + onboarding-hint voor nieuwe bezoekers
   const [statesTooltipOpen, setStatesTooltipOpen] = useState(false);
   const [showOnboardingHint, setShowOnboardingHint] = useState(false);
+  // Viewport-mode detect — we passen presence-grootte, header-layout en
+  // scroll-strategie aan op mobile. Geen Tailwind-only CSS want canvas-
+  // grootte (size-prop) is geen CSS-property.
+  const [isMobile, setIsMobile] = useState(false);
 
   const threadRef = useRef<HTMLDivElement | null>(null);
   const briefingRef = useRef<HTMLDivElement | null>(null);
@@ -312,6 +316,20 @@ export default function AmbassadorWidget({
       };
     }
   }, [fullscreen]);
+
+  // Mobile-breakpoint detect. We luisteren naar matchMedia zodat rotaties
+  // en window-resize live worden opgepakt. lg-breakpoint = 1024px (Tailwind
+  // default), zelfde grens als de grid-switch verderop.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener?.("change", update);
+    return () => {
+      mq.removeEventListener?.("change", update);
+    };
+  }, []);
 
   // Onboarding-hint: toon de eerste keer een subtiele instructie ("let op de
   // vorm — hij reageert mee") zodat de 4-states-belofte niet ongemerkt blijft.
@@ -682,8 +700,43 @@ export default function AmbassadorWidget({
         }}
       />
 
-      {/* Header */}
-      <header className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-white/5 px-5 py-4">
+      {/* Sluit-knop (modal-context): floating top-right, los van de header.
+       *
+       * Reden: in de site-wide overlay is dit dé hoofdknop om eruit te
+       * komen — die mag visueel domineren én moet altijd op dezelfde plek
+       * staan, ongeacht of de header inhoud (BrandTransform, Praat-live)
+       * verandert. Door 'm uit de header te halen winnen we ook horizontale
+       * ruimte op mobile, waar de header anders dichtslibt.
+       *
+       * Niet in modal-context (onClose afwezig): de fullscreen-toggle blijft
+       * in de header — want dán is de toggle de PRIMAIRE actie, niet sluiten. */}
+      {onClose && (
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Sluit gesprek"
+          className="absolute right-3 top-3 z-30 inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/40 text-white/70 backdrop-blur-md transition-colors hover:border-white/35 hover:bg-black/60 hover:text-white sm:right-4 sm:top-4"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      )}
+
+      {/* Header — compacter op mobile.
+       *
+       * Mobile (< lg):
+       *   - Brand-label + status (links).
+       *   - Praat-live blijft (kleine pill, past nog).
+       *   - BrandTransform NIET hier — verhuist naar inline-trigger boven
+       *     de input (zie verderop). Zo blijft de header op één regel en
+       *     komt de close-knop rechtsboven niet in de knel.
+       *
+       * Desktop (lg+):
+       *   - Volledige header met BrandTransform inline, Praat-live, en
+       *     fullscreen-toggle (alleen als geen onClose meegegeven). */}
+      <header className="relative z-10 flex flex-wrap items-center justify-between gap-3 border-b border-white/5 px-5 py-4 pr-14 sm:pr-16 lg:pr-5">
         <div className="flex items-center gap-3">
           <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5">
             <span
@@ -699,12 +752,16 @@ export default function AmbassadorWidget({
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <BrandTransform
-            current={brand}
-            onActivate={setBrand}
-            onReset={() => setBrand(null)}
-            disabled={sending}
-          />
+          {/* BrandTransform alleen in header op desktop — op mobile inline
+              naast input om header-clutter te vermijden. */}
+          <div className="hidden lg:block">
+            <BrandTransform
+              current={brand}
+              onActivate={setBrand}
+              onReset={() => setBrand(null)}
+              disabled={sending}
+            />
+          </div>
           {liveAvailable && (
             <button
               type="button"
@@ -737,21 +794,10 @@ export default function AmbassadorWidget({
               <span className="sm:hidden">Live</span>
             </button>
           )}
-          {onClose ? (
-            // Modal-context: één knop, altijd een close. Geen expand-toggle
-            // want er is niets om naar terug te vallen buiten de overlay.
-            <button
-              type="button"
-              onClick={onClose}
-              aria-label="Sluit gesprek"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/60 transition-colors hover:border-white/30 hover:text-white"
-            >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
-            </button>
-          ) : (
+          {/* Fullscreen-toggle alleen tonen als de widget standalone draait
+              (geen onClose). In modal-context dient de floating close-knop
+              rechtsboven als enige sluit-actie. */}
+          {!onClose && (
             <button
               type="button"
               onClick={() => setFullscreen((v) => !v)}
@@ -778,16 +824,34 @@ export default function AmbassadorWidget({
         </div>
       </header>
 
-      {/* Main: presence + thread */}
-      <div className="relative z-10 flex flex-1 flex-col overflow-hidden lg:grid lg:grid-cols-[minmax(260px,_38%)_1fr] lg:gap-0">
+      {/* Main: presence + thread.
+       *
+       * Scroll-strategie:
+       *   - Mobile: main is overflow-y-auto. De aside (presence) en de
+       *     section (thread + briefing) zitten in normale document-flow,
+       *     dus user kan de WHOLE pagina scrollen — niet alleen de thread.
+       *     Hierdoor blijft niets onder de fold "vast" zitten. De form is
+       *     sticky bottom (zie verderop) zodat invoer altijd bereikbaar is.
+       *   - Desktop (lg+): split-grid met aparte aside + thread, beide
+       *     binnen overflow-hidden. Thread heeft eigen interne scroll.
+       */}
+      <div className="relative z-10 flex flex-1 flex-col overflow-y-auto lg:grid lg:grid-cols-[minmax(260px,_38%)_1fr] lg:gap-0 lg:overflow-hidden">
         {/* Presence column */}
-        <aside className="relative flex flex-col items-center justify-center gap-4 border-b border-white/5 px-6 py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-10">
+        <aside className="relative flex flex-col items-center justify-center gap-3 border-b border-white/5 px-6 py-4 sm:py-6 lg:border-b-0 lg:border-r lg:px-8 lg:py-10">
           <div className="relative">
             <AmbassadorPresence
               state={presenceState}
               hue={hue}
               audioLevel={audioLevel}
-              size={fullscreen ? 320 : 240}
+              size={
+                fullscreen
+                  ? isMobile
+                    ? 170
+                    : 320
+                  : isMobile
+                  ? 200
+                  : 240
+              }
             />
             {/* Onboarding hint — verschijnt alleen bij eerste bezoek, 10s */}
             {showOnboardingHint && (
@@ -930,11 +994,17 @@ export default function AmbassadorWidget({
           </div>
         </aside>
 
-        {/* Conversation column */}
-        <section className="flex min-h-0 flex-1 flex-col">
+        {/* Conversation column.
+         *
+         * Mobile: geen interne scroll — bubbles staan in normale flow,
+         * de outer main-container scrollt. De form daaronder is sticky
+         * bottom. Dit voorkomt dat content "vast" zit onder de fold.
+         *
+         * Desktop: section vult flex-1, thread heeft eigen overflow-y-auto. */}
+        <section className="flex flex-col lg:min-h-0 lg:flex-1">
           <div
             ref={threadRef}
-            className="mb-prose-on-dark flex-1 overflow-y-auto px-5 py-6 sm:px-8"
+            className="mb-prose-on-dark px-5 py-6 sm:px-8 lg:flex-1 lg:overflow-y-auto"
             aria-live="polite"
           >
             <div className="mx-auto flex max-w-2xl flex-col gap-6">
@@ -992,20 +1062,33 @@ export default function AmbassadorWidget({
             </div>
           </div>
 
-          {/* Input
+          {/* Input-zone (mobile sticky bottom + BrandTransform-trigger).
            *
-           * Mobile-specifics:
-           *   - text-base (16px) om iOS auto-zoom op focus te voorkomen.
-           *   - min-w-0 op de input zodat flex-shrink werkt binnen de rounded
-           *     container — anders duwt een lange placeholder de submit-knop
-           *     buiten beeld.
-           *   - Voice-toggle hidden op mobile: op telefoon is de mic-knop
-           *     voldoende, de on/off-toggle is een desktop-luxe. Zo houden we
-           *     input + mic + submit binnen viewport.
-           */}
+           * Op mobile bundelen we BrandTransform en de form in één sticky
+           * container met 1 border-top — de transform-rij is dan duidelijk
+           * onderdeel van het invoer-gebied, niet van het gesprek. Op
+           * desktop loopt de form gewoon mee in de section-flow want de
+           * BrandTransform zit dan in de header.
+           *
+           * Input-detail:
+           *   - text-base (16px) op de input zelf om iOS auto-zoom te voorkomen.
+           *   - min-w-0 op input → flex-shrink werkt binnen rounded container.
+           *   - Voice-toggle hidden op mobile: mic-knop is genoeg op telefoon. */}
+          <div className="sticky bottom-0 z-20 border-t border-white/5 bg-[#0b0b0d]/95 backdrop-blur-md lg:static lg:border-t-0 lg:bg-transparent lg:backdrop-blur-none">
+            <div className="lg:hidden px-3 pt-3">
+              <div className="mx-auto max-w-2xl">
+                <BrandTransform
+                  current={brand}
+                  onActivate={setBrand}
+                  onReset={() => setBrand(null)}
+                  disabled={sending}
+                />
+              </div>
+            </div>
+
           <form
             onSubmit={handleSubmit}
-            className="relative z-10 border-t border-white/5 px-3 py-3 sm:px-8 sm:py-4"
+            className="relative z-10 px-3 py-3 sm:px-8 sm:py-4 lg:border-t lg:border-white/5"
           >
             <div className="mx-auto flex max-w-2xl items-center gap-1.5 rounded-full border border-white/10 bg-white/[0.04] py-2 pl-4 pr-1.5 focus-within:border-white/25 sm:gap-3 sm:pr-2">
               <input
@@ -1083,6 +1166,7 @@ export default function AmbassadorWidget({
               </p>
             )}
           </form>
+          </div>
 
           {/* Briefing CTA + form — onder de input zodat het gesprek niet
            *  onderbroken wordt. Verschijnt zodra er één volledige exchange
@@ -1139,6 +1223,14 @@ export default function AmbassadorWidget({
         onClose={() => setLiveOpen(false)}
         brand={brand}
         hue={hue}
+        onConfigError={() => {
+          // Live-modus is permanent niet bruikbaar in deze sessie (bv.
+          // ElevenLabs key/agent issue, of plan dekt ConvAI niet). We
+          // verbergen de knop zodat de bezoeker niet steeds opnieuw
+          // tegen dezelfde foutmelding aanloopt — tekst-chat blijft
+          // gewoon werken.
+          setLiveAvailable(false);
+        }}
       />
     )}
     </>

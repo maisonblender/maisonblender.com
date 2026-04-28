@@ -27,6 +27,14 @@ interface Props {
   onClose: () => void;
   brand?: BrandContext | null;
   hue: number;
+  /**
+   * Callback bij een permanente config-fout aan onze kant
+   * (401/403/404/503). De parent kan dan de "Praat live"-knop verbergen
+   * voor de rest van de sessie zodat de gebruiker niet steeds tegen
+   * dezelfde fout aanloopt. Tijdelijke fouten (429/5xx van ElevenLabs,
+   * mic-permissie geweigerd) triggeren dit NIET — dan heeft retry zin.
+   */
+  onConfigError?: () => void;
 }
 
 type LiveStatus =
@@ -43,7 +51,7 @@ interface TranscriptEntry {
   id: string;
 }
 
-export default function LiveConversation({ open, onClose, brand, hue }: Props) {
+export default function LiveConversation({ open, onClose, brand, hue, onConfigError }: Props) {
   const [status, setStatus] = useState<LiveStatus>("idle");
   const [presenceState, setPresenceState] = useState<PresenceState>("idle");
   const [audioLevel, setAudioLevel] = useState(0);
@@ -140,6 +148,13 @@ export default function LiveConversation({ open, onClose, brand, hue }: Props) {
         setErrorMessage(body.error || "Kon live-sessie niet starten.");
         setStatus("error");
         startedRef.current = false;
+        // Permanente config-fouten = geen zin om opnieuw te proberen.
+        // 503 (server: convaiEnabled=false) en 502 (upstream 401/403/404
+        // doorvertaald naar 502) zijn allebei "live werkt nu niet — gebruik
+        // tekst". We notificeren de parent zodat de knop verdwijnt.
+        if (res.status === 503 || res.status === 502) {
+          onConfigError?.();
+        }
         return;
       }
       const body = (await res.json()) as { signedUrl: string };
