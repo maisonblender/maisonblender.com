@@ -49,7 +49,7 @@ export default function AICollegaPage() {
   return (
     <>
       {/* Hero */}
-      <section className="relative flex flex-col items-center justify-center overflow-hidden px-6 py-28 text-center">
+      <section className="relative flex flex-col items-center justify-center overflow-hidden px-6 pt-16 pb-28 text-center">
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.4]"
           style={{

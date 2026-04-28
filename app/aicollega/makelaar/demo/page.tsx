@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 export default function DemoPage() {
   return (
     <div className="min-h-[calc(100vh-120px)] bg-[#f2f3f5]">
-      <div className="max-w-4xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-16">
         {/* Header */}
         <div className="mb-8">
           <Link

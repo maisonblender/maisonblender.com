@@ -14,7 +14,7 @@ export default function AICollegaLayout({
   return (
     <>
       <Nav />
-      <main id="main" tabIndex={-1} className="flex-1 outline-none">
+      <main id="main" tabIndex={-1} className="flex-1 pt-20 outline-none">
         {children}
       </main>
       <Footer />

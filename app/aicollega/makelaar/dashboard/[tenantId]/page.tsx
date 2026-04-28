@@ -60,7 +60,7 @@ export default async function DashboardPage({
 
   return (
     <div className="min-h-[calc(100vh-120px)] bg-[#f2f3f5]">
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-16">
 
         {/* Header */}
         <div className="mb-8">

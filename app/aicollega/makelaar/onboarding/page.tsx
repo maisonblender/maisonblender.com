@@ -12,7 +12,8 @@ export const metadata: Metadata = {
 export default function OnboardingPage() {
   return (
     <div className="min-h-[calc(100vh-120px)] bg-[#f2f3f5]">
-      <div className="max-w-2xl mx-auto px-6 py-12">
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-16">
+        <div className="max-w-2xl">
         <Link
           href="/aicollega/makelaar"
           className="inline-flex items-center gap-2 text-sm text-[#575760] hover:text-[#1f1f1f] transition-colors mb-8"
@@ -42,7 +43,7 @@ export default function OnboardingPage() {
 
         <OnboardingForm />
 
-        <p className="text-xs text-[#575760] mt-6 text-center">
+        <p className="text-xs text-[#575760] mt-6">
           Vragen? Bel{" "}
           <a href="tel:+31462004035" className="underline">
             046 200 4035
@@ -52,6 +53,7 @@ export default function OnboardingPage() {
             info@maisonblender.com
           </a>
         </p>
+        </div>
       </div>
     </div>
   );

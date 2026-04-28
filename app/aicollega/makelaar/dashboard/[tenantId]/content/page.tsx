@@ -27,7 +27,8 @@ export default async function ContentPage({
 
   return (
     <div className="min-h-[calc(100vh-120px)] bg-[#f2f3f5]">
-      <div className="max-w-3xl mx-auto px-6 py-10">
+      <div className="max-w-6xl mx-auto px-6 pt-8 pb-16">
+        <div className="max-w-3xl">
         <Link
           href={`/aicollega/makelaar/dashboard/${tenantId}?token=${token ?? ""}`}
           className="inline-flex items-center gap-2 text-sm text-[#575760] hover:text-[#1f1f1f] transition-colors mb-8"
@@ -54,6 +55,7 @@ export default async function ContentPage({
         </div>
 
         <ContentGenerator tenantId={tenantId} branche="makelaar" />
+        </div>
       </div>
     </div>
   );
