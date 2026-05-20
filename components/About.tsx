@@ -22,23 +22,22 @@ export default function About() {
 
             <div id="about-description" className="flex flex-col gap-4 text-[#575760] leading-relaxed">
               <p>
-                AI-implementaties mislukken niet door de technologie. Ze mislukken omdat bureaus
-                leveren wat indrukwekkend klinkt — niet wat werkt voor de mensen die het dagelijks
-                moeten gebruiken.
+                AI-projecten gaan mis als het mooi klinkt in een deck, maar onhandig is voor degene
+                die er elke dag mee moet werken. Dat zien we vaker dan we zouden willen.
               </p>
               <p>
-                Daarom beginnen we altijd met je processen. Dan pas met de code.
+                Daarom beginnen we bij je processen. Code komt daarna.
               </p>
               <p>
-                We bouwen met tools die bewezen zijn:{" "}
-                <strong>OpenAI</strong>, <strong>Anthropic Claude</strong> en <strong>LangChain</strong>{" "}
-                voor intelligente agents; <strong>n8n</strong>, <strong>Make.com</strong> en{" "}
-                <strong>Zapier</strong> voor robuuste koppelingen met je bestaande systemen. Geen
-                evangelisatie van de nieuwste hype — keuze voor wat werkt.
+                Voor agents gebruiken we onder andere{" "}
+                <strong>OpenAI</strong>, <strong>Anthropic Claude</strong> en{" "}
+                <strong>LangChain</strong>. Voor koppelingen{" "}
+                <strong>n8n</strong>, <strong>Make.com</strong> en <strong>Zapier</strong>. Welke
+                tool past, hangt af van jouw situatie — niet van wat deze maand trending is.
               </p>
               <p>
-                Gevestigd in Sittard. Actief door heel Nederland. Geen callcenter, geen wisselende
-                consultants — een vast team dat jouw systemen kent.
+                We zitten in Sittard en werken door heel Nederland. Zelfde team, geen doorverbinden
+                naar een callcenter.
               </p>
             </div>
 
@@ -70,8 +69,7 @@ export default function About() {
               <div className="flex flex-col gap-6">
                 <div className="h-px w-8 bg-black/30" />
                 <blockquote className="text-2xl font-bold leading-tight text-[#1f1f1f]" style={{ letterSpacing: "-0.5px" }}>
-                  &ldquo;Onze klanten meten succes niet in features. Ze meten het in uren die ze
-                  terugkrijgen.&rdquo;
+                  &ldquo;Features tellen weinig. Uren terug in de week, dat wel.&rdquo;
                 </blockquote>
                 <div className="flex flex-col gap-1">
                   <span className="text-sm font-medium text-[#575760]">MAISON BLNDR</span>

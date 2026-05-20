@@ -34,8 +34,8 @@ export default function ArticlePage() {
             <span className="font-exposure">voor een MKB-bedrijf in 2026?</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-2xl">
-            De meeste prijzen die je online tegenkomt zijn misleidend. Dit zijn de werkelijke kosten -
-            tool, implementatie, training en terugverdientijd - op basis van Limburgse praktijkdata.
+            Online prijzen laten vaak de helft zien. Hier: tool, implementatie, training en terugverdientijd, op
+            basis van Limburgse praktijkdata.
           </p>
         </div>
       </section>
@@ -46,24 +46,22 @@ export default function ArticlePage() {
           <div className="space-y-6 text-[15px] leading-[1.75] text-[#3a3a42]">
 
             <p>
-              &ldquo;AI is goedkoop&rdquo; is een halve waarheid. De tools zelf zijn inderdaad betaalbaar: twintig euro per
-              maand voor ChatGPT, tachtig euro voor een document-verwerkingstool. Maar de volledige rekening
-              bestaat uit meer dan de abonnementskosten. Wie dat vergeet, loopt later tegen onaangename verrassingen
-              aan.
+              &ldquo;AI is goedkoop&rdquo; klopt deels. ChatGPT kost twintig euro per maand, een documenttool
+              tachtig. Maar de volledige rekening is groter dan abonnementen alleen. Dat vergeten veel
+              begrotingen.
             </p>
 
             <p>
-              Op basis van twaalf AI-trajecten die we het afgelopen jaar hebben begeleid bij Limburgse MKB-bedrijven,
-              geven we hier een eerlijk beeld van wat AI-automatisering werkelijk kost - en wat het oplevert.
+              Op basis van twaalf AI-trajecten die we het afgelopen jaar begeleidden bij Limburgse MKB-bedrijven:
+              wat het werkelijk kost en wat het oplevert.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              De drie kostenposten
+              Waar de kosten zitten
             </h2>
 
             <p>
-              AI-automatisering kent drie kostenlagen die je allemaal mee moet rekenen: toolkosten,
-              implementatiekosten en trainingskosten. De meeste begrotingen bevatten alleen de eerste.
+              Drie lagen: toolkosten, implementatie en training. Veel begrotingen tellen alleen de eerste mee.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">1. Toolkosten (maandelijks terugkerend)</h3>
@@ -118,35 +116,29 @@ export default function ArticlePage() {
             <h3 className="text-[16px] font-semibold text-[#1f1f1f] pt-2">2. Implementatiekosten (eenmalig)</h3>
 
             <p>
-              Dit is de post die het meest wordt onderschat. Implementatie omvat: het kiezen van de juiste
-              tools, het inrichten van de workflows, het testen, het koppelen aan bestaande systemen en het
-              documenteren van de nieuwe werkmethode.
+              De post die het meest wordt onderschat. Kiezen, inrichten, testen, koppelen aan bestaande systemen,
+              documenteren.
             </p>
 
             <p>
-              Als je dit zelf doet: reken op 8 tot 20 uur eigen tijd per geautomatiseerd proces. Dat is reeel
-              voor een eenvoudige koppeling zoals factuurverwerking. Voor complexere workflows zoals klantopvolging
-              of rapportage-automatisering loopt het al snel op naar 30 tot 50 uur.
+              Zelf doen: 8 tot 20 uur eigen tijd per geautomatiseerd proces voor iets eenvoudigs als
+              factuurverwerking. Complexere workflows (klantopvolging, rapportage): 30 tot 50 uur.
             </p>
 
             <p>
-              Als je hiervoor een bureau inschakelt (zoals MAISON BLNDR): de kosten lopen uiteen van
-              1.500 tot 6.000 euro voor een volledig ingericht, getest en gedocumenteerd traject. Het voordeel
-              is dat de inrichting sneller gaat, valkuilen worden vermeden en je een overdraagbaar systeem
-              krijgt dat ook werkt als de persoon die het opzette ziek is of vertrekt.
+              Bureau inschakelen (zoals MAISON BLNDR): 1.500 tot 6.000 euro voor een volledig ingericht traject.
+              Sneller, minder valkuilen, overdraagbaar als degene die het opzette vertrekt.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f] pt-2">3. Trainingskosten (eenmalig + doorlopend)</h3>
 
             <p>
-              De meest onderschatte kostenpost. Een tool die niemand gebruikt, levert niets op. Reken op
-              minimaal twee tot vier uur onboardingtraining per medewerker die met de nieuwe tools gaat werken.
-              Daarna: een maand van extra vragen, experimenteren en bijsturen.
+              Een tool die niemand gebruikt, levert niets op. Reken op twee tot vier uur onboarding per
+              medewerker, plus een maand extra vragen en bijsturen.
             </p>
 
             <p>
-              Voor een team van vijf medewerkers is dat al snel 10 tot 20 uur die door iemand moet worden
-              begeleid. Intern of extern - het kost altijd tijd en dus geld.
+              Vijf medewerkers: al snel 10 tot 20 uur begeleiding. Intern of extern, het kost tijd en dus geld.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -171,23 +163,22 @@ export default function ArticlePage() {
             </div>
 
             <p>
-              Dit is geen theoretisch model. Het is gebaseerd op het werkelijke traject van het kantoor
-              accountantskantoor in Sittard, waarover we eerder schreven.
+              Geen spreadsheet-model. Gebaseerd op het Sittardse accountantskantoor waarover we eerder schreven.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              Wanneer is de terugverdientijd realistisch kort?
+              Wanneer verdient het zich snel terug?
             </h2>
 
             <p>
-              AI-automatisering verdient zichzelf snel terug als aan drie voorwaarden is voldaan:
+              Snel terugverdiend als:
             </p>
 
             <ul className="space-y-3 pl-4">
               {[
-                "Het te automatiseren proces is repetitief en regelmatig. Eenmalige of zeldzame taken zijn de moeite niet waard.",
-                "De tijdswinst is significant genoeg om te meten. Minder dan twee uur per week is moeilijk terug te verdienen op implementatiekosten.",
-                "De medewerkers die ermee werken omarmen de tool. Weerstand vertraagt adoptie en verlengt de terugverdientijd.",
+                "Het proces is repetitief en regelmatig. Eenmalige taken zijn de moeite niet.",
+                "Je wint minstens twee uur per week. Minder is lastig terug te verdienen op implementatiekosten.",
+                "Medewerkers gebruiken de tool echt. Weerstand verlengt de terugverdientijd.",
               ].map((item) => (
                 <li key={item} className="flex gap-3">
                   <span className="text-[#22c55e] font-bold mt-0.5">-</span>
@@ -201,20 +192,18 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Begin met een gratis of goedkope tool op een laag-risico proces. Factuurverwerking, e-mailsortering,
-              vergaderingen samenvatten - dat zijn de klassieke instapprocessen. Zet er geen grote implementatie
-              op, maar probeer het zelf twee weken lang. Meet dan hoeveel tijd je hebt bespaard.
+              Start met een gratis of goedkope tool op een laag-risico proces. Facturen, e-mailsorteren,
+              vergaderingen samenvatten. Probeer het zelf twee weken. Meet hoeveel tijd je bespaart.
             </p>
 
             <p>
-              Pas als je ziet dat het werkt, is het zinvol om te investeren in een grotere, beter ingerichte
-              oplossing. De meeste bedrijven die wij begeleiden, beginnen met minder dan 50 euro per maand en
-              breiden daarna gecontroleerd uit op basis van bewezen resultaten.
+              Werkt het? Dan pas investeren in een betere inrichting. De meeste bedrijven die wij begeleiden
+              starten onder 50 euro per maand en breiden uit als het resultaat er is.
             </p>
 
             <p>
-              Wat je niet moet doen: een uitgebreide automatisering bouwen voordat je weet of de basisprocessen
-              werken. Dan betaal je voor complexiteit die je nog niet nodig hebt.
+              Bouw geen uitgebreide automatisering voordat je weet of de basis werkt. Dan betaal je voor
+              complexiteit die je nog niet nodig hebt.
             </p>
 
           </div>
@@ -234,9 +223,8 @@ export default function ArticlePage() {
             <span className="font-exposure">voor jouw specifieke bedrijf?</span>
           </h2>
           <p className="text-sm leading-relaxed text-white/70 mb-8 max-w-xl">
-            De AI Impact Scan van MAISON BLNDR geeft je binnen 10 minuten een beeld van welke processen in
-            jouw bedrijf in aanmerking komen voor automatisering en wat de realistische besparing is.
-            Gratis. Zonder verkoopgesprek.
+            De AI Impact Scan geeft binnen 10 minuten een beeld van welke processen bij jou in aanmerking komen
+            en wat de realistische besparing is. Gratis.
           </p>
           <a
             href="https://maisonblender.com/impact-scan"

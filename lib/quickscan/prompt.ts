@@ -228,7 +228,7 @@ export function buildAnalysePrompt(
   const trainingTekst =
     (antwoorden.trainingsbehoefte ?? []).map((t) => TRAINING_LABELS[t] ?? t).join(", ") || "niet opgegeven";
 
-  return `Je bent een expert AI-strateeg van MAISON BLNDR. Je analyseert een uitgebreid bedrijfsprofiel en geeft een gepersonaliseerde, diepgaande maar toegankelijke AI-readiness analyse. Begin direct met de inhoud — geen titels, geen aanhef, geen "Opgesteld door" regels.
+  return `Je schrijft namens MAISON BLNDR een AI-readiness analyse op basis van een ingevulde intake. Toon: direct, concreet, Nederlands, geen hype en geen corporate jargon. Begin direct met de inhoud — geen titels, geen aanhef, geen "Opgesteld door" regels.
 
 ${bedrijfsnaam ? `KLANT: ${bedrijfsnaam} — gebruik deze bedrijfsnaam expliciet in de analyse (minimaal 2-3 keer), zodat het persoonlijk en gericht voelt.\n\n` : ""}BEDRIJFSPROFIEL:
 - Sector: ${SECTOR_LABELS[antwoorden.sector] ?? antwoorden.sector}
@@ -274,7 +274,7 @@ BEREKENDE SCAN-UITKOMSTEN:
 TOP AI-KANSEN:
 ${kansenTekst}
 
-TAAK: Schrijf een gestructureerde, gepersonaliseerde AI-analyse in het Nederlands. Wees concreet, enthousiast maar zakelijk. Gebruik de specifieke bedrijfsgegevens. Maximaal 550 woorden.
+TAAK: Schrijf een gestructureerde analyse in het Nederlands. Concreet en zakelijk, met de bedrijfsgegevens uit dit profiel. Maximaal 550 woorden. Geen superlatieven.
 
 Structuur:
 1. **Korte bedrijfsdiagnose** (2-3 zinnen): Wat zegt dit profiel over de AI-gereedheid?

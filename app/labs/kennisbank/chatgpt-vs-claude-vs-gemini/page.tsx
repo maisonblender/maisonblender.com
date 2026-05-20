@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "ChatGPT vs. Claude vs. Gemini: wat kies je als Limburgse ondernemer? - Limburg AI Labs",
   description:
-    "ChatGPT, Claude of Gemini? Eerlijke vergelijking zonder jargon. Wat kost het, wat kan het en welke AI-tool past bij jouw bedrijf?",
+    "ChatGPT, Claude of Gemini? Eerlijke vergelijking: wat kost het, wat kan het en welke tool past bij jouw bedrijf?",
   alternates: { canonical: "https://maisonblender.com/labs/kennisbank/chatgpt-vs-claude-vs-gemini" },
 };
 
@@ -34,8 +34,7 @@ export default function ArticlePage() {
             <span className="font-exposure">wat kies je als Limburgse ondernemer?</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-2xl">
-            Geen tech-jargon. Geen affiliate links. Gewoon: welke tool doet wat, voor wie is welke geschikt
-            en wat zijn de echte kosten in 2026.
+            Welke tool doet wat, voor wie past welke, en wat kost het in 2026? Geen affiliate links. Wel cijfers.
           </p>
         </div>
       </section>
@@ -46,27 +45,23 @@ export default function ArticlePage() {
           <div className="space-y-6 text-[15px] leading-[1.75] text-[#3a3a42]">
 
             <p>
-              De vraag "welke AI-tool moet ik gebruiken?" krijgen we elke week van Limburgse ondernemers.
-              Het antwoord is altijd hetzelfde: het hangt af van wat je ermee wilt doen. Maar daar heb je niets
-              aan zonder context. Dus hier is de vergelijking die wij zelf ook gebruiken als we met nieuwe klanten
-              aan de slag gaan.
+              &ldquo;Welke AI-tool moet ik gebruiken?&rdquo; krijgen we elke week. Het antwoord hangt af van wat je
+              ermee wilt doen. Daar heb je weinig aan zonder context. Hieronder de vergelijking die wij zelf ook
+              gebruiken bij nieuwe klanten.
             </p>
 
             <p>
-              We vergelijken de drie meest gebruikte AI-assistenten: ChatGPT (van OpenAI), Claude (van Anthropic)
-              en Gemini (van Google). Alle drie zijn beschikbaar in Nederland, alle drie hebben een gratis versie
-              en alle drie zijn geschikt voor MKB-gebruik - maar niet voor dezelfde taken.
+              We zetten ChatGPT (OpenAI), Claude (Anthropic) en Gemini (Google) naast elkaar. Alle drie werken in
+              Nederland, hebben een gratis versie en zijn bruikbaar voor MKB. Niet voor dezelfde taken.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              ChatGPT: de Zwitserse zakmes van AI
+              ChatGPT vs. Claude vs. Gemini: de alleskunner
             </h2>
 
             <p>
-              ChatGPT is de bekendste van de drie. Meer dan 200 miljoen mensen gebruiken het maandelijks. Die
-              naamsbekendheid is verdiend: het is een veelzijdige tool die goed werkt voor een brede waaier aan
-              taken. Teksten schrijven, vertalen, brainstormen, code debuggen, vragen beantwoorden over een
-              document - ChatGPT doet het allemaal redelijk tot goed.
+              ChatGPT is de bekendste. Meer dan 200 miljoen mensen gebruiken het maandelijks. Redelijk tot goed
+              voor teksten, vertalen, brainstormen, code debuggen en vragen over documenten.
             </p>
 
             <p>
@@ -77,9 +72,9 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              Waar ChatGPT minder sterk in is: complexe redeneerprocessen waarbij nauwkeurigheid cruciaal is.
-              Het model is ontworpen om overtuigende tekst te produceren, niet per se correcte tekst. Voor
-              juridische of financiele analyses is extra verificatie altijd verstandig.
+              Waar ChatGPT minder sterk in is: taken waarbij nauwkeurigheid telt. Het model is gebouwd om
+              overtuigende tekst te produceren, niet per se correcte. Bij juridische of financiele analyses:
+              altijd dubbelchecken.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">Geschikt voor:</h3>
@@ -93,32 +88,28 @@ export default function ArticlePage() {
             </ul>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              Claude: de nauwkeurige denker
+              Claude: preciezer, minder bekend
             </h2>
 
             <p>
-              Claude is minder bekend maar scoort consistent hoog op taken waarbij precisie en nuance tellen.
-              Het is ontwikkeld door Anthropic, een bedrijf dat veiligheid en betrouwbaarheid centraal stelt in
-              zijn aanpak. In de praktijk merk je dat: Claude geeft vaker aan wanneer het iets niet weet en
-              volgt instructies nauwkeuriger op.
+              Claude is minder bekend maar scoort hoog op precisie. Ontwikkeld door Anthropic, met veiligheid als
+              uitgangspunt. In de praktijk: vaker &ldquo;dat weet ik niet&rdquo;, en instructies worden strakker
+              opgevolgd.
             </p>
 
             <p>
-              Het grote voordeel van Claude is de mogelijkheid om heel lange teksten te verwerken - denk aan
-              volledige contracten, rapporten of handleidingen. Waar ChatGPT na een paar pagina's de draad
-              kwijtraakt, houdt Claude een consistente lijn vast over veel langere teksten.
+              Sterk punt: lange teksten. Contracten, rapporten, handleidingen. Waar ChatGPT na een paar pagina&apos;s
+              de draad kwijtraakt, houdt Claude langer vol.
             </p>
 
             <p>
-              Claude is ook merkbaar beter in situaties waarbij de toon precies goed moet zijn: een lastige
-              brief aan een klant, een delicate interne communicatie of een genuanceerd advies. De gratis versie
-              geeft beperkt toegang tot Claude Sonnet 4.6. De betaalde versie geeft toegang tot Claude Opus 4.7
-              — het krachtigste model voor complexe taken waarbij precisie en redenering centraal staan.
+              Ook beter als de toon precies moet kloppen: een lastige brief, delicate interne mail, genuanceerd
+              advies. Gratis: beperkt Claude Sonnet 4.6. Betaald: Claude Opus 4.7 voor zwaardere taken.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">Geschikt voor:</h3>
             <ul className="space-y-2 pl-4">
-              {["Analyseren van lange documenten (contracten, rapporten)", "Delicate communicatie waarbij toon cruciaal is", "Gestructureerde outputs (formats, templates)", "Juridische en financiele teksten controleren", "Gedetailleerde instructies nauwkeurig uitvoeren"].map((item) => (
+              {["Analyseren van lange documenten (contracten, rapporten)", "Delicate communicatie waarbij toon precies moet kloppen", "Gestructureerde outputs (formats, templates)", "Juridische en financiele teksten controleren", "Gedetailleerde instructies nauwkeurig uitvoeren"].map((item) => (
                 <li key={item} className="flex gap-3">
                   <span className="text-[#22c55e] font-bold mt-0.5">-</span>
                   <span>{item}</span>
@@ -127,21 +118,19 @@ export default function ArticlePage() {
             </ul>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              Gemini: de Google-native keuze
+              Gemini: handig als je in Google werkt
             </h2>
 
             <p>
-              Gemini is de AI-assistent van Google en heeft een specifiek voordeel: integratie met Google
-              Workspace. Als jouw bedrijf werkt met Gmail, Google Docs, Google Drive en Google Agenda, dan is
-              Gemini de enige van de drie die direct met die omgeving kan samenwerken. Het kan e-mails
-              samenvatten, vergaderingen plannen op basis van je agenda en documenten in Google Docs bewerken.
+              Gemini is Googles AI-assistent. Het voordeel zit in de koppeling met Google Workspace. Werk je met
+              Gmail, Docs, Drive en Agenda, dan kan Gemini mails samenvatten, vergaderingen plannen en documenten
+              bewerken. ChatGPT en Claude doen dat niet.
             </p>
 
             <p>
-              Als pure tekstassistent scoort Gemini iets lager dan de andere twee - met name op nauwkeurigheid
-              en nuance. Maar als productiviteitstool voor Google-gebruikers is het de sterkste keuze. De gratis
-              versie draait op Gemini 3 Flash. De betaalde versie geeft toegang tot Gemini 3.1 Pro en diepe
-              integraties met de volledige Google Workspace.
+              Als pure tekstassistent scoort Gemini iets lager op nauwkeurigheid. Voor Google-gebruikers is het
+              vaak de praktischste keuze. Gratis: Gemini 3 Flash. Betaald: Gemini 3.1 Pro met diepere Workspace-
+              integratie.
             </p>
 
             <h3 className="text-[16px] font-semibold text-[#1f1f1f]">Geschikt voor:</h3>
@@ -205,25 +194,18 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Begin met een van de gratis versies en gebruik hem twee weken intensief. Pas dan weet je of de
-              betaalde versie zijn geld waard is voor jouw specifieke gebruik.
+              Begin met een gratis versie en gebruik die twee weken intensief. Pas dan weet je of betalen zin heeft
+              voor jouw gebruik.
             </p>
 
             <p>
-              Gebruik je Google Workspace? Begin met Gemini. Werk je veel met lange documenten, contracten of
-              delicate communicatie? Probeer Claude. Wil je een veelzijdige tool voor dagelijks gebruik en
-              contentcreatie? Dan is ChatGPT het logische startpunt.
+              Google Workspace? Start met Gemini. Veel lange documenten of delicate communicatie? Probeer Claude.
+              Algemeen dagelijks gebruik en content? ChatGPT is een logisch startpunt.
             </p>
 
             <p>
-              En weet je wat? Veel ondernemers eindigen met twee tools. Gemini voor de Google-integratie,
-              en Claude of ChatGPT voor teksttaken waarbij precisie telt. De tijdsbesparing is een veelvoud
-              van wat je erin stopt.
-            </p>
-
-            <p>
-              Wat je niet moet doen: alle drie tegelijk aanschaffen en dan geen van drieeen goed leren kennen.
-              Dat is de meest gemaakte fout.
+              Veel ondernemers eindigen met twee tools: Gemini voor Google, Claude of ChatGPT voor tekstwerk.
+              Kies er een, leer die goed kennen. Alle drie tegelijk aanschaffen is de fout die we het vaakst zien.
             </p>
 
           </div>
@@ -243,8 +225,8 @@ export default function ArticlePage() {
             <span className="font-exposure">voor jouw specifieke situatie?</span>
           </h2>
           <p className="text-sm leading-relaxed text-white/70 mb-8 max-w-xl">
-            Bij MAISON BLNDR helpen we Limburgse bedrijven met een concrete toolkeuze op basis van hun processen -
-            niet op basis van hype. Plan een gratis kennismakingsgesprek of doe eerst de AI Impact Scan.
+            Wij helpen Limburgse bedrijven kiezen op basis van processen, niet op basis van wat op LinkedIn
+            trending is. Plan een gratis kennismaking of doe eerst de AI Impact Scan.
           </p>
           <a
             href="https://maisonblender.com/impact-scan"

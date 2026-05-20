@@ -29,9 +29,9 @@ export const services: Service[] = [
     id: "01",
     slug: "ai-chatbots-klantenservice",
     title: "AI Chatbots & Klantenservice",
-    subtitle: "Minder vragen voor je team. Betere service voor je klant.",
+    subtitle: "Klanten krijgen antwoord. Je team houdt tijd over.",
     description:
-      "Je klanten verwachten antwoord. Niet morgen, niet na drie klikken — nu. Maar je kunt niet altijd iemand beschikbaar hebben. Wij bouwen AI-agents die die kloof dichten: dag en nacht bereikbaar, zonder dat jij extra personeel nodig hebt.",
+      "Klanten willen nu antwoord, niet morgen. Wij bouwen agents voor web, WhatsApp en mail die veel vragen zelf afhandelen en alleen doorzetten als het echt nodig is.",
     tags: ["Conversational AI", "WhatsApp & web chat", "Lead generatie", "Omnichannel"],
     metaTitle: "AI Chatbots & Klantenservice - MAISON BLNDR | 24/7 Geautomatiseerde Klantinteractie",
     metaDescription:
@@ -46,17 +46,17 @@ export const services: Service[] = [
       "24/7 klantenservice automatiseren",
     ],
     longDescription: [
-      "Dit zijn geen knoppen-chatbots die je doorsturen naar een FAQ. Ze begrijpen wat je klant bedoelt, zoeken het antwoord op in je eigen systemen — CRM, kennisbank, productcatalogus — en geven een concreet, persoonlijk antwoord. Ook als de vraag niet in het script staat.",
-      "De chatbot plant afspraken in, genereert offertes, registreert klachten en kwalificeert leads. Allemaal zonder menselijke tussenkomst. Als het écht nodig is, schakelt hij over naar een collega — met de volledige gesprekscontext erbij.",
-      "Gemiddeld halen onze klanten 70–90% van de herhalende klantvragen weg bij hun team. Wat overblijft zijn de gesprekken waar een mens echt het verschil maakt.",
-      "Wij verzorgen de volledige implementatie: trainingen op jouw producten en diensten, integratie met je CRM of helpdesksysteem, en continu beheer na de lancering.",
+      "Geen knoppen-chatbot die je naar een FAQ stuurt. Deze agents begrijpen wat je klant bedoelt, zoeken in je CRM, kennisbank of productcatalogus, en geven een concreet antwoord. Ook als de vraag niet in het script staat.",
+      "Afspraken inplannen, offertes maken, klachten registreren, leads kwalificeren: dat kan zonder tussenkomst. Moet er een mens bij? Dan schakelt de agent over met het volledige gesprek erbij.",
+      "Klanten halen gemiddeld 70–90% van de herhalende vragen van hun team af. Wat overblijft zijn de gesprekken waar een mens echt verschil maakt.",
+      "Wij doen de implementatie: trainen op jouw producten, koppelen aan CRM of helpdesk, en beheer na livegang.",
     ],
     benefits: [
-      "70–90% minder herhalende vragen voor je team",
-      "Altijd beschikbaar — ook 's avonds en in het weekend",
-      "Leads automatisch gekwalificeerd en doorgestuurd naar sales",
-      "Eén agent, alle kanalen: web, WhatsApp, e-mail",
-      "Wij beheren en verbeteren continu — jij ziet de resultaten",
+      "70–90% minder herhalende vragen",
+      "Bereikbaar ook 's avonds en in het weekend",
+      "Leads gekwalificeerd en doorgestuurd naar sales",
+      "Eén agent op web, WhatsApp en e-mail",
+      "Doorlopend beheer en verbetering door ons",
     ],
     useCases: [
       "Veelgestelde vragen automatisch beantwoorden",
@@ -71,13 +71,13 @@ export const services: Service[] = [
         id: "lead-generatie",
         title: "Lead generatie",
         content:
-          "Een contactformulier wacht af. Een AI-agent gaat het gesprek aan. Waar een formulier passief informatie verzamelt, kwalificeert een AI-agent de bezoeker actief: wat zoekt hij, wat is zijn budget, hoe urgent is de vraag? Dat gesprek vindt plaats in gewone taal — niet als een verhoor, maar als een gesprek. Het resultaat: warme leads die direct naar de juiste salesmedewerker gaan, met alle context al uitgeschreven. Uit onze implementaties stijgt de conversie van websitebezoeker naar qualified lead gemiddeld met 35–60%.",
+          "Een contactformulier wacht af tot iemand invult. Een AI-agent start het gesprek: wat zoek je, wat is het budget, hoe urgent is het? Gewone taal, geen verhoor. Warme leads gaan naar de juiste salesmedewerker met context erbij. In onze implementaties zien we gemiddeld 35–60% meer qualified leads vanaf de website.",
       },
       {
         id: "omnichannel",
         title: "Omnichannel",
         content:
-          "Je klant begint op WhatsApp. Vervolgt via e-mail. Belt daarna. En moet elke keer opnieuw uitleggen wie hij is. Dat is het probleem dat omnichannel oplost. Wij bouwen AI-agents die de context meenemen over alle kanalen heen — web, WhatsApp, e-mail en telefoon. De klanthistorie en gesprekscontext zijn overal beschikbaar. Jouw team begint nooit meer opnieuw.",
+          "WhatsApp, e-mail, telefoon: klanten wisselen van kanaal en moeten zich steeds opnieuw voorstellen. Wij bouwen agents die context meenemen over web, WhatsApp, e-mail en telefoon. Klanthistorie staat overal klaar. Je team hoeft niet opnieuw te beginnen.",
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/ai-chatbots-klantenservice#service",
@@ -88,9 +88,9 @@ export const services: Service[] = [
     id: "02",
     slug: "ai-agents-procesautomatisering",
     title: "AI Agents & Procesautomatisering",
-    subtitle: "Taken uitvoeren, niet alleen adviseren.",
+    subtitle: "Niet alleen lezen. Ook doen.",
     description:
-      "Custom agents die e-mails lezen, documenten verwerken en acties uitvoeren in je CRM of ERP. Dag en nacht, zonder dat jij of je collega er naar hoeft te kijken.",
+      "Agents die mail lezen, documenten verwerken en acties zetten in je CRM of ERP. Zonder dat iemand elke stap handmatig afvinkt.",
     tags: ["Multi-agent orkestratie", "Documentverwerking", "CRM/ERP-koppelingen", "Taakuitvoering"],
     metaTitle: "AI Agents & Procesautomatisering - MAISON BLNDR | Intelligente Agents voor Je Bedrijf",
     metaDescription:
@@ -105,17 +105,17 @@ export const services: Service[] = [
       "multi-agent systemen",
     ],
     longDescription: [
-      "Een AI-agent leest binnenkomende e-mails, interpreteert de inhoud, haalt relevante data op uit je systemen en neemt de juiste actie: een offerte aanmaken in je ERP, een taak aanmaken in je projecttool, of een antwoord sturen aan de klant. Dit alles zonder dat een medewerker er naar hoeft te kijken.",
-      "Bij complexere taken kan de agent escaleren naar een collega of een ander systeem. Bij drukte schaalt hij op. Bij fouten signaleert hij — niet andersom.",
-      "Voor organisaties met veel terugkerende, kennisintensieve taken is dit transformatief. Denk aan een makelaarskantoor dat automatisch bezichtigingen plant en dossiers bijwerkt. Of een logistiek bedrijf dat inkomende vrachtbrieven verwerkt, afwijkingen signaleert en klanten proactief informeert.",
-      "MAISON BLNDR bouwt deze agents op maat, gebaseerd op jouw specifieke processen en systemen. Je krijgt een schaalbare, veilige oplossing die meegroeit met je organisatie.",
+      "Een agent leest inkomende mail, haalt data op uit je systemen en zet acties: offerte in ERP, taak in je projecttool, antwoord naar de klant. Zonder dat iemand elke stap afvinkt.",
+      "Complexe taken? Escalatie naar een collega. Drukte? Meer capaciteit. Fout? Signaal, niet stil falen.",
+      "Handig bij veel herhaalwerk: een makelaar die bezichtigingen plant en dossiers bijwerkt, of een logistiek bedrijf dat vrachtbrieven verwerkt en afwijkingen doorgeeft.",
+      "We bouwen op maat op jouw processen en systemen. Schaalbaar en beveiligd, meegroeien met je organisatie.",
     ],
     benefits: [
-      "Zelfstandige taakuitvoering 24/7 zonder menselijke tussenkomst",
-      "Naadloze integratie met je CRM, ERP en andere systemen",
-      "Schaalbaarheid: meerdere agents parallel voor hoge volumes",
-      "Volledige audittrail van elke actie die de agent uitvoert",
-      "Hogere kwaliteit door consistente, foutloze verwerking",
+      "Taken 24/7 zonder handmatige stappen",
+      "Koppeling met CRM, ERP en overige systemen",
+      "Meerdere agents parallel bij piekbelasting",
+      "Audittrail van elke agent-actie",
+      "Consistente verwerking, minder fouten",
     ],
     useCases: [
       "E-mailverwerking en automatische acties",
@@ -130,19 +130,19 @@ export const services: Service[] = [
         id: "multi-agent",
         title: "Multi-agent orkestratie",
         content:
-          "Multi-agent orkestratie is de aanpak waarbij meerdere gespecialiseerde AI-agents samenwerken aan een complex proces. Eén agent leest de inkomende e-mail en classificeert het verzoek. Een tweede agent haalt relevante data op uit je CRM. Een derde voert de benodigde actie uit. Een coördinerende orchestrator-agent stuurt het geheel aan. MAISON BLNDR bouwt multi-agent systemen op basis van LangChain en AutoGen, waarbij elke agent zijn eigen verantwoordelijkheid heeft en fouten door de andere agents worden opgevangen. Dit is de architectuur die schaalbaar is naar hoge volumes: bij drukte worden meer instanties van dezelfde agent opgestart. Bedrijven met complexe, meertrapsprocessen die nu door meerdere medewerkers worden afgehandeld, zijn de ideale kandidaat voor multi-agent automatisering.",
+          "Bij complexe processen werken meerdere gespecialiseerde agents samen. Eén classificeert de mail, een tweede haalt CRM-data op, een derde voert de actie uit. Een orchestrator stuurt aan. We bouwen dit met LangChain en AutoGen: elke agent heeft een duidelijke rol, fouten worden opgevangen. Bij drukte schaal je instanties op. Ideaal als nu meerdere mensen dezelfde meerstapsflow doen.",
       },
       {
         id: "documentverwerking",
         title: "Intelligente documentverwerking",
         content:
-          "AI-gestuurde documentverwerking gaat verder dan OCR. Een intelligent document processing-systeem van MAISON BLNDR begrijpt de betekenis van een document: het onderscheidt een offerte van een contract, herkent afwijkingen ten opzichte van de standaard en extraheert de relevante data in de juiste context. Of het nu gaat om inkomende offerteaanvragen, leverancierscontracten, belastingdocumenten of medische dossiers — het systeem verwerkt elk documenttype op maat. De geëxtraheerde data gaat direct naar je systemen: CRM, ERP of documentmanagementsysteem.",
+          "Meer dan OCR: het systeem begrijpt wat een document is. Offerte of contract, afwijking ten opzichte van standaard, relevante velden in context. Offerteaanvragen, leverancierscontracten, belastingstukken, medische dossiers: elk type op maat. Data gaat direct naar CRM, ERP of je DMS.",
       },
       {
         id: "taakuitvoering",
         title: "Autonome taakuitvoering",
         content:
-          "Taakuitvoering door AI-agents is het stadium waarbij automatisering overgaat van data verwerken naar daadwerkelijk handelingen uitvoeren. Een AI-agent die niet alleen een inkomend verzoek classificeert, maar ook de bijbehorende taak aanmaakt in Asana, de verantwoordelijke notificeert via Slack en na 48 uur een follow-up stuurt als er geen reactie is. MAISON BLNDR bouwt AI-agents die taken volledig autonoom afhandelen via integraties met je tool-stack. De agents hebben toegang tot een gedefinieerde set acties en kiezen op basis van de situatie de juiste actie. Elke handeling wordt gelogd in een audittrail.",
+          "Niet alleen data lezen, ook handelen. Classificeren, taak in Asana, Slack-notificatie, follow-up na 48 uur zonder reactie. Agents krijgen een vaste set acties en kiezen wat past bij de situatie. Alles in de audittrail.",
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/ai-agents-procesautomatisering#service",
@@ -153,9 +153,9 @@ export const services: Service[] = [
     id: "03",
     slug: "rpa-workflow-integraties",
     title: "RPA & Workflow-integraties",
-    subtitle: "Systemen koppelen, handmatig kopieerwerk elimineren.",
+    subtitle: "Stop met copy-pasten tussen systemen.",
     description:
-      "Facturen, bestellingen, rapportages: wij automatiseren wat nu handmatig tussendoor gaat. Ook voor systemen zonder API. Volledig beheerd, inclusief onderhoud.",
+      "Facturen, orders, rapporten: wat nu tussen schermen heen en weer gaat, laten we lopen. Ook als er geen API is. Wij bouwen en beheren het.",
     tags: ["Robotic Process Automation", "API-integraties", "Factuurverwerking", "Schermautomatisering"],
     metaTitle: "RPA & Workflow-integraties - MAISON BLNDR | Robotic Process Automation Limburg",
     metaDescription:
@@ -170,10 +170,10 @@ export const services: Service[] = [
       "factuurverwerking automatiseren",
     ],
     longDescription: [
-      "Veel bedrijfsprocessen bestaan nog grotendeels uit handmatig werk dat eigenlijk nooit handmatig zou moeten zijn: facturen overzetten van e-mail naar boekhoudpakket, gegevens kopiëren tussen systemen, rapporten samenstellen uit meerdere bronnen. Robotic Process Automation (RPA) elimineert dit soort werk structureel en betrouwbaar.",
-      "MAISON BLNDR implementeert en beheert RPA-oplossingen die je scherminteracties automatiseren alsof er een digitale medewerker achter de computer zit — maar dan sneller, nauwkeuriger en altijd beschikbaar. Wij werken met professionele tools zoals n8n, Make.com en Zapier voor workflow-automatisering, aangevuld met Python-gebaseerde automatisering voor complexere scenario's.",
-      "Naast schermautomatisering bouwen wij robuuste API-integraties die je systemen met elkaar verbinden. Geen data meer handmatig overzetten tussen je webshop en je magazijnsysteem. Geen dubbele invoer meer bij het verwerken van bestellingen. Geen verloren informatie meer omdat twee systemen niet met elkaar praten.",
-      "Voor het MKB in Limburg is RPA vaak de snelste manier om uren per week te besparen. De implementatietijd is kort, de ROI is direct zichtbaar, en je hoeft geen bestaande systemen te vervangen. Wij beheren je automatiseringen proactief: bij systeemupdates of proceswijzigingen passen wij de robots aan zodat je nooit stilstaat.",
+      "Facturen van mail naar boekhouding, data tussen systemen kopiëren, rapporten uit meerdere bronnen: werk dat zelden handmatig hoeft. RPA pakt dat structureel op.",
+      "We automatiseren schermhandelingen alsof er iemand achter de computer zit, maar sneller en zonder typfouten. Met n8n, Make.com en Zapier voor workflows, plus Python waar het complexer wordt.",
+      "Ook API-koppelingen: webshop en magazijn, orders zonder dubbele invoer, systemen die eindelijk dezelfde data delen.",
+      "Voor MKB in Limburg vaak de snelste winst: korte implementatie, zichtbare ROI, geen vervanging van bestaande pakketten. Bij updates of proceswijzigingen passen wij de robots aan.",
     ],
     benefits: [
       "Uren per week besparen op handmatige dataverwerking",
@@ -195,13 +195,13 @@ export const services: Service[] = [
         id: "api-integraties",
         title: "API-integraties op maat",
         content:
-          "API-integraties zijn de verbindingen tussen softwaresystemen via gestandaardiseerde programmeerinterfaces. MAISON BLNDR bouwt robuuste API-integraties die systemen real-time laten communiceren: een bestelling in je webshop triggert automatisch een verzoek in je ERP, een nieuw klantcontact in je CRM maakt een taak aan in je projecttool, en een goedgekeurd verlofverzoek in je HR-systeem past de planning aan. Wij bouwen op REST en GraphQL API's en gebruiken platforms als n8n en Make.com voor visuele workflow-automatisering. Elke integratie wordt gebouwd met foutafhandeling, retry-logica en alerting — zodat je nooit ongemerkt data verliest bij een tijdelijk systeemprobleem. Onderhoud en updates bij API-versiewijzigingen zijn inbegrepen in ons beheercontract.",
+          "Systemen praten via API's. Bestelling in de webshop triggert ERP, nieuw CRM-contact wordt een taak in je projecttool, goedgekeurd verlof past de planning aan. REST en GraphQL, vaak via n8n of Make.com. Foutafhandeling, retries en alerts ingebouwd. API-wijzigingen? Dat valt onder ons beheer.",
       },
       {
         id: "schermautomatisering",
         title: "Schermautomatisering (UI automation)",
         content:
-          "Schermautomatisering — ook wel UI-automatisering — is de RPA-techniek waarbij een softwarerobot een computerscherm bestuurt zoals een medewerker dat zou doen: klikken, typen, kopiëren, formulieren invullen. Het bijzondere voordeel is dat het werkt met systemen die geen API bieden. Een twintig jaar oud ERP-systeem, een leveranciersportaal dat je zelf niet kunt aanpassen, een overheidsportaal — allemaal automatiseerbaar via schermautomatisering. MAISON BLNDR implementeert schermautomatisering met Python-gebaseerde oplossingen en combineert dit waar nuttig met AI voor documentherkenning en besluitvorming. De robots draaien in een beveiligde omgeving en worden proactief gemonitord. Als een scherm verandert door een systeemupdate, signaleren wij dit en passen de robot aan voordat jij er last van hebt.",
+          "Geen API? Dan de UI. De robot klikt, typt en vult in zoals een medewerker. Oud ERP, leveranciersportaal, overheidsformulier: vaak toch te automatiseren. Python als basis, waar nodig AI voor documenten en beslissingen. Beveiligde omgeving, actieve monitoring. Scherm wijzigt na een update? Wij passen de robot aan voordat jij storing merkt.",
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/rpa-workflow-integraties#service",
@@ -212,9 +212,9 @@ export const services: Service[] = [
     id: "04",
     slug: "custom-ai-software",
     title: "Custom AI Software & Portalen",
-    subtitle: "Standaardsoftware is voor iedereen gebouwd. Jouw bedrijf is niet iedereen.",
+    subtitle: "Als standaardsoftware niet meer past.",
     description:
-      "Op een gegeven moment werkt het omgekeerde: je past niet meer aan het systeem aan, maar wil dat het systeem aanpast aan jou. Dat is het moment om maatwerk te overwegen — en dat is precies waar wij goed in zijn.",
+      "Soms moet je software meebewegen met hoe jij werkt, niet andersom. Portalen, apps en interne tools met AI erin vanaf het begin.",
     tags: ["Klantportalen", "Web & mobiele apps", "AI-applicaties", "Documentbeheer"],
     metaTitle: "Custom AI Software & Portalen - MAISON BLNDR | Maatwerk AI-applicaties Limburg",
     metaDescription:
@@ -229,16 +229,16 @@ export const services: Service[] = [
       "maatwerksoftware Limburg",
     ],
     longDescription: [
-      "We bouwen webapplicaties, klantportalen, leveranciersportalen en mobiele apps — allemaal met AI als kernonderdeel, niet als bijgeleverd chatbotje. Je klantportaal beheert dossiers en geeft proactieve statusupdates. Je interne platform signaleert afwijkingen en informeert je team voordat het een probleem wordt.",
-      "Het verschil met andere maatwerksoftware: bij ons zit de intelligentie in het fundament. Zoekfuncties begrijpen intentie. Aanbevelingen leren van jouw data. Documenten verwerken zichzelf. En het systeem wordt slimmer naarmate je het meer gebruikt.",
-      "We werken met Next.js, TypeScript, Python en cloud-platforms als Microsoft Azure en AWS. Modulair gebouwd, zodat je software meegroeit. Security en performance zijn geen afterthought — bouwstenen van dag één.",
+      "Webapps, klant- en leveranciersportalen, mobiele apps: AI zit erin vanaf het begin, niet als los chatbotje. Klanten volgen dossiers en krijgen updates. Interne tools signaleren afwijkingen voordat het escaleert.",
+      "Zoeken op intentie, aanbevelingen op jouw data, documenten die zichzelf verwerken. Hoe meer je het gebruikt, hoe nuttiger het wordt.",
+      "Next.js, TypeScript, Python, Azure of AWS. Modulair, zodat je kunt uitbreiden. Security en performance vanaf dag één.",
     ],
     benefits: [
-      "Volledig op maat — past exact bij jouw processen en workflows",
-      "AI in de kern: het systeem wordt slimmer naarmate je meer data opbouwt",
-      "Moderne, intuïtieve gebruikerservaring — geen training nodig",
-      "Schaalbaar en onderhoudbaar gebouwd van dag één",
-      "Van analyse en ontwerp tot lancering volledig begeleid",
+      "Op maat voor jouw processen",
+      "AI in de kern, leert van je data",
+      "Interface die je team snel oppakt",
+      "Schaalbaar en onderhoudbaar gebouwd",
+      "Van analyse tot lancering bij ons",
     ],
     useCases: [
       "Klantenportalen met AI-functionaliteit",
@@ -253,25 +253,25 @@ export const services: Service[] = [
         id: "klantportalen",
         title: "Klantportalen",
         content:
-          "De meeste klantportalen zijn mappen met een wachtwoord ervoor. Wat wij bouwen is anders: een werkplek waar je klanten de status van hun project volgen, documenten uploaden, communiceren via geïntegreerde chat en proactieve updates ontvangen — zonder dat ze jou hoeven te bellen. Volledig op maat voor jouw branche en klantrelaties. Beveiliging, audit-logging en GDPR-compliance zijn standaard onderdeel van elke implementatie.",
+          "Veel portalen zijn mappen met login. Wij bouwen een plek waar klanten status volgen, documenten uploaden, chatten en updates krijgen zonder te bellen. Op maat voor jouw branche. Beveiliging, audit-log en GDPR zitten standaard in.",
       },
       {
         id: "web-mobiele-apps",
         title: "Web & mobiele apps",
         content:
-          "Apps voor hoe mensen echt werken — niet voor hoe de specificatie het beschrijft. Voor buitendienstmedewerkers die onderweg klantdata nodig hebben. Voor teams die inspecties vastleggen terwijl ze er staan. Voor salesmensen die een offerte genereren in de auto. We bouwen met React en Next.js voor web, React Native voor iOS en Android — één codebase, op alle devices.",
+          "Apps voor hoe mensen werken: klantdata onderweg, inspecties ter plekke, offerte vanuit de auto. React en Next.js voor web, React Native voor iOS en Android. Eén codebase, alle devices.",
       },
       {
         id: "ai-applicaties",
         title: "AI-applicaties als kernproduct",
         content:
-          "AI-applicaties zijn niet standaardsoftware met een chatbot erbij — ze zijn gebouwd rond AI als kernfunctionaliteit. MAISON BLNDR ontwikkelt applicaties waarbij AI de gebruikerservaring fundamenteel verbetert: een interne zoekfunctie die documenten vindt op basis van vraag in plaats van trefwoord, een dashboard dat anomalieën proactief signaleert, of een adviesapplicatie die op basis van klantdata automatisch de beste productaanbeveling doet.",
+          "Geen standaardpakket met chatbot erop. AI is de kern: zoeken op vraag in plaats van trefwoord, dashboards die afwijkingen signaleren, advies op basis van klantdata. Dat is waar het verschil zit.",
       },
       {
         id: "documentbeheer",
         title: "Slim documentbeheer",
         content:
-          "Slim documentbeheer is meer dan bestanden opslaan in mappen. We bouwen systemen waarbij AI automatisch documenten classificeert, metadata extraheert en gerelateerde documenten clustert. Je medewerkers vinden wat ze zoeken in seconden — via een zoekopdracht in gewone taal. Inkomende documenten worden automatisch verwerkt en aan het juiste dossier gekoppeld.",
+          "Niet alleen mappen. AI classificeert, haalt metadata eruit en groepeert gerelateerde stukken. Zoeken in gewone taal. Inkomend wordt verwerkt en aan het juiste dossier gekoppeld.",
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/custom-ai-software#service",
@@ -282,9 +282,9 @@ export const services: Service[] = [
     id: "05",
     slug: "data-intelligentie-rapportages",
     title: "Data-intelligentie & Rapportages",
-    subtitle: "Je hebt de data al. Je gebruikt hem alleen nog niet.",
+    subtitle: "Data die je al hebt, bruikbaar maken.",
     description:
-      "RAG-systemen die je kennisbase doorzoekbaar maken. Dashboards die je team dagelijks sturen op de juiste KPI's. Rapportages die zichzelf schrijven.",
+      "Zoeken in je kennisbank via een gewone vraag. Dashboards die je team echt gebruikt. Rapporten die maandagochtend al klaarstaan.",
     tags: ["RAG-systemen", "Kennismanagement", "Dashboards", "Automatische rapportages"],
     metaTitle: "Data-intelligentie & Rapportages - MAISON BLNDR | RAG-systemen en AI-dashboards",
     metaDescription:
@@ -299,17 +299,17 @@ export const services: Service[] = [
       "KPI monitoring AI",
     ],
     longDescription: [
-      "Elke dag vult je bedrijf databases, inboxen en bestanden. Maar hoeveel van die informatie gebruik je echt om beslissingen te nemen? Bij de meeste bedrijven is het antwoord: een fractie. Niet omdat de data er niet is — maar omdat hij verspreid zit en moeilijk te bereiken.",
-      "We maken die data werkbaar. Onze RAG-systemen geven je medewerkers directe toegang tot de collectieve kennis van je organisatie. Een medewerker typt: \"Wat spraken we vorig jaar af over het onderhoudscontract van klant X?\" Hij krijgt het antwoord, met bronvermelding, in vijf seconden. Zonder mappen open te klikken.",
-      "Naast kennisontsluiting bouwen wij geautomatiseerde rapportagesystemen en live dashboards. Elke maandagochtend pakt iemand bij jouw bedrijf de Excel-bestanden van vorige week erbij en begint ze samen te voegen. Twee tot acht uur later is het rapport klaar. Wij automatiseren dat. Het rapport schrijft zichzelf — inclusief een samenvatting van wat opvalt en wat actie verdient.",
-      "Afwijkingen worden proactief gesignaleerd voordat ze een probleem worden. De juiste persoon ontvangt een notificatie via e-mail, Slack of WhatsApp.",
+      "Data zit overal: databases, inbox, mappen. Gebruiken voor beslissingen lukt vaak maar deels, omdat alles verspreid staat.",
+      "RAG geeft medewerkers toegang tot collectieve kennis. \"Wat spraken we vorig jaar af over onderhoud bij klant X?\" Antwoord met bron, in seconden.",
+      "Ook rapportages en dashboards. Geen maandagochtend meer met Excel's samenvoegen. Het rapport staat klaar, met een korte samenvatting van wat opvalt.",
+      "Afwijkingen? Alert naar de juiste persoon via mail, Slack of WhatsApp.",
     ],
     benefits: [
-      "Directe toegang tot je interne kennisbase — via een vraag in gewone taal",
-      "Rapportages die zichzelf schrijven — geen handmatig samenvoegen meer",
-      "Proactieve alerting bij afwijkingen in je data",
-      "Betere beslissingen op basis van actuele, accurate cijfers",
-      "Integreert met al je bestaande databronnen",
+      "Interne kennis opvragen in gewone taal",
+      "Rapporten zonder handmatig samenvoegen",
+      "Alerts bij afwijkingen in je data",
+      "Beslissen op actuele cijfers",
+      "Koppeling met bestaande databronnen",
     ],
     useCases: [
       "Interne kennisbank doorzoekbaar maken met AI",
@@ -324,19 +324,19 @@ export const services: Service[] = [
         id: "kennismanagement",
         title: "Kennismanagement",
         content:
-          "Kennis zit in hoofden, e-mails en documenten. En is daarmee kwetsbaar. Een medewerker die vertrekt neemt kennis mee. Een nieuwe medewerker begint van nul. Klantenservice geeft inconsistente antwoorden afhankelijk van wie er dienst heeft. Wij lossen dat op: via RAG-technologie koppelen we een taalmodel aan je bestaande kennisrepositories — Confluence, SharePoint, interne wikis, proceshandleidingen. Medewerkers stellen vragen in gewone taal en krijgen accurate antwoorden met bronvermelding.",
+          "Kennis in hoofden, mail en losse docs is fragiel. Vertrek, en het is weg. Nieuwe collega's starten op nul. RAG koppelt een taalmodel aan Confluence, SharePoint, wiki's en handleidingen. Vragen in gewone taal, antwoord met bron.",
       },
       {
         id: "dashboards",
         title: "KPI-dashboards",
         content:
-          "Het probleem met de meeste dashboards is niet dat er te weinig op staat. Het is dat er te veel op staat — en dat niemand weet wat hij ermee moet. Wij bouwen dashboards die je team dagelijks sturen: de KPI's die er vandaag toe doen, met alerting als er iets afwijkt. De directeur ziet de strategische cijfers, de salesmanager de pipelinedata, de productieleider de capaciteitsbenutting.",
+          "Te veel grafieken, te weinig actie: dat zien we vaak. Wij bouwen dashboards rond de KPI's die vandaag tellen, met alert bij afwijking. Directie, sales en productie krijgen elk hun eigen scherm.",
       },
       {
         id: "automatische-rapportages",
         title: "Automatische rapportages",
         content:
-          "De rapportage schrijft zichzelf. We automatiseren de volledige rapportageketen: data ophalen uit alle bronnen, samenvoegen, berekeningen uitvoeren, visualiseren en distribueren naar de juiste ontvangers. AI voegt een laag toe die rapportage overstijgt: het systeem signaleert welke patronen opvallend zijn, vergelijkt met vorige periodes en geeft een korte tekstuele samenvatting. Elke maandagochtend klaar — zonder dat een medewerker er een vinger aan heeft geroerd.",
+          "Data ophalen, samenvoegen, rekenen, visualiseren, versturen: volledig geautomatiseerd. AI markeert opvallende patronen, vergelijkt met vorige periodes en schrijft een korte samenvatting. Maandagochtend klaar, zonder handwerk.",
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/data-intelligentie-rapportages#service",
@@ -347,9 +347,9 @@ export const services: Service[] = [
     id: "06",
     slug: "ai-strategie-quickscan",
     title: "AI Strategie & Quickscan",
-    subtitle: "Weten waar te beginnen is al de helft van het werk.",
+    subtitle: "Eerst weten waar het zin heeft.",
     description:
-      "Bijna elk bedrijf waarmee we in gesprek gaan zegt hetzelfde: we willen iets met AI doen, maar we weten niet waar we moeten beginnen. Eerlijk gezegd — dat is een verstandige houding. Niet alles leent zich voor AI. Maar sommige processen lenen zich er perfect voor.",
+      "Veel bedrijven willen iets met AI maar weten niet waar te starten. Logisch. We helpen je prioriteiten kiezen: wat levert snel op, wat wacht beter even.",
     tags: ["Gratis quickscan", "Implementatieroadmap", "Business case", "Team training"],
     metaTitle: "AI Strategie & Quickscan - MAISON BLNDR | Gratis AI-scan voor Je Bedrijf",
     metaDescription:
@@ -364,16 +364,16 @@ export const services: Service[] = [
       "AI roadmap bedrijf",
     ],
     longDescription: [
-      "We beginnen met een gratis quickscan van je processen: welke taken kosten het meeste tijd, welke worden het meest herhaald, welke zijn het meest gevoelig voor fouten. Uit die analyse komen de tien tot vijftien processen naar boven die het meeste opleveren als je ze automatiseert — gerangschikt op impact én implementatietijd.",
-      "Wat je krijgt is geen lijst met aanbevelingen. Het is een uitvoerbaar plan: wat wordt wanneer gebouwd, wat kost het, wat levert het op, en hoe weet je dat het werkt. Per fase.",
-      "Na de strategie-fase kun je de uitvoering bij ons neerleggen. Wij implementeren de oplossingen die in de roadmap staan en begeleiden je team in het werken met AI. Zo bouw je interne expertise op die je organisatie op de lange termijn versterkt.",
+      "Gratis quickscan: welke taken kosten tijd, welke herhalen zich, waar gaan fouten mis? Daaruit komen tien tot vijftien kansen, gerangschikt op impact en doorlooptijd.",
+      "Geen advieslijst, maar een plan: wat wanneer, wat het kost, wat het oplevert, hoe je succes meet.",
+      "Uitvoering mag bij ons. We bouwen wat in de roadmap staat en helpen je team met AI in het dagelijks werk.",
     ],
     benefits: [
-      "Gratis quickscan — geen verplichtingen, wel direct inzicht",
-      "Implementatieplan met ROI per proces, zwart op wit",
-      "Duidelijke prioritering: quick wins eerst, complexe zaken later",
-      "Onafhankelijk: we kiezen de tool die past, niet de tool die we zelf verkopen",
-      "Van strategie tot lancering — we blijven erbij",
+      "Gratis quickscan, geen verplichting",
+      "ROI per proces in het plan",
+      "Quick wins eerst, zwaardere stappen later",
+      "Toolkeuze op fit, niet op wat wij verkopen",
+      "Van strategie tot livegang bij één partij",
     ],
     useCases: [
       "Inventarisatie van automatiseringskansen",
@@ -388,19 +388,19 @@ export const services: Service[] = [
         id: "implementatieroadmap",
         title: "Implementatieroadmap",
         content:
-          "Een roadmap die je ook over zes maanden nog kunt uitleggen. We beginnen met de quick wins: snel te implementeren, direct ROI, intern draagvlak. Daarna bouwen we door op de infrastructuur die we hebben neergelegd. Per fase staat beschreven wat er wordt opgeleverd, welke resources nodig zijn, welke risico's er zijn en hoe succes gemeten wordt. We reviewen en actualiseren elk kwartaal.",
+          "Roadmap die je over een half jaar nog kunt uitleggen. Eerst quick wins voor snelle ROI en draagvlak. Daarna uitbreiden op wat er al staat. Per fase: oplevering, resources, risico's, meetpunten. Elk kwartaal bijsturen.",
       },
       {
         id: "business-case",
         title: "Business case",
         content:
-          "Een business case die standhoudt bij een kritische directeur. Vier onderdelen: waar staan we nu, waar staan we na implementatie, wat kost het daartussen, en wat is de financiële waarde van het verschil. We bouwen met conservatieve aannames en drie scenario's — zodat niemand kan zeggen dat het te mooi is om waar te zijn. Inclusief niet-financiële baten: betere kwaliteit, lagere foutmarges, hogere medewerkerstevredenheid.",
+          "Business case voor een kritische directeur: nu, straks, kosten ertussen, financiële waarde. Conservatieve aannames, drie scenario's. Ook niet-financiële baten: minder fouten, betere kwaliteit, tevredenere teams.",
       },
       {
         id: "team-training",
         title: "Team training & adoptie",
         content:
-          "De technologie is zelden het probleem. Het probleem is dat mensen de tool na zes weken niet meer gebruiken omdat niemand goed heeft uitgelegd waarom hij beter is dan wat ze al deden. Wij lossen dat op — niet met een eenmalige training, maar met een adoptietraject dat we meten. Niet hoeveel mensen een training hebben gevolgd, maar hoeveel mensen de tool daadwerkelijk gebruiken na drie maanden. Dat is de metric die telt.",
+          "Techniek faalt zelden; adoptie wel. Na zes weken ligt de tool stil als niemand snapte waarom die beter is. Geen eenmalige training, maar een traject dat we meten op gebruik na drie maanden, niet op aanwezigheid in een workshop.",
       },
     ],
     jsonLdId: "https://maisonblender.com/diensten/ai-strategie-quickscan#service",

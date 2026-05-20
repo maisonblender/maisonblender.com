@@ -5,19 +5,19 @@ const steps = [
     step: "01",
     title: "We beginnen bij jouw processen",
     description:
-      "Geen intake waarbij jij vertelt wat je wilt en wij knikken. We gaan in op hoe je bedrijf werkt, waar de tijd verloren gaat en wat de realistische impact is van automatisering. Daaruit rolt een architectuur die jouw bestaande systemen serieus neemt — en een roadmap met tijdlijnen en verwacht rendement.",
+      "We beginnen niet met een wishlist. We lopen je processen door: waar gaat tijd verloren, wat is realistisch te automatiseren, welke systemen moeten mee. Je krijgt een plan met stappen, timing en een eerlijke inschatting van wat het oplevert.",
   },
   {
     step: "02",
     title: "Werkend prototype in twee weken",
     description:
-      "Geen demo-omgeving, geen mock-data. Binnen twee weken draait er iets echts in jouw omgeving. Je ziet direct of het past — en stuurt bij voordat er onnodig geld is uitgegeven.",
+      "Binnen twee weken draait er iets in jouw eigen omgeving. Echte data, echte koppelingen. Past het niet? Dan sturen we bij voordat we verder bouwen.",
   },
   {
     step: "03",
     title: "Live. En we blijven.",
     description:
-      "Na validatie bouwen we naar productie: robuust, veilig, schaalbaar. Monitoring en beheer blijven bij ons. Jij hoeft alleen de resultaten te zien.",
+      "Werkt het? Dan zetten we het productief neer. Monitoring en beheer nemen wij over. Jij ziet of het doet wat het moet doen.",
   },
 ];
 

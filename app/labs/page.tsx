@@ -76,8 +76,8 @@ export default function LabsHomePage() {
             <span className="font-exposure">Limburgse ondernemers.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 sm:text-lg mb-10 max-w-2xl mx-auto">
-            Geen hype, geen jargon — gewoon wat werkt en hoe je het toepast. Webinars, een
-            maandelijkse nieuwsbrief en gratis tools, gemaakt voor het MKB in de regio.
+            Praktische uitleg voor MKB in Limburg: webinars, een maandelijkse nieuwsbrief en
+            tools die je meteen kunt gebruiken.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row justify-center">
             <Link

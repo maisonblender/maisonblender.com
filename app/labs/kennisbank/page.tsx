@@ -5,7 +5,7 @@ import { kennisbankPosts } from "@/lib/kennisbank";
 export const metadata: Metadata = {
   title: "Kennisbank - AI-gidsen en cases voor Limburgse ondernemers",
   description:
-    "Praktische AI-gidsen, cases uit Limburgse bedrijven en how-to's zonder jargon. Gratis toegankelijk via Limburg AI Labs.",
+    "Praktische AI-gidsen, cases uit Limburgse bedrijven en how-to's. Gratis via Limburg AI Labs.",
   alternates: { canonical: "https://maisonblender.com/labs/kennisbank" },
 };
 
@@ -34,13 +34,12 @@ export default function KennisbankPage() {
             className="text-[28px] font-normal leading-[1.15] tracking-tight sm:text-[36px] lg:text-[44px] mb-4"
             style={{ letterSpacing: "-0.95px" }}
           >
-            AI-kennis zonder
+            AI-kennis voor
             <br />
-            <span className="font-exposure">jargon.</span>
+            <span className="font-exposure">Limburgse ondernemers.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-xl mx-auto">
-            Gidsen, cases en how-to&#39;s voor Limburgse ondernemers die AI willen begrijpen en toepassen.
-            Geen technische voorkennis vereist.
+            Gidsen, cases en how-to&apos;s over AI in het MKB. Geschreven voor mensen die geen developer zijn.
           </p>
         </div>
       </section>

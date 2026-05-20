@@ -254,7 +254,7 @@ export default async function DienstenPage({
                 <div className="bg-[#1f1f1f] p-6 text-white">
                   <h3 className="mb-2 text-sm font-bold">Klaar om te starten?</h3>
                   <p className="mb-4 text-xs text-white/70 leading-relaxed">
-                    Plan een gratis strategiegesprek en ontdek hoe {tagPage.title} je bedrijf versterkt.
+                    Plan een gratis gesprek en bespreek of {tagPage.title} bij jou past.
                   </p>
                   <Link
                     href="/strategiegesprek"
@@ -568,7 +568,7 @@ export default async function DienstenPage({
               <div className="bg-[#1f1f1f] p-6 text-white">
                 <h3 className="mb-2 text-sm font-bold">Klaar om te starten?</h3>
                 <p className="mb-4 text-xs text-white/70 leading-relaxed">
-                  Plan een gratis strategiegesprek en ontdek hoe {service!.title} je bedrijf versterkt.
+                  Plan een gratis gesprek en bespreek of {service!.title} bij jou past.
                 </p>
                 <Link
                   href="/strategiegesprek"

@@ -111,7 +111,7 @@ export default function DemoPage() {
               {
                 label: "Features actief",
                 items: [
-                  "Liquid Presence (levend canvas)",
+                  "Liquid Presence (bewegende vorm op de pagina)",
                   "Voice read-aloud (ElevenLabs)",
                   "Lead scoring: warm / lauw / koud",
                 ],

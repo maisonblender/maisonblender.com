@@ -1,21 +1,21 @@
 const testimonials = [
   {
     quote:
-      "Inkoopfacturen verwerken we nu volledig automatisch. Wat vroeger een halve dag werk was, doet de AI in minuten.",
+      "Inkoopfacturen gingen vroeger een halve dag. Nu loopt het vanzelf. Ik check nog wel even, maar het scheelt echt tijd.",
     name: "Directeur Operations",
     company: "Productiebedrijf, Sittard",
     initials: "DO",
   },
   {
     quote:
-      "In één gesprek werd duidelijk welke processen het meeste opleveren. Voor elk MKB-bedrijf een aanrader.",
+      "Na één gesprek wist ik waar we moesten beginnen. Geen vaag verhaal, wel een lijst met wat het oplevert.",
     name: "Eigenaar",
     company: "Accountantskantoor, Geleen",
     initials: "EK",
   },
   {
     quote:
-      "Onze chatbot beantwoordt 80% van de klantvragen zonder tussenkomst. Klanttevredenheid omhoog, team focust op de echte problemen.",
+      "Het grootste deel van de standaardvragen pakt de chatbot zelf. Mijn team pakt nu vooral de lastige gevallen.",
     name: "Hoofd Klantcontact",
     company: "Installatietechniek, Maastricht",
     initials: "HK",

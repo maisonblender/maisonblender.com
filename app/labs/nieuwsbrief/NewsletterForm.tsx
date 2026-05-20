@@ -86,7 +86,7 @@ export default function NewsletterForm() {
       )}
 
       <p className="mt-3 text-xs text-[#6b6b75]">
-        Door je in te schrijven ga je akkoord met onze privacyverklaring. Je ontvangt maximaal één e-mail per maand.
+        Door je in te schrijven ga je akkoord met onze privacyverklaring. Maximaal één e-mail per maand.
       </p>
     </div>
   );

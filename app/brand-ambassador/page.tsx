@@ -7,26 +7,26 @@ import HidePresence from "@/components/PersistentPresence/HidePresence";
 export const metadata: Metadata = {
   title: "Brand Presence | MAISON BLNDR — Geen chatbot. Een aanwezigheid.",
   description:
-    "Geen chatbox. De eerste AI Brand Presence met een levende Liquid Presence, voice, en live brand-transform. Getraind op jouw producten, diensten en tone-of-voice. Ervaar 'm nu.",
+    "Geen chatbox in de hoek. Een AI-aanwezigheid op je site die praat in jouw merkstem, met voice en live demo op jouw bedrijfsnaam. Probeer hem hier.",
   alternates: { canonical: "https://maisonblender.com/brand-ambassador" },
   openGraph: {
     title: "Brand Presence | MAISON BLNDR",
     description:
-      "Geen chatbox. Een levende Brand Presence die 24/7 namens je merk spreekt — op je website, WhatsApp en Teams. Ontmoet de Ambassador.",
+      "Een AI-aanwezigheid op je site, WhatsApp of Teams die antwoordt in jouw tone-of-voice. Bekijk de live demo.",
     url: "https://maisonblender.com/brand-ambassador",
     images: [
       {
         url: "https://maisonblender.com/images/brand-ambassador-encounter.png",
         width: 1024,
         height: 576,
-        alt: "MAISON BLNDR · THE ENCOUNTER — AI Brand Presence met levende Ambassador",
+        alt: "MAISON BLNDR Brand Presence demo met Ambassador op de website",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Brand Presence | MAISON BLNDR",
-    description: "Geen chatbox. Een aanwezigheid — voice-ready, levend, en transformeert voor jouw merk.",
+    description: "Geen chatbox in de hoek. Een aanwezigheid op je site die praat in jouw merkstem, ook met voice.",
     images: ["https://maisonblender.com/images/brand-ambassador-encounter.png"],
   },
 };
@@ -35,45 +35,45 @@ const differentiators = [
   {
     nummer: "01",
     titel: "Productkennis",
-    kop: "Getraind op je volledige productcatalogus, prijzen en specificaties.",
-    body: "Geeft accurate antwoorden — ook op technische vragen die je normaal doorschakelt naar een specialist.",
+    kop: "Kent je catalogus, prijzen en specs.",
+    body: "Antwoordt ook op technische vragen die je normaal doorschakelt.",
   },
   {
     nummer: "02",
     titel: "Tone-of-voice",
-    kop: "Communiceert in de stijl van jouw merk — formeel of informeel, technisch of laagdrempelig.",
-    body: "Niet generiek, niet robotachtig. Jouw klanten merken het verschil niet met een menselijke medewerker.",
+    kop: "Klinkt als jouw merk, niet als een generieke bot.",
+    body: "Formeel of informeel, technisch of laagdrempelig: dat stellen we in.",
   },
   {
     nummer: "03",
     titel: "Leadgeneratie",
-    kop: "Kwalificeert bezoekers actief: wat zoekt hij, wat is zijn budget, hoe urgent is de vraag.",
-    body: "Stuurt alleen de warme leads door naar jouw salesteam — compleet met gesprekscontext.",
+    kop: "Stelt door wat iemand zoekt en hoe urgent het is.",
+    body: "Sales krijgt warme leads met het gesprek erbij.",
   },
   {
     nummer: "04",
-    titel: "24/7 beschikbaar",
-    kop: "Altijd beschikbaar — ook 's avonds, ook in het weekend.",
-    body: "Geen gemiste lead meer omdat er niemand online was.",
+    titel: "Altijd bereikbaar",
+    kop: "Ook 's avonds en in het weekend.",
+    body: "Handig als je geen ploegendienst hebt voor chat.",
   },
   {
     nummer: "05",
     titel: "Multichannel",
-    kop: "Eén kennisbase, drie kanalen: website, WhatsApp Business en Microsoft Teams.",
-    body: "Consistent antwoord op elk kanaal — de Ambassador weet altijd wat eerder is besproken.",
+    kop: "Website, WhatsApp Business en Teams vanuit één kennisbase.",
+    body: "Zelfde antwoorden, zelfde context over kanalen heen.",
   },
   {
     nummer: "06",
-    titel: "Lerende kennisbase",
-    kop: "Nieuwe producten, gewijzigde prijzen of nieuwe FAQs?",
-    body: "Aanpassen en binnen uren live — zonder dat je daarvoor bij ons hoeft aan te kloppen.",
+    titel: "Kennisbase bijwerken",
+    kop: "Nieuwe producten of prijzen? Zet je zelf live.",
+    body: "Meestal binnen uren, zonder ticket bij ons.",
   },
 ];
 
 const kanalen = [
-  { name: "Website", description: "Embedded op elke pagina — klanten stellen hun vraag waar ze zijn, zonder door te klikken naar een contactpagina." },
-  { name: "WhatsApp Business", description: "Via het officiële platform. Klanten chatten in de app die ze toch al hebben open staan." },
-  { name: "Microsoft Teams", description: "Als interne kennisassistent of als klantenservice-bot. Zelfde kennisbase, andere context." },
+  { name: "Website", description: "Op elke pagina waar je bezoeker zit, zonder omweg naar contact." },
+  { name: "WhatsApp Business", description: "Via het officiële kanaal, in de app die klanten al gebruiken." },
+  { name: "Microsoft Teams", description: "Intern als kennisassistent of extern als service-bot." },
 ];
 
 export default function BrandAmbassadorPage() {
@@ -117,10 +117,9 @@ export default function BrandAmbassadorPage() {
               <span className="font-exposure">Die mag 24/7 beschikbaar zijn.</span>
             </h1>
             <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/70 sm:text-lg">
-              Een Brand Presence is een levende AI-aanwezigheid die met de stem van jouw merk
-              spreekt — productkennis, tone-of-voice en commerciële instelling inbegrepen. Via
-              je website, WhatsApp of Teams. Altijd beschikbaar, zonder dat je er extra mensen
-              voor nodig hebt.
+              Een Brand Presence is een AI op je site (of WhatsApp, of Teams) die antwoordt in
+              jouw tone-of-voice en je producten kent. Handig als je geen extra mensen wilt
+              inzetten voor standaardvragen.
             </p>
             <div className="mt-10 flex flex-col justify-center gap-3 sm:flex-row">
               <a
@@ -160,9 +159,8 @@ export default function BrandAmbassadorPage() {
                 Probeer het zelf — dit is onze eigen Brand Presence.
               </h2>
               <p className="mx-auto max-w-xl text-sm text-white/55">
-                Geen nep-data, geen scriptje. Stel een vraag over onze diensten, tarieven of aanpak
-                — en ervaar precies hoe jouw klanten geholpen worden. Wat je hier ziet, is wat wij
-                voor jou bouwen.
+                Dit is onze eigen setup. Vraag iets over diensten, prijzen of aanpak en kijk hoe
+                het voelt. Zo bouwen we het ook voor jou.
               </p>
             </div>
             <AmbassadorWidget />
@@ -199,9 +197,9 @@ export default function BrandAmbassadorPage() {
                 className="text-[26px] font-normal leading-[1.2] tracking-tight sm:text-[32px]"
                 style={{ letterSpacing: "-0.95px" }}
               >
-                Drie dingen die de Ambassador doet
+                Wat dit anders maakt
                 <br />
-                <span className="font-exposure">die geen andere chatbot doet.</span>
+                <span className="font-exposure">dan een standaard chatbot.</span>
               </h2>
             </div>
 
@@ -210,23 +208,23 @@ export default function BrandAmbassadorPage() {
                 {
                   nummer: "01",
                   titel: "Geen avatar",
-                  kop: "Geen stockfoto, geen initialen-cirkel, geen cartoon-robot.",
+                  kop: "Geen stockfoto, geen initialen-cirkel, geen robot-avatar.",
                   body:
-                    "Een abstracte aanwezigheid die geen gezicht oplegt aan je merk. Net zoals je winkel geen pratende mascotte in de etalage heeft — een sfeer, geen karikatuur.",
+                    "Een abstracte vorm op je pagina. Geen gezicht dat je merk moet representeren.",
                 },
                 {
                   nummer: "02",
                   titel: "Vier zichtbare modi",
-                  kop: "Hij laat je zien dat hij luistert, denkt en antwoordt.",
+                  kop: "Je ziet wanneer hij luistert, denkt of antwoordt.",
                   body:
-                    "De vorm beweegt anders tijdens elke fase: volgt je stem tijdens luisteren, versnelt tijdens verwerken, dijt uit tijdens antwoorden. Geen drie puntjes — een presence die meeleeft.",
+                    "De vorm verandert per fase. Geen wachtend bolletje met drie puntjes.",
                 },
                 {
                   nummer: "03",
                   titel: "Vloeibaar van merk",
-                  kop: "Typ een andere bedrijfsnaam en zie 'm van karakter veranderen.",
+                  kop: "Vul je bedrijfsnaam in en kijk hoe het eruitziet.",
                   body:
-                    "Kleur, toon en zelfbeschrijving passen zich live aan. Geen rebranding-sprint nodig om de ervaring te testen — voer een domein in en de Ambassador spreekt in jouw merkstem.",
+                    "Kleur en toon passen zich live aan. Handig om te testen vóór je live gaat.",
                 },
               ].map((item) => (
                 <article

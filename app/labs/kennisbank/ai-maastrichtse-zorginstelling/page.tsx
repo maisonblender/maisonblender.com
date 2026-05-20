@@ -34,8 +34,8 @@ export default function ArticlePage() {
             <span className="font-exposure">wat werkt en wat (nog) niet?</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-2xl">
-            Een eerlijk verslag van een AI-pilot bij een kleinschalige zorginstelling in Maastricht.
-            De successen zijn echt. De uitdagingen ook.
+            Een AI-pilot bij een kleinschalige zorginstelling in Maastricht. Wat hielp, waar het vastliep, en
+            wat anderen daaruit kunnen halen.
           </p>
         </div>
       </section>
@@ -46,15 +46,15 @@ export default function ArticlePage() {
           <div className="space-y-6 text-[15px] leading-[1.75] text-[#3a3a42]">
 
             <p>
-              Zorg en AI zijn een gevoelige combinatie. Persoonsgegevens, patientprivacy, AVG-verplichtingen,
-              toezicht - de drempels zijn hoger dan in andere sectoren. En toch: de werkdruk in de zorg is
-              ook hoger dan in andere sectoren. Dat maakt AI-automatisering hier tegelijk urgenter en risicovoller.
+              Zorg en AI is een gevoelige mix. Persoonsgegevens, patientprivacy, AVG, toezicht: de drempels zijn
+              hoger dan in andere sectoren. De werkdruk ook. AI-automatisering is hier tegelijk urgenter en
+              risicovoller.
             </p>
 
             <p>
-              Een Maastrichtse zorginstelling besloot vorig jaar een gecontroleerde pilot te starten.
-              Niet met experimentele technologie, maar met bestaande tools ingezet op een duidelijk afgebakend
-              administratief proces. Dit is wat ze deden, wat werkte, wat niet werkte en wat ze anderen aanraden.
+              Een Maastrichtse zorginstelling startte vorig jaar een gecontroleerde pilot. Geen experimentele
+              tech, maar bestaande tools op een afgebakend administratief proces. Wat ze deden, wat werkte, wat
+              niet, en wat ze anderen aanraden.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -112,22 +112,20 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              De tijdsbesparing was substantieel. De gemiddelde tijd per intake daalde van drie uur naar iets
-              minder dan een uur. Het samenvatten van het formulier kostte het systeem minder dan een minuut.
-              Het concept-zorgplan had nog 20 tot 30 minuten review en aanpassing nodig, maar de medewerker
-              begon nu vanuit een bruikbaar startpunt in plaats van een lege pagina.
+              De tijd per intake daalde van drie uur naar iets minder dan een uur. Samenvatten van het formulier:
+              minder dan een minuut. Het concept-zorgplan had nog 20 tot 30 minuten review nodig, maar de
+              medewerker begon vanuit een bruikbaar startpunt in plaats van een lege pagina.
             </p>
 
             <p>
-              Een bijkomend voordeel: de consistentie verbeterde. Voorheen verschilde de stijl en volledigheid
-              van zorgplannen sterk per medewerker. Het AI-gegenereerde concept zorgde voor een vaste structuur
-              die iedereen als basis gebruikte.
+              Ook de consistentie verbeterde. Zorgplannen verschillen sterk per medewerker. Het AI-concept gaf
+              iedereen dezelfde structuur als startpunt.
             </p>
 
             <p>
-              Ook de medewerkers zelf reageerden positiever dan verwacht. "Ik dacht eerst dat het mijn werk
-              zou overnemen", zei een van hen. "Maar het neemt juist het saaie deel over. Ik besteed nu meer
-              tijd aan het client-contact en minder aan typen."
+              Medewerkers reageerden positiever dan verwacht. &ldquo;Ik dacht eerst dat het mijn werk zou
+              overnemen&rdquo;, zei een van hen. &ldquo;Maar het neemt juist het saaie deel over. Ik besteed nu
+              meer tijd aan client-contact en minder aan typen.&rdquo;
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -135,8 +133,8 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              De grootste hobbel was niet technisch maar juridisch. Zorgdata valt onder bijzondere persoonsgegevens
-              in de AVG. Dat betekent strengere verplichtingen voor verwerking, opslag en doorgifte.
+              De grootste hobbel was juridisch, niet technisch. Zorgdata valt onder bijzondere persoonsgegevens
+              in de AVG. Strengere verplichtingen voor verwerking, opslag en doorgifte.
             </p>
 
             <p>
@@ -172,7 +170,7 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Na zes maanden trekt de directie vier concrete conclusies:
+              Na zes maanden vier conclusies:
             </p>
 
             <div className="space-y-4">
@@ -180,22 +178,22 @@ export default function ArticlePage() {
                 {
                   nr: "1",
                   title: "Begin met administratie, niet met zorgprocessen",
-                  text: "De laagste risicos en hoogste tijdwinst zitten in administratieve taken: samenvatten, structureren, correspondentie. Laat zorginhoudelijke beslissingen aan mensen over.",
+                  text: "Laagste risico, hoogste tijdwinst: samenvatten, structureren, correspondentie. Zorginhoudelijke beslissingen blijven bij mensen.",
                 },
                 {
                   nr: "2",
                   title: "Juridische check eerst, tool later",
-                  text: "Vraag een verwerkersovereenkomst op voor je ook maar iets test. In de zorg is dat geen formaliteit. Het bepaalt welke tools uberhaupt in aanmerking komen.",
+                  text: "Vraag een verwerkersovereenkomst op voor je test. In de zorg bepaalt dat welke tools uberhaupt in aanmerking komen.",
                 },
                 {
                   nr: "3",
-                  title: "Communiceer transparant naar clienten",
-                  text: "Clienten reageren beter op eerlijkheid dan op stilte. Vertel wat je gebruikt, waarom en hoe de data is beschermd. De meeste mensen accepteren het als het goed is uitgelegd.",
+                  title: "Wees open naar clienten",
+                  text: "Vertel wat je gebruikt, waarom en hoe data is beschermd. Twee van de eerste tien clienten wilden liever zonder AI. Dat ging goed te regelen.",
                 },
                 {
                   nr: "4",
-                  title: "Betrek medewerkers van het begin af",
-                  text: "De zorgen van medewerkers zijn reeel. Adresseer ze direct. Leg uit wat het systeem doet en wat het niet doet. De acceptatie is veel hoger als mensen begrijpen dat het hen helpt, niet vervangt.",
+                  title: "Betrek medewerkers vanaf dag een",
+                  text: "Zorgen zijn reeel. Leg uit wat het systeem doet en wat niet. Acceptatie is hoger als mensen snappen dat het hen helpt, niet vervangt.",
                 },
               ].map(({ nr, title, text }) => (
                 <div key={nr} className="bg-[#f2f3f5] border border-black/[0.06] p-5">
@@ -210,15 +208,13 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              De zorginstelling is nu bezig met de tweede fase van de pilot: het automatisch samenvatten van
-              voortgangsrapportages. Dat zijn de wekelijkse notities die zorgmedewerkers schrijven over de
-              toestand van een client. Doel is om de maandelijkse evaluatiegesprekken beter voor te bereiden
-              met een automatisch gegenereerd overzicht van de afgelopen vier weken.
+              Fase twee: automatisch samenvatten van voortgangsrapportages. Wekelijkse notities over de toestand
+              van een client, bedoeld om maandelijkse evaluatiegesprekken beter voor te bereiden.
             </p>
 
             <p>
-              De verwachting is voorzichtig positief - maar eerst komt een juridische toets van het nieuwe
-              proces. Die les hebben ze inmiddels goed geleerd.
+              De verwachting is voorzichtig positief. Eerst komt weer een juridische toets. Die les hebben ze
+              geleerd.
             </p>
 
           </div>
@@ -238,8 +234,8 @@ export default function ArticlePage() {
             <span className="font-exposure">zonder de juridische valkuilen.</span>
           </h2>
           <p className="text-sm leading-relaxed text-white/70 mb-8 max-w-xl">
-            Bij MAISON BLNDR helpen we zorginstellingen in Limburg met een AVG-proof aanpak voor AI-implementatie.
-            We beginnen altijd met de juridische basis, dan de techniek. Niet andersom.
+            Wij helpen zorginstellingen in Limburg met een AVG-proof aanpak. Eerst juridische basis, dan techniek.
+            Andersom werkt zelden.
           </p>
           <a
             href="https://maisonblender.com/contact"

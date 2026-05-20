@@ -30,15 +30,14 @@ export default function HeroWithTriage() {
             </div>
 
             <h1 className="text-[28px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[35px] lg:text-[32px]" style={{ letterSpacing: "-0.95px" }}>
-              Geen pilots. Geen proof-of-concepts.
+              Geen demo&apos;s die in een la blijven hangen.
               <br />
-              <span className="font-exposure">Jouw processen geautomatiseerd — live binnen vier weken.</span>
+              <span className="font-exposure">Binnen vier weken draait iets echts bij jou.</span>
             </h1>
 
             <p id="hero-description" className="max-w-xl text-base leading-relaxed text-[#575760] sm:text-lg">
-              Facturen verwerken, klantvragen beantwoorden, leads opvolgen: wij bouwen de AI-agents
-              die dat overnemen. We beginnen bij jouw workflows, niet bij een template. Binnen vier
-              weken staat er iets wat echt werkt.
+              Facturen, klantvragen, leads opvolgen: wij bouwen de agents die dat overnemen. Eerst
+              kijken we hoe jij werkt. Daarna bouwen we. Geen standaardpakket van de plank.
             </p>
 
             <div className="flex flex-col gap-3 sm:flex-row">
@@ -70,8 +69,8 @@ export default function HeroWithTriage() {
                   className="h-6 w-auto shrink-0 object-contain"
                 />
                 <p className="text-xs leading-relaxed text-[#575760]">
-                  Applemooz is gerebrand naar MAISON BLNDR. We bouwen nog steeds websites en
-                  e-commerce platforms, aangevuld met AI-automatisering en agents.
+                  Applemooz heet nu MAISON BLNDR. Websites en webshops bouwen we nog steeds; erbij
+                  komen AI-automatisering en agents.
                 </p>
               </div>
             </div>

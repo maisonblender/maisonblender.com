@@ -18,9 +18,9 @@ export default function AuditIntro() {
           className="text-[34px] font-normal leading-[1.05] tracking-tight text-[#1f1f1f] sm:text-[44px] lg:text-[52px] mb-6"
           style={{ letterSpacing: "-1px" }}
         >
-          Digitale toegankelijkheid
+          Toegankelijkheid op je site
           <br />
-          <span className="font-exposure">is geen optie meer.</span>
+          <span className="font-exposure">wordt steeds vaker verplicht.</span>
         </h1>
 
         <p className="max-w-3xl leading-relaxed text-[#575760]">
@@ -70,7 +70,7 @@ export default function AuditIntro() {
             className="text-[24px] font-normal leading-tight tracking-tight text-[#1f1f1f] sm:text-[28px] mb-3 max-w-3xl"
             style={{ letterSpacing: "-0.5px" }}
           >
-            Een transparante, deterministische check tegen WCAG 2.1 AA én EN 301 549.
+            Een vaste set regels tegen WCAG 2.1 AA en EN 301 549.
           </h2>
           <p className="max-w-3xl leading-relaxed text-[#575760]">
             De scanner is een <strong className="text-[#1f1f1f]">automated static audit</strong>:

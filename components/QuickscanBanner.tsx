@@ -27,9 +27,8 @@ export default function QuickscanBanner() {
             </h2>
 
             <p className="text-sm leading-relaxed text-white/60 sm:text-base">
-              De AI Readiness Intake analyseert jouw bedrijf op 5 pijlers — van laaghangend fruit en ROI
-              tot governance, datakwaliteit, IT-infrastructuur, EU AI Act-bekendheid en teamadoptie.
-              Je ontvangt een gepersonaliseerde AI Kansenkaart.
+              22 vragen over vijf thema&apos;s: waar win je snel tijd, wat kost het, en waar moet je
+              op letten qua data, IT en de EU AI Act. Daarna krijg je een kansenkaart per e-mail.
             </p>
 
             <div className="flex flex-wrap gap-4 text-sm text-white/70">
@@ -51,13 +50,13 @@ export default function QuickscanBanner() {
               <span className="text-lg font-semibold text-white">Gratis · ~10 minuten</span>
               <ul className="mt-3 space-y-2 text-sm text-white/70">
                 {[
-                  "5 pijlers, 22 gerichte vragen",
-                  "Live AI-analyse op maat",
-                  "Score + sector-benchmark",
-                  "Top 3 quick wins met ROI",
-                  "Governance, privacy & EU AI Act",
-                  "Cultuur, training & adoptie",
-                  "AI Kansenkaart via e-mail",
+                  "22 vragen, vijf thema's",
+                  "Analyse terwijl je invult",
+                  "Score met vergelijking in je sector",
+                  "Drie concrete quick wins met ROI",
+                  "Privacy, governance en EU AI Act",
+                  "Team en adoptie meegenomen",
+                  "Kansenkaart in je inbox",
                 ].map((item) => (
                   <li key={item} className="flex items-center gap-2">
                     <svg className="h-3.5 w-3.5 shrink-0 text-green-400" fill="currentColor" viewBox="0 0 20 20">

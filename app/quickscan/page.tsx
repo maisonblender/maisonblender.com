@@ -7,7 +7,7 @@ import { Zap, Brain, BarChart3, TrendingUp, Map, FileText, Shield, Users } from 
 export const metadata: Metadata = {
   title: "AI Readiness Intake | MAISON BLNDR - Ontdek jouw AI-kansen",
   description:
-    "Doe de gratis AI Readiness Intake van MAISON BLNDR. In 10 minuten breng je jouw AI-potentieel, datakwaliteit, IT-infrastructuur, governance-risico, EU AI Act-compliance en cultuurreadiness in kaart. Ontvang een gepersonaliseerde AI Kansenkaart.",
+    "Gratis AI Readiness Intake van MAISON BLNDR. Ongeveer 10 minuten, 22 vragen over vijf thema's. Je krijgt een score, quick wins met ROI en een kansenkaart per e-mail.",
   alternates: { canonical: "https://maisonblender.com/quickscan" },
   openGraph: {
     title: "AI Readiness Intake | MAISON BLNDR",
@@ -17,14 +17,14 @@ export const metadata: Metadata = {
 };
 
 const voordelen = [
-  { Icon: BarChart3, titel: "AI Readiness Score 0–100", tekst: "Jouw score + vergelijking met jouw sector" },
-  { Icon: TrendingUp, titel: "Top 3 quick wins", tekst: "Met ROI-indicatie in euro's — concreet en berekend op basis van jouw situatie" },
-  { Icon: Shield, titel: "Governance & EU AI Act", tekst: "Inzicht in AVG-risico's en EU AI Act-verplichtingen" },
-  { Icon: Users, titel: "Teamreadiness & adoptie", tekst: "Analyse van je teamreadiness en adoptiebereidheid" },
-  { Icon: Map, titel: "90-dagen actieplan", tekst: "Gepersonaliseerd actieplan met roadmap — direct naar je inbox" },
-  { Icon: Zap, titel: "5 pijlers, 22 vragen", tekst: "Gerichte vragen over jouw bedrijf — geen generieke vragenlijst" },
-  { Icon: Brain, titel: "Live AI-analyse", tekst: "Analyseert jouw situatie live — geen standaard rapport" },
-  { Icon: FileText, titel: "AI Kansenkaart", tekst: "Direct naar je inbox, inclusief sector-benchmark" },
+  { Icon: BarChart3, titel: "Score 0–100", tekst: "Jouw score naast vergelijkbare bedrijven in je sector" },
+  { Icon: TrendingUp, titel: "Drie quick wins", tekst: "Met ruwe ROI in euro's op basis van jouw antwoorden" },
+  { Icon: Shield, titel: "Privacy & EU AI Act", tekst: "Waar je nu risico loopt en wat je moet regelen" },
+  { Icon: Users, titel: "Team & adoptie", tekst: "Of je organisatie klaar is om AI echt te gebruiken" },
+  { Icon: Map, titel: "90-dagen plan", tekst: "Concrete vervolgstappen in je inbox" },
+  { Icon: Zap, titel: "22 vragen", tekst: "Over jouw bedrijf, niet een generieke enquête" },
+  { Icon: Brain, titel: "Live analyse", tekst: "Terwijl je invult, geen standaard PDF" },
+  { Icon: FileText, titel: "Kansenkaart", tekst: "Samenvatting per e-mail, met benchmark" },
 ];
 
 export default function QuickscanPage() {
@@ -59,9 +59,9 @@ export default function QuickscanPage() {
             </h1>
 
             <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-              De AI Readiness Intake analyseert je bedrijf op vijf pijlers: quick wins, ROI, datakwaliteit,
-              IT-infrastructuur en EU AI Act-gereedheid. Tien minuten. Daarna weet je precies waar de kansen
-              liggen en wat ze je opleveren.
+              22 vragen over vijf thema&apos;s: waar win je tijd, wat kost automatisering, en waar moet je
+              op letten qua data, IT en de EU AI Act. Ongeveer tien minuten. Daarna krijg je een
+              kansenkaart per e-mail.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center">
@@ -94,9 +94,9 @@ export default function QuickscanPage() {
                 <span className="font-exposure">Een intake die ergens op uitkomt.</span>
               </h2>
               <p className="max-w-xl text-[#575760]">
-                Je krijgt geen rapport vol open deuren. De intake analyseert jouw situatie live en levert een
-                gepersonaliseerde AI Kansenkaart op — met score, sector-benchmark, quick wins in euro&apos;s
-                en een 90-dagen actieplan.
+                Geen rapport met vage aanbevelingen. Je antwoorden worden live verwerkt tot een
+                kansenkaart: score, sectorvergelijking, drie quick wins met ROI en een plan voor
+                de komende 90 dagen.
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://maisonblender.com"),
   title: "MAISON BLNDR · Custom AI-agents & Procesautomatisering voor het MKB",
   description:
-    "Custom AI-agents, procesautomatisering en maatwerksoftware voor het MKB. MAISON BLNDR levert werkende AI-systemen binnen vier weken. Start een gratis AI Impact Scan.",
+    "Custom AI-agents en procesautomatisering voor het MKB. MAISON BLNDR bouwt werkende systemen, vaak live binnen vier weken. Start de gratis AI Readiness Intake.",
   keywords: [
     "AI consultant Limburg",
     "AI bureau Sittard",
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "MAISON BLNDR - Custom AI-agents & Procesautomatisering voor het MKB",
     description:
-      "MAISON BLNDR bouwt werkende AI-agents, procesautomatisering en maatwerksoftware voor het MKB. Geen data-scientist nodig. Gevestigd in Sittard, actief door heel Nederland.",
+      "Werkende AI-agents en automatisering voor het MKB. Gevestigd in Sittard, actief door heel Nederland.",
     url: "https://maisonblender.com",
     siteName: "MAISON BLNDR",
     locale: "nl_NL",

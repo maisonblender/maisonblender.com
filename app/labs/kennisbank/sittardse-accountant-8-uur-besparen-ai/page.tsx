@@ -46,10 +46,9 @@ export default function ArticlePage() {
           <div className="space-y-6 text-[15px] leading-[1.75] text-[#3a3a42]">
 
             <p>
-              Elk boekhoudkantoor heeft er last van: de administratie van inkomende facturen. Controleren, coderen,
-              boeken, archiveren. Bij een middelgroot kantoor in Sittard kostte dat ruim 30 uur personeelstijd per
-              maand. Per jaar bijna negen werkweken. De directeur besloot er iets aan te doen. Dit is wat hij aantrof,
-              wat werkte en wat absoluut niet.
+              Inkomende facturen: controleren, coderen, boeken, archiveren. Bij een middelgroot kantoor in Sittard
+              kostte dat ruim 30 uur personeelstijd per maand. Per jaar bijna negen werkweken. De directeur besloot
+              er iets aan te doen. Hieronder wat hij aantrof, wat werkte en wat misging.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -117,15 +116,14 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              Dat laatste cijfer is cruciaal: de medewerker controleert nu in plaats van invoert. Die taakverandering
-              werkte ook psychologisch beter. "Ik doe nu eigenlijk kwaliteitscontrole", zei de medewerker. "Dat is
-              een stuk minder eentonig."
+              De medewerker controleert nu in plaats van invoert. Dat voelde ook anders. "Ik doe nu eigenlijk
+              kwaliteitscontrole", zei ze. "Dat is een stuk minder eentonig."
             </p>
 
             <p>
-              De klanten merkten het ook. Doordat bonnen niet meer per kwartaal maar real-time worden verwerkt, heeft
-              Het kantoor een actueler beeld van de financiele positie van zijn klanten. Dat leidde al tot betere
-              adviezen bij twee klanten met cashflowproblemen.
+              Klanten merkten het ook. Bonnen worden niet meer per kwartaal maar real-time verwerkt, waardoor het
+              kantoor sneller ziet hoe de financiele positie ervoor staat. Bij twee klanten met cashflowproblemen
+              leverde dat al beter advies op.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -133,25 +131,19 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Het zou geen eerlijke case study zijn als we de valkuilen weglaten.
-            </p>
-
-            <p>
-              Ten eerste: de inrijdperiode. De eerste twee weken moest Dext leren welke leveranciers het kantoor
+              De inrijdperiode kostte tijd. De eerste twee weken moest Dext leren welke leveranciers het kantoor
               regelmatig ontvangt. Een paar facturen werden verkeerd ingelezen en op de verkeerde grootboekrekening
-              geboekt. Dat werd pas ontdekt bij de maandafsluiting.
+              geboekt. Dat kwam pas boven bij de maandafsluiting.
             </p>
 
             <p>
-              Ten tweede: klanten die foto's maken van bonnen met tegenlicht of een slechte camera leveren beelden op
-              die zelfs Dext niet verwerkt. Voor die gevallen is nog steeds handmatige invoer nodig. Ongeveer zes
-              procent van de documenten valt in die categorie.
+              Slechte bonfoto&apos;s blijven een probleem. Tegenlicht, wazige camera: ongeveer zes procent van de
+              documenten moet nog handmatig.
             </p>
 
             <p>
-              Ten derde: het systeem kost geld op volume. Bij een piekmaand valt de factuur iets hoger uit dan
-              verwacht. Het kantoor heeft inmiddels een maandelijks plafond afgesproken, maar de eerste factuur was
-              een verrassing.
+              En het systeem kost geld op volume. Bij een piekmaand viel de factuur hoger uit dan verwacht. Het
+              kantoor heeft inmiddels een maandelijks plafond afgesproken. De eerste factuur was een verrassing.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -178,8 +170,8 @@ export default function ArticlePage() {
             </div>
 
             <p>
-              De return on investment was bereikt na de eerste maand. Sindsdien is het puur winst: twee fulltime
-              werkdagen per maand die nu worden besteed aan advieswerk in plaats van gegevens invoeren.
+              Terugverdiend na de eerste maand. Sindsdien gaan twee fulltime werkdagen per maand naar advieswerk
+              in plaats van gegevens invoeren.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -187,20 +179,18 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Factuurverwerking is een van de makkelijkste processen om te automatiseren, precies omdat het zo
-              repetitief is. De technologie is er. De tools zijn betaalbaar. En je hebt geen IT-afdeling nodig om het
-              te laten werken.
+              Factuurverwerking is repetitief werk. Daardoor is het een logisch eerste proces om te automatiseren.
+              De tools zijn betaalbaar en je hebt geen IT-afdeling nodig.
             </p>
 
             <p>
-              De echte les uit dit traject is een andere: begin klein. Automatiseer eerst een proces volledig voordat
-              je er tien halffabrieken naast zet. Acht uur per week is genoeg om te beginnen - en genoeg om intern
-              draagvlak te kweken voor de volgende stap.
+              Onze les uit dit traject: begin klein. Automatiseer eerst een proces goed, voordat je er een tweede
+              naast zet. Acht uur per week is genoeg om te starten. Ook genoeg om collega&apos;s mee te krijgen.
             </p>
 
             <p>
-              De meeste Limburgse MKB-bedrijven hebben een handvol van dit soort processen. Facturen zijn het
-              makkelijkste voorbeeld. Offertes, klantopvolging, e-mailsortering: dezelfde aanpak werkt ook daar.
+              Veel Limburgse MKB-bedrijven hebben meer van dit soort werk. Offertes, klantopvolging,
+              e-mailsortering: dezelfde aanpak werkt daar ook.
             </p>
 
           </div>
@@ -220,8 +210,8 @@ export default function ArticlePage() {
             <span className="font-exposure">jouw bedrijf te automatiseren valt?</span>
           </h2>
           <p className="text-sm leading-relaxed text-white/70 mb-8 max-w-xl">
-            Bij MAISON BLNDR helpen we Limburgse MKB-bedrijven met een concrete analyse van hun processen - zonder
-            verkooppraatjes en zonder techspeak. Doe de gratis AI Impact Scan en ontdek waar jouw acht uur zit.
+            Bij MAISON BLNDR kijken we mee welke processen bij jouw bedrijf het meest opleveren. Doe de gratis AI
+            Impact Scan en ontdek waar jouw acht uur zit.
           </p>
           <a
             href="https://maisonblender.com/impact-scan"

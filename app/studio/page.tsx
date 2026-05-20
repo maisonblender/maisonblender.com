@@ -117,12 +117,10 @@ export default function StudioPage() {
               className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px] mb-8"
               style={{ letterSpacing: "-0.95px" }}
             >
-              AI-implementaties mislukken niet door de technologie.
+              AI-projecten gaan mis als het mooi klinkt in een deck,
               <br />
               <span className="font-exposure">
-                Ze mislukken omdat bureaus leveren wat indrukwekkend klinkt -
-                niet wat werkt voor de mensen die het dagelijks moeten
-                gebruiken.
+                maar onhandig is voor degene die er elke dag mee werkt.
               </span>
             </h2>
             <div className="space-y-5 text-base leading-relaxed text-[#575760]">
@@ -133,10 +131,8 @@ export default function StudioPage() {
                 la verdwijnt. Goed bedoeld, slecht geland.
               </p>
               <p>
-                Dat is waar MAISON BLNDR uit is ontstaan. Niet als reactie op
-                een markttrend, maar als reactie op een patroon dat we bleven
-                zien: de kloof tussen wat bureaus opleveren en wat bedrijven er
-                dagelijks mee kunnen.
+                MAISON BLNDR is daar uit voortgekomen: te vaak zagen we mooie
+                opleveringen die in de praktijk niet bleven hangen.
               </p>
               <p className="text-[#1f1f1f] font-medium">
                 Wij beginnen altijd met je processen. Dan pas met de code.
@@ -215,17 +211,16 @@ export default function StudioPage() {
                   className="text-[24px] font-normal leading-[1.2] tracking-tight text-[#1f1f1f] sm:text-[29px] lg:text-[32px]"
                   style={{ letterSpacing: "-0.95px" }}
                 >
-                  Geen evangelisatie
+                  De tool die past,
                   <br />
-                  <span className="font-exposure">van de nieuwste hype.</span>
+                  <span className="font-exposure">niet de tool die trending is.</span>
                 </h2>
               </div>
               <div className="space-y-5 text-base leading-relaxed text-[#575760]">
                 <p>
-                  We kiezen de tool die past bij het probleem — niet de tool
-                  die we graag willen uitproberen, en niet de tool die de
-                  hoogste marge heeft. Dat klinkt vanzelfsprekend. In de
-                  praktijk is het dat niet altijd.
+                  We kiezen wat past bij jouw probleem en je bestaande systemen.
+                  Niet wat we deze maand willen uitproberen, en niet wat de
+                  hoogste marge oplevert voor ons.
                 </p>
                 <p>
                   Voor intelligente agents werken we met <strong className="text-[#1f1f1f]">Anthropic Claude</strong> en{" "}

@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Webinars over AI voor Limburgse ondernemers",
   description:
-    "Gratis live webinars en terugkijkarchief over AI voor het MKB. Praktisch, zonder jargon, voor ondernemers in Limburg. Aanmelden voor de volgende editie.",
+    "Gratis live webinars en terugkijkarchief over AI voor het MKB. Praktisch, voor ondernemers in Limburg.",
   alternates: { canonical: "https://maisonblender.com/labs/webinar" },
 };
 
@@ -13,7 +13,7 @@ const upcoming = {
   date: "22 mei 2026",
   time: "19:00–20:30",
   description:
-    "In 90 minuten laten we zien hoe een Limburgse ondernemer van nul naar een werkend AI-systeem gaat. Live demo's, Q&A en praktische takeaways die je de volgende dag al kunt toepassen.",
+    "In 90 minuten laten we zien hoe een Limburgse ondernemer van nul naar een werkend AI-systeem gaat. Live demo's, Q&A, en iets wat je de volgende dag kunt proberen.",
   topics: [
     "Welke processen lenen zich het best voor automatisering?",
     "Live demo: factuurverwerking automatiseren in Exact Online",
@@ -27,13 +27,13 @@ const archive = [
     title: "AI in de zorg: wat mag, wat kan en waar begin je?",
     date: "12 maart 2026",
     attendees: "140 aanmeldingen",
-    description: "Wat zijn de mogelijkheden van AI in een zorgcontext? Compliance, AVG en praktische toepassingen.",
+    description: "Wat kan AI in de zorg? Compliance, AVG en wat in de praktijk werkt.",
   },
   {
     title: "ChatGPT voor je bedrijf: wat werkt en wat niet",
     date: "18 februari 2026",
     attendees: "98 aanmeldingen",
-    description: "Een eerlijk overzicht van wat je met ChatGPT kunt bereiken als MKB-ondernemer — en wat de grenzen zijn.",
+    description: "Wat je met ChatGPT kunt als MKB-ondernemer, en waar het stopt.",
   },
 ];
 
@@ -59,8 +59,8 @@ export default function WebinarPage() {
             <span className="font-exposure">AI voor het MKB.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-xl mx-auto">
-            Praktisch, zonder jargon, voor ondernemers in Limburg die AI willen begrijpen en toepassen.
-            Elke editie: live demo&apos;s, Q&amp;A en iets wat je de volgende dag al kunt gebruiken.
+            Live demo&apos;s, Q&amp;A, en iets wat je de volgende dag kunt gebruiken. Voor ondernemers in Limburg
+            die AI willen inzetten, niet alleen begrijpen.
           </p>
         </div>
       </section>
@@ -130,7 +130,7 @@ export default function WebinarPage() {
       <section className="px-6 py-20 bg-white">
         <div className="mx-auto max-w-2xl text-center">
           <p className="text-sm font-bold text-[#1f1f1f] mb-2">Mis geen volgende editie.</p>
-          <p className="text-sm text-[#575760] mb-6">Schrijf je in voor de nieuwsbrief — je ontvangt aankondigingen, opnames en praktische AI-updates één keer per maand.</p>
+          <p className="text-sm text-[#575760] mb-6">Schrijf je in voor de nieuwsbrief. Eén mail per maand met aankondigingen, opnames en praktische updates.</p>
           <Link
             href="/labs/nieuwsbrief"
             className="inline-block rounded-full bg-[#1f1f1f] px-8 py-4 text-sm font-semibold text-white transition-all hover:bg-[#3a3a42]"

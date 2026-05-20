@@ -57,14 +57,14 @@ Richtlijnen:
 - Max 3 zinnen
 - Bied een vervolgoptie aan (bijv. doorverwijzen naar mens of FAQ)
 - Informeel maar professioneel
-- Geen jargon`,
+- Schrijf in gewone taal`,
     voorbeeldOutput: "Goed dat je contact opneemt! Je bestelling staat gepland voor levering op [datum]. Wil je de track & trace-link, of heb je een andere vraag?",
   },
   // Marketing
   {
     titel: "LinkedIn-post schrijven",
     categorie: "Marketing",
-    doel: "Schrijf een engaging LinkedIn-post die expertise toont zonder reclameboodschap te zijn.",
+    doel: "Schrijf een LinkedIn-post die expertise toont zonder als reclame over te komen.",
     prompt: `Schrijf een LinkedIn-post voor [NAAM/BEDRIJFSNAAM] over het volgende onderwerp:
 [ONDERWERP]
 
@@ -112,7 +112,6 @@ Platform: [WEBSITE / WEBSHOP / FOLDER]
 Richtlijnen:
 - Begin met het grootste klantvoordeel
 - Max 80 woorden
-- Geen technisch jargon
 - Actieve schrijfstijl
 - Eindig met een zachte call-to-action`,
     voorbeeldOutput: "Stop met uren kwijt zijn aan factuurverwerking. [Productnaam] leest, categoriseert en boekt je inkoopfacturen automatisch - in seconden. Compatibel met Exact en Twinfield. Probeer 30 dagen gratis.",
@@ -202,7 +201,7 @@ Duur gesprek: 45 minuten.`,
     doel: "Vertaal een juridische privacy policy naar begrijpelijke taal voor gebruikers.",
     prompt: `Hieronder staat een privacy policy. Schrijf een begrijpelijke samenvatting voor eindgebruikers van max 200 woorden.
 
-Gebruik eenvoudige taal, geen juridisch jargon. Structureer met deze kopjes:
+Gebruik eenvoudige taal. Structureer met deze kopjes:
 - Wat we verzamelen
 - Waarom we het gebruiken
 - Met wie we het delen
@@ -325,8 +324,8 @@ export default function PromptStarterKitClient() {
             <span className="font-exposure">voor Limburgse MKB.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 sm:text-lg max-w-2xl mx-auto">
-            Direct inzetbare AI-prompts voor klantenservice, marketing, financien, HR en juridisch.
-            Kopieer, pas aan op jouw bedrijf, en gebruik.
+            AI-prompts voor klantenservice, marketing, financien, HR en juridisch. Kopieer, pas aan op jouw
+            bedrijf, gebruik.
           </p>
         </div>
       </section>
@@ -413,7 +412,7 @@ export default function PromptStarterKitClient() {
             <span className="font-exposure">bij jouw bedrijf passen?</span>
           </h2>
           <p className="text-sm leading-relaxed text-[#575760] mb-8 max-w-xl mx-auto">
-            Vergelijk ChatGPT, Claude, Gemini en 7 andere tools op prijs, GDPR en gebruiksgemak.
+            Vergelijk ChatGPT, Claude, Gemini en andere tools op prijs, GDPR en gebruiksgemak.
           </p>
           <a
             href="/labs/tools-vergelijker"

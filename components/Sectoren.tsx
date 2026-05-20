@@ -11,7 +11,7 @@ const sectoren = [
   {
     sector: "Retail & E-commerce",
     Icon: ShoppingCart,
-    intro: "Meer bestellingen, minder handmatig werk eromheen.",
+    intro: "Orders binnen, zonder dat iemand de hele dag in systemen zit te klikken.",
     usecases: [
       "AI-chatbot beantwoordt klantvragen — ook buiten kantoortijden",
       "Orders automatisch verwerkt en doorgezet naar fulfillment",
@@ -22,7 +22,7 @@ const sectoren = [
   {
     sector: "Logistiek & Transport",
     Icon: Truck,
-    intro: "Minder papierwerk. Minder bellen. Meer ritten per dag.",
+    intro: "CMR's, planning, klantupdates: veel gaat nog handmatig terwijl de chauffeurs al onderweg zijn.",
     usecases: [
       "Routeplanning en dispatching automatisch gegenereerd",
       "CMR's en vrachtbrieven automatisch verwerkt en gearchiveerd",
@@ -33,7 +33,7 @@ const sectoren = [
   {
     sector: "MKB & Zakelijke dienstverlening",
     Icon: Briefcase,
-    intro: "Minder administratie. Meer tijd voor de klant.",
+    intro: "Facturen, offertes en leads: administratie die je team van echte klantwerk afhoudt.",
     usecases: [
       "Inkomende facturen automatisch verwerkt en geboekt",
       "Offertes en contracten opgesteld op basis van jouw templates en klantdata",
@@ -44,7 +44,7 @@ const sectoren = [
   {
     sector: "Horeca & Toerisme",
     Icon: UtensilsCrossed,
-    intro: "Gasten geholpen. Personeel ontlast. Ook als het druk is.",
+    intro: "Reserveringen en vragen komen ook op zaterdagavond binnen. Je team hoeft niet alles zelf te doen.",
     usecases: [
       "Reserveringen aangenomen via WhatsApp of website — dag en nacht",
       "Gasten krijgen persoonlijk advies over menu, allergieën en aanbevelingen",
@@ -55,7 +55,7 @@ const sectoren = [
   {
     sector: "Zorg & Welzijn",
     Icon: HeartPulse,
-    intro: "Minder administratie voor zorgverleners. Meer aandacht voor de cliënt.",
+    intro: "Zorgverleners schrijven te veel, bellen te veel. Automatisering moet hen tijd geven bij de cliënt.",
     usecases: [
       "Afspraken ingepland via chatbot — patiënt kiest zelf tijd, zonder telefonisch wachten",
       "Inkomende verwijzingen automatisch verwerkt en gekoppeld aan het juiste dossier",
@@ -66,7 +66,7 @@ const sectoren = [
   {
     sector: "Productie & Maakindustrie",
     Icon: Factory,
-    intro: "Minder handmatig invoerwerk. Sneller signaleren als er iets afwijkt.",
+    intro: "ERP, voorraad, kwaliteit: veel data, weinig tijd om afwijkingen op tijd te zien.",
     usecases: [
       "Orders en inkoopverzoeken automatisch verwerkt en doorgezet in het ERP",
       "AI signaleert kwaliteitsafwijkingen voordat ze de lijn verlaten",
@@ -92,8 +92,8 @@ export default function Sectoren() {
             <span className="font-exposure">Het proces bepaalt de aanpak.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Een logistiek bedrijf en een accountantskantoor hebben andere problemen en andere kansen.
-            Wij bouwen voor die verschillen — niet voor de gemiddelde klant.
+            Logistiek en accountancy hebben niets met elkaar gemeen qua processen. Wij bouwen voor
+            jouw sector, niet voor een fictief gemiddelde bedrijf.
           </p>
         </div>
 
@@ -125,9 +125,9 @@ export default function Sectoren() {
           <div className="flex flex-col gap-2">
             <p className="text-lg font-bold text-[#1f1f1f]">Staat jouw sector er niet bij?</p>
             <p className="text-sm text-[#575760]">
-              AI-automatisering is niet sectorgebonden — het is procesgebonden. Als er taken zijn
-              die herhaald worden, tijd kosten of gevoelig zijn voor fouten, is er waarschijnlijk
-              iets te doen. We kijken graag met je mee.
+              Sector maakt minder uit dan je denkt. Herhaald werk, veel handmatige stappen, fouten
+              die steeds terugkomen: daar zit het meestal. Twijfel je? Doe de gratis scan of bel
+              ons even.
             </p>
           </div>
           <a

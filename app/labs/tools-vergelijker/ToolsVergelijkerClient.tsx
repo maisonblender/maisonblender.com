@@ -199,8 +199,8 @@ export default function ToolsVergelijkerClient() {
             <span className="font-exposure">voor Limburg MKB.</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 sm:text-lg max-w-2xl mx-auto">
-            Welke AI-tool past bij jouw bedrijf? Vergelijk prijs, GDPR-status, Nederlandse taal en gebruiksgemak
-            van de meest gebruikte AI-tools.
+            Welke AI-tool past bij jouw bedrijf? Vergelijk prijs, GDPR-status, Nederlandse taal en
+            gebruiksgemak.
           </p>
         </div>
       </section>
@@ -441,8 +441,8 @@ export default function ToolsVergelijkerClient() {
       <section className="px-6 py-12 bg-white border-t border-black/[0.06]">
         <div className="mx-auto max-w-4xl text-center">
           <p className="text-xs leading-relaxed text-[#6b6b75]">
-            Deze vergelijking is bedoeld als startpunt en is geen juridisch of technisch advies. Prijzen en features kunnen wijzigen.
-            GDPR-status is gebaseerd op publieke informatie per februari 2026. Raadpleeg altijd de officiële documentatie van de tool voor actuele informatie.
+            Startpunt, geen juridisch of technisch advies. Prijzen en features kunnen wijzigen. GDPR-status
+            op basis van publieke info per februari 2026. Check altijd de officiële documentatie.
           </p>
         </div>
       </section>
@@ -459,7 +459,8 @@ export default function ToolsVergelijkerClient() {
             <span className="font-exposure">deze tools inzet in jouw bedrijf?</span>
           </h2>
           <p className="text-sm leading-relaxed text-[#575760] mb-8 max-w-xl mx-auto">
-            Download het Prompt Starter Kit met 15+ kant-en-klare prompts voor klantenservice, marketing, financien en meer.
+            Download het Prompt Starter Kit met kant-en-klare prompts voor klantenservice, marketing, financien
+            en meer.
           </p>
           <a
             href="/labs/prompt-starter-kit"

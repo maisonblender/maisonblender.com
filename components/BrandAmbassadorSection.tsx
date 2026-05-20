@@ -78,18 +78,17 @@ export default function BrandAmbassadorSection() {
             </h2>
 
             <p className="max-w-xl text-base leading-relaxed text-white/65">
-              Geen bolletje rechtsonder. Een Brand Presence die ademt, spreekt en luistert — met
-              de stem van jouw merk. Voice-ready, met een &quot;imagine this is yours&quot;-modus
-              die ter plekke transformeert naar jouw bedrijfsnaam. De Ambassador die als product
-              aanvoelt, niet als widget.
+              Geen bolletje rechtsonder dat pas opent als je erop klikt. Een aanwezigheid op je site
+              die reageert, kan praten en klinkt als jouw merk. In de demo kun je live je bedrijfsnaam
+              invullen en zien hoe het eruitziet alsof het al van jou is.
             </p>
 
             <ul className="flex flex-col gap-3 text-sm text-white/65">
               {[
-                "Geen chatbox-icoontje — een levende vorm die zichtbaar luistert, denkt en antwoordt",
-                "Imagine-this-is-yours: transformeer UI live naar jouw merk",
-                "Voice-mode via Web Speech API — audio blijft in de browser",
-                "Conversationele leadcapture — geen formulieren, wel gekwalificeerde leads",
+                "Zichtbaar op de pagina, niet verstopt in een hoekje",
+                "Live aanpassen naar jouw merknaam en kleuren",
+                "Spraak in de browser (Web Speech API), geen aparte app nodig",
+                "Leads via gesprek, niet via een lang formulier",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-3">
                   <svg

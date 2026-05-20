@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Je eerste AI-prompt schrijven: stappenplan voor niet-techneuten - Limburg AI Labs",
   description:
-    "Van blanco pagina naar een prompt die echt werkt. Praktisch stappenplan met voorbeelden voor offertes, e-mails en analyses. Geen technische kennis vereist.",
+    "Van blanco pagina naar een prompt die werkt. Praktisch stappenplan met voorbeelden voor offertes, e-mails en analyses.",
   alternates: { canonical: "https://maisonblender.com/labs/kennisbank/eerste-ai-prompt-schrijven" },
 };
 
@@ -34,8 +34,8 @@ export default function ArticlePage() {
             <span className="font-exposure">een stappenplan voor niet-techneuten</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-2xl">
-            De kwaliteit van je prompt bepaalt de kwaliteit van het antwoord. Dit zijn de vijf stappen
-            die het verschil maken - met voorbeelden die je morgen kunt gebruiken.
+            Slechte prompt, middelmatig antwoord. Deze vijf stappen maken het verschil, met voorbeelden die je
+            morgen kunt gebruiken.
           </p>
         </div>
       </section>
@@ -46,15 +46,14 @@ export default function ArticlePage() {
           <div className="space-y-6 text-[15px] leading-[1.75] text-[#3a3a42]">
 
             <p>
-              De meeste mensen beginnen hun AI-gebruik verkeerd. Ze tikken een vaag verzoek in, krijgen een
-              generiek antwoord terug en concluderen dat AI niet zo nuttig is als iedereen beweert. De tool heeft
-              hen niet teleurgesteld. Zij hebben de tool niet goed gevraagd.
+              Veel mensen starten met een vaag verzoek, krijgen een generiek antwoord terug en concluderen dat AI
+              overrated is. Meestal ligt het probleem in de vraag, niet in de tool.
             </p>
 
             <p>
-              Prompts schrijven is een vaardigheid, net als een goede briefing geven aan een medewerker. Hoe
-              specifieker je bent over context, doel en format, hoe bruikbaarder het resultaat. Dit stappenplan
-              geeft je een formule die werkt voor de meest voorkomende zakelijke situaties.
+              Een prompt schrijven lijkt op een goede briefing aan een medewerker. Hoe specifieker je bent over
+              context, doel en format, hoe bruikbaarder het resultaat. Onderstaande structuur werkt voor de
+              meest voorkomende zakelijke situaties.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -68,8 +67,8 @@ export default function ArticlePage() {
             </p>
 
             <p>
-              Het verschil in uitkomst is enorm. Niet tien procent beter. Soms het verschil tussen iets wat
-              je direct kunt gebruiken en iets wat je nog anderhalf uur moet herschrijven.
+              Het verschil in uitkomst is groot. Soms het verschil tussen copy-paste klaar en anderhalf uur
+              herschrijven.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -77,8 +76,8 @@ export default function ArticlePage() {
             </h2>
 
             <p>
-              Gebruik deze structuur als basis. Je hoeft niet altijd alle vijf te gebruiken - maar hoe meer je
-              er meeneemt, hoe beter het resultaat.
+              Gebruik deze structuur als basis. Niet elke stap is altijd nodig. Hoe meer je meeneemt, hoe beter
+              het resultaat.
             </p>
 
             {[
@@ -100,7 +99,7 @@ export default function ArticlePage() {
               },
               {
                 step: "5. Beperkingen",
-                desc: "Wat moet er niet in? Geen jargon? Geen beloftes die je niet kunt nakomen? Geen informele aanspreekvormen? Benoem het expliciet.",
+                desc: "Wat moet er niet in? Geen beloftes die je niet kunt nakomen? Geen informele aanspreekvorm? Zeg het expliciet.",
               },
             ].map(({ step, desc }) => (
               <div key={step} className="bg-[#f2f3f5] border border-black/[0.06] p-5">
@@ -124,7 +123,7 @@ export default function ArticlePage() {
                 "Jij bent een accountmanager bij een klein IT-bureau in Limburg. Schrijf een begeleidende e-mail
                 bij een offerte voor website-onderhoud (3.200 euro per jaar) aan een MKB-klant die twijfelt over de
                 prijs. De toon is professioneel maar warm. Benoem kort de drie voordelen van het pakket: beschikbaarheid,
-                snelheid en zekerheid. Geen technisch jargon. Geen komma-opsommingen. Maximaal 120 woorden.
+                snelheid en zekerheid. Schrijf in gewone taal. Geen komma-opsommingen. Maximaal 120 woorden.
                 Sluit af met een concrete uitnodiging voor een korte call."
               </p>
             </div>
@@ -164,11 +163,11 @@ export default function ArticlePage() {
 
             <ul className="space-y-3 pl-4">
               {[
-                "Te vaag zijn over het doel. Schrijf nooit 'maak iets over X' als je 'schrijf een LinkedIn-post van 80 woorden over X voor een publiek van Y' bedoelt.",
-                "Vergeten te vertellen wat er NIET in moet. Als je geen jargon wil, zeg het dan.",
-                "Niet specificeren wie de lezer is. Een tekst voor een CFO klinkt anders dan een tekst voor een receptionist.",
-                "Alles in een keer willen. Begin met een eenvoudige prompt, bekijk het resultaat en geef daarna gerichte feedback. AI-gesprekken zijn iteratief.",
-                "Opgeven na het eerste teleurstellende resultaat. Pas je prompt aan en probeer opnieuw. Na drie pogingen weet je of het werkt.",
+                "Te vaag over het doel. Schrijf 'LinkedIn-post van 80 woorden over X voor publiek Y', niet 'maak iets over X'.",
+                "Vergeten te zeggen wat er niet in mag. Wil je geen vaktaal? Zeg het.",
+                "Geen lezer gespecificeerd. Een tekst voor een CFO klinkt anders dan voor een receptionist.",
+                "Alles in een keer willen. Begin simpel, bekijk het resultaat, geef gerichte feedback. AI-werk is iteratief.",
+                "Opgeven na het eerste middelmatige antwoord. Pas je prompt aan. Na drie pogingen weet je of het werkt.",
               ].map((item) => (
                 <li key={item} className="flex gap-3">
                   <span className="text-red-400 font-bold mt-0.5">x</span>
@@ -178,18 +177,17 @@ export default function ArticlePage() {
             </ul>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              Oefening maakt meester
+              Oefenen helpt
             </h2>
 
             <p>
-              De beste manier om beter te worden in prompts schrijven is simpelweg doen. Pak een taak die je deze
-              week toch moet uitvoeren - een e-mail, een samenvatting, een analyse - en probeer het eerst via een
-              AI-tool. Gebruik de formule hierboven. Bekijk wat er uitkomt. Pas aan.
+              Pak een taak die je deze week toch moet doen (mail, samenvatting, analyse) en probeer het eerst via
+              AI. Gebruik de structuur hierboven. Bekijk wat eruit komt. Pas aan.
             </p>
 
             <p>
-              Na twee weken dagelijks gebruik ben je merkbaar sneller en weet je precies wat de tool voor je kan
-              en wat niet. Dat is de kennis die je daarna niet meer kwijtraakt.
+              Na twee weken dagelijks gebruik ben je sneller en weet je wat de tool wel en niet aankan. Die kennis
+              blijft hangen.
             </p>
 
           </div>
@@ -209,8 +207,8 @@ export default function ArticlePage() {
             <span className="font-exposure">gebruiken in jouw bedrijf.</span>
           </h2>
           <p className="text-sm leading-relaxed text-white/70 mb-8 max-w-xl">
-            De MAISON BLNDR Prompt Starter Kit bevat 10 kant-en-klare prompts voor offertes, e-mails, analyses
-            en klantcommunicatie. Gratis te downloaden, direct inzetbaar.
+            De MAISON BLNDR Prompt Starter Kit heeft 10 kant-en-klare prompts voor offertes, e-mails, analyses
+            en klantcommunicatie. Gratis, direct te gebruiken.
           </p>
           <a
             href="https://maisonblender.com/prompt-starter-kit"

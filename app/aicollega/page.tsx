@@ -75,8 +75,8 @@ export default function AICollegaPage() {
           </h1>
 
           <p className="text-base leading-relaxed text-[#575760] sm:text-lg mb-10 max-w-2xl mx-auto">
-            Een digitale medewerker die jouw bedrijf kent, vragen beantwoordt en leads vastlegt — 24/7,
-            in het Nederlands. Kies jouw branche en ga direct live.
+            Een digitale collega die jouw bedrijf kent: vragen beantwoorden, content schrijven, leads
+            vastleggen. In het Nederlands. Kies je branche en zet hem live.
           </p>
         </div>
       </section>

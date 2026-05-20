@@ -28,7 +28,7 @@ export const kennisbankPosts: KennisbankPost[] = [
     tag: "Case study",
     title: "Hoe een Sittardse accountant 8 uur per week bespaart met AI",
     excerpt:
-      "Een praktisch inkijkje in hoe factuurverwerking volledig geautomatiseerd werd - inclusief de valkuilen en wat het werkelijk kostte.",
+      "Hoe factuurverwerking geautomatiseerd werd bij een accountant in Sittard: wat werkte, wat stroef liep, en wat het kostte.",
     readTime: "6 min",
     datePublished: "2026-04-08",
   },
@@ -37,7 +37,7 @@ export const kennisbankPosts: KennisbankPost[] = [
     tag: "Gids",
     title: "ChatGPT vs. Claude vs. Gemini: wat kies je als Limburgse ondernemer?",
     excerpt:
-      "Geen tech-jargon. Gewoon: welke tool doet wat, voor wie is welke tool geschikt, en wat zijn de echte kosten?",
+      "Welke tool doet wat, voor wie past welke, en wat kost het echt? Zonder omwegen.",
     readTime: "8 min",
     datePublished: "2026-04-08",
   },
@@ -46,7 +46,7 @@ export const kennisbankPosts: KennisbankPost[] = [
     tag: "How-to",
     title: "Je eerste AI-prompt schrijven: een stappenplan voor niet-techneuten",
     excerpt:
-      "Van blanco pagina naar een prompt die echt werkt. Met voorbeelden voor offertes, e-mails en analyses.",
+      "Stap voor stap naar een prompt die werkt, met voorbeelden voor offertes, mail en analyses.",
     readTime: "5 min",
     datePublished: "2026-04-08",
   },
@@ -55,7 +55,7 @@ export const kennisbankPosts: KennisbankPost[] = [
     tag: "Case study",
     title: "AI in een Maastrichtse zorginstelling: wat werkt en wat (nog) niet",
     excerpt:
-      "Een eerlijk verslag van een pilot met AI-ondersteunde intake - de successen, de compliance-uitdagingen en de lessen.",
+      "Een pilot met AI-ondersteunde intake in Maastricht: wat hielp, waar compliance remde, en wat we daaruit leerden.",
     readTime: "7 min",
     datePublished: "2026-04-08",
   },
@@ -64,7 +64,7 @@ export const kennisbankPosts: KennisbankPost[] = [
     tag: "Achtergrond",
     title: "Wat kost AI automatisering voor een MKB-bedrijf in 2026?",
     excerpt:
-      "Een realistische kijk op investering, terugverdientijd en total cost of ownership - op basis van Limburgse praktijkdata.",
+      "Investering, terugverdientijd en total cost of ownership voor MKB, met cijfers uit Limburgse projecten.",
     readTime: "6 min",
     datePublished: "2026-04-08",
   },
@@ -73,7 +73,7 @@ export const kennisbankPosts: KennisbankPost[] = [
     tag: "Gids",
     title: "AVG en AI: wat mag je automatiseren en wat niet?",
     excerpt:
-      "De belangrijkste vragen over privacy, dataverwerking en AI - beantwoord voor MKB-ondernemers zonder juridisch jargon.",
+      "Privacy, dataverwerking en AI: de vragen die MKB-ondernemers het vaakst stellen, helder uitgelegd.",
     readTime: "9 min",
     datePublished: "2026-04-08",
   },

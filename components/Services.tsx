@@ -17,8 +17,8 @@ export default function Services() {
             <span className="font-exposure">— en daarna.</span>
           </h2>
           <p className="max-w-xl text-[#575760]">
-            Sommige bureaus adviseren. Anderen bouwen. Wij doen het hele traject: procesanalyse,
-            bouw, lancering en beheer. Jij hoeft alleen de resultaten te zien.
+            Veel bureaus stoppen bij het advies. Of alleen bij de bouw. Wij doen beide: eerst
+            begrijpen hoe het bij jou loopt, dan bouwen, live zetten en beheren.
           </p>
         </div>
 

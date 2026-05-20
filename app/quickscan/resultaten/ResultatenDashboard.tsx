@@ -660,7 +660,7 @@ export default function ResultatenDashboard() {
                 Ontvang jouw AI Kansenkaart per e-mail
               </h2>
               <p className="text-white/60 text-sm">
-                Een volledig gepersonaliseerd actieplan met 90-dagen roadmap, ROI-berekening,
+                Een actieplan op maat met 90-dagen roadmap, ROI-berekening,
                 governance advies en concrete eerste stappen — gegenereerd door AI op basis van jouw intake.
               </p>
             </div>

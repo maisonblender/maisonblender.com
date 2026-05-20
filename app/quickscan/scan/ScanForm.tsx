@@ -834,7 +834,7 @@ export default function ScanForm() {
                     <div className="mb-6">
                       <h2 className="mb-2 text-xl font-bold text-gray-900">Ontvang jouw AI Kansenkaart</h2>
                       <p className="text-sm text-gray-500">
-                        Vul je gegevens in om de volledige analyse, AI Readiness Score en gepersonaliseerd actieplan te ontvangen.
+                        Vul je gegevens in voor de volledige analyse, je score en het actieplan per e-mail.
                       </p>
                     </div>
 

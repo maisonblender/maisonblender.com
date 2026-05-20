@@ -78,10 +78,8 @@ export default function TeamPage() {
               <span className="font-exposure">Een volledig geoutilleerd bureau.</span>
             </h1>
             <p className="text-base leading-relaxed text-white/70 sm:text-lg max-w-2xl mx-auto">
-              MAISON BLNDR werkt anders dan een traditioneel bureau. Karl Dreissen is je vaste
-              aanspreekpunt — van eerste gesprek tot beheer. Achter hem staan gespecialiseerde
-              AI-agents en een netwerk van vakspecialisten die samen de volledige breedte van
-              het werk afdekken.
+              Je praat met Karl. Hij bouwt ook. Voor copy, design, ads en campagnes zet hij
+              gespecialiseerde AI-workflows en vaste freelancers in, maar jij hebt één aanspreekpunt.
             </p>
           </div>
         </section>
@@ -130,16 +128,13 @@ export default function TeamPage() {
                 <span className="font-exposure">Menselijke specialisten waar het telt.</span>
               </h2>
               <p className="max-w-2xl text-[#575760] leading-relaxed">
-                MAISON BLNDR werkt met een set van gespecialiseerde AI-agents die elk zijn getraind en
-                ingericht voor een specifiek vakgebied. Karl stuurt ze aan, beoordeelt de output en is
-                eindverantwoordelijk voor wat we opleveren. Voor projecten die specifiek menselijk vakwerk
-                vragen — complexe merkstrategie, fotografie op locatie, campagneproductie — werken we
-                samen met een vaste groep freelance specialisten.
+                Per vakgebied (copy, SEO, ads, design) draaien we workflows met AI, onder Karl&apos;s
+                regie. Hij checkt alles voordat het live gaat. Voor fotografie op locatie, zware
+                merkstrategie of fysieke productie schakelen we vaste freelancers in.
               </p>
               <p className="max-w-2xl text-[#575760] leading-relaxed">
-                Dat maakt ons sneller en kostenefficiënter dan een traditioneel bureau van vergelijkbare
-                breedte. En het stelt ons in staat om voor MKB-tarieven te leveren wat grotere bureaus
-                voor enterprise-budgetten doen.
+                Daardoor kunnen we sneller schakelen dan een bureau dat voor elk onderdeel een
+                aparte afdeling heeft, zonder dat je enterprise-budgetten nodig hebt.
               </p>
             </div>
 

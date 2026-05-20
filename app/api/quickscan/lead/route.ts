@@ -266,7 +266,7 @@ export async function POST(request: NextRequest) {
               <p style="margin: 0 0 16px; font-size: 22px; font-weight: 700; color: #1f1f1f; letter-spacing: -0.4px;">Beste ${veiligVoornaam},</p>
               <p style="margin: 0; font-size: 15px; color: #575760; line-height: 1.7;">
                 Bedankt voor het invullen van de AI Readiness Intake voor <strong>${veiligBedrijf}</strong>.
-                Op basis van jouw uitgebreide profiel hebben we een gepersonaliseerde AI Kansenkaart en actieplan samengesteld.
+                Op basis van je intake hebben we een kansenkaart en actieplan voor je klaargezet.
               </p>
             </td>
           </tr>
@@ -326,7 +326,7 @@ export async function POST(request: NextRequest) {
           </tr>
           <tr>
             <td style="background: #ffffff; padding: 24px 40px 0;">
-              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #575760;">Jouw gepersonaliseerde AI Actieplan</div>
+              <div style="font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; color: #575760;">Jouw actieplan</div>
             </td>
           </tr>
 

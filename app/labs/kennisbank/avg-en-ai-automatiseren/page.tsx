@@ -34,8 +34,8 @@ export default function ArticlePage() {
             <span className="font-exposure">automatiseren en wat niet?</span>
           </h1>
           <p className="text-base leading-relaxed text-white/70 max-w-2xl">
-            De privacywetgeving stopt niet bij je eigen systemen. Ze geldt ook voor AI-tools. Dit zijn de
-            vragen die Limburgse ondernemers ons het meest stellen - en de antwoorden zonder juridisch jargon.
+            Privacywetgeving geldt ook voor AI-tools. De vragen die Limburgse ondernemers ons het vaakst stellen,
+            en de antwoorden in gewone taal.
           </p>
         </div>
       </section>
@@ -46,15 +46,13 @@ export default function ArticlePage() {
           <div className="space-y-6 text-[15px] leading-[1.75] text-[#3a3a42]">
 
             <p>
-              AI-tools verwerken tekst. Tekst bevat regelmatig namen, adressen, telefoonnummers en soms
-              medische of financiele gegevens. Zodra dat het geval is, geldt de Algemene Verordening
-              Gegevensbescherming - de AVG. Dat is niet iets om omheen te werken. Het is iets om goed
+              AI-tools verwerken tekst. Tekst bevat regelmatig namen, adressen, telefoonnummers en soms medische
+              of financiele gegevens. Dan geldt de AVG. Dat is geen reden om AI te mijden, wel om het goed
               in te richten.
             </p>
 
             <p>
-              Gelukkig hoeft AVG-compliance geen obstakel te zijn voor AI-gebruik. Het vereist wel dat je
-              nadenkt over wat je doet met welke data, voordat je begint. Dit artikel helpt je daarmee.
+              Dit artikel helpt je nadenken over wat je met welke data doet, voordat je begint.
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
@@ -120,7 +118,7 @@ export default function ArticlePage() {
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              Drie categorieen: veilig, grijs gebied, niet toegestaan
+              Veilig, grijs gebied, en off-limits
             </h2>
 
             <h3 className="text-[16px] font-semibold text-[#22c55e]">Veilig</h3>
@@ -143,7 +141,7 @@ export default function ArticlePage() {
               gebruikt voor modeltraining zonder toestemming en je het hebt opgenomen in je verwerkingsregister.
             </p>
 
-            <h3 className="text-[16px] font-semibold text-[#ef4444]">Niet toegestaan (of zware vereisten)</h3>
+            <h3 className="text-[16px] font-semibold text-[#ef4444]">Off-limits (of zware vereisten)</h3>
             <p>
               Bijzondere persoonsgegevens verwerken via een standaard cloud-AI zonder aanvullende maatregelen.
               Dit geldt ook voor: het profilieren van klanten op basis van gezondheidsinformatie, volledig
@@ -152,7 +150,7 @@ export default function ArticlePage() {
             </p>
 
             <h2 className="text-[20px] font-semibold text-[#1f1f1f] pt-4" style={{ letterSpacing: "-0.5px" }}>
-              De drie dingen die je moet regelen
+              Wat je moet regelen
             </h2>
 
             <div className="space-y-4">
@@ -165,12 +163,12 @@ export default function ArticlePage() {
                 {
                   nr: "2",
                   title: "Verwerkingsregister",
-                  text: "Elk bedrijf met meer dan 250 medewerkers is verplicht een verwerkingsregister bij te houden. Kleine bedrijven zijn hier formeel van vrijgesteld, maar het is alsnog verstandig. Als de Autoriteit Persoonsgegevens langskomt, laat je daarmee zien dat je gestructureerd nadenkt over je datagebruik.",
+                  text: "Elk bedrijf met meer dan 250 medewerkers moet een verwerkingsregister bijhouden. Kleine bedrijven formeel niet, maar verstandig wel. Bij een bezoek van de AP laat je zien dat je gestructureerd nadenkt over datagebruik.",
                 },
                 {
                   nr: "3",
                   title: "Dataminimalisatie",
-                  text: "Voer nooit meer persoonsgegevens in een AI-tool dan strikt noodzakelijk voor de taak. Als je een brief wil laten herschrijven, verwijder dan de naam en het adres eerst. Als je een vergadering wil samenvatten, gebruik dan initialen in plaats van volledige namen. Dit beperkt je risico drastisch.",
+                  text: "Voer nooit meer persoonsgegevens in dan nodig. Brief laten herschrijven? Verwijder naam en adres eerst. Vergadering samenvatten? Gebruik initialen in plaats van volledige namen.",
                 },
               ].map(({ nr, title, text }) => (
                 <div key={nr} className="bg-[#f2f3f5] border border-black/[0.06] p-5">
@@ -226,14 +224,13 @@ export default function ArticlePage() {
             </div>
 
             <p>
-              Als je alle vragen met "ja" of "opgelost" kunt beantwoorden, zit je goed. Zit er een twijfelgeval
-              tussen? Dan is een uur met een privacy-adviseur goedkoper dan de boetes die de AP kan opleggen.
+              Alle vragen met &ldquo;ja&rdquo; of &ldquo;opgelost&rdquo;? Dan zit je goed. Twijfel ergens? Een uur
+              met een privacy-adviseur is goedkoper dan een boete van de AP.
             </p>
 
             <p>
-              Boetes voor AVG-overtredingen voor MKB-bedrijven lopen in de praktijk op tot tienduizenden euros.
-              Dat is zelden de inzet als je aantoonbaar goede bedoelingen hebt en actief maatregelen treft -
-              maar een goed gedocumenteerde aanpak is altijd je beste bescherming.
+              Boetes voor AVG-overtredingen bij MKB lopen in de praktijk op tot tienduizenden euro&apos;s. Zeldzaam
+              als je aantoonbaar je best doet, maar een gedocumenteerde aanpak is je beste bescherming.
             </p>
 
           </div>
@@ -253,9 +250,8 @@ export default function ArticlePage() {
             <span className="font-exposure">privacy-risico&#39;s voor jouw bedrijf.</span>
           </h2>
           <p className="text-sm leading-relaxed text-white/70 mb-8 max-w-xl">
-            Bij MAISON BLNDR bouwen we AI-workflows die van het begin af aan AVG-compliant zijn. Geen nawerk,
-            geen verassingen. Plan een gratis kennismakingsgesprek of doe de AI Impact Scan om te zien waar
-            de kansen liggen.
+            Wij bouwen AI-workflows die vanaf het begin AVG-compliant zijn. Plan een gratis kennismaking of doe
+            de AI Impact Scan om te zien waar de kansen liggen.
           </p>
           <a
             href="https://maisonblender.com/impact-scan"

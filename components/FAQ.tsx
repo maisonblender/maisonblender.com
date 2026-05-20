@@ -6,47 +6,47 @@ const faqs = [
   {
     question: "Wat kost een AI-agent bouwen?",
     answer:
-      "Dat hangt af van de complexiteit en de koppelingen die nodig zijn. Een AI-chatbot voor klantenservice start vanaf €3.000; een volledig custom multi-agent systeem met CRM/ERP-integratie loopt op tot €25.000+. Wij beginnen altijd met een gratis AI Impact Scan zodat je een eerlijke indicatie krijgt vóór je ook maar één euro uitgeeft.",
+      "Hangt af van wat het moet doen en waarmee het moet koppelen. Een chatbot voor klantenservice begint rond €3.000. Een groter multi-agent systeem met CRM of ERP kan oplopen tot €25.000 of meer. Start met de gratis AI Readiness Intake: dan weet je waar je staat voordat je ergens aan vastzit.",
   },
   {
     question: "Waar is MAISON BLNDR gevestigd en werken jullie door heel Nederland?",
     answer:
-      "MAISON BLNDR is gevestigd in Sittard en actief door heel Nederland. Wij werken voor bedrijven in alle sectoren en regio's - zonder reiskosten of wisselende consultants. Je krijgt een vast team dat jouw systemen kent en jouw processen begrijpt.",
+      "Sittard is ons thuisadres. Klanten hebben we door heel Nederland. Je praat met hetzelfde team dat je systemen kent, niet met een wisselende consultant of een callcenter.",
   },
   {
     question: "Wat is het verschil tussen een AI-agent en gewone automatisering?",
     answer:
-      "Gewone automatisering volgt vaste regels: als X dan Y. Een AI-agent denkt mee. Hij leest een document, begrijpt de context, neemt een beslissing en voert een actie uit - zonder dat elke situatie vooraf is geprogrammeerd. Dat maakt AI-agents geschikt voor taken die te complex zijn voor traditionele automatisering, maar te tijdrovend voor mensen.",
+      "Klassieke automatisering: vaste regels. Als dit, dan dat. Een AI-agent kan een e-mail of document lezen, de context snappen en zelf kiezen wat de volgende stap is. Handig bij werk dat te wisselend is voor een simpel script, maar te veel is om handmatig te blijven doen.",
   },
   {
     question: "Hoe lang duurt een AI-implementatie gemiddeld?",
     answer:
-      "Een AI-chatbot of automatiseringsworkflow is doorgaans in 2-4 weken live. Complexe multi-agent systemen of maatwerk portalen nemen 6-12 weken in beslag. Na de AI Impact Scan krijg je een concreet projectplan met mijlpalen en een realistisch tijdpad - geen vage schattingen.",
+      "Een chatbot of workflow: vaak 2 tot 4 weken live. Grotere portalen of multi-agent setups: 6 tot 12 weken. Na de intake krijg je een plan met mijlpalen en data, geen \"ergens tussen de 2 en 8 weken\".",
   },
   {
     question: "Werken jullie met OpenAI of Claude (Anthropic)?",
     answer:
-      "Wij kiezen de beste technologie voor jouw specifieke usecase. Dat betekent in de praktijk: OpenAI, Anthropic Claude, Google Gemini en waar relevant open-source modellen. Wij zijn niet gebonden aan één leverancier. Je data blijft altijd van jou - wij configureren de juiste privacy- en compliance-instellingen per situatie.",
+      "Beide, en ook Gemini of open-source waar dat past. We verkopen geen enkel merk model. Je data blijft van jou; privacy en compliance stellen we per project in.",
   },
   {
     question: "Kan AI mijn bestaande software koppelen?",
     answer:
-      "Ja. Wij bouwen koppelingen met vrijwel alle gangbare bedrijfssoftware: Exact Online, SAP, Salesforce, HubSpot, Microsoft 365, Google Workspace en meer. Voor systemen zonder API gebruiken wij RPA. Je hoeft niets te vervangen - wij bouwen om wat je al hebt.",
+      "Meestal wel. Exact, SAP, Salesforce, HubSpot, Microsoft 365, Google Workspace en meer. Geen API? Dan kijken we naar RPA. Je hoeft je huidige stack niet weg te gooien.",
   },
   {
     question: "Moet ik technische kennis hebben om met jullie te werken?",
     answer:
-      "Nee. Jij beschrijft het probleem of het doel - wij zorgen voor de rest. Wij vertalen technische complexiteit naar oplossingen die je medewerkers daadwerkelijk gebruiken. Geen jargon, geen imponeergedrag. Gewoon resultaten.",
+      "Nee. Jij vertelt wat er misgaat of wat je wilt bereiken. Wij bouwen iets dat je team ook echt gebruikt. Geen jargon-show.",
   },
   {
     question: "Wat is een gratis AI Impact Scan?",
     answer:
-      "In een AI Impact Scan van een uur analyseren wij je processen en identificeren wij de drie tot vijf taken met het hoogste automatiseringspotentieel. Je ontvangt een concreet implementatieplan met verwachte tijdsbesparing en een ruwe ROI-berekening. Geen verplichtingen, geen kosten - puur inzicht.",
+      "De AI Readiness Intake op de site: ongeveer 10 minuten, 22 vragen. Je krijgt een score, sectorvergelijking en concrete quick wins. Gratis, geen verplichting. Voor een diepere sessie van een uur op locatie of online kun je ook een strategiegesprek plannen.",
   },
   {
     question: "Blijven jullie betrokken na de lancering?",
     answer:
-      "Dat is juist waar het werk begint. Wij bieden doorlopend beheer, monitoring en optimalisatie. AI-systemen verbeteren naarmate ze meer data verwerken - wij zorgen dat je oplossing actueel blijft en meegroeit met je organisatie.",
+      "Ja. Live zetten is het begin. We monitoren, passen aan als je processen veranderen en houden de koppelingen gezond. AI wordt beter met gebruik; wij zorgen dat dat ook bij jou gebeurt.",
   },
 ];
 

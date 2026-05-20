@@ -34,15 +34,15 @@ export default function StrategiegesprekClient() {
               <span className="font-exposure">30 minuten. Geen verplichtingen.</span>
             </h1>
             <p className="mb-8 text-base leading-relaxed text-[#575760]">
-              We gaan in op jouw processen, bespreken concrete eerste stappen en rekenen de businesscase door.
-              Geen verkooppraatje — gewoon een goed gesprek.
+              We lopen je processen door, kijken waar automatisering zin heeft en schatten globaal in
+              wat het oplevert. Geen verplichting om daarna bij ons te tekenen.
             </p>
             <ul className="mb-8 flex flex-col gap-2 text-sm text-[#575760] text-left">
               {[
-                "We nemen 2–3 concrete processen met je door die kansen bieden voor automatisering",
-                "Je krijgt een eerlijk beeld van wat realistisch is — ook wat niet",
-                "We rekenen de verwachte tijdsbesparing en ROI globaal door",
-                "Je vertrekt met een concreet eerste-stap advies, ongeacht of je verder gaat",
+                "Twee of drie processen waar volgens ons de meeste winst zit",
+                "Eerlijk antwoord op wat wel en niet past bij jouw situatie",
+                "Globale inschatting van tijdwinst en ROI",
+                "Een concreet eerste stap, ook als je elders verder gaat",
               ].map((item) => (
                 <li key={item} className="flex items-start gap-2.5">
                   <span className="mt-1.5 h-1 w-1 shrink-0 bg-black/30" />
