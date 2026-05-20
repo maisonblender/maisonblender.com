@@ -1,8 +1,7 @@
 "use client";
-import Link from "next/link";
 import SiteImage from "@/components/SiteImage";
+import ServiceCard from "@/components/ServiceCard";
 import { services } from "@/lib/services";
-import { tagUrlMap } from "@/lib/tag-pages";
 
 export default function Services() {
   return (
@@ -33,43 +32,7 @@ export default function Services() {
 
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => (
-            <Link
-              key={service.id}
-              href={`/diensten/${service.slug}`}
-              className="group flex flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#ecedf0] sm:p-8"
-            >
-              <div className="flex items-start justify-between">
-                <span className="font-mono text-xs text-[#575760]/60">{service.id}</span>
-                <div className="h-px w-8 bg-black/20 transition-all group-hover:w-16 group-hover:bg-black/40" />
-              </div>
-              <div className="flex flex-col gap-2">
-                <h3 className="text-xl font-bold text-[#1f1f1f]">{service.title}</h3>
-                <p className="text-sm font-medium text-[#575760]">{service.subtitle}</p>
-              </div>
-              <p className="flex-1 text-sm leading-relaxed text-[#575760]">{service.description}</p>
-              <div className="flex flex-wrap gap-2">
-                {service.tags.map((tag) => {
-                  const href = tagUrlMap[tag];
-                  return href ? (
-                    <Link
-                      key={tag}
-                      href={href}
-                      onClick={(e) => e.stopPropagation()}
-                      className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760] hover:bg-[#f2f3f5] hover:border-black/20 transition-colors"
-                    >
-                      {tag}
-                    </Link>
-                  ) : (
-                    <span
-                      key={tag}
-                      className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760]"
-                    >
-                      {tag}
-                    </span>
-                  );
-                })}
-              </div>
-            </Link>
+            <ServiceCard key={service.id} {...service} />
           ))}
         </div>
       </div>
