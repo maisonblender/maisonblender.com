@@ -1,4 +1,5 @@
-import Link from "next/link";
+"use client";
+
 import { tagUrlMap } from "@/lib/tag-pages";
 
 interface ServiceCardProps {
@@ -18,8 +19,29 @@ export default function ServiceCard({
   description,
   tags,
 }: ServiceCardProps) {
+  const serviceHref = `/diensten/${slug}`;
+
+  function openService() {
+    window.location.assign(serviceHref);
+  }
+
   return (
-    <article className="group relative flex flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#ecedf0] sm:p-8">
+    <article
+      className="group relative flex cursor-pointer flex-col gap-6 bg-white p-6 transition-colors hover:bg-[#ecedf0] sm:p-8"
+      onClick={(e) => {
+        if ((e.target as HTMLElement).closest("a")) return;
+        openService();
+      }}
+      onKeyDown={(e) => {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        if ((e.target as HTMLElement).closest("a")) return;
+        e.preventDefault();
+        openService();
+      }}
+      role="link"
+      tabIndex={0}
+      aria-label={title}
+    >
       <div className="flex flex-col gap-6">
         <div className="flex items-start justify-between">
           <span className="font-mono text-xs text-[#575760]/60">{id}</span>
@@ -31,17 +53,17 @@ export default function ServiceCard({
         </div>
         <p className="flex-1 text-sm leading-relaxed text-[#575760]">{description}</p>
       </div>
-      <div className="relative z-[2] flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-2">
         {tags.map((tag) => {
           const href = tagUrlMap[tag];
           return href ? (
-            <Link
+            <a
               key={tag}
               href={href}
-              className="border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760] hover:bg-[#f2f3f5] hover:border-black/20 transition-colors"
+              className="relative z-[1] border border-black/[0.08] bg-white px-3 py-1 text-xs text-[#575760] hover:bg-[#f2f3f5] hover:border-black/20 transition-colors"
             >
               {tag}
-            </Link>
+            </a>
           ) : (
             <span
               key={tag}
@@ -52,11 +74,6 @@ export default function ServiceCard({
           );
         })}
       </div>
-      <Link
-        href={`/diensten/${slug}`}
-        className="absolute inset-0 z-[1]"
-        aria-label={title}
-      />
     </article>
   );
 }
