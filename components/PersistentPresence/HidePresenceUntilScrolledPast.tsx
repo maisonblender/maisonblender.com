@@ -6,30 +6,12 @@
  * voorbij is gescrolld. Zodra de onderkant van het element boven de
  * viewport-top is verdwenen, registreert deze component géén anchor meer
  * en valt de Presence terug op haar default-positie (corner).
- *
- * Use-case (homepage): de BrandAmbassadorSection toont al een lokale
- * Liquid Presence canvas. Twee tegelijk = visuele ruis. Met deze gate:
- *   - Hero / sectoren / tot en met de ambassador-sectie zelf → geen
- *     site-wide Presence (anchor: hidden).
- *   - Process / About / Testimonials / FAQ / Contact → Presence verschijnt
- *     rechtsonder en blijft beschikbaar.
- *   - Scrollt user terug omhoog naar de ambassador-sectie → Presence
- *     verbergt weer (consistente UX, geen "duplicate-presence" moment).
- *
- * useLayoutEffect registreert hidden vóór paint, zodat de default
- * corner-launcher niet kortstondig SSR/hydrateert boven klikbare content.
  */
 
-import { useLayoutEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePresenceOptional } from "./PresenceContext";
 
 interface Props {
-  /**
-   * CSS-selector van het anker-element. Default `#brand-ambassador`.
-   * Kies een element dat een vaste id heeft op de pagina; refs werken niet
-   * omdat deze component standalone mount kan worden vanuit een
-   * server-component (zoals app/page.tsx).
-   */
   targetSelector?: string;
 }
 
@@ -37,52 +19,50 @@ export default function HidePresenceUntilScrolledPast({
   targetSelector = "#brand-ambassador",
 }: Props) {
   const ctx = usePresenceOptional();
+  const registerRef = useRef(ctx?.registerPosition);
+  registerRef.current = ctx?.registerPosition;
 
-  useLayoutEffect(() => {
-    if (!ctx) return;
+  const [hidden, setHidden] = useState(true);
+
+  useEffect(() => {
     if (typeof window === "undefined") return;
-
     const el = document.querySelector(targetSelector);
-    if (!el) return;
+    if (!el) {
+      setHidden(false);
+      return;
+    }
 
-    let unregister: (() => void) | undefined;
     let raf = 0;
-
-    const sync = () => {
+    const update = () => {
+      raf = 0;
       const rect = el.getBoundingClientRect();
-      const shouldHide = rect.bottom > 0;
-
-      if (shouldHide && !unregister) {
-        unregister = ctx.registerPosition({
-          anchor: { kind: "hidden" },
-          size: "sm",
-        });
-      } else if (!shouldHide && unregister) {
-        unregister();
-        unregister = undefined;
-      }
+      setHidden(rect.bottom > 0);
     };
-
-    sync();
 
     const onScroll = () => {
       if (raf) return;
-      raf = window.requestAnimationFrame(() => {
-        raf = 0;
-        sync();
-      });
+      raf = requestAnimationFrame(update);
     };
 
+    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
-
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      if (raf) window.cancelAnimationFrame(raf);
-      unregister?.();
+      if (raf) cancelAnimationFrame(raf);
     };
-  }, [ctx, targetSelector]);
+  }, [targetSelector]);
+
+  useEffect(() => {
+    if (!hidden) return;
+    const register = registerRef.current;
+    if (!register) return;
+    return register({
+      anchor: { kind: "hidden" },
+      size: "sm",
+    });
+  }, [hidden]);
 
   return null;
 }
