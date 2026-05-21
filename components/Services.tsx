@@ -1,4 +1,3 @@
-"use client";
 import SiteImage from "@/components/SiteImage";
 import ServiceCard from "@/components/ServiceCard";
 import { services } from "@/lib/services";

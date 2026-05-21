@@ -16,19 +16,11 @@
  *   - Scrollt user terug omhoog naar de ambassador-sectie → Presence
  *     verbergt weer (consistente UX, geen "duplicate-presence" moment).
  *
- * Implementatie:
- *   - Plain scroll-listener met requestAnimationFrame-throttle. We hadden
- *     IntersectionObserver kunnen gebruiken, maar die fired alleen op
- *     intersection-toggle; we willen continue evaluatie van rect.bottom
- *     zodat de overgang exact bij `bottom === 0` valt. rAF-throttle is
- *     hier idiomatisch en even goedkoop.
- *   - Alleen registreren wanneer `hidden === true`. Wanneer false,
- *     unregistreren we (return value uit useEffect cleanup) zodat de
- *     LIFO-stack in PresenceContext een lagere registratie of de default
- *     kan oppakken — geen "show-corner-br" lock-in.
+ * useLayoutEffect registreert hidden vóór paint, zodat de default
+ * corner-launcher niet kortstondig SSR/hydrateert boven klikbare content.
  */
 
-import { useEffect, useState } from "react";
+import { useLayoutEffect } from "react";
 import { usePresenceOptional } from "./PresenceContext";
 
 interface Props {
@@ -46,54 +38,51 @@ export default function HidePresenceUntilScrolledPast({
 }: Props) {
   const ctx = usePresenceOptional();
 
-  // Initieel hidden=true: we willen geen flash van de Presence in
-  // rechterhoek voordat de scroll-positie geëvalueerd is. Op pagina's
-  // waar het target-element niet bestaat, schakelen we direct uit
-  // (in het effect hieronder).
-  const [hidden, setHidden] = useState(true);
-
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!ctx) return;
     if (typeof window === "undefined") return;
-    const el = document.querySelector(targetSelector);
-    if (!el) {
-      // Element niet aanwezig (bv. sub-pagina importeert deze component
-      // per ongeluk) → geen reden om iets te verbergen.
-      setHidden(false);
-      return;
-    }
 
+    const el = document.querySelector(targetSelector);
+    if (!el) return;
+
+    let unregister: (() => void) | undefined;
     let raf = 0;
-    const update = () => {
-      raf = 0;
+
+    const sync = () => {
       const rect = el.getBoundingClientRect();
-      // Verbergen zolang het element nog (deels) zichtbaar is OF nog
-      // helemaal onder de viewport hangt. Pas tonen wanneer de bottom
-      // boven de top van de viewport is gepasseerd.
-      setHidden(rect.bottom > 0);
+      const shouldHide = rect.bottom > 0;
+
+      if (shouldHide && !unregister) {
+        unregister = ctx.registerPosition({
+          anchor: { kind: "hidden" },
+          size: "sm",
+        });
+      } else if (!shouldHide && unregister) {
+        unregister();
+        unregister = undefined;
+      }
     };
+
+    sync();
 
     const onScroll = () => {
       if (raf) return;
-      raf = requestAnimationFrame(update);
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        sync();
+      });
     };
 
-    update();
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll);
+
     return () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      if (raf) window.cancelAnimationFrame(raf);
+      unregister?.();
     };
-  }, [targetSelector]);
-
-  useEffect(() => {
-    if (!ctx || !hidden) return;
-    return ctx.registerPosition({
-      anchor: { kind: "hidden" },
-      size: "sm",
-    });
-  }, [ctx, hidden]);
+  }, [ctx, targetSelector]);
 
   return null;
 }
