@@ -24,7 +24,13 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import AmbassadorPresence, { type PresenceState } from "./AmbassadorPresence";
+import AmbassadorPresence, {
+  type PresenceState,
+  type PresencePalette,
+  MAISON_PRESENCE_HUE,
+  MAISON_PRESENCE_PALETTE,
+  paletteFromHue,
+} from "./AmbassadorPresence";
 import AmbassadorVoice, { type SpeakSession } from "./AmbassadorVoice";
 import BrandTransform from "./BrandTransform";
 import SuggestedQuestions from "./SuggestedQuestions";
@@ -40,7 +46,7 @@ import type {
   AmbassadorLead,
 } from "@/lib/brand-ambassador/types";
 
-const MAISON_HUE = 160; // MAISON BLNDR mint accent
+const MAISON_HUE = MAISON_PRESENCE_HUE; // MAISON BLNDR violet accent (Aurora Nocturne)
 
 /**
  * STATE_META — de Liquid Presence heeft vier zichtbare gedragsmodi. We
@@ -85,7 +91,7 @@ const STATE_META: Record<PresenceState, {
     label: "Antwoordt",
     description: "Formuleert een antwoord…",
     shortDescription: "uitdijende beweging terwijl tekst streamt",
-    dotClass: "bg-[#4af0c4]",
+    dotClass: "bg-[#a78bfa]",
     animate: true,
   },
 };
@@ -400,6 +406,16 @@ export default function AmbassadorWidget({
   //   2. accentHue prop — tenant-eigen kleur (AI Collega maakt hier gebruik van)
   //   3. MAISON_HUE — eigen merk fallback
   const hue = brand?.hue ?? accentHue ?? MAISON_HUE;
+
+  // Multi-color glas-palette voor de dark-mode Liquid Presence orb.
+  //   - Imagine-This-Is-Yours actief → afgeleid uit de merk-hue (verkleurt mee)
+  //   - Tenant accentHue gezet        → afgeleid uit de tenant-hue
+  //   - Anders                        → MAISON BLNDR "Aurora Nocturne" signature
+  const presencePalette: PresencePalette = useMemo(() => {
+    if (brand?.hue != null) return paletteFromHue(brand.hue);
+    if (accentHue != null) return paletteFromHue(accentHue);
+    return MAISON_PRESENCE_PALETTE;
+  }, [brand?.hue, accentHue]);
 
   // Conversie van bubbles naar API messages (strip suggestions/streaming fields).
   const apiMessages: ChatMessage[] = useMemo(
@@ -1091,6 +1107,7 @@ export default function AmbassadorWidget({
             <AmbassadorPresence
               state={presenceState}
               hue={hue}
+              palette={presencePalette}
               audioLevel={audioLevel}
               contrastMode={isLight ? "lightAccent" : "dark"}
               size={
@@ -1107,7 +1124,7 @@ export default function AmbassadorWidget({
             {showOnboardingHint && (
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute -right-2 top-6 hidden translate-x-full items-center gap-2 whitespace-nowrap rounded-full border border-[#4af0c4]/50 bg-[#4af0c4]/10 px-3 py-1.5 text-[11px] font-medium text-[#4af0c4] backdrop-blur-sm animate-[fadeIn_400ms_ease-out] sm:inline-flex"
+                className="pointer-events-none absolute -right-2 top-6 hidden translate-x-full items-center gap-2 whitespace-nowrap rounded-full border border-[#a78bfa]/50 bg-[#a78bfa]/10 px-3 py-1.5 text-[11px] font-medium text-[#a78bfa] backdrop-blur-sm animate-[fadeIn_400ms_ease-out] sm:inline-flex"
                 style={{
                   animation: "mbAmbassadorHintPulse 2.5s ease-in-out infinite",
                 }}
@@ -1146,7 +1163,7 @@ export default function AmbassadorWidget({
                 className={`ml-0.5 inline-flex h-4 w-4 items-center justify-center rounded-full border text-[9px] font-semibold transition-colors focus:outline-none focus-visible:ring-2 ${
                   isLight
                     ? "border-black/30 text-[#575760] hover:border-black/60 hover:bg-black/[0.04] hover:text-[#1f1f1f] focus-visible:ring-[#1f1f1f]"
-                    : "border-white/30 text-white/70 hover:border-white/60 hover:bg-white/5 hover:text-white focus-visible:ring-[#4af0c4]"
+                    : "border-white/30 text-white/70 hover:border-white/60 hover:bg-white/5 hover:text-white focus-visible:ring-[#a78bfa]"
                 }`}
               >
                 ?
@@ -1205,7 +1222,7 @@ export default function AmbassadorWidget({
             {showOnboardingHint && (
               <div
                 aria-hidden="true"
-                className="pointer-events-none mx-auto mt-3 inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[#4af0c4]/50 bg-[#4af0c4]/10 px-3 py-1.5 text-[11px] font-medium text-[#4af0c4] backdrop-blur-sm sm:hidden"
+                className="pointer-events-none mx-auto mt-3 inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-[#a78bfa]/50 bg-[#a78bfa]/10 px-3 py-1.5 text-[11px] font-medium text-[#a78bfa] backdrop-blur-sm sm:hidden"
                 style={{
                   animation: "mbAmbassadorHintPulse 2.5s ease-in-out infinite",
                 }}
@@ -1468,7 +1485,7 @@ export default function AmbassadorWidget({
                   voiceInterim
                     ? isLight
                       ? `italic text-[hsl(${hue},70%,40%)]`
-                      : "italic text-[#4af0c4]/90"
+                      : "italic text-[#a78bfa]/90"
                     : t.inputText
                 }`}
               />
@@ -1486,7 +1503,7 @@ export default function AmbassadorWidget({
                   voiceEnabled
                     ? isLight
                       ? "border-transparent text-white"
-                      : "border-[#4af0c4] bg-[#4af0c4]/15 text-[#4af0c4]"
+                      : "border-[#a78bfa] bg-[#a78bfa]/15 text-[#a78bfa]"
                     : isLight
                     ? "border-black/15 text-[#575760] hover:text-[#1f1f1f]"
                     : "border-white/15 text-white/50 hover:text-white/80"
@@ -1561,7 +1578,7 @@ export default function AmbassadorWidget({
                       style={{
                         background: isLight
                           ? `hsl(${hue}, 60%, 80%)`
-                          : "#4af0c4",
+                          : "#a78bfa",
                       }}
                     >
                       Stuur mij een briefing →
@@ -1677,7 +1694,7 @@ function BriefingForm({
     : "rounded-full border border-white/15 bg-white/5 px-4 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-white/30 focus:outline-none disabled:opacity-40";
   const submitBg = isLight
     ? `hsl(${accentHue}, 60%, 80%)`
-    : "#4af0c4";
+    : "#a78bfa";
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -1740,7 +1757,7 @@ function BriefingForm({
           checked={toestemming}
           onChange={(e) => setToestemming(e.target.checked)}
           className="mt-0.5 h-4 w-4"
-          style={{ accentColor: isLight ? `hsl(${accentHue}, 70%, 45%)` : "#4af0c4" }}
+          style={{ accentColor: isLight ? `hsl(${accentHue}, 70%, 45%)` : "#a78bfa" }}
         />
         <span>
           Ik geef {consentParty} toestemming om mijn gegevens en dit gesprek op te slaan voor

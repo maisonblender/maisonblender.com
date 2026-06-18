@@ -29,7 +29,9 @@
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import AmbassadorPresence from "@/components/BrandAmbassador/AmbassadorPresence";
+import AmbassadorPresence, {
+  MAISON_PRESENCE_HUE,
+} from "@/components/BrandAmbassador/AmbassadorPresence";
 import {
   SIZE_PX,
   usePresence,
@@ -278,7 +280,7 @@ export default function PersistentPresenceShell() {
               onClick={handleLauncherClick}
               aria-label="Open gesprek met de Ambassador (Cmd+K)"
               aria-expanded={isOpen}
-              className="group relative block h-full w-full cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#4af0c4] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b0d]"
+              className="group relative block h-full w-full cursor-pointer rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[#a78bfa] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0b0b0d]"
               style={{
                 // Soft halo achter de canvas. Adapteert met contrastMode:
                 //   - dark  = lichte mint-glow (origineel, staat mooi op donker)
@@ -286,13 +288,13 @@ export default function PersistentPresenceShell() {
                 background:
                   contrastMode === "light"
                     ? "radial-gradient(circle, rgba(28, 30, 36, 0.12) 0%, rgba(28, 30, 36, 0.05) 45%, transparent 72%)"
-                    : "radial-gradient(circle, rgba(74, 240, 196, 0.18) 0%, rgba(74, 240, 196, 0.08) 40%, transparent 70%)",
+                    : "radial-gradient(circle, rgba(124, 58, 237, 0.22) 0%, rgba(139, 92, 246, 0.1) 40%, transparent 70%)",
                 transition: "background 320ms ease",
               }}
             >
               <AmbassadorPresence
                 state={state}
-                hue={160}
+                hue={MAISON_PRESENCE_HUE}
                 size={px}
                 contrastMode={contrastMode}
                 className="pointer-events-none"
@@ -303,7 +305,7 @@ export default function PersistentPresenceShell() {
                   "pointer-events-none absolute inset-0 rounded-full ring-1 transition-[box-shadow,ring-color] duration-300",
                   contrastMode === "light"
                     ? "ring-[#1f1f1f]/0 group-hover:ring-[#1f1f1f]/40 group-hover:[box-shadow:0_0_24px_rgba(31,31,31,0.22)]"
-                    : "ring-[#4af0c4]/0 group-hover:ring-[#4af0c4]/30 group-hover:[box-shadow:0_0_24px_rgba(74,240,196,0.3)]",
+                    : "ring-[#a78bfa]/0 group-hover:ring-[#a78bfa]/30 group-hover:[box-shadow:0_0_24px_rgba(124,58,237,0.4)]",
                 ].join(" ")}
               />
             </button>
@@ -338,7 +340,7 @@ export default function PersistentPresenceShell() {
                     <button
                       type="button"
                       onClick={handleNudgeChipClick}
-                      className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#4af0c4]/40 bg-[#4af0c4]/10 px-3.5 py-1.5 text-xs font-medium text-[#4af0c4] transition-colors hover:border-[#4af0c4] hover:bg-[#4af0c4]/20"
+                      className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#a78bfa]/40 bg-[#a78bfa]/10 px-3.5 py-1.5 text-xs font-medium text-[#a78bfa] transition-colors hover:border-[#a78bfa] hover:bg-[#a78bfa]/20"
                     >
                       {nudge.chip.label}
                       <svg

@@ -15,6 +15,8 @@
 import Link from "next/link";
 import dynamic from "next/dynamic";
 
+import { MAISON_PRESENCE_HUE } from "./BrandAmbassador/AmbassadorPresence";
+
 const AmbassadorPresence = dynamic(() => import("./BrandAmbassador/AmbassadorPresence"), {
   ssr: false,
   loading: () => (
@@ -41,7 +43,7 @@ export default function BrandAmbassadorSection() {
         className="pointer-events-none absolute left-[10%] top-1/2 h-[500px] w-[500px] -translate-y-1/2"
         style={{
           background:
-            "radial-gradient(closest-side, rgba(74,240,196,0.15), transparent 70%)",
+            "radial-gradient(closest-side, rgba(124,58,237,0.2), transparent 70%)",
         }}
       />
 
@@ -50,7 +52,7 @@ export default function BrandAmbassadorSection() {
           {/* Visual — living presence */}
           <div className="order-2 flex items-center justify-center lg:order-1">
             <div className="relative flex flex-col items-center gap-5">
-              <AmbassadorPresence state="idle" hue={160} size={300} />
+              <AmbassadorPresence state="idle" hue={MAISON_PRESENCE_HUE} size={300} />
               <div className="flex flex-wrap items-center justify-center gap-2 text-[10px] uppercase tracking-widest text-white/40">
                 <span className="rounded-full border border-white/15 px-3 py-1">Liquid presence</span>
                 <span className="rounded-full border border-white/15 px-3 py-1">Voice-ready</span>
