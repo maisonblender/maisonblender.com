@@ -230,11 +230,15 @@ export default function AmbassadorPresence({
 
       ctx.clearRect(0, 0, size, size);
 
-      // 1. Buitenste bloom / halo.
-      const bloomR = R * (1.85 + profile.glow * 0.3);
-      const bloom = ctx.createRadialGradient(cx, cy, R * 0.55, cx, cy, bloomR);
-      bloom.addColorStop(0, rgba(pal.glow, 0.3 * profile.glow));
-      bloom.addColorStop(0.5, rgba(pal.glow, 0.08 * profile.glow));
+      // 1. Buitenste bloom / halo — ronde glow rond de bal.
+      //    Clamp de buiten-radius op de halve canvas-breedte zodat de glow
+      //    volledig binnen het canvas naar transparant uitvloeit. Anders
+      //    blijft er aan de randen een restkleur staan → zichtbaar als een
+      //    rare vierkante waas ("kader") rond de bal.
+      const bloomR = Math.min(R * (1.7 + profile.glow * 0.25), size * 0.5);
+      const bloom = ctx.createRadialGradient(cx, cy, R * 0.6, cx, cy, bloomR);
+      bloom.addColorStop(0, rgba(pal.glow, 0.28 * profile.glow));
+      bloom.addColorStop(0.55, rgba(pal.glow, 0.07 * profile.glow));
       bloom.addColorStop(1, rgba(pal.glow, 0));
       ctx.fillStyle = bloom;
       ctx.fillRect(0, 0, size, size);
