@@ -4,14 +4,10 @@
  * AmbassadorPresence — de Liquid Presence canvas-entiteit.
  *
  * Dit is de visuele handtekening van de Brand Ambassador. Geen avatar,
- * geen initialen, geen robot-icoon: een levende organische vorm die ademt,
- * luistert, denkt en spreekt. Wat de Ambassador onderscheidt van elke
- * andere chatbot op het web.
- *
- * Dark-mode (MAISON BLNDR signature) = een vloeibare GLAS-ORB in Siri-stijl:
- * een glazen bol met meerdere kleurige licht-blobs die additief door het glas
- * zwerven, sphere-shading, een glas-reflectie bovenaan en een buitenste bloom.
- * Light / lightAccent (AI Collega tenants) = de rustige single-hue ring-look.
+ * geen initialen, geen robot-icoon: een vloeibare GLAS-ORB in Siri-stijl die
+ * ademt, luistert, denkt en spreekt. Een glazen bol met meerdere kleurige
+ * licht-blobs die additief door het glas zwerven, sphere-shading, een
+ * glas-reflectie bovenaan en een buitenste bloom.
  *
  * States:
  *   - idle       : langzaam pulseren, zachte beweging
@@ -21,12 +17,11 @@
  *
  * Implementatie: pure Canvas 2D + requestAnimationFrame. Geen three.js, geen
  * WebGL — omdat we willen dat dit op elke device werkt inclusief mobile én
- * batterij-zuinig blijft. Respect voor prefers-reduced-motion.
+ * batterij-zuinig blijft. Respect voor prefers-reduced-motion (statische orb).
  *
  * Kleur wordt bepaald door de `palette` prop (multi-color glas). Default =
  * MAISON BLNDR "Aurora Nocturne". Tijdens "Imagine-This-Is-Yours" geeft de
  * widget een uit de merk-hue afgeleide palette mee (zie `paletteFromHue`).
- * De `hue`-prop blijft bestaan voor de light-mode tenant ring-look.
  */
 
 import { useEffect, useRef } from "react";
@@ -47,7 +42,7 @@ export interface PresencePalette {
 /**
  * MAISON BLNDR signature — "Aurora Nocturne".
  * Indigo → violet → magenta met een cyaan accent. Premium, glasachtig,
- * Siri-esque tegen de donkere `#0b0b0d` achtergrond. Bewust géén mintgroen.
+ * Siri-esque. Bewust géén mintgroen.
  */
 export const MAISON_PRESENCE_PALETTE: PresencePalette = {
   blobs: [
@@ -65,10 +60,8 @@ export const MAISON_PRESENCE_HUE = 270;
 
 export type Props = {
   state: PresenceState;
-  /** HSL hue 0-360. Alleen gebruikt in de light/lightAccent ring-look. */
-  hue?: number;
   /**
-   * Multi-color glas-palette voor de dark-mode orb. Default = MAISON BLNDR
+   * Multi-color glas-palette voor de orb. Default = MAISON BLNDR
    * "Aurora Nocturne". De widget geeft tijdens "Imagine-This-Is-Yours" een
    * uit de merk-hue afgeleide palette mee.
    */
@@ -80,28 +73,13 @@ export type Props = {
   /** Extra className om in de layout te passen. */
   className?: string;
   /**
-   * Contrastmodus:
-   *   - "dark"        (default) — de Siri glas-orb tegen donkere achtergrond.
-   *   - "light"                 — anthracite/ink ring-look op lichte achtergrond
-   *                                (hue genegeerd; MAISON BLNDR signature look)
-   *   - "lightAccent"           — donker-getinte accent ring-look (hue actief) op
-   *                                lichte achtergrond (AI Collega tenants).
-   *
-   * De site-wide shell detecteert automatisch wat onder de Presence zit
-   * en switcht live tussen "dark" en "light".
+   * Behouden voor backward-compat met bestaande call-sites. De glas-orb is
+   * volledig palette-gedreven; `hue` en `contrastMode` beïnvloeden de
+   * rendering niet meer (de orb is identiek op donkere én lichte pagina's).
    */
+  hue?: number;
   contrastMode?: "dark" | "light" | "lightAccent";
 };
-
-interface Ring {
-  points: number;
-  amplitude: number;
-  phase: number;
-  radius: number;
-  speed: number;
-  opacity: number;
-  lineWidth: number;
-}
 
 /** Bewegingsprofiel per blob in de glas-orb. Kleuren komen uit de palette. */
 interface BlobConfig {
@@ -170,32 +148,28 @@ export function paletteFromHue(hue: number): PresencePalette {
 function stateProfile(state: PresenceState) {
   switch (state) {
     case "listening":
-      return { speedMul: 1.4, amplitudeMul: 1.25, ringCount: 3, glow: 0.9 };
+      return { speedMul: 1.4, amplitudeMul: 1.25, glow: 0.9 };
     case "thinking":
-      return { speedMul: 2.2, amplitudeMul: 1.5, ringCount: 4, glow: 1.0 };
+      return { speedMul: 2.2, amplitudeMul: 1.5, glow: 1.0 };
     case "responding":
-      return { speedMul: 1.8, amplitudeMul: 1.7, ringCount: 5, glow: 1.2 };
+      return { speedMul: 1.8, amplitudeMul: 1.7, glow: 1.2 };
     case "idle":
     default:
-      return { speedMul: 1.0, amplitudeMul: 1.0, ringCount: 3, glow: 0.7 };
+      return { speedMul: 1.0, amplitudeMul: 1.0, glow: 0.7 };
   }
 }
 
 export default function AmbassadorPresence({
   state,
-  hue = 160,
   palette = MAISON_PRESENCE_PALETTE,
   audioLevel = 0,
   size = 280,
   className = "",
-  contrastMode = "dark",
 }: Props) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const stateRef = useRef<PresenceState>(state);
-  const hueRef = useRef(hue);
   const paletteRef = useRef<PresencePalette>(palette);
   const audioRef = useRef(audioLevel);
-  const modeRef = useRef<"dark" | "light" | "lightAccent">(contrastMode);
   const animRef = useRef<number | null>(null);
   const reducedMotionRef = useRef(false);
 
@@ -204,20 +178,12 @@ export default function AmbassadorPresence({
   }, [state]);
 
   useEffect(() => {
-    hueRef.current = hue;
-  }, [hue]);
-
-  useEffect(() => {
     paletteRef.current = palette;
   }, [palette]);
 
   useEffect(() => {
     audioRef.current = audioLevel;
   }, [audioLevel]);
-
-  useEffect(() => {
-    modeRef.current = contrastMode;
-  }, [contrastMode]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -233,7 +199,7 @@ export default function AmbassadorPresence({
     canvas.style.height = `${size}px`;
     ctx.scale(dpr, dpr);
 
-    // prefers-reduced-motion: val terug op een statische, gestileerde glyph.
+    // prefers-reduced-motion: één statische frame, geen animatieloop.
     if (typeof window !== "undefined" && window.matchMedia) {
       reducedMotionRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     }
@@ -242,22 +208,10 @@ export default function AmbassadorPresence({
     const cy = size / 2;
     const baseRadius = size * 0.32;
 
-    // Rings — alleen gebruikt in de light/lightAccent tenant-look.
-    const rings: Ring[] = [
-      { points: 60, amplitude: 8, phase: 0, radius: baseRadius, speed: 0.0015, opacity: 0.9, lineWidth: 1.5 },
-      { points: 72, amplitude: 14, phase: Math.PI / 3, radius: baseRadius * 1.08, speed: 0.0022, opacity: 0.55, lineWidth: 1 },
-      { points: 90, amplitude: 20, phase: Math.PI / 2, radius: baseRadius * 1.16, speed: 0.0009, opacity: 0.3, lineWidth: 0.75 },
-      { points: 54, amplitude: 28, phase: Math.PI, radius: baseRadius * 1.28, speed: 0.0028, opacity: 0.15, lineWidth: 0.5 },
-      { points: 46, amplitude: 34, phase: Math.PI / 4, radius: baseRadius * 1.42, speed: 0.0035, opacity: 0.08, lineWidth: 0.5 },
-    ];
-
     let t = 0;
     let lastRender = performance.now();
 
-    // ----------------------------------------------------------------
-    // DARK MODE — Liquid Glass Siri-orb.
-    // ----------------------------------------------------------------
-    const renderGlass = (now: number) => {
+    const render = (now: number) => {
       const dt = now - lastRender;
       lastRender = now;
 
@@ -340,175 +294,23 @@ export default function AmbassadorPresence({
 
       ctx.restore();
 
-      // 6. Glas-rand: verticale gradient-stroke + heldere boog bovenaan.
+      // 6. Glas-rand: één doorlopende, fijne ring (lichter bovenaan via de
+      //    verticale gradient). Geen losse boog meer — dat las als een
+      //    rare "halve buitenring".
       const rimGrad = ctx.createLinearGradient(cx, cy - R, cx, cy + R);
-      rimGrad.addColorStop(0, rgba(pal.rim, 0.7));
-      rimGrad.addColorStop(0.5, rgba(pal.rim, 0.12));
-      rimGrad.addColorStop(1, rgba(pal.glow, 0.28));
-      ctx.lineWidth = Math.max(1, size * 0.006);
+      rimGrad.addColorStop(0, rgba(pal.rim, 0.5));
+      rimGrad.addColorStop(0.5, rgba(pal.rim, 0.1));
+      rimGrad.addColorStop(1, rgba(pal.glow, 0.22));
+      ctx.lineWidth = Math.max(1, size * 0.005);
       ctx.strokeStyle = rimGrad;
       ctx.beginPath();
-      ctx.arc(cx, cy, R, 0, TAU);
+      ctx.arc(cx, cy, R - ctx.lineWidth * 0.5, 0, TAU);
       ctx.stroke();
 
-      ctx.lineWidth = Math.max(1, size * 0.01);
-      ctx.strokeStyle = rgba(pal.rim, 0.5);
-      ctx.beginPath();
-      ctx.arc(cx, cy, R - ctx.lineWidth * 0.5, Math.PI * 1.15, Math.PI * 1.85);
-      ctx.stroke();
-
-      if (!reduced) animRef.current = requestAnimationFrame(tick);
+      if (!reduced) animRef.current = requestAnimationFrame(render);
     };
 
-    // ----------------------------------------------------------------
-    // LIGHT / LIGHTACCENT — rustige single-hue ring-look (tenants).
-    // ----------------------------------------------------------------
-    const renderRings = (now: number) => {
-      const dt = now - lastRender;
-      lastRender = now;
-
-      const profile = stateProfile(stateRef.current);
-      t += dt * profile.speedMul;
-
-      const h = hueRef.current;
-      const audio = audioRef.current;
-      const mode = modeRef.current;
-
-      const INK_HUE = 220;
-      const INK_SAT = 8;
-      let P;
-      if (mode === "light") {
-        // MAISON BLNDR signature ink-look — hue genegeerd, anthracite tegen wit.
-        P = {
-          glowInner: `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${0.1 * profile.glow})`,
-          glowMid: `hsla(${INK_HUE}, ${INK_SAT}%, 14%, ${0.04 * profile.glow})`,
-          glowOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0)`,
-          coreInner: `hsla(${INK_HUE}, ${INK_SAT}%, 22%, 0.92)`,
-          coreMid: `hsla(${INK_HUE}, ${INK_SAT}%, 16%, 0.7)`,
-          coreOuter: `hsla(${INK_HUE}, ${INK_SAT}%, 12%, 0.28)`,
-          coreStroke: (op: number) =>
-            `hsla(${INK_HUE}, ${INK_SAT}%, 12%, ${Math.min(1, op * 1.6)})`,
-          ringStroke: (op: number) =>
-            `hsla(${INK_HUE}, ${INK_SAT}%, 18%, ${Math.min(1, op * 1.9)})`,
-          dot: `hsla(${INK_HUE}, ${INK_SAT}%, 10%, 0.95)`,
-        };
-      } else {
-        // lightAccent — AI Collega: hue blijft volle accentkleur, donkerder +
-        // meer saturated zodat hij niet verdwijnt tegen wit.
-        P = {
-          glowInner: `hsla(${h}, 75%, 45%, ${0.14 * profile.glow})`,
-          glowMid: `hsla(${h}, 70%, 35%, ${0.05 * profile.glow})`,
-          glowOuter: `hsla(${h}, 65%, 25%, 0)`,
-          coreInner: `hsla(${h}, 75%, 42%, 0.92)`,
-          coreMid: `hsla(${h}, 70%, 32%, 0.6)`,
-          coreOuter: `hsla(${h}, 65%, 22%, 0.22)`,
-          coreStroke: (op: number) =>
-            `hsla(${h}, 80%, 28%, ${Math.min(1, op * 1.5)})`,
-          ringStroke: (op: number) =>
-            `hsla(${h}, 75%, 38%, ${Math.min(1, op * 1.7)})`,
-          dot: `hsla(${h}, 85%, 25%, 0.95)`,
-        };
-      }
-
-      ctx.clearRect(0, 0, size, size);
-
-      const glowRadius = baseRadius * (1.6 + profile.glow * 0.2);
-      const glow = ctx.createRadialGradient(cx, cy, baseRadius * 0.2, cx, cy, glowRadius);
-      glow.addColorStop(0, P.glowInner);
-      glow.addColorStop(0.6, P.glowMid);
-      glow.addColorStop(1, P.glowOuter);
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, 0, size, size);
-
-      const rc = reducedMotionRef.current ? 1 : profile.ringCount;
-
-      for (let r = 0; r < rc; r++) {
-        const ring = rings[r];
-        const amp = reducedMotionRef.current
-          ? 0
-          : ring.amplitude * profile.amplitudeMul * (1 + audio * 0.8);
-        const offset = reducedMotionRef.current ? 0 : t * ring.speed;
-
-        ctx.beginPath();
-        for (let i = 0; i <= ring.points; i++) {
-          const a = (i / ring.points) * TAU;
-          const noise =
-            Math.sin(a * 3 + offset + ring.phase) * 0.5 +
-            Math.sin(a * 5 - offset * 1.3 + ring.phase * 2) * 0.3 +
-            Math.sin(a * 2 + offset * 0.7) * 0.2;
-          const rad = ring.radius + noise * amp;
-          const px = cx + Math.cos(a) * rad;
-          const py = cy + Math.sin(a) * rad;
-          if (i === 0) ctx.moveTo(px, py);
-          else ctx.lineTo(px, py);
-        }
-        ctx.closePath();
-
-        if (r === 0) {
-          const coreGradient = ctx.createRadialGradient(cx, cy - baseRadius * 0.2, 0, cx, cy, ring.radius * 1.1);
-          coreGradient.addColorStop(0, P.coreInner);
-          coreGradient.addColorStop(0.7, P.coreMid);
-          coreGradient.addColorStop(1, P.coreOuter);
-          ctx.fillStyle = coreGradient;
-          ctx.fill();
-
-          ctx.strokeStyle = P.coreStroke(ring.opacity);
-          ctx.lineWidth = ring.lineWidth;
-          ctx.stroke();
-        } else {
-          ctx.strokeStyle = P.ringStroke(ring.opacity);
-          ctx.lineWidth = ring.lineWidth;
-          ctx.stroke();
-        }
-      }
-
-      // Twee symmetrische "kijk"-puntjes (pareidolia → vriendelijk, niet uncanny).
-      const pulse = reducedMotionRef.current ? 1 : 1 + Math.sin(t * 0.004) * 0.2;
-      const dotRadius = 2.6 * pulse;
-      const eyeY = cy - baseRadius * 0.22;
-      const eyeOffsetX = baseRadius * 0.32;
-
-      const blinkPhase = (t * 0.0002) % 1;
-      const blinking =
-        !reducedMotionRef.current &&
-        stateRef.current === "idle" &&
-        blinkPhase > 0.96;
-      const eyeScaleY = blinking ? 0.15 : 1;
-
-      for (const sign of [-1, 1]) {
-        ctx.save();
-        ctx.translate(cx + sign * eyeOffsetX, eyeY);
-        ctx.scale(1, eyeScaleY);
-        ctx.beginPath();
-        ctx.arc(0, 0, dotRadius, 0, TAU);
-        ctx.fillStyle = P.dot;
-        ctx.fill();
-        ctx.restore();
-      }
-
-      if (!reducedMotionRef.current && stateRef.current === "responding") {
-        const mouthY = cy + baseRadius * 0.18;
-        const mouthWidth = baseRadius * 0.45;
-        const mouthCurve = baseRadius * 0.06 * (1 + Math.sin(t * 0.006) * 0.4);
-        ctx.beginPath();
-        ctx.moveTo(cx - mouthWidth / 2, mouthY);
-        ctx.quadraticCurveTo(cx, mouthY + mouthCurve, cx + mouthWidth / 2, mouthY);
-        ctx.strokeStyle = P.dot;
-        ctx.lineWidth = 1.2;
-        ctx.globalAlpha = 0.5;
-        ctx.stroke();
-        ctx.globalAlpha = 1;
-      }
-
-      animRef.current = requestAnimationFrame(tick);
-    };
-
-    const tick = (now: number) => {
-      if (modeRef.current === "dark") renderGlass(now);
-      else renderRings(now);
-    };
-
-    animRef.current = requestAnimationFrame(tick);
+    animRef.current = requestAnimationFrame(render);
 
     return () => {
       if (animRef.current !== null) {
