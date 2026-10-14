@@ -3,6 +3,7 @@ import { checkRateLimit, getClientIp } from "@/lib/quickscan/rate-limit";
 import { checkOrigin } from "@/lib/security/origin";
 import { readJsonBody } from "@/lib/security/json";
 import { sanitizeHeader } from "@/lib/security/escape";
+import { verwerkLead } from "@/lib/leads/submit";
 
 const isDev = process.env.NODE_ENV !== "production";
 
@@ -60,39 +61,45 @@ export async function POST(request: NextRequest) {
   const email = body.email.trim();
   const bericht = body.bericht.trim();
 
-  const apiKey = process.env.RESEND_API_KEY;
-
-  if (!apiKey) {
-    if (isDev) {
-      console.log("Contact form submission (no RESEND_API_KEY set):", { naam, bedrijf, email, bericht });
-    }
-    return Response.json({ ok: true });
-  }
-
   // Sanitize subject — strip CR/LF om header-injectie via naam/bedrijf te voorkomen.
   const safeSubjectNaam = sanitizeHeader(naam, 120);
   const safeSubjectBedrijf = bedrijf ? sanitizeHeader(bedrijf, 120) : null;
   const subject = `Nieuw contactformulier: ${safeSubjectNaam}${safeSubjectBedrijf ? ` (${safeSubjectBedrijf})` : ""}`;
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
+  const datum = new Date().toLocaleString("nl-NL", { dateStyle: "long", timeStyle: "short" });
+  const result = await verwerkLead({
+    lead: {
+      bron: "Contactformulier",
+      naam,
+      email,
+      bedrijf: bedrijf || undefined,
+      noteTitel: `Contactformulier — ${naam}${bedrijf ? ` (${bedrijf})` : ""}`,
+      noteMarkdown: `# Contactformulier — ${datum}
+
+- **Bron:** Contactformulier
+- **Naam:** ${naam}
+- **Bedrijf:** ${bedrijf || "niet opgegeven"}
+- **E-mail:** ${email}
+
+## Bericht
+${bericht}`,
     },
-    body: JSON.stringify({
-      from: "website@maisonblender.com",
-      to: ["info@maisonblender.com"],
-      reply_to: email,
-      subject,
-      text: `Naam: ${naam}\nBedrijf: ${bedrijf ?? "-"}\nE-mail: ${email}\n\nBericht:\n${bericht}`,
-    }),
+    mailSubject: subject,
+    mailText: `Naam: ${naam}\nBedrijf: ${bedrijf || "-"}\nE-mail: ${email}\n\nBericht:\n${bericht}`,
   });
 
-  if (!res.ok) {
-    const err = await res.json().catch(() => ({}));
-    console.error("Resend error:", err);
-    return Response.json({ error: "Verzenden mislukt. Probeer het later opnieuw." }, { status: 502 });
+  if (!result.stored) {
+    if (isDev) {
+      console.log("Contact form submission (geen CRM/Resend geconfigureerd):", { naam, bedrijf, email, bericht });
+      return Response.json({ ok: true });
+    }
+    return Response.json(
+      {
+        error:
+          "Je bericht kon niet worden verzonden. Mail ons direct via info@maisonblender.com of bel +31 (0)46 200 4035.",
+      },
+      { status: 502 }
+    );
   }
 
   return Response.json({ ok: true });
