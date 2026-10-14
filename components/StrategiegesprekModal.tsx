@@ -40,9 +40,13 @@ interface Props {
   onClose: () => void;
 }
 
+type SaveStatus = "idle" | "saving" | "saved" | "failed";
+
 export default function StrategiegesprekModal({ open, onClose }: Props) {
   const [step, setStep] = useState<Step>("uitdaging");
   const [answers, setAnswers] = useState<Answers>({});
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>("idle");
+  const savedPayloadRef = useRef<string | null>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const onEscape = useCallback(() => {
     onClose();
@@ -60,7 +64,9 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
     /* eslint-disable react-hooks/set-state-in-effect -- reset wizard bij openen dialoog */
     setStep("uitdaging");
     setAnswers({});
+    setSaveStatus("idle");
     /* eslint-enable react-hooks/set-state-in-effect */
+    savedPayloadRef.current = null;
   }, [open]);
 
   useEffect(() => {
@@ -93,6 +99,26 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
     if (idx !== -1 && idx < FLOW.length - 1) {
       setStep(FLOW[idx + 1]);
     }
+  }
+
+  async function submitContact(updated: Answers) {
+    setAnswers(updated);
+    const payload = JSON.stringify(updated);
+    if (savedPayloadRef.current === payload) {
+      setStep("boek");
+      return;
+    }
+    setSaveStatus("saving");
+    const ok = await fetch("/api/strategiegesprek", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: payload,
+    })
+      .then((res) => res.ok)
+      .catch(() => false);
+    if (ok) savedPayloadRef.current = payload;
+    setSaveStatus(ok ? "saved" : "failed");
+    setStep("boek");
   }
 
   function back() {
@@ -300,11 +326,16 @@ export default function StrategiegesprekModal({ open, onClose }: Props) {
           )}
 
           {step === "contact" && (
-            <ContactStep answers={answers} setAnswers={setAnswers} totalSteps={totalSteps} onNext={() => setStep("boek")} />
+            <ContactStep
+              answers={answers}
+              totalSteps={totalSteps}
+              saving={saveStatus === "saving"}
+              onSubmit={submitContact}
+            />
           )}
 
           {step === "boek" && (
-            <BoekStep answers={answers} onClose={onClose} />
+            <BoekStep answers={answers} saveFailed={saveStatus === "failed"} onClose={onClose} />
           )}
         </div>
 
@@ -345,11 +376,11 @@ function StepCard({ eyebrow, title, subtitle, children }: {
   );
 }
 
-function ContactStep({ answers, setAnswers, totalSteps, onNext }: {
+function ContactStep({ answers, totalSteps, saving, onSubmit }: {
   answers: Answers;
-  setAnswers: (a: Answers) => void;
   totalSteps: number;
-  onNext: () => void;
+  saving: boolean;
+  onSubmit: (a: Answers) => void;
 }) {
   const [naam, setNaam] = useState(answers.naam ?? "");
   const [email, setEmail] = useState(answers.email ?? "");
@@ -366,8 +397,7 @@ function ContactStep({ answers, setAnswers, totalSteps, onNext }: {
       setError("Vul een geldig e-mailadres in.");
       return;
     }
-    setAnswers({ ...answers, naam, email, bedrijf });
-    onNext();
+    onSubmit({ ...answers, naam: naam.trim(), email: email.trim(), bedrijf: bedrijf.trim() });
   }
 
   const inputClass =
@@ -446,18 +476,28 @@ function ContactStep({ answers, setAnswers, totalSteps, onNext }: {
         <button
           type="button"
           onClick={handleNext}
-          className="mt-1 w-full rounded-full bg-[#1f1f1f] px-6 py-4 text-sm font-bold text-white transition-all hover:bg-[#3a3a42] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#f2f3f5]"
+          disabled={saving}
+          className="mt-1 w-full rounded-full bg-[#1f1f1f] px-6 py-4 text-sm font-bold text-white transition-all hover:bg-[#3a3a42] hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-[#f2f3f5] disabled:opacity-60"
         >
-          Doorgaan →
+          {saving ? "Even geduld..." : "Doorgaan →"}
         </button>
       </div>
     </div>
   );
 }
 
-function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void }) {
+function BoekStep({ answers, saveFailed, onClose }: { answers: Answers; saveFailed: boolean; onClose: () => void }) {
   void onClose;
   const isOnline = answers.vergadertype === "Online via Google Meet";
+
+  // Google documenteert geen prefill-parameters voor appointment schedules;
+  // onbekende parameters worden genegeerd. De koppeling aan de lead in het CRM
+  // loopt via het e-mailadres dat de bezoeker bij het boeken opgeeft.
+  const bookingParams = new URLSearchParams();
+  if (answers.naam) bookingParams.set("name", answers.naam);
+  if (answers.email) bookingParams.set("email", answers.email);
+  const bookingQuery = bookingParams.toString();
+  const bookingHref = bookingQuery ? `${CALENDAR_BOOKING_URL}?${bookingQuery}` : CALENDAR_BOOKING_URL;
 
   // Lijnen op '\n' joinen en daarna URL-encoden — anders breekt elk '&' in de
   // user-input de mailto-link of voegt een onbedoelde nieuwe parameter toe.
@@ -494,6 +534,13 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
         </p>
       </div>
 
+      {saveFailed && (
+        <p role="alert" className="border-l-2 border-red-600 bg-white px-4 py-3 text-xs leading-relaxed text-[#1f1f1f]">
+          Je antwoorden konden niet automatisch naar ons worden verstuurd. Kies hieronder een datum, of stuur
+          ons een e-mail: je antwoorden staan dan al in het bericht.
+        </p>
+      )}
+
       {answers.vergadertype && (
         <div className="flex items-center gap-2 rounded bg-white border border-black/8 px-4 py-2.5 text-xs text-[#575760]">
           <span>{isOnline ? <Monitor className="h-4 w-4 text-[#575760]" strokeWidth={1.5} /> : <MapPin className="h-4 w-4 text-[#575760]" strokeWidth={1.5} />}</span>
@@ -503,7 +550,7 @@ function BoekStep({ answers, onClose }: { answers: Answers; onClose: () => void 
 
       <div className="flex flex-col gap-3">
         <a
-          href={CALENDAR_BOOKING_URL}
+          href={bookingHref}
           target="_blank"
           rel="noopener noreferrer"
           className="group flex w-full items-center justify-between rounded-full bg-[#1f1f1f] px-8 py-5 text-sm font-bold text-white transition-all hover:bg-[#3a3a42] hover:shadow-lg"
