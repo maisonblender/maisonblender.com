@@ -1,5 +1,6 @@
 /**
- * GET /api/brand-ambassador/voice-session/debug?token=xxx
+ * GET /api/brand-ambassador/voice-session/debug
+ *   Header: `X-Debug-Token: <token>` of `Authorization: Bearer <token>`
  *
  * Admin-only diagnostische endpoint. Doet drie checks tegen ElevenLabs:
  *   1. Config-sanity (env vars aanwezig? geen whitespace?)
@@ -11,7 +12,9 @@
  *      → 200 = alles werkt
  *      → anders = exact wat de productie-route ook zou krijgen
  *
- * Authenticatie: `?token=xxx` moet matchen met `BA_DEBUG_TOKEN` env var.
+ * Authenticatie: header `X-Debug-Token` (of `Authorization: Bearer`) moet
+ * matchen met `BA_DEBUG_TOKEN` env var. Een `?token=` in de querystring wordt
+ * bewust genegeerd (komt anders in logs/browsergeschiedenis terecht).
  * Als `BA_DEBUG_TOKEN` niet gezet is, retourneert deze endpoint 404
  * zodat hij niet bestaat vanuit het perspectief van een aanvaller.
  *
@@ -24,7 +27,7 @@
  * shapes van ElevenLabs.
  */
 
-import { timingSafeEqual } from "node:crypto";
+import { createHash, timingSafeEqual } from "node:crypto";
 import {
   ELEVENLABS_API_BASE,
   getElevenLabsConfig,
@@ -72,9 +75,9 @@ async function runCheck(url: string, apiKey: string): Promise<CheckResult> {
 }
 
 function constantTimeEquals(a: string, b: string): boolean {
-  const aBuf = Buffer.from(a);
-  const bBuf = Buffer.from(b);
-  if (aBuf.length !== bBuf.length) return false;
+  // Hash beide kanten naar vaste lengte zodat ook de token-lengte niet lekt.
+  const aBuf = createHash("sha256").update(a).digest();
+  const bBuf = createHash("sha256").update(b).digest();
   return timingSafeEqual(aBuf, bBuf);
 }
 
@@ -85,8 +88,12 @@ export async function GET(request: Request) {
     return new Response("Not Found", { status: 404 });
   }
 
-  const url = new URL(request.url);
-  const providedToken = url.searchParams.get("token") || "";
+  const headerToken = request.headers.get("x-debug-token")?.trim() || "";
+  const auth = request.headers.get("authorization") || "";
+  const bearerToken = auth.toLowerCase().startsWith("bearer ")
+    ? auth.slice(7).trim()
+    : "";
+  const providedToken = headerToken || bearerToken;
   if (!providedToken || !constantTimeEquals(providedToken, debugToken)) {
     return new Response("Not Found", { status: 404 });
   }
